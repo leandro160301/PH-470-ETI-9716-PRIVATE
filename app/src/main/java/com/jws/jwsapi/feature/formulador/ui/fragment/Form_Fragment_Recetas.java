@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.activities.MainActivity;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaRecetasBinding;
+import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Ingredientes;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Recetas;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Ingredientes;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Encabezado;
+import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -49,7 +52,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Encabezado.ItemClickListener {
+public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Encabezado.ItemClickListener, AdapterRecetasInterface {
 
     @Inject
     RecetaManager recetaManager;
@@ -68,6 +71,12 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     List<Integer> posiciones= new ArrayList<>();
     Boolean filtro=false;
     ProgFormuladorPantallaRecetasBinding binding;
+
+
+    Boolean filtroAdapter = false;
+    public Form_Adapter_Ingredientes adapterIngredientes;
+    ArrayList<Form_Model_Ingredientes> filteredListAdapterIngredientes = new ArrayList<>();
+    ArrayList<Integer> filteredListAdapterNumeric = new ArrayList<>();
 
     @Nullable
     @Override
@@ -157,12 +166,12 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     private void cargarRecyclerViewReceta(String archivo){
         if(recetaManager.ejecutando){
             binding.receta.setLayoutManager(new LinearLayoutManager(getContext()));
-            mainActivity.mainClass.adapter_recetas = new Form_Adapter_Recetas(getContext(), recetaManager.listRecetaActual,mainActivity,archivo,recetaManager);
+            mainActivity.mainClass.adapter_recetas = new Form_Adapter_Recetas(getContext(), recetaManager.listRecetaActual,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
             binding.receta.setAdapter(mainActivity.mainClass.adapter_recetas);
         }else{
             recetaseleccionada=mainActivity.mainClass.getReceta(archivo);
             binding.receta.setLayoutManager(new LinearLayoutManager(getContext()));
-            mainActivity.mainClass.adapter_recetas = new Form_Adapter_Recetas(getContext(), recetaseleccionada,mainActivity,archivo,recetaManager);
+            mainActivity.mainClass.adapter_recetas = new Form_Adapter_Recetas(getContext(), recetaseleccionada,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
             binding.receta.setAdapter(mainActivity.mainClass.adapter_recetas);
             String[]arr= archivo.split("_");
             if(arr.length==3&&recetaseleccionada.size()>0){
@@ -535,9 +544,257 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
     }
 
+    private void dialogoEliminarPaso(List<Form_Model_Receta> mData, int posicion) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
+        View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_dossinet, null);
+        TextView textView = mView.findViewById(R.id.textViewt);
+        textView.setText("¿Quiere eliminar el paso " + (posicion + 1) + "?");
+
+        Button Guardar = mView.findViewById(R.id.buttons);
+        Button Cancelar = mView.findViewById(R.id.buttonc);
+        Guardar.setText("ELIMINAR");
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        Guardar.setOnClickListener(view -> {
+            mData.remove(posicion);
+            try {
+                mainActivity.mainClass.setReceta(recetaelegida, mData);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            mainActivity.mainClass.adapter_recetas.refrescarList(mData);
+            dialog.cancel();
+        });
+        Cancelar.setOnClickListener(view -> dialog.cancel());
+    }
+
+    public void BuscadorAdapter(TextView tv_codigo, TextView tv_des) {
+        filtroAdapter = false;
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
+
+        View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_buscador, null);
+        final EditText userInput = mView.findViewById(R.id.etDatos);
+        RecyclerView listview = mView.findViewById(R.id.listview);
+        ImageView im_buscador = mView.findViewById(R.id.im_buscador);
+
+        Button Cancelar = mView.findViewById(R.id.buttonc);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        List<Form_Model_Ingredientes> ingredien = mainActivity.mainClass.getIngredientes();
+        listview.setLayoutManager(new LinearLayoutManager(mainActivity));
+        adapterIngredientes = new Form_Adapter_Ingredientes(mainActivity, ingredien, false,null);
+        adapterIngredientes.setClickListener((view, position) -> {
+            tv_codigo.setText(ingredien.get(position).getCodigo());
+            tv_des.setText(ingredien.get(position).getNombre());
+
+            dialog.cancel();
+        });
+
+        listview.setAdapter(adapterIngredientes);
+        userInput.setOnLongClickListener(v -> true);
+        userInput.setHint(" Buscar");
+        userInput.setOnClickListener(view -> userInput.getText().clear());
+
+        userInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filtroAdapter = true;
+                filterAdapter(editable.toString(), dialog, ingredien, tv_codigo, tv_des);
+            }
+        });
+
+        im_buscador.setOnClickListener(view -> {
+            if (mainActivity != null) {
+                InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+                }
+            }
+        });
+
+        Cancelar.setOnClickListener(view -> dialog.cancel());
+
+    }
+
+    private void filterAdapter(String text, AlertDialog dialog, List<Form_Model_Ingredientes> inge, TextView tv_codigo, TextView tv_des) {
+        filteredListAdapterIngredientes = new ArrayList<>();
+        filteredListAdapterNumeric = new ArrayList<>();
+        for (int i= 0; i < inge.size(); i++) {
+            if (inge.get(i).getNombre().toLowerCase().contains(text.toLowerCase()) || inge.get(i).getCodigo().toLowerCase().contains(text.toLowerCase())) {
+                filteredListAdapterIngredientes.add(new Form_Model_Ingredientes(inge.get(i).getCodigo(), inge.get(i).getNombre()));
+                filteredListAdapterNumeric.add(i);
+            }
+        }
+        adapterIngredientes.filterList(filteredListAdapterIngredientes);
+        adapterIngredientes.setClickListener((view, position) -> {
+            tv_codigo.setText(filteredListAdapterIngredientes.get(position).getCodigo());
+            tv_des.setText(filteredListAdapterIngredientes.get(position).getNombre());
+            dialog.cancel();
+        });
+    }
+
+
+    private void dialogoAgregarPaso(List<Form_Model_Receta> mData, int posicion) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
+
+        View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_pasoreceta, null);
+        TextView tv_codigo = mView.findViewById(R.id.tv_codigoingrediente);
+        TextView tv_descripcion = mView.findViewById(R.id.tv_descripcioningrediente);
+        TextView tv_kilos = mView.findViewById(R.id.tv_kilos);
+
+        Button Guardar = mView.findViewById(R.id.buttons);
+        Button Cancelar = mView.findViewById(R.id.buttonc);
+        Guardar.setText("AGREGAR");
+
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        tv_codigo.setOnClickListener(view -> BuscadorAdapter(tv_codigo, tv_descripcion));
+        tv_descripcion.setOnClickListener(view -> BuscadorAdapter(tv_codigo, tv_descripcion));
+        tv_kilos.setOnClickListener(view -> TecladoAdapter(tv_kilos, "Ingrese los kilos a realizar del nuevo paso"));
+
+        Guardar.setOnClickListener(view -> {
+            if (!tv_codigo.getText().toString().equals("") && !tv_descripcion.getText().toString().equals("") && !tv_kilos.getText().toString().equals("") && Utils.isNumeric(tv_kilos.getText().toString())) {
+                if (posicion < mData.size() - 1) {
+                    mData.add(posicion + 1, new Form_Model_Receta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilos_totales(),
+                            tv_codigo.getText().toString(), tv_descripcion.getText().toString(), tv_kilos.getText().toString(), "NO", ""));
+                } else {
+                    mData.add(new Form_Model_Receta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilos_totales(),
+                            tv_codigo.getText().toString(), tv_descripcion.getText().toString(), tv_kilos.getText().toString(), "NO", ""));
+                }
+
+                try {
+                    mainActivity.mainClass.setReceta(recetaelegida, mData);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                mainActivity.mainClass.adapter_recetas.refrescarList(mData);
+                mainActivity.mainClass.lista_recetas.smoothScrollToPosition(mData.size() - 1);
+                dialog.cancel();
+            }
+
+        });
+        Cancelar.setOnClickListener(view -> dialog.cancel());
+    }
+
+    private void dialogoModificarPaso(List<Form_Model_Receta> mData, int posicion) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
+        View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_pasoreceta, null);
+        TextView tv_codigo = mView.findViewById(R.id.tv_codigoingrediente);
+        TextView tv_descripcion = mView.findViewById(R.id.tv_descripcioningrediente);
+        TextView tv_kilos = mView.findViewById(R.id.tv_kilos);
+
+        Button Guardar = mView.findViewById(R.id.buttons);
+        Button Cancelar = mView.findViewById(R.id.buttonc);
+        Guardar.setText("EDITAR");
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        if (mData.size() > posicion) {
+            tv_descripcion.setText(mData.get(posicion).getDescrip_ing());
+            tv_codigo.setText(mData.get(posicion).getCodigo_ing());
+            tv_kilos.setText(mData.get(posicion).getKilos_ing());
+        }
+
+        tv_codigo.setOnClickListener(view -> BuscadorAdapter(tv_codigo, tv_descripcion));
+        tv_descripcion.setOnClickListener(view -> BuscadorAdapter(tv_codigo, tv_descripcion));
+        tv_kilos.setOnClickListener(view -> TecladoAdapter(tv_kilos, "Ingrese los kilos del paso"));
+
+        Guardar.setOnClickListener(view -> {
+            if (!tv_codigo.getText().toString().equals("") && !tv_descripcion.getText().toString().equals("") && !tv_kilos.getText().toString().equals("") && Utils.isNumeric(tv_kilos.getText().toString())) {
+                if (mData.size() > posicion) {
+                    mData.get(posicion).setDescrip_ing(tv_descripcion.getText().toString());
+                    mData.get(posicion).setCodigo_ing(tv_codigo.getText().toString());
+                    mData.get(posicion).setKilos_ing(tv_kilos.getText().toString());
+                    try {
+                        mainActivity.mainClass.setReceta(recetaelegida, mData);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    mainActivity.mainClass.adapter_recetas.refrescarList(mData);
+                }
+
+                dialog.cancel();
+            }
+
+        });
+        Cancelar.setOnClickListener(view -> dialog.cancel());
+    }
+
+
+    public void TecladoAdapter(TextView View, String texto) {
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity);
+        View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_dosopcionespuntos, null);
+        final EditText userInput = mView.findViewById(R.id.etDatos);
+        TextView textView = mView.findViewById(R.id.textViewt);
+        LinearLayout lndelete_text = mView.findViewById(R.id.lndelete_text);
+        textView.setText(texto);
+        userInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        userInput.setKeyListener(DigitsKeyListener.getInstance(".0123456789"));
+        userInput.setOnLongClickListener(v -> true);
+        userInput.requestFocus();
+
+        lndelete_text.setOnClickListener(view -> userInput.setText(""));
+        Button Guardar = mView.findViewById(R.id.buttons);
+        Button Cancelar = mView.findViewById(R.id.buttonc);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        Guardar.setOnClickListener(view -> {
+            if (Utils.isNumeric(userInput.getText().toString())) {
+                View.setText(userInput.getText().toString());
+            }
+            dialog.cancel();
+        });
+        Cancelar.setOnClickListener(view -> dialog.cancel());
+
+    }
+
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void eliminarPaso(List<Form_Model_Receta> mData, int posicion) {
+        if (mData.size() > 1) {
+            if(mainActivity.modificarDatos()){
+                dialogoEliminarPaso(mData,posicion);
+            }else{
+                Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
+            }
+        } else {
+            Utils.Mensaje("No puede eliminar mas pasos", R.layout.item_customtoasterror,mainActivity);
+        }
+    }
+
+    @Override
+    public void agregarPaso(List<Form_Model_Receta> mData, int posicion) {
+        if(mainActivity.modificarDatos()){
+            dialogoAgregarPaso(mData,posicion);
+        }else{
+            Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
+        }
+    }
+
+    @Override
+    public void modificarPaso(List<Form_Model_Receta> mData, int posicion) {
+        if(mainActivity.modificarDatos()){
+            dialogoModificarPaso(mData,posicion);
+        }else{
+            Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
+        }
+
     }
 }
 

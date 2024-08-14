@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:translationY="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fondo_prod"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/blanco"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
+                        <com.jws.jwsapi.base.customviews.ScrollViewScroll
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="20dp"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="70dp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="200dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:fontFamily="sans-serif-black"
+                                            android:text="Lote"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="30sp" />
+
+                                        <RelativeLayout
+                                            android:layout_width="150dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <Spinner
+                                                android:id="@+id/sp_lote"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:background="@drawable/spinnerbackground"
+                                                android:entries="@array/Lote"
+                                                android:textAlignment="center" />
+
+                                            <ImageView
+                                                android:layout_width="54dp"
+                                                android:layout_height="42dp"
+                                                android:layout_alignParentTop="true"
+                                                android:layout_alignParentRight="true"
+                                                android:layout_alignParentBottom="true"
+                                                android:layout_gravity="center"
+                                                android:layout_marginTop="10dp"
+                                                android:layout_marginRight="23dp"
+                                                android:layout_marginBottom="10dp"
+                                                android:src="@drawable/flecha_arriba" />
+
+                                        </RelativeLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/ln_editarlote"
+                                            android:layout_width="100dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginStart="20dp"
+                                            android:layout_marginEnd="20dp"
+                                            android:background="@drawable/boton_editar_i"
+                                            android:orientation="horizontal">
+
+
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="70dp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="200dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:fontFamily="sans-serif-black"
+                                            android:text="Vencimiento"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="30sp" />
+
+                                        <RelativeLayout
+                                            android:layout_width="150dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <Spinner
+                                                android:id="@+id/sp_vencimiento"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:background="@drawable/spinnerbackground"
+                                                android:entries="@array/Vencimiento"
+                                                android:textAlignment="center" />
+
+                                            <ImageView
+                                                android:layout_width="54dp"
+                                                android:layout_height="42dp"
+                                                android:layout_alignParentTop="true"
+                                                android:layout_alignParentRight="true"
+                                                android:layout_alignParentBottom="true"
+                                                android:layout_gravity="center"
+                                                android:layout_marginTop="10dp"
+                                                android:layout_marginRight="23dp"
+                                                android:layout_marginBottom="10dp"
+                                                android:src="@drawable/flecha_arriba" />
+
+                                        </RelativeLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/ln_editarvencimiento"
+                                            android:layout_width="100dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginStart="20dp"
+                                            android:layout_marginEnd="20dp"
+                                            android:background="@drawable/boton_editar_i"
+                                            android:orientation="horizontal">
+
+
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="11dp"
+                                    android:orientation="horizontal"></LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="70dp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/tv_campo1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/campollenarclickeableceropadding_selector"
+                                            android:gravity="center"
+                                            android:text="Analisis"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="36sp" />
+
+                                        <ImageView
+                                            android:id="@+id/im_campo1"
+                                            android:layout_width="80dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/checked" />
+
+                                    </RelativeLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/ln_editar1"
+                                        android:layout_width="100dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="20dp"
+                                        android:layout_marginEnd="20dp"
+                                        android:background="@drawable/boton_editar_i"
+                                        android:orientation="horizontal">
+
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="70dp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/tv_campo2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/campollenarclickeableceropadding_selector"
+                                            android:gravity="center"
+                                            android:text="Lote"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="36sp" />
+
+                                        <ImageView
+                                            android:id="@+id/im_campo2"
+                                            android:layout_width="80dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/checked" />
+
+                                    </RelativeLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/ln_editar2"
+                                        android:layout_width="100dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="20dp"
+                                        android:layout_marginEnd="20dp"
+                                        android:background="@drawable/boton_editar_i"
+                                        android:orientation="horizontal">
+
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="70dp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/tv_campo3"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/campollenarclickeableceropadding_selector"
+                                            android:gravity="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="36sp" />
+
+                                        <ImageView
+                                            android:id="@+id/im_campo3"
+                                            android:layout_width="80dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/unchecked" />
+
+                                    </RelativeLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/ln_editar3"
+                                        android:layout_width="100dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="20dp"
+                                        android:layout_marginEnd="20dp"
+                                        android:background="@drawable/boton_editar_i"
+                                        android:orientation="horizontal">
+
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="70dp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/tv_campo4"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/campollenarclickeableceropadding_selector"
+                                            android:gravity="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="36sp" />
+
+                                        <ImageView
+                                            android:id="@+id/im_campo4"
+                                            android:layout_width="80dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/unchecked" />
+
+                                    </RelativeLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/ln_editar4"
+                                        android:layout_width="100dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="20dp"
+                                        android:layout_marginEnd="20dp"
+                                        android:background="@drawable/boton_editar_i"
+                                        android:orientation="horizontal">
+
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="70dp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/tv_campo5"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/campollenarclickeableceropadding_selector"
+                                            android:gravity="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="36sp" />
+
+                                        <ImageView
+                                            android:id="@+id/im_campo5"
+                                            android:layout_width="80dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/unchecked" />
+
+                                    </RelativeLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/ln_editar5"
+                                        android:layout_width="100dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="20dp"
+                                        android:layout_marginEnd="20dp"
+                                        android:background="@drawable/boton_editar_i"
+                                        android:orientation="horizontal">
+
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal" />
+
+
+                            </LinearLayout>
+                        </com.jws.jwsapi.base.customviews.ScrollViewScroll>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:layout_editor_absoluteY="59dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

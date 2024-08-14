@@ -1,0 +1,459 @@
+
+:root {
+  --grego:#920d0c;
+  --grisosc1: #494a4b;
+  --grisosc2:#b5b4b5;
+  --grisosc3:#c3c5c3;
+  --grisosc4:#333133;
+  --fondo:#fcf4e7;
+  --fondogris:#bfbfbf;
+  --success:#238700;
+
+}
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.rotating {
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+}
+/* me enamore de este div_center  :  
+left: 50%;
+  transform: translateX(-50%); 
+  position:relative*/
+
+
+
+
+table#wrapper{
+margin-bottom: 50px;
+}
+
+div.act{
+
+  border-radius: 7px;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding-bottom: 5px;
+  background-color: #920d0c;
+  svg{
+    path{
+ 
+    }
+  }
+  a{
+    /* font-size: 20px; */
+   
+  }
+}
+img{
+  
+     height: auto;
+    width: 340px;
+    position: absolute;
+    top: -2%;
+    margin-top: 15px;
+    
+    right: 5%;
+    
+    margin-top: 25px; 
+    /* margin-right: 15px; */
+}
+
+i.fa-refresh{
+  z-index: 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
+}
+#changi2,#invisiblecap{
+  visibility: collapse;
+ 
+}
+
+.on{
+  background-color: #c3c5c3;
+
+  p{
+   /* text-decoration: underline #920d0c ;*/
+    color: #605d60;
+  }
+}
+.off{
+  background-color:  #920d0c;
+
+  p{
+    color: #e3e3e3;
+   
+  }
+}
+div.toggle{
+  width: fit-content;
+  padding: 10px;
+  div{
+   
+    display: inline;
+  }
+  
+}
+.contenido{
+   /* position: fixed; */
+  /* width: 100%; */
+  margin-top: 50px;
+max-width: 100%;
+
+}
+.open{
+  
+  color: white;
+  margin-left: 40px;
+  margin-top: 10px;
+  position: flex;
+  :hover{
+    color: #7a7979;
+  }
+
+}
+
+div.closebtn:hover{
+  svg{
+    path{
+      fill: white;
+    }
+  }
+}
+div.z:hover{
+  svg{
+    path{
+      fill: white;
+    }
+  }
+}
+div.x{
+  /* margin: 25px; */
+  
+  width: 100%;
+  margin: 20px;
+  
+  font-size:small;
+  path{
+    display: block;
+    
+    position:absolute;
+    margin-top: 0%;
+    font-size:45px;border:0px;cursor: pointer; 
+    /* padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+    transition: 0.2s; */
+  }
+  a{
+    
+    margin-top: 0;
+    color:white;
+    display: block;
+    
+    text-decoration: none;
+  }
+}
+
+/* #mySidenav {
+    display: absolute;
+        height: 100px; 
+        width: 100px; 
+        position: fixed; 
+        z-index: 100000000000000000000000000; 
+        top: 0;
+        left: 0;  
+        background-color: #333133;
+        overflow-x: hidden;
+        padding-top: 20px; 
+        transition: 0.5s; 
+        border-radius:0% 0% 60% 0%;
+        overflow: hidden;
+        
+        
+      }  */   
+
+  /* The navigation menu links */
+ 
+  /* When you mouse over the navigation links, change their color */
+ 
+  
+    .z{
+     
+       justify-content: center;
+    justify-items: center;
+    text-align: center;
+    svg{
+      path{
+        right: 50%;
+        left: 50%;
+      }
+    }
+    a{
+      right: 50%;
+      left: 50%;
+    }
+    }
+  
+  .navdivpath{
+    justify-content: center;
+    justify-items: center;
+    text-align: center;
+    svg{
+      path{
+        right: 50%;
+        left: 50%;
+      }
+    }
+    a{
+      right: 50%;
+      left: 50%;
+    }
+  }
+  .z:hover {
+    svg{
+      path{
+        fill: #c3c5c3;
+      }
+    } 
+   
+  }
+  .closebtn {
+    
+    svg{
+      
+      position: absolute;
+
+    }
+  }
+  /* Position and style the close button (top right corner) */
+   #mySidenav .closebtn {
+   
+    top:0%;
+    left: 0%;
+    
+    margin-top: 19px;
+    margin-left: 0%;
+    svg{
+       margin-top:14px;
+      margin-left: 30px; font-size:50px;border:0px;cursor: pointer; 
+   
+    }
+  } 
+  
+  
+
+  #mySidenav{
+    display: flex;
+     flex-wrap: wrap;
+    /*flex-direction: column; */
+    height: 100px;width: 100px;
+    border-radius:0% 0% 60% 0%;
+    background-color: black;
+    
+    
+  }
+  #mySidenav i{
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 50px;
+    color: white;
+     /* display: block;  */
+    transition: 0.2s;
+  } 
+   #mySidenav p {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    transition: 0.2s;
+    /* display: inline; */
+  }
+  
+  
+  @media screen and (max-height: 450px) {
+    /* #mySidenav {padding-top: 15px;}
+    #mySidenav a {font-size: 18px;} */
+  }
+  .wap{
+    display:flex;
+    list-style:none;  
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    
+    color:whitesmoke;
+
+  }
+  .constsvg{
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+      }
+
+div.consultascroll{
+  width: 100%;
+  /* height: 1lh;  */
+  display:flex;
+  justify-content:flex-start;
+  float: left;
+  max-height: 70px;
+  overflow-x: scroll;
+  overflow-y: none;
+  margin-left:20px; 
+  margin-right:20px;
+
+  }
+/* viejardo */
+#body1,#body2,#body3{
+  visibility:collapse;
+  display: none;
+  width: 100%;
+  margin-top:70px;
+  background-color:#fcf4e7 ;
+  padding: 10px;
+  
+}
+#svgrotate{
+  transform: rotate(180deg);
+  transform-origin: 50% 50%;
+}
+#body4{
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%); 
+  
+  
+
+  
+}
+
+li.active{
+
+  background-color:#333133;
+  border-radius: 20px;
+}
+a.active{
+  padding: 5px;;
+}
+
+.gridjs-head {
+  display: inline;
+ 
+}
+#Combobox{
+  display: inline;
+}
+html {
+    width: 100%;
+    display: block;
+    height: 100%;
+    margin: 0px;
+    border: 0px;
+    font-family: sans-serif;
+    
+}
+
+body {
+    background: #494a4b /*var(--fondogris);*/
+}
+
+.image_screen {
+  max-width: 90%;
+  max-height: 80%;
+  display: block;
+  padding: 0px;
+  border: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  transform: rotate(90deg);
+     /* max-width: 90%;
+     max-height: 80%;
+     display: block;
+     padding: 0px;
+     border: 0px;
+     margin-left: auto;
+     margin-right: auto; */
+    /* transform: rotate(90deg);*/
+     
+}
+/*
+.image_div {
+    height: 100%;
+    display: block;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+
+}
+.image_screen {
+     max-width: 100%;
+     max-height: 95%;
+     display: block;
+     padding: 0px;
+     border: 0px;
+     margin-left: auto;
+     margin-right: auto;
+     transform: rotate(90deg);
+}
+
+.image_div {
+    height: 100%;
+    display: block;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+*/
+
+/* 
+button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    color: #DDDDDD;
+    background-color: #000000;
+    outline: none;
+} */
+
+.button_image {
+    display: block;
+    width: 100%;
+    height: 100%;
+}

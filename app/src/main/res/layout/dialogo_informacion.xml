@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/stylekeycor">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="1080dp"
+        android:layout_height="600dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="12dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="848dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="127dp"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="597dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="23dp"
+                        android:orientation="vertical"></LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="17dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="457dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="797dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/botoneraprincipal2"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="195dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="348dp"
+                            android:orientation="horizontal" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="12dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical"></LinearLayout>
+
+                            <Button
+                                android:id="@+id/buttonc"
+                                android:layout_width="156dp"
+                                android:layout_height="81dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/boton_selector_gris"
+                                android:text="CANCELAR"
+                                android:textSize="24sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="409dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="348dp"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:orientation="horizontal"></LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="29dp"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="171dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="12dp"
+                                android:orientation="horizontal"></LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="122dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView47"
+                                    android:layout_width="41dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-black"
+                                    android:text="IP"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tvIP"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="83dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylekeycor3"
+                                    android:gravity="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                    android:textSize="24sp" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvVersion"
+                                android:layout_width="41dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="center"
+                                android:text="480 CHCK 1.10"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="172dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="348dp"
+                            android:orientation="horizontal"></LinearLayout>
+
+                        <Button
+                            android:id="@+id/buttons"
+                            android:layout_width="match_parent"
+                            android:layout_height="81dp"
+                            android:background="@drawable/boton_selector_gris"
+                            android:text="CONSOLA USB"
+                            android:textSize="24sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="13dp"
+                android:orientation="horizontal"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="94dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="293dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    tools:layout_conversion_absoluteHeight="72dp"
+                    tools:layout_conversion_absoluteWidth="72dp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="16dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

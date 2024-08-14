@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/blanco"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="15dp"
+    app:cardMaxElevation="10dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
+
+    <!--
+    In the above cardview widget
+    cardelevation property will give elevation to your card view
+    card corner radius will provide radius to your card view
+    card background color will give background color to your card view
+    card max elevation will give the cardview maximum elevation
+    card prevent corner overlap will add padding to CardView on v20 and
+    before to prevent intersections between the Card content and rounded corners.
+    card use compact padding will add padding in API v21+ as well to have the same
+    measurements with previous versions.
+-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <!--ImageVIew to display our Course Image-->
+
+        <com.jws.jwsapi.base.customviews.HorizontalScrollViewScroll
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView4aasa4"
+                            android:layout_width="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="N° PESADA"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa5"
+                            android:layout_width="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="N° RECETA"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa6"
+                            android:layout_width="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="N° PEDIDO"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa7"
+                            android:layout_width="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="CODIGO RECETA"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa26"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="DESCRIPCION RECETA"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa27"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="CODIGO INGREDIENTE"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa28"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="DESCRIPCION INGREDIENTE"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa25"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:layout_columnWeight="1"
+                            android:text="LOTE"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_columnWeight="1"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="VENCIMIENTO"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:layout_columnWeight="1"
+                            android:padding="1dp"
+                            android:text="TURNO"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="NETO"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="OPERADOR"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="SET POINT"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa29"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="REALES"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="BRUTO"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="TARA"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="FECHA"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_columnWeight="1"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="HORA"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="CAMPO 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:layout_columnWeight="1"
+                            android:padding="1dp"
+                            android:text="CAMPO 2"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="CAMPO 3"
+                            android:textColor="@color/negro"
+                            android:layout_columnWeight="1"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="CAMPO 4"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa19"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_columnWeight="1"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="CAMPO 5"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:layout_columnWeight="1"
+                            android:padding="1dp"
+                            android:text="CAMPO 1 VALOR"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="CAMPO 2 VALOR"
+                            android:layout_columnWeight="1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:layout_columnWeight="1"
+                            android:text="CAMPO 3 VALOR"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="CAMPO 4 VALOR"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textView4aasa24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:padding="1dp"
+                            android:text="CAMPO 5 VALOR"
+                            android:layout_columnWeight="1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                    </TableRow>
+
+                        <!-- Más filas de valores si es necesario -->
+                        <TableRow>
+
+                        <TextView
+                            android:id="@+id/tv_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="12"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_idreceta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="12"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_idpedido"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="12"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_codigoreceta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_descripcionreceta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="operador12345466"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_codigoingrediente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_descripcioningrediente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="operador12345466"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_lote"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_vencimiento"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_turno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_neto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_operador"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_setpoint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_reales"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_bruto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_tara"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_fecha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_hora"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo1valor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo2valor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo3valor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo4valor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_campo5valor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="16"
+                            android:padding="1dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        </TableRow>
+
+                    </TableLayout>
+
+            </LinearLayout>
+
+            </LinearLayout>
+        </com.jws.jwsapi.base.customviews.HorizontalScrollViewScroll>
+
+        <!--Text View to display Course Name-->
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

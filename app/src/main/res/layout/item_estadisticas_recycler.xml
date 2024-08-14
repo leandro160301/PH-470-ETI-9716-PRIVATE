@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="10dp"
+    app:cardBackgroundColor="@color/blanco"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="15dp"
+    app:cardMaxElevation="10dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <!--
+    In the above cardview widget
+    cardelevation property will give elevation to your card view
+    card corner radius will provide radius to your card view
+    card background color will give background color to your card view
+    card max elevation will give the cardview maximum elevation
+    card prevent corner overlap will add padding to CardView on v20 and
+    before to prevent intersections between the Card content and rounded corners.
+    card use compact padding will add padding in API v21+ as well to have the same
+    measurements with previous versions.
+-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="99dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="10dp">
+
+        <!--ImageVIew to display our Course Image-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="63dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tolerancia"
+                    android:textColor="@color/negro"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tvTolerancia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="68dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Neto"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvNeto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="76dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bruto"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvBruto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_44"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tara"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvTara"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_55"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tara digital"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvTaradigital"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_66"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contenedor"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvContenedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="3"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_77"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Transporte"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvTransporte"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_88"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Destinatario"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvDestinatario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_99"
+                    android:layout_width="57dp"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvfecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="66dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hora"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvhora"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_110"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peso Teorico"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvPesoTeorico"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="23"
+                    android:text="asdsadsadsadsad"
+                    android:textColor="@color/negro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--Text View to display Course Name-->
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

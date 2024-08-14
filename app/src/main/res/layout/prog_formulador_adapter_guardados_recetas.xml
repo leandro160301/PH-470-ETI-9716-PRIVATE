@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/blanco"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="15dp"
+    app:cardMaxElevation="10dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <!--
+    In the above cardview widget
+    cardelevation property will give elevation to your card view
+    card corner radius will provide radius to your card view
+    card background color will give background color to your card view
+    card max elevation will give the cardview maximum elevation
+    card prevent corner overlap will add padding to CardView on v20 and
+    before to prevent intersections between the Card content and rounded corners.
+    card use compact padding will add padding in API v21+ as well to have the same
+    measurements with previous versions.
+-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/stylekeycor"
+        android:padding="3dp">
+
+        <!--ImageVIew to display our Course Image-->
+
+        <com.jws.jwsapi.base.customviews.ScrollViewScroll
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_codigoingrediente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="22"
+                            android:padding="5dp"
+                            android:text="Codigo"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_descripcioningrediente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="22"
+                            android:padding="5dp"
+                            android:text="operador12345466"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_fecha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="22"
+                            android:padding="5dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_hora"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="22"
+                            android:padding="5dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/stylekeycor"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="1197dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical"></LinearLayout>
+
+                            <Button
+                                android:id="@+id/bt_editar"
+                                android:layout_width="786dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/boton_mas_i"
+                                android:orientation="horizontal">
+
+
+                            </Button>
+
+                            <Button
+                                android:id="@+id/bt_pasos"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/boton_selector"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="center"
+                                android:text="Ver ingredientes y pasos"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ln_expandir"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno13"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 1 VALOR:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo1valor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno14"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 2 VALOR:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo2valor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno15"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 3 VALOR:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo3valor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno16"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 4 VALOR:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo4valor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno17"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 5 VALOR:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo5valor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno8"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 1:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno9"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 2:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno10"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 3:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno11"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 4:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno12"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="CAMPO 5:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_campo5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno6"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="BRUTO:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_bruto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno7"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="TARA:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_tara"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno19"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="SET POINT:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_setpoint"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="TURNO:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_turno"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_turno18"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="OPERADOR:"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_operador"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="22dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/stylesubrayado3"
+                                    android:maxLength="22"
+                                    android:padding="5dp"
+                                    android:text="Producto 1"
+                                    android:textColor="@color/negro"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="350dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/stylekeycor"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_lote5"
+                                android:layout_width="265dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:maxLength="22"
+                                android:padding="5dp"
+                                android:text="N°"
+                                android:textColor="@color/negro"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/tv_id"
+                                android:layout_width="300dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:maxLength="22"
+                                android:padding="5dp"
+                                android:text="1232"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_lote2"
+                            android:layout_width="315dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="22"
+                            android:padding="5dp"
+                            android:text="Lote"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/tv_lote"
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="22"
+                            android:padding="5dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_lote3"
+                            android:layout_width="398dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="25"
+                            android:padding="5dp"
+                            android:text="Vencimiento"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/tv_vencimiento"
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:maxLength="22"
+                            android:padding="5dp"
+                            android:text="Producto 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_lote4"
+                            android:layout_width="345dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_weight="1"
+                            android:maxLength="25"
+                            android:padding="8dp"
+                            android:text="PESO TOTAL"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/tv_neto"
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="22dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/stylekeycor"
+                            android:maxLength="22"
+                            android:padding="5dp"
+                            android:text="10.42KG"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="36sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.jws.jwsapi.base.customviews.ScrollViewScroll>
+
+        <!--Text View to display Course Name-->
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,523 @@
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-anydpi/circleservice.xml" value="0.103" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-hdpi/botoncur2.xml" value="0.1015" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-hdpi/botoneraprincipal.xml" value="0.103" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-hdpi/botoneraprincipal2.xml" value="0.103" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-mdpi/grabando.xml" value="0.1015" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-mdpi/stylebordecuadrado7.xml" value="0.108" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-v24/circlebutton.xml" value="0.103" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-v24/circlebutton2.xml" value="0.1015" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-v24/trianglebutton.xml" value="0.103" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-xhdpi/viewline.xml" value="0.103" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable-xxhdpi/splash_image.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable/addcirclegreen.xml" value="0.1015" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable/agregar.xml" value="0.1015" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable/buttonselector.xml" value="0.1015" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable/dot.xml" value="0.103" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/drawable/seekbar.xml" value="0.103" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/calibracionfragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/datoskeyboardfragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/dialogodosopciones.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/dialogodosopcionescheckbox.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/dialogodossinet.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/dialogologeo.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/dialogoopcionesspiner.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/dialogousuario.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/fragment_navegacion.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/fragmentmenu.xml" value="0.22" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/fragmentmenu2.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/grafico_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/historial_fragment2.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/mantenimiento_fragment.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/multimediafragment.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/productosfragment.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/puertoseriefragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/simple_list_item_custom.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/spinnerdrop.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/splash.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/splashscreen.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/480_CHW 1.10/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/wifi_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/BOTONERAPRINCIPAL.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/botoncur2.xml" value="0.115" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/botoneraprincipal.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/botoneraprincipal2.xml" value="0.115" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/circlebutton2bco.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/circlebutton2on.xml" value="0.173" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/circlebuttonbco.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/circlebuttonon1.xml" value="0.173" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/flecha_arribablanca.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/fondoinfoprincipalOSCURO.xml" value="0.105" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/fondoinfoprincipaloscuro.xml" value="0.105" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/fondolineainferiornegratranslucido.xml" value="0.1075" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/stylekeycor2.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/stylekeycor3.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/stylekeycor4.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/stylekeycor6.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/stylesubrayado2.xml" value="0.111" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/trianglebutton2.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/trianglebutton3.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-v24/circlebutton.xml" value="0.173" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-v24/circlebutton2.xml" value="0.173" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-v24/fondolineainferiornegra2.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-v24/stylekeycor5.xml" value="0.1085" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-v24/trianglebutton.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-xxhdpi/stylekey2.xml" value="0.106" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-xxxhdpi/botoneraprincipalgrisoscuro.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-xxxhdpi/fondoinfoprincipal.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-xxxhdpi/fondolineainferiornegra.xml" value="0.1025" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-xxxhdpi/labelconformado.xml" value="0.173" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable/flecha_arriba.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable/spinnerbackground.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable/stylebordecuadrado2.xml" value="0.106" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable/stylekey.xml" value="0.106" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable/stylekeycor.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable/stylesubrayado.xml" value="0.111" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable/stylesubrayado3.xml" value="0.111" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/about_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/activity_main.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/borrar.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/calibracionfragment.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/calibracionfragment2.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/content_main.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/customtoast.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/customtoasterror.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/customtoastok.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/datosfragment.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/datosfragmentssssssssssssssssssssssssssssssssssssssssss.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/datoskeyboardfragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogocambiarprod.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogodosopciones.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogodosopcionespuntos.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogodossinet.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogologeo.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogomoddeleteusuario.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogoopcionesspiner.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogoopcionesspinerusuario.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogopermisos.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogotaracero.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogousuario.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/discovery_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/drawer_header2.xml" value="0.23375" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/ethernet_fragment.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fechayhora.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/format_list_item.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fragment_navegacion.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fragmentmenu.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fragmentmenu2.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fragsdsadasdasdsadsadsassssssssssssssssssssssssssssssssss.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/grafico_fragment.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/historial_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/historial_fragment2.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/i_o_fragment.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/list_black_tex2t.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/list_black_tex3t.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/list_black_tex4t.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/list_black_text.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/list_item_with_image_and_two_lines.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/lista.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/mantenimiento_fragment.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/mantenimiento_fragment2.xml" value="0.10666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/markertv.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/password2_fragment.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/primerfragmentbarra_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/puertoseriefragment.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/servicefragment.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/servicefragment2.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/setbright_fragment.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/usuarios_fragment.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/usuariosrecycler.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/wifi_fragment.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Leandro/Desktop/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/wifi_fragment2.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-anydpi/selectorcheckbox.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-hdpi/negro.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-v24/selector.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/drawable-xhdpi/blanco.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/calibracionfragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/calibracionfragment2.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/datosfragment.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogodosopciones.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogodosopcionescheckbox.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogofechayhora.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogopermisos.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogotaracero.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogousb.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/dialogousuario.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/ethernet_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fechahorafragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fechayHora_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fechayHorafragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fechayhora.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fechayhorafragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fragmentmenu.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/fragmentmenu2.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/grafico_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/historial_fragment2.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/multimediafragment.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/productosfragment.xml" value="0.12" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/puertoseriefragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/servicefragment.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/setbright_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Leandro/Desktop/proyecto pantalla cambios 6-12/Copia proyecto pantalla android/Proyecto Pantalla/app/src/main/res/layout/wifi_fragment.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/alejandro/AppData/Local/Android/Sdk/platforms/android-28/data/res/layout/simple_list_item_1.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/drawable/background.xml" value="0.16375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/drawable/background2.xml" value="0.16375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/drawable/ic_baseline_expand_more_24.xml" value="0.16875" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/drawable/ic_baseline_keyboard_24.xml" value="0.175" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.175" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/drawable/styleborde.xml" value="0.16375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/drawable/stylebordecuadrado.xml" value="0.16375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/drawable/stylecopia.xml" value="0.16375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/activity_main.xml" value="0.2875" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/blank_fragment.xml" value="0.16484375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/container_fragment_fragment.xml" value="0.159375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/content_main.xml" value="0.2875" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/detalle_persona_fragment.xml" value="0.2675" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/drawer_header.xml" value="0.16484375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/drawer_header2.xml" value="0.16484375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/drawer_toolbar.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/fragmentmenu.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/lista_personas.xml" value="0.2675" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/main_fragment.xml" value="0.2875" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/menufragment_fragment.xml" value="0.245" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/navigaationdrawer2.xml" value="0.2875" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/navigationdrawerscale.xml" value="0.16484375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/personas_fragment.xml" value="0.2675" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/puertoseriefragment.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/scale_format_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/stylebordecuadrado.xml" value="0.245" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/layout/switch_item.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/menu/drawer_menu.xml" value="0.16484375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/menu/escalamenu.xml" value="0.2675" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/menu/navigationmenu.xml" value="0.16484375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/menu/navigationmenu2.xml" value="0.16484375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/menu/wifimenu.xml" value="0.159375" />
+        <entry key="..\:/Users/alejandro/Desktop/App Pantalla/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.16375" />
+        <entry key="..\:/Users/alejandro/Desktop/Gregorutti App Pantalla/app/src/main/res/layout/activity_main.xml" value="0.30625" />
+        <entry key="..\:/Users/alejandro/Desktop/Gregorutti App Pantalla/app/src/main/res/layout/content_main.xml" value="0.30625" />
+        <entry key="..\:/Users/alejandro/Desktop/Gregorutti App Pantalla/app/src/main/res/layout/main_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.19125" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.19125" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_bluetooth_24.xml" value="0.19125" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_brightness_2_24.xml" value="0.1890625" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_cable_24.xml" value="0.19125" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_compare_arrows_24.xml" value="0.19125" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_edit_calendar_24.xml" value="0.1890625" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_signal_wifi_4_bar_24.xml" value="0.19125" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_stairs_24.xml" value="0.18625" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_view_comfy_24.xml" value="0.18625" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_baseline_view_timeline_24.xml" value="0.18625" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_group_black_24dp.xml" value="0.19125" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.18625" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/styleborde.xml" value="0.1890625" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/drawable/stylecopia.xml" value="0.1890625" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/content_main.xml" value="0.40625" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/detalle_persona_fragment.xml" value="0.2203125" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/drawer_header.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/drawer_header2.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/drawer_toolbar.xml" value="0.16484375" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/lista_personas.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/main_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/personas_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/puertoseriefragment.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/layout/switch_item.xml" value="0.1671875" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/menu/drawer_menu.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/NavigationDrawerPractica/app/src/main/res/menu/navigationmenu.xml" value="0.16484375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-anydpi/customthumbswitch.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-anydpi/customtrack.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-anydpi/ic_action_name.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-anydpi/stylekey4.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-anydpi/stylekey5.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-anydpi/stylekey6.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-mdpi/stylebordecuadrado5.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-mdpi/stylebordecuadrado7.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-v24/botoncursor.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-v24/circlebutton.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-v24/circlebutton2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-v24/stylebordecuadrado3.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-v24/stylebordecuadrado4.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-xhdpi/botoncursorx.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-xhdpi/line.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-xhdpi/viewline.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-xxhdpi/simple_list_item_custom.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable-xxhdpi/stylekey2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/draweritem.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/ic_baseline_add_desabilitado.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/ic_baseline_delete_desabilitado.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/ic_baseline_edit_calendar_24.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/ic_baseline_line_axis_24.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/ic_baseline_mode_24.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/ic_baseline_mode_desabilitado.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/ic_baseline_window_24.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/spinnerbackground.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/spinnerdrop.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/stylebordecuadrado2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/stylebordecuadradolist2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/stylekey.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/drawable/stylekey4000.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/bluetooth_fragment.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/content_main.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/datos_keyboard_fragment.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/datosfragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/datoskeyboardfragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/fechayhora.xml" value="0.45" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/fragment_blank.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/fragmentmenu.xml" value="1.0" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/historial_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/i_o_fragment.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/keyboard_fragment.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/password2_fragment.xml" value="0.676056338028169" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/passwordconfig_fragment.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/primerfragmentbarra_fragment.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/puertoseriefragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/layout/wifi_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/menu/comunicacionmenu.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/menu/configmenu.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla -jwsapi-/app/src/main/res/menu/navigationmenu.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-anydpi-v23/thumbbar.xml" value="0.18425925925925926" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-anydpi/circleservice.xml" value="0.24875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-anydpi/gradientbar.xml" value="0.26125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-anydpi/ic_action_name.xml" value="0.21875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-anydpi/progressbar.xml" value="0.24875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-anydpi/stylekey4.xml" value="0.1890625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-anydpi/stylekey5.xml" value="0.26125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-anydpi/stylekey6.xml" value="0.26125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-anydpi/thumbbar.xml" value="0.24875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-mdpi/stylebordecuadrado5.xml" value="0.19140625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-mdpi/stylebordecuadrado7.xml" value="0.19140625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/botoncursor.xml" value="0.25875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/circlebutton.xml" value="0.26375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/circlebutton2.xml" value="0.26375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/draweritem5.xml" value="0.20375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/selector.xml" value="0.19140625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/selector2.xml" value="0.19140625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/selector3.xml" value="0.20375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/stylebordecuadrado.xml" value="0.22375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/stylebordecuadrado3.xml" value="0.20375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/stylebordecuadrado4.xml" value="0.19140625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/stylebordecuadradogradient2.xml" value="0.22375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/stylekeymenu3.xml" value="0.19140625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-v24/trianglebutton.xml" value="0.26375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-xxhdpi/stylegradientgrafico.xml" value="0.25875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-xxhdpi/stylekey2.xml" value="0.25875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-xxhdpi/stylekeymenu.xml" value="0.26625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable-xxxhdpi/buttonselector2.xml" value="0.25125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/background.xml" value="0.1575" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/background2.xml" value="0.1575" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/buttonselector.xml" value="0.21125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/cir_shape.xml" value="0.19140625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/draweritem.xml" value="0.1575" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/draweritem3.xml" value="0.18125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.255" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.21875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/ic_baseline_bluetooth_24.xml" value="0.255" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/ic_baseline_compare_arrows_24.xml" value="0.26125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/ic_baseline_signal_wifi_4_bar_24.xml" value="0.255" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/ic_baseline_window_24.xml" value="0.26375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/row.xml" value="0.255" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/seekbar.xml" value="0.21875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/selectorbuttontext.xml" value="0.21125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/styleborde.xml" value="0.18125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/stylebordecuadrado.xml" value="0.18125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/stylebordecuadrado2.xml" value="0.1484375" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/stylebordecuadradolist.xml" value="0.178125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/stylebordecuadradolist2.xml" value="0.13515625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/stylecopia.xml" value="0.25875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/stylekey.xml" value="0.25875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/stylekey4000.xml" value="0.255" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/drawable/stylesubrayado.xml" value="0.18125" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout-w600dp-land/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout-w600dp-land/drawer_header.xml" value="0.25783132530120484" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/balancebar.xml" value="0.25" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/bluetooth_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/content_main.xml" value="0.30625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/content_main2.xml" value="0.25" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/datos_fragment.xml" value="0.11796875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/datosfragment.xml" value="0.48484848484848486" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/drawer_header.xml" value="0.26875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/drawer_header2.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/drawer_toolbar.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/ethernet_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/fechayhora.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/fragment_blank.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/fragmentmenu.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/grafico_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/historial_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/i_o_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/keyboard_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/lista.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/lista_personas.xml" value="0.30625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/main_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/menufragment_fragment.xml" value="0.1671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/navigaationdrawer2.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/navigationdrawerscale.xml" value="0.11796875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/password2_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/passwordconfig_fragment.xml" value="0.45694444444444443" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/primerfragmentbarra_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/puerto410_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/puertoseriefragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/row.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/scale_format_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/setbright_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/layout/wifi_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/menu/2.xml" value="0.1671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/menu/comu410menu.xml" value="0.1671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/menu/comunicacionmenu.xml" value="0.26875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/menu/configmenu.xml" value="0.1671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/menu/escalamenu.xml" value="0.325" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/menu/navigationmenu.xml" value="0.26875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/menu/navigationmenu2.xml" value="0.26875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/menu/slide.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/menu/systemmenu.xml" value="0.1671875" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/mipmap-anydpi-v26/port.xml" value="0.19140625" />
+        <entry key="..\:/Users/alejandro/Desktop/app pantalla sliding/App Pantalla/app/src/main/res/mipmap-anydpi-v26/port_round.xml" value="0.19140625" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-anydpi/circleservice.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-anydpi/gradientbar.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-anydpi/stylekey4.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-anydpi/stylekey5.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-anydpi/stylekey6.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-anydpi/thumbbar.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/bordeblanco.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/botoncur2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/botoncursorGradient.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/botoncursorassa.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/botoncursorassa2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/botoncursorgradient.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/button_text.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/circlebutton.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/circlebutton2on.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/circlebuttonON.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/circlebuttonon.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/circlebuttonon1.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/customToast.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/listselecthighlight.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/redondeadooscuro.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/stylekeycoceropadd.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/stylesubrayado2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/toasterror.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/toastok.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-hdpi/trianglebutton2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-mdpi/dot.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-mdpi/stylebordecuadrado22.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-mdpi/stylebordecuadrado5.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-mdpi/stylebordecuadrado7.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-mdpi/stylebordecuadradogradient22.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/botoncursor.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/circlebutton.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/circlebutton2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/estrellanaranja.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/estrellaverde.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/stylebordecuadrado.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/stylebordecuadrado3.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/stylebordecuadrado4.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/stylebordecuadradogradient2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/stylekeymenu3.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-v24/trianglebutton.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-xhdpi/botoncursorx.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-xhdpi/viewline.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-xxhdpi/style22.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-xxhdpi/stylegradientgrafico.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-xxhdpi/stylekey2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-xxxhdpi/selected.xml" value="0.22" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable-xxxhdpi/togglewidgetoff.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/buttonselector.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/dot.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/estrellaazul.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/ic_baseline_folder_open_24.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/layer-list.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/layer.xml" value="0.2" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/layerborde.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/layerlist.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/pinkoutline.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/spinnerbackground.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/spinnerbackground2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/style22.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylebordecuadrado.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylebordecuadrado2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylebordecuadradolist.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylebordecuadradolist2.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylecopia.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylegradientgrafico.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylekey.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylekey4000.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylekeycor.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/stylesubrayado.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/switch.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/togglewidgetbackground.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/drawable/traslucidomantenimiento.xml" value="0.1" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/_fragment.xml" value="0.14296875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/balancebar.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/calibracionfragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/content_main.xml" value="0.32625" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/customtoast.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/customtoastERROR.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/customtoasterror.xml" value="0.25" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/customtoastok.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/datosfragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/datoskeyboardfragment.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/dialogodosopciones.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/dialogodossinet.xml" value="0.25" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/dialogologeo.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/dialogomoddeleteusuario.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/dialogopermisos.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/dialogousuario.xml" value="0.6058139534883721" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/discovery_dialog.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/ethernet_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/fechayhora.xml" value="0.53125" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/fragmentmenu.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/grafico_fragment.xml" value="0.40625" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/grafico_fragment22.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/historial_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/historial_fragment222.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/i_o_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/layout_dot.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/list_black_tex2t.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/list_black_text.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/list_item_with_image_and_two_lines.xml" value="0.16640625" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/lista.xml" value="0.16640625" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/mantenimiento_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/markertv.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/password2_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/passwordconfig_fragment.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/primerfragmentbarra_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/print_dialog.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/prompts.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/promptsuser.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/puerto410_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/sassas.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/scale_format_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/servicefragment.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/setbright_fragment.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/splash_screen.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/usuarios_fragment.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/usuariosrecycler.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/layout/wifi_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/menu/configmenu.xml" value="0.67" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/menu/drawer_menu.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/menu/escalamenu.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/menu/navigationmenu.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/menu/navigationmenu2.xml" value="0.33671875" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/menu/slide.xml" value="0.5" />
+        <entry key="..\:/Users/alejandro/Desktop/cosas/app Pantalla ( jwsapi )/app/src/main/res/menu/systemmenu.xml" value="0.33" />
+        <entry key="..\:/Users/usuario/Desktop/487_IND 1.0/487_IND 1.0/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/fragment_navegacion.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/usuario/Desktop/487_IND 1.0/487_IND 1.0/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/fragmentmenu.xml" value="0.22" />
+        <entry key="..\:/Users/usuario/Desktop/487_IND 1.0/487_IND 1.0/480_CHW 1.10/Proyecto Pantalla/app/src/main/res/layout/row.xml" value="0.3369140625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" project-jdk-name="19" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

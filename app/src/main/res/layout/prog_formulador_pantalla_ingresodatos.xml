@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:translationY="4dp">
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fondo_prod"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/blanco"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
+                        <com.jws.jwsapi.base.customviews.ScrollViewScroll
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="20dp"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="11dp"
+                                    android:orientation="horizontal"></LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ln_lote"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tvwqwq_1"
+                                        android:layout_width="1067dp"
+                                        android:layout_height="53dp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="Lote"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_lote"
+                                        android:layout_width="1574dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                                        android:gravity="center"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="36sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tsasav_1"
+                                        android:layout_width="1067dp"
+                                        android:layout_height="53dp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="Vencimiento"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_vencimiento"
+                                        android:layout_width="1574dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                                        android:gravity="center"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="36sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal"
+                                    android:visibility="gone">
+
+                                    <TextView
+                                        android:id="@+id/tv_assasa1"
+                                        android:layout_width="1067dp"
+                                        android:layout_height="53dp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="Turno"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_turno"
+                                        android:layout_width="1574dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                                        android:gravity="center"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="36sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ln_campo1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_1"
+                                        android:layout_width="1067dp"
+                                        android:layout_height="53dp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="Campo 1"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_campo1"
+                                        android:layout_width="1574dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                                        android:gravity="center"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="36sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ln_campo2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_2"
+                                        android:layout_width="1067dp"
+                                        android:layout_height="53dp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="Campo 2"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_campo2"
+                                        android:layout_width="1574dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                                        android:gravity="center"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="36sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ln_campo3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_3"
+                                        android:layout_width="1067dp"
+                                        android:layout_height="53dp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="Campo 3"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_campo3"
+                                        android:layout_width="1574dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                                        android:gravity="center"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="36sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ln_campo4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_4"
+                                        android:layout_width="1067dp"
+                                        android:layout_height="53dp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="Campo 4"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_campo4"
+                                        android:layout_width="1574dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                                        android:gravity="center"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="36sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ln_campo5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_5"
+                                        android:layout_width="1067dp"
+                                        android:layout_height="53dp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="Campo 5"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_campo5"
+                                        android:layout_width="1574dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                                        android:gravity="center"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="36sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal" />
+
+
+                            </LinearLayout>
+                        </com.jws.jwsapi.base.customviews.ScrollViewScroll>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadingPanel2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:layout_editor_absoluteY="59dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

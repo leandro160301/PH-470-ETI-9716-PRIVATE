@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="777dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/botoneraprincipal2"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="452dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="15dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbarSize="10dp"
+                    android:scrollbarThumbVertical="@color/blanco">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:layout_marginTop="20dp"
+
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvnNumero"
+                                android:layout_width="604dp"
+                                android:layout_height="66dp"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="left"
+                                android:text="Permiso 1: Usuario FTP"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+
+                            <RadioGroup
+                                android:id="@+id/toggle"
+                                android:layout_width="118dp"
+                                android:layout_height="38dp"
+                                android:background="@drawable/pinkoutline"
+                                android:checkedButton="@+id/btON"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/btOFF"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetoff"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="OFF"
+                                    android:textColor="@color/negro" />
+
+                                <RadioButton
+                                    android:id="@+id/btON"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginRight="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetbackground"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="ON"
+                                    android:textColor="@color/negro" />
+                            </RadioGroup>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvnContrasena"
+                                android:layout_width="604dp"
+                                android:layout_height="66dp"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="left"
+                                android:text="Permiso 2: Arranque, parada cinta"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+
+                            <RadioGroup
+                                android:id="@+id/toggle2"
+                                android:layout_width="118dp"
+                                android:layout_height="38dp"
+                                android:background="@drawable/pinkoutline"
+                                android:checkedButton="@+id/btON2"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/btOFF2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetoff"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="OFF"
+                                    android:textColor="@color/negro" />
+
+                                <RadioButton
+                                    android:id="@+id/btON2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginRight="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetbackground"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="ON"
+                                    android:textColor="@color/negro" />
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvnDocumento"
+                                android:layout_width="604dp"
+                                android:layout_height="66dp"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="left"
+                                android:text="Permiso 3: Agregar, eliminar productos"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+
+                            <RadioGroup
+                                android:id="@+id/toggle3"
+                                android:layout_width="118dp"
+                                android:layout_height="38dp"
+                                android:background="@drawable/pinkoutline"
+                                android:checkedButton="@+id/btON3"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/btOFF3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetoff"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="OFF"
+                                    android:textColor="@color/negro" />
+
+                                <RadioButton
+                                    android:id="@+id/btON3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginRight="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetbackground"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="ON"
+                                    android:textColor="@color/negro" />
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvnUsuario"
+                                android:layout_width="604dp"
+                                android:layout_height="66dp"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="left"
+                                android:text="Permiso 4: Modificar parametros de producto"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+
+                            <RadioGroup
+                                android:id="@+id/toggle4"
+                                android:layout_width="118dp"
+                                android:layout_height="38dp"
+                                android:background="@drawable/pinkoutline"
+                                android:checkedButton="@+id/btON4"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/btOFF4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetoff"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="OFF"
+                                    android:textColor="@color/negro" />
+
+                                <RadioButton
+                                    android:id="@+id/btON4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginRight="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetbackground"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="ON"
+                                    android:textColor="@color/negro" />
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvnTipo"
+                                android:layout_width="604dp"
+                                android:layout_height="66dp"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="left"
+                                android:text="Permiso 5: Acceso menu 410"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+
+                            <RadioGroup
+                                android:id="@+id/toggle5"
+                                android:layout_width="118dp"
+                                android:layout_height="38dp"
+                                android:background="@drawable/pinkoutline"
+                                android:checkedButton="@+id/btON5"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/btOFF5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetoff"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="OFF"
+                                    android:textColor="@color/negro" />
+
+                                <RadioButton
+                                    android:id="@+id/btON5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginRight="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetbackground"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="ON"
+                                    android:textColor="@color/negro" />
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvnNombre"
+                                android:layout_width="604dp"
+                                android:layout_height="66dp"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="left"
+                                android:text="Permiso 6: Acceso grafico"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+
+                            <RadioGroup
+                                android:id="@+id/toggle6"
+                                android:layout_width="118dp"
+                                android:layout_height="38dp"
+                                android:background="@drawable/pinkoutline"
+                                android:checkedButton="@+id/btON6"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/btOFF6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetoff"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="OFF"
+                                    android:textColor="@color/negro" />
+
+                                <RadioButton
+                                    android:id="@+id/btON6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginRight="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetbackground"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="ON"
+                                    android:textColor="@color/negro" />
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvnNumero2"
+                                android:layout_width="604dp"
+                                android:layout_height="66dp"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="left"
+                                android:text="Permiso 7: Acceso configuracion pantalla"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+
+                            <RadioGroup
+                                android:id="@+id/toggle7"
+                                android:layout_width="118dp"
+                                android:layout_height="38dp"
+                                android:background="@drawable/pinkoutline"
+                                android:checkedButton="@+id/btON"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/btOFF7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetoff"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="OFF"
+                                    android:textColor="@color/negro" />
+
+                                <RadioButton
+                                    android:id="@+id/btON7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginRight="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetbackground"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="ON"
+                                    android:textColor="@color/negro" />
+                            </RadioGroup>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvnNumero23"
+                                android:layout_width="604dp"
+                                android:layout_height="66dp"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="left"
+                                android:text="Permiso 8: Cambiar producto"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#FFFFFF"
+                                android:textSize="24sp" />
+
+                            <RadioGroup
+                                android:id="@+id/toggle8"
+                                android:layout_width="118dp"
+                                android:layout_height="38dp"
+                                android:background="@drawable/pinkoutline"
+                                android:checkedButton="@+id/btON6"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/btOFF8"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetoff"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="OFF"
+                                    android:textColor="@color/negro" />
+
+                                <RadioButton
+                                    android:id="@+id/btON8"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginRight="1dp"
+                                    android:layout_marginBottom="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/togglewidgetbackground"
+                                    android:button="@null"
+                                    android:gravity="center"
+                                    android:text="ON"
+                                    android:textColor="@color/negro" />
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </ScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="88dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="28dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"></LinearLayout>
+
+                    <Button
+                        android:id="@+id/buttonc"
+                        android:layout_width="196dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/boton_selector_gris"
+                        android:text="CANCELAR"
+                        android:textSize="24sp"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:layout_width="37dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btborrar"
+                        android:layout_width="216dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/boton_selector_gris"
+                        android:text="Borrar"
+                        android:textSize="24sp" />
+
+
+                    <LinearLayout
+                        android:layout_width="28dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"></LinearLayout>
+
+                    <Button
+                        android:id="@+id/buttons"
+                        android:layout_width="190dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/boton_selector_gris"
+                        android:text="GUARDAR"
+                        android:textSize="24sp"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:layout_width="28dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"></LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

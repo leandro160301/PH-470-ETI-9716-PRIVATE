@@ -1,0 +1,351 @@
+package com.jws.jwsapi.common.impresora;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+import com.jws.jwsapi.base.activities.MainActivity;
+import com.jws.jwsapi.common.impresora.preferences.PreferencesPrinterManager;
+import com.jws.jwsapi.common.impresora.tipos.ImprimirRS232;
+import com.jws.jwsapi.common.impresora.tipos.ImprimirRed;
+import com.jws.jwsapi.common.impresora.tipos.ImprimirUSB;
+import com.jws.jwsapi.utils.Utils;
+import com.service.PuertosSerie.PuertosSerie;
+import com.jws.jwsapi.R;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class ImprimirEstandar {
+    private final Context context;
+    private MainActivity mainActivity;
+    private PreferencesPrinterManager preferencesPrinterManager;
+
+    public ImprimirEstandar(Context context, MainActivity activity) {
+        this.context = context;
+        this.mainActivity = activity;
+        preferencesPrinterManager=new PreferencesPrinterManager(context);
+    }
+
+    public void EnviarEtiqueta(PuertosSerie serialPort,int numetiqueta){
+        int modo=preferencesPrinterManager.consultaModo();
+        if(modo==0){
+            ImprimirUSB imprimirUSB= new ImprimirUSB(mainActivity);
+            imprimirUSB.Imprimir(etiqueta(numetiqueta),context,false,null);
+        }
+        if(modo==1){
+
+            if (Utils.isIP(preferencesPrinterManager.consultaIP())) {
+                ImprimirRed imprimirRed= new ImprimirRed();
+                imprimirRed.Imprimir(preferencesPrinterManager.consultaIP(),etiqueta(numetiqueta));
+            }else {
+                Utils.Mensaje("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
+            }
+
+        }
+        if(modo==2){
+            if(serialPort!=null){
+                ImprimirRS232 imprimirRS232= new ImprimirRS232(serialPort);
+                imprimirRS232.Imprimir(etiqueta(numetiqueta));
+            }else {
+                Utils.Mensaje("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
+            }
+
+        }
+        if(modo==3){
+            //imprimir bluetooth
+
+        }
+
+    }
+
+    public void EnviarUltimaEtiqueta(PuertosSerie serialPort){
+        int modo=preferencesPrinterManager.consultaModo();
+        if(modo==0){
+            ImprimirUSB imprimirUSB= new ImprimirUSB(mainActivity);
+            imprimirUSB.Imprimir(preferencesPrinterManager.getultimaEtiqueta(),context,false,null);
+        }
+        if(modo==1){
+            if (Utils.isIP(preferencesPrinterManager.consultaIP())) {
+                ImprimirRed imprimirRed= new ImprimirRed();
+                imprimirRed.Imprimir(preferencesPrinterManager.consultaIP(),preferencesPrinterManager.getultimaEtiqueta());
+            }else {
+                Utils.Mensaje("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
+            }
+
+        }
+        if(modo==2){
+            if(serialPort!=null){
+                ImprimirRS232 imprimirRS232= new ImprimirRS232(serialPort);
+                imprimirRS232.Imprimir(preferencesPrinterManager.getultimaEtiqueta());
+            }else {
+                Utils.Mensaje("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
+            }
+
+        }
+        if(modo==3){
+            //imprimir bluetooth
+
+        }
+
+    }
+
+    public void EnviarEtiquetaManual(PuertosSerie serialPort,String etiqueta){
+        int modo=preferencesPrinterManager.consultaModo();
+
+        if(modo==0){
+            ImprimirUSB imprimirUSB= new ImprimirUSB(mainActivity);
+            imprimirUSB.Imprimir(etiqueta,context,false,null);
+        }
+        if(modo==1){
+            if (Utils.isIP(preferencesPrinterManager.consultaIP())) {
+                ImprimirRed imprimirRed= new ImprimirRed();
+                imprimirRed.Imprimir(preferencesPrinterManager.consultaIP(),etiqueta);
+            }else {
+                Utils.Mensaje("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
+            }
+
+        }
+        if(modo==2){
+            if(serialPort!=null){
+                ImprimirRS232 imprimirRS232= new ImprimirRS232(serialPort);
+                imprimirRS232.Imprimir(etiqueta);
+            }else {
+                Utils.Mensaje("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
+            }
+
+        }
+        if(modo==3){
+            //imprimir bluetooth
+
+        }
+
+    }
+    public String openAndReadFile(String archivo) {
+        // Ruta del archivo que quieres leer
+        String filePath = "/storage/emulated/0/Memoria/"+archivo;
+
+        File file = new File(filePath);
+        if (!file.exists()) {
+            Utils.Mensaje("La etiqueta ya no esta disponible",R.layout.item_customtoasterror,mainActivity);
+            return "";
+        }else{
+            String fileContent="";
+            FileInputStream fis = null;
+            InputStreamReader isr = null;
+            BufferedReader br = null;
+
+            try {
+                fis = new FileInputStream(file);
+                isr = new InputStreamReader(fis);
+                br = new BufferedReader(isr);
+                StringBuilder stringBuilder = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+                fileContent = stringBuilder.toString();
+
+                // Ahora tienes el contenido del archivo en la variable fileContent
+                // Puedes mostrarlo en un TextView, en un Toast, etc.
+                //mainActivity.Mensaje(fileContent,R.layout.item_customtoastok);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Utils.Mensaje("Error al intentar leer la etiqueta"+ e.toString(),R.layout.item_customtoasterror,mainActivity);
+            } finally {
+                try {
+                    if (br != null) br.close();
+                    if (isr != null) isr.close();
+                    if (fis != null) fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return fileContent;
+            }
+        }
+
+    }
+
+
+    public String etiqueta(int numetiqueta){
+        try {
+            String etiquetaActual=mainActivity.mainClass.preferencesManager.getEtiqueta(numetiqueta);
+            String etiqueta =openAndReadFile(etiquetaActual);
+            if(etiqueta!=null&& !etiqueta.equals("") && !Objects.equals(etiquetaActual, "")){
+                List<Integer>ListElementsInt=mainActivity.mainClass.preferencesManager.getListSpinner(etiquetaActual);
+                List<String>ListElementsFijo=mainActivity.mainClass.preferencesManager.getListFijo(etiquetaActual);
+                List<String>ListElementsFinales=new ArrayList<>();
+                if(ListElementsInt!=null&&ListElementsFijo!=null){
+                    String[] arr = etiqueta.split("\\^FN");
+                    System.out.println("largo 1:"+arr.length);
+                    System.out.println("largo 2:"+ListElementsInt.size());
+                    System.out.println("largo 3:"+ListElementsFijo.size());
+                    if(arr.length-1==ListElementsInt.size()&&arr.length-1==ListElementsFijo.size()){
+                        for(int i=0;i<arr.length-1;i++){
+                            System.out.println("var array:"+arr[i]);
+                            String []arr2= arr[i+1].split("\\^FS");
+                            if(arr2.length>1){
+                                System.out.println("var campo:"+arr2[0]);//este string luego debemos reemplazar por FS+valorvariable con el .replace
+                                if(ListElementsInt.get(i)<mainActivity.mainClass.imprimiblesPredefinidas.size()){
+                                    if(ListElementsInt.get(i)==0){
+                                        ListElementsFinales.add("");
+                                    }
+                                    if(ListElementsInt.get(i)==1){
+                                        ListElementsFinales.add(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+                                    }
+                                    if(ListElementsInt.get(i)==2){
+                                        ListElementsFinales.add(mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+                                    }
+                                    if(ListElementsInt.get(i)==3){
+                                        ListElementsFinales.add(mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+                                    }
+                                    if(ListElementsInt.get(i)==4){
+                                        ListElementsFinales.add(mainActivity.getUsuarioActual());
+                                    }
+                                    if(ListElementsInt.get(i)==5){
+                                        ListElementsFinales.add(Utils.getFecha());
+                                    }
+                                    if(ListElementsInt.get(i)==6){
+                                        ListElementsFinales.add(Utils.getHora());
+                                    }
+                                    if(ListElementsInt.get(i)==mainActivity.mainClass.imprimiblesPredefinidas.size()-1){//concat
+                                        List<Integer>ListElementsConcat= mainActivity.mainClass.preferencesManager.getListConcat(etiquetaActual,i);
+                                        String separador= mainActivity.mainClass.preferencesManager.getSeparador(etiquetaActual,i);
+                                        String concat="";
+
+                                        if(ListElementsConcat!=null){
+                                            for(int j=0;j<ListElementsConcat.size();j++){
+                                                if(mainActivity.mainClass.imprimiblesPredefinidas.size()+mainActivity.mainClass.variablesImprimibles.size()>ListElementsConcat.get(j)){
+                                                    if(ListElementsConcat.get(j)<mainActivity.mainClass.imprimiblesPredefinidas.size()){
+                                                        if(ListElementsConcat.get(j)==0){
+                                                            concat=concat.concat(""+separador);
+                                                        }
+                                                        if(ListElementsConcat.get(j)==1){
+                                                            concat=concat.concat(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+separador);
+                                                        }
+                                                        if(ListElementsConcat.get(j)==2){
+                                                            concat=concat.concat(mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+separador);
+                                                        }
+                                                        if(ListElementsConcat.get(j)==3){
+                                                            concat=concat.concat(mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+separador);
+                                                        }
+                                                        if(ListElementsConcat.get(j)==4){
+                                                            concat=concat.concat(mainActivity.getUsuarioActual()+separador);
+                                                        }
+                                                        if(ListElementsConcat.get(j)==5){
+                                                            concat=concat.concat(Utils.getFecha()+separador);
+                                                        }
+                                                        if(ListElementsConcat.get(j)==6){
+                                                            concat=concat.concat(Utils.getHora()+separador);
+                                                        }
+
+                                                    }else if(ListElementsConcat.get(j)<mainActivity.mainClass.variablesImprimibles.size()+mainActivity.mainClass.imprimiblesPredefinidas.size()){
+                                                        for(int o = 0; o<mainActivity.mainClass.variablesImprimibles.size(); o++){
+                                                            if(ListElementsConcat.get(j)-mainActivity.mainClass.imprimiblesPredefinidas.size()==o){
+                                                                concat=concat.concat(mainActivity.mainClass.variablesImprimibles.get(o).value()+separador);
+                                                                //  System.out.println("esta entrando a concatenar variables");
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                        StringBuilder stringBuilder = new StringBuilder(concat);
+                                        int lastCommaIndex = stringBuilder.lastIndexOf(separador);
+                                        if (lastCommaIndex >= 0) {
+                                            stringBuilder.deleteCharAt(lastCommaIndex);
+                                        }
+                                        String resultado = stringBuilder.toString();
+
+
+                                        ListElementsFinales.add(resultado);
+                                    }
+                                    if(ListElementsInt.get(i)==mainActivity.mainClass.imprimiblesPredefinidas.size()-2){//fijo
+                                        ListElementsFinales.add(ListElementsFijo.get(i));
+                                    }
+                                }else if(ListElementsInt.get(i)<mainActivity.mainClass.variablesImprimibles.size()+mainActivity.mainClass.imprimiblesPredefinidas.size()){
+                                    for(int j = 0; j<mainActivity.mainClass.variablesImprimibles.size(); j++){
+                                        if(ListElementsInt.get(i)-mainActivity.mainClass.imprimiblesPredefinidas.size()==j){
+                                            ListElementsFinales.add(mainActivity.mainClass.variablesImprimibles.get(j).value());
+                                        }
+                                    }
+                                }
+
+                            }
+
+                        }
+                        if(ListElementsFinales.size()== arr.length-1){
+                            String etique=replaceEtiqueta(ListElementsFinales,etiqueta).replace("Ñ","\\A5").replace("ñ","\\A4").replace("á","\\A0").replace("é","\\82").replace("í","\\A1").replace("ó","\\A2").replace("Á","\\B5").replace("É","\\90").replace("Í","\\D6").replace("Ó","\\E3") ;
+                            preferencesPrinterManager.setUltimaEtiqueta(etique);
+                            return etique;
+                        }
+
+                    }else{
+                        Utils.Mensaje("Error,faltan campos por configurar", R.layout.item_customtoasterror,mainActivity);
+                    }
+
+                }else{
+                    Utils.Mensaje("Error,la etiqueta no esta configurada",R.layout.item_customtoasterror,mainActivity);
+                }
+
+            }
+            return "";
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.Mensaje("Ocurrió un error al procesar la etiqueta:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+            return ""; // O devolver un valor predeterminado en caso de error
+        }
+
+    }
+
+
+
+
+    public String replaceEtiqueta(List<String> ListElementsFinales,String etiqueta){
+        try {
+            List<String> antiguos=new ArrayList<>();
+            String[] arr = etiqueta.split("\\^FN");
+            String[] prueba = etiqueta.split("\\^DFE");
+            String eliminar="";
+            if(prueba.length>1){
+                String []asa= prueba[1].split("\\^FS");
+                if(asa.length>1){
+                    eliminar="^DFE"+asa[0]+"^FS\n";
+                }
+            }
+            for(int i=1;i<arr.length;i++){
+                String []arr2= arr[i].split("\\^FS");
+                if(arr2.length>1){
+                    System.out.println("var campo:"+arr2[0]);
+                    antiguos.add(arr2[0]);
+                }
+
+            }
+            if(antiguos.size()==ListElementsFinales.size()){
+                for(int h=0;h<ListElementsFinales.size();h++){
+                    etiqueta=etiqueta.replace(antiguos.get(h),ListElementsFinales.get(h));
+                }
+            }
+            String resultado=etiqueta.replace("^FN","^FD").replace(eliminar,"");
+
+            System.out.println("etiqueta:"+resultado);
+            Log.d("etiqueta:",resultado);
+            return resultado;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.Mensaje("Ocurrió un error al procesar la etiqueta:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+            return ""; // O devolver un valor predeterminado en caso de error
+        }
+    }
+
+
+
+}

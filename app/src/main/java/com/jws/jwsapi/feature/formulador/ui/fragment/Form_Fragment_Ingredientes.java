@@ -54,7 +54,7 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
     private ButtonProvider buttonProvider;
     Form_Adapter_Ingredientes adapter;
     List<Form_Model_Ingredientes> lista_ingredientes;
-    List<Form_Model_Ingredientes> ListfilteredList= new ArrayList<>();
+    List<Form_Model_Ingredientes> listFilteredList = new ArrayList<>();
     int posicion_recycler=-1;
     TextView tv_codigo;
     TextView tv_descripcion;
@@ -317,16 +317,16 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
     }
     private void filter(String text, Form_Adapter_Ingredientes adapter2, List<Form_Model_Ingredientes> inge) {
         filtro=true;
-        ListfilteredList = new ArrayList<>();
+        listFilteredList = new ArrayList<>();
         posiciones=new ArrayList<>();
         int i;
         for (i = 0; i < inge.size(); i++) {
             if (inge.get(i).getNombre().toLowerCase().contains(text.toLowerCase()) || inge.get(i).getCodigo().toLowerCase().contains(text.toLowerCase())) {
-                ListfilteredList.add(inge.get(i));
+                listFilteredList.add(inge.get(i));
                 posiciones.add(i);
             }
         }
-        adapter2.refrescarList(ListfilteredList);
+        adapter2.refrescarList(listFilteredList);
     }
 
     private void dialogoEliminarPaso(int posicion,List<Form_Model_Ingredientes> mData) {

@@ -487,13 +487,13 @@ public class MainFormClass implements OnFragmentChangeListener {
     public void setIngredientes(List<Form_Model_Ingredientes> lista) throws IOException {
         Runnable myRunnable = () -> {
             File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Ingredientes.csv");
-            // Si el archivo no existe, crearlo
-            if (!filePath.exists()) {
-                try {
-                    Boolean bool = filePath.createNewFile();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            if (filePath.exists()) {
+                filePath.delete();
+            }
+            try {
+                Boolean bool = filePath.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             char separador = ',';
             try {

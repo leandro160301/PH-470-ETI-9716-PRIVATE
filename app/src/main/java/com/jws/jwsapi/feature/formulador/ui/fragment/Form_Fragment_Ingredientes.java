@@ -32,16 +32,13 @@ import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterIngredientesInterf
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import javax.inject.Inject;
-
 import au.com.bytecode.opencsv.CSVWriter;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -71,7 +68,6 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         lista_ingredientes=mainActivity.mainClass.getIngredientes();
@@ -91,7 +87,6 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
 
 
     public void DialogoSeteoVariables(TextView textViewelegido,String texto){
-
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
         View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopciones, null);
         final EditText userInput = mView.findViewById(R.id.etDatos);
@@ -100,11 +95,9 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
         delete_text.setOnClickListener(view -> userInput.setText(""));
         TextView textView=mView.findViewById(R.id.textViewt);
         textView.setText(texto);
-
         if(textViewelegido==tv_codigo){
             userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
-
         Button Guardar =  mView.findViewById(R.id.buttons);
         Button Cancelar =  mView.findViewById(R.id.buttonc);
 
@@ -115,7 +108,6 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
         Guardar.setOnClickListener(view -> {
             if(textViewelegido== tv_codigo){
                 tv_codigo.setText(userInput.getText().toString());
-
             }
             if(textViewelegido== tv_descripcion){
                 tv_descripcion.setText(userInput.getText().toString());
@@ -181,59 +173,9 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
             dialog.cancel();
 
         });
-        Cancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //codigoDialogo="";
-                //descripcionDialogo="";
-
-                dialog.cancel();
-            }
-        });
-    }
-
-    private void ElimarReceta(String receta,int posicion_recycler) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dossinet, null);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        textView.setText("¿Esta seguro de eliminar la receta "+receta+" ?");
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        Guardar.setText("ELIMINAR");
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            File file= new File("/storage/emulated/0/Memoria/"+receta+".csv");
-            if (file != null && file.exists()) {
-                Boolean eliminacion=file.delete();
-                if(eliminacion){
-                    Utils.Mensaje("Receta eliminada", R.layout.item_customtoastok,mainActivity);
-                    recetaManager.recetaActual ="";
-                    mainActivity.mainClass.preferencesManager.setRecetaactual("");
-                    mainActivity.mainClass.preferencesManager.setCodigoRecetaactual("");
-                    recetaManager.codigoReceta ="";
-                    mainActivity.mainClass.preferencesManager.setNombreRecetaactual("");
-                    recetaManager.nombreReceta ="";
-                   // archivos.remove(posicion_recycler);
-                    adapter.refrescarList(lista_ingredientes);
-                    adapter.notifyDataSetChanged();
-
-                }else{
-                    Utils.Mensaje("La receta no se pudo borrar", R.layout.item_customtoasterror,mainActivity);
-                }
-            }else{
-                Utils.Mensaje("La receta no esta disponible", R.layout.item_customtoasterror,mainActivity);
-            }
-            dialog.cancel();
-        });
         Cancelar.setOnClickListener(view -> dialog.cancel());
     }
+
 
     private void configuracionBotones() {
         if (buttonProvider != null) {
@@ -329,7 +271,7 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
         adapter2.refrescarList(listFilteredList);
     }
 
-    private void dialogoEliminarPaso(int posicion,List<Form_Model_Ingredientes> mData) {
+    private void dialogoEliminarIngrediente(int posicion, List<Form_Model_Ingredientes> mData) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
 
         View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_dossinet, null);
@@ -368,7 +310,7 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
     public void eliminarIngrediente(List<Form_Model_Ingredientes> mData, int posicion) {
         if(mData.size()>1){
             if(mainActivity.modificarDatos()){
-                dialogoEliminarPaso(posicion,mData);
+                dialogoEliminarIngrediente(posicion,mData);
             }else{
                 Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
             }

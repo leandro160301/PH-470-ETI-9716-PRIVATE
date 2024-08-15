@@ -65,15 +65,14 @@ public class Form_Adapter_Recetas extends RecyclerView.Adapter<Form_Adapter_Rece
             holder.ln_editar.setVisibility(View.GONE);
             holder.ln_borrar.setVisibility(View.GONE);
             holder.ln_agregar.setVisibility(View.GONE);
-        }
-        holder.ln_editar.setOnClickListener(view -> recetasInterface.modificarPaso(mData,posi));
-        holder.ln_borrar.setOnClickListener(view -> recetasInterface.eliminarPaso(mData,posi));
-        holder.ln_agregar.setOnClickListener(view -> recetasInterface.agregarPaso(mData,posi));
-        if (!recetaManager.ejecutando) {
+        }else{
             holder.im_campo.setVisibility(View.GONE);
             holder.tv_pesoreal.setVisibility(View.GONE);
             holder.tv_tolerancia.setVisibility(View.GONE);
         }
+        holder.ln_editar.setOnClickListener(view -> recetasInterface.modificarPaso(mData,posi));
+        holder.ln_borrar.setOnClickListener(view -> recetasInterface.eliminarPaso(mData,posi));
+        holder.ln_agregar.setOnClickListener(view -> recetasInterface.agregarPaso(mData,posi));
         if (Objects.equals(mData.get(position).getKilos_reales_ing(), "NO")) {
             if (recetaManager.ejecutando) {
                 holder.im_campo.setBackgroundResource(R.drawable.unchecked);

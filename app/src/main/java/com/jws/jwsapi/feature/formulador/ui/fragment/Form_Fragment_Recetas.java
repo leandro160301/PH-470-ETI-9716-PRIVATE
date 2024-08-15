@@ -37,7 +37,6 @@ import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -264,7 +263,8 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_nuevareceta, null);
         CheckBox checkBox = ((CheckBox) mView.findViewById(R.id.checkBox));
-
+        tv_codigo=mView.findViewById(R.id.tv_codigoingrediente);
+        tv_descripcion=mView.findViewById(R.id.tv_descripcioningrediente);
         if(recetaseleccionada!=null&&recetaseleccionada.size()>0){
             checkBox.setVisibility(View.VISIBLE);
         }else{
@@ -569,7 +569,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         Cancelar.setOnClickListener(view -> dialog.cancel());
     }
 
-    public void BuscadorAdapter(TextView tv_codigo, TextView tv_des) {
+    public void BuscadorAdapter(TextView tv_codigoIngrediente, TextView tv_des) {
         filtroAdapter = false;
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
@@ -588,7 +588,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         listview.setLayoutManager(new LinearLayoutManager(mainActivity));
         adapterIngredientes = new Form_Adapter_Ingredientes(mainActivity, ingredien, false,null);
         adapterIngredientes.setClickListener((view, position) -> {
-            tv_codigo.setText(ingredien.get(position).getCodigo());
+            tv_codigoIngrediente.setText(ingredien.get(position).getCodigo());
             tv_des.setText(ingredien.get(position).getNombre());
 
             dialog.cancel();
@@ -607,7 +607,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
             @Override
             public void afterTextChanged(Editable editable) {
                 filtroAdapter = true;
-                filterAdapter(editable.toString(), dialog, ingredien, tv_codigo, tv_des);
+                filterAdapter(editable.toString(), dialog, ingredien, tv_codigoIngrediente, tv_des);
             }
         });
 
@@ -646,8 +646,8 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
 
         View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_pasoreceta, null);
-        TextView tv_codigo = mView.findViewById(R.id.tv_codigoingrediente);
-        TextView tv_descripcion = mView.findViewById(R.id.tv_descripcioningrediente);
+        TextView tv_codigoIngrediente = mView.findViewById(R.id.tv_codigoingrediente);
+        TextView tv_descripcionIngrediente = mView.findViewById(R.id.tv_descripcioningrediente);
         TextView tv_kilos = mView.findViewById(R.id.tv_kilos);
 
         Button Guardar = mView.findViewById(R.id.buttons);
@@ -659,18 +659,18 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
 
-        tv_codigo.setOnClickListener(view -> BuscadorAdapter(tv_codigo, tv_descripcion));
-        tv_descripcion.setOnClickListener(view -> BuscadorAdapter(tv_codigo, tv_descripcion));
+        tv_codigoIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
+        tv_descripcionIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
         tv_kilos.setOnClickListener(view -> TecladoAdapter(tv_kilos, "Ingrese los kilos a realizar del nuevo paso"));
 
         Guardar.setOnClickListener(view -> {
-            if (!tv_codigo.getText().toString().equals("") && !tv_descripcion.getText().toString().equals("") && !tv_kilos.getText().toString().equals("") && Utils.isNumeric(tv_kilos.getText().toString())) {
+            if (!tv_codigoIngrediente.getText().toString().equals("") && !tv_descripcionIngrediente.getText().toString().equals("") && !tv_kilos.getText().toString().equals("") && Utils.isNumeric(tv_kilos.getText().toString())) {
                 if (posicion < mData.size() - 1) {
                     mData.add(posicion + 1, new Form_Model_Receta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilos_totales(),
-                            tv_codigo.getText().toString(), tv_descripcion.getText().toString(), tv_kilos.getText().toString(), "NO", ""));
+                            tv_codigoIngrediente.getText().toString(), tv_descripcionIngrediente.getText().toString(), tv_kilos.getText().toString(), "NO", ""));
                 } else {
                     mData.add(new Form_Model_Receta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilos_totales(),
-                            tv_codigo.getText().toString(), tv_descripcion.getText().toString(), tv_kilos.getText().toString(), "NO", ""));
+                            tv_codigoIngrediente.getText().toString(), tv_descripcionIngrediente.getText().toString(), tv_kilos.getText().toString(), "NO", ""));
                 }
 
                 try {
@@ -690,8 +690,8 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     private void dialogoModificarPaso(List<Form_Model_Receta> mData, int posicion) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
         View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_pasoreceta, null);
-        TextView tv_codigo = mView.findViewById(R.id.tv_codigoingrediente);
-        TextView tv_descripcion = mView.findViewById(R.id.tv_descripcioningrediente);
+        TextView tv_codigoIngrediente = mView.findViewById(R.id.tv_codigoingrediente);
+        TextView tv_descripcionIngrediente = mView.findViewById(R.id.tv_descripcioningrediente);
         TextView tv_kilos = mView.findViewById(R.id.tv_kilos);
 
         Button Guardar = mView.findViewById(R.id.buttons);
@@ -703,20 +703,23 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         dialog.show();
 
         if (mData.size() > posicion) {
-            tv_descripcion.setText(mData.get(posicion).getDescrip_ing());
-            tv_codigo.setText(mData.get(posicion).getCodigo_ing());
+            tv_descripcionIngrediente.setText(mData.get(posicion).getDescrip_ing());
+            tv_codigoIngrediente.setText(mData.get(posicion).getCodigo_ing());
             tv_kilos.setText(mData.get(posicion).getKilos_ing());
         }
 
-        tv_codigo.setOnClickListener(view -> BuscadorAdapter(tv_codigo, tv_descripcion));
-        tv_descripcion.setOnClickListener(view -> BuscadorAdapter(tv_codigo, tv_descripcion));
+        tv_codigoIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
+        tv_descripcionIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
         tv_kilos.setOnClickListener(view -> TecladoAdapter(tv_kilos, "Ingrese los kilos del paso"));
 
         Guardar.setOnClickListener(view -> {
-            if (!tv_codigo.getText().toString().equals("") && !tv_descripcion.getText().toString().equals("") && !tv_kilos.getText().toString().equals("") && Utils.isNumeric(tv_kilos.getText().toString())) {
+            if (!tv_codigoIngrediente.getText().toString().equals("") &&
+                !tv_descripcionIngrediente.getText().toString().equals("") &&
+                !tv_kilos.getText().toString().equals("") && Utils.isNumeric(tv_kilos.getText().toString())) {
+
                 if (mData.size() > posicion) {
-                    mData.get(posicion).setDescrip_ing(tv_descripcion.getText().toString());
-                    mData.get(posicion).setCodigo_ing(tv_codigo.getText().toString());
+                    mData.get(posicion).setDescrip_ing(tv_descripcionIngrediente.getText().toString());
+                    mData.get(posicion).setCodigo_ing(tv_codigoIngrediente.getText().toString());
                     mData.get(posicion).setKilos_ing(tv_kilos.getText().toString());
                     try {
                         mainActivity.mainClass.setReceta(recetaelegida, mData);

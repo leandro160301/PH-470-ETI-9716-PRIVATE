@@ -13,18 +13,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.base.adapters.MyRecyclerViewAdapterMultimedia2;
+import com.jws.jwsapi.base.ui.activities.MainActivity;
+import com.jws.jwsapi.base.ui.adapters.AdapterMultimedia2;
 import com.jws.jwsapi.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -124,7 +127,7 @@ public class Storage {
         Button bt_csv = mView.findViewById(R.id.bt_csv);
         Button bt_captura = mView.findViewById(R.id.bt_captura);
         RecyclerView recyclerView=mView.findViewById(R.id.listview);
-        MyRecyclerViewAdapterMultimedia2 adapter =seteo(".pdf",recyclerView);
+        AdapterMultimedia2 adapter =seteo(".pdf",recyclerView);
         adapter.setClickListener((view, position) -> {
             String archivo = "/storage/emulated/0/Memoria/";
             FileDialog=adapter.getItem(position);
@@ -136,7 +139,7 @@ public class Storage {
         dialogusb.show();
         bt_pdf.setOnClickListener(view -> {
             file=null;
-            MyRecyclerViewAdapterMultimedia2 adapter1 =seteo(".pdf",recyclerView);
+            AdapterMultimedia2 adapter1 =seteo(".pdf",recyclerView);
             adapter1.setClickListener((view1, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter1.getItem(position);
@@ -146,7 +149,7 @@ public class Storage {
         });
         bt_captura.setOnClickListener(view -> {
             file=null;
-            MyRecyclerViewAdapterMultimedia2 adapter1 =seteo(".png",recyclerView);
+            AdapterMultimedia2 adapter1 =seteo(".png",recyclerView);
             adapter1.setClickListener((view1, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter1.getItem(position);
@@ -156,7 +159,7 @@ public class Storage {
         });
         bt_excel.setOnClickListener(view -> {
             file=null;
-            MyRecyclerViewAdapterMultimedia2 adapter12 =seteo(".xls",recyclerView);
+            AdapterMultimedia2 adapter12 =seteo(".xls",recyclerView);
             adapter12.setClickListener((view13, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter12.getItem(position);
@@ -166,7 +169,7 @@ public class Storage {
         });
         bt_csv.setOnClickListener(view -> {
             file=null;
-            MyRecyclerViewAdapterMultimedia2 adapter13 =seteo(".csv",recyclerView);
+            AdapterMultimedia2 adapter13 =seteo(".csv",recyclerView);
             adapter13.setClickListener((view12, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter13.getItem(position);
@@ -201,9 +204,51 @@ public class Storage {
         });
     }
 
-    public MyRecyclerViewAdapterMultimedia2 seteo(String tipo,RecyclerView recyclerView) {
+    public static String openAndReadFile(String archivo, MainActivity mainActivity) {
+        // Ruta del archivo que quieres leer
+        String filePath = "/storage/emulated/0/Memoria/"+archivo;
+
+        File file = new File(filePath);
+        if (!file.exists()) {
+            Utils.Mensaje("La etiqueta ya no esta disponible",R.layout.item_customtoasterror,mainActivity);
+            return "";
+        }else{
+            String fileContent="";
+            FileInputStream fis = null;
+            InputStreamReader isr = null;
+            BufferedReader br = null;
+
+            try {
+                fis = new FileInputStream(file);
+                isr = new InputStreamReader(fis);
+                br = new BufferedReader(isr);
+                StringBuilder stringBuilder = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+                fileContent = stringBuilder.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Utils.Mensaje("Error al intentar leer la etiqueta"+ e.toString(),R.layout.item_customtoasterror,mainActivity);
+            } finally {
+                try {
+                    if (br != null) br.close();
+                    if (isr != null) isr.close();
+                    if (fis != null) fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return fileContent;
+            }
+        }
+
+    }
+
+    public AdapterMultimedia2 seteo(String tipo, RecyclerView recyclerView) {
         List<String> ListElementsArrayList2=new ArrayList<>();
-        MyRecyclerViewAdapterMultimedia2 adapter3 = new MyRecyclerViewAdapterMultimedia2(activity, ListElementsArrayList2);
+        AdapterMultimedia2 adapter3 = new AdapterMultimedia2(activity, ListElementsArrayList2);
         File  root = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
         if(root.exists()){
             File[] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(tipo));
@@ -225,7 +270,7 @@ public class Storage {
                 }
             }
             recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-            adapter3 = new MyRecyclerViewAdapterMultimedia2(activity, ListElementsArrayList2);
+            adapter3 = new AdapterMultimedia2(activity, ListElementsArrayList2);
             recyclerView.setAdapter(adapter3);
         }
         return adapter3;
@@ -340,6 +385,23 @@ public class Storage {
         return jsonArray.toString();
     }
 
+    public static List<String> obtenerArchivos(String extension){
+        List <String>lista =new ArrayList<>();
+        File root = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
+        if(root.exists()){
+            File [] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(extension));
+            StringBuilder f = new StringBuilder();
+            if(fileArray!=null&&fileArray.length>0){
+                for (File value : fileArray) {
+                    f.append(value.getName());
+                    lista.add(f.toString());
+                    f = new StringBuilder();
+                }
+            }
+        }
+        return lista;
+    }
+
     public static List<String> getArchivos() {
         List<String> lista = new ArrayList<>();
         File root2 = new File(Environment.getExternalStorageDirectory().toString() + "/Memoria");
@@ -350,9 +412,7 @@ public class Storage {
             if (files != null) {
                 lista = Arrays.stream(files)
                         .map(File::getName)
-                        .filter(name -> {
-                            return extensions.stream().anyMatch(ext -> name.toLowerCase().endsWith(ext));
-                        })
+                        .filter(name -> extensions.stream().anyMatch(ext -> name.toLowerCase().endsWith(ext)))
                         .collect(Collectors.toList());
             }
         }

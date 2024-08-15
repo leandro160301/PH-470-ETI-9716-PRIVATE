@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.jws.jwsapi.base.activities.MainActivity;
+import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaIngresodatosBinding;
 import com.jws.jwsapi.utils.DatePickerDialogFragment;

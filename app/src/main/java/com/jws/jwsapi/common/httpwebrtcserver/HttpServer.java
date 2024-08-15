@@ -2,7 +2,7 @@ package com.jws.jwsapi.common.httpwebrtcserver;
 
 import android.content.Context;
 import android.util.Log;
-import com.jws.jwsapi.base.activities.MainActivity;
+import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.storage.Storage;
 import com.jws.jwsapi.feature.formulador.MainFormClass;
 import org.apache.poi.util.IOUtils;

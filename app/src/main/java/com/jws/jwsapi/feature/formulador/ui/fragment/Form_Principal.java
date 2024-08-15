@@ -21,7 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.jws.jwsapi.base.activities.MainActivity;
+import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.containers.clases.ButtonProviderSingletonPrincipal;
 import com.jws.jwsapi.base.containers.interfaces.ButtonProvider_Principal;
 import com.jws.jwsapi.databinding.ProgFormuladorPrincipalBinding;

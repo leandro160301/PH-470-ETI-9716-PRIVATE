@@ -1,9 +1,10 @@
 package com.jws.jwsapi.common.impresora;
 
+import static com.jws.jwsapi.common.storage.Storage.openAndReadFile;
+
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
-import com.jws.jwsapi.base.activities.MainActivity;
+import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.impresora.preferences.PreferencesPrinterManager;
 import com.jws.jwsapi.common.impresora.tipos.ImprimirRS232;
 import com.jws.jwsapi.common.impresora.tipos.ImprimirRed;
@@ -19,8 +20,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ImprimirEstandar {
     private final Context context;
@@ -127,57 +126,13 @@ public class ImprimirEstandar {
         }
 
     }
-    public String openAndReadFile(String archivo) {
-        // Ruta del archivo que quieres leer
-        String filePath = "/storage/emulated/0/Memoria/"+archivo;
 
-        File file = new File(filePath);
-        if (!file.exists()) {
-            Utils.Mensaje("La etiqueta ya no esta disponible",R.layout.item_customtoasterror,mainActivity);
-            return "";
-        }else{
-            String fileContent="";
-            FileInputStream fis = null;
-            InputStreamReader isr = null;
-            BufferedReader br = null;
-
-            try {
-                fis = new FileInputStream(file);
-                isr = new InputStreamReader(fis);
-                br = new BufferedReader(isr);
-                StringBuilder stringBuilder = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    stringBuilder.append(line).append("\n");
-                }
-                fileContent = stringBuilder.toString();
-
-                // Ahora tienes el contenido del archivo en la variable fileContent
-                // Puedes mostrarlo en un TextView, en un Toast, etc.
-                //mainActivity.Mensaje(fileContent,R.layout.item_customtoastok);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                Utils.Mensaje("Error al intentar leer la etiqueta"+ e.toString(),R.layout.item_customtoasterror,mainActivity);
-            } finally {
-                try {
-                    if (br != null) br.close();
-                    if (isr != null) isr.close();
-                    if (fis != null) fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return fileContent;
-            }
-        }
-
-    }
 
 
     public String etiqueta(int numetiqueta){
         try {
             String etiquetaActual=mainActivity.mainClass.preferencesManager.getEtiqueta(numetiqueta);
-            String etiqueta =openAndReadFile(etiquetaActual);
+            String etiqueta =openAndReadFile(etiquetaActual,mainActivity);
             if(etiqueta!=null&& !etiqueta.equals("") && !Objects.equals(etiquetaActual, "")){
                 List<Integer>ListElementsInt=mainActivity.mainClass.preferencesManager.getListSpinner(etiquetaActual);
                 List<String>ListElementsFijo=mainActivity.mainClass.preferencesManager.getListFijo(etiquetaActual);

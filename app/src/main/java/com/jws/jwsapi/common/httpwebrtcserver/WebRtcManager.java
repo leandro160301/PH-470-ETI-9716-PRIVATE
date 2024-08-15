@@ -11,7 +11,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
-import com.jws.jwsapi.base.activities.MainActivity;
+import com.jws.jwsapi.base.ui.activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

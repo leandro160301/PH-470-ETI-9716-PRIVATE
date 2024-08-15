@@ -37,7 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.jws.jwsapi.base.activities.MainActivity;
+import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.impresora.clases.Printer;
 import com.jws.jwsapi.common.impresora.clases.PrinterObject;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;

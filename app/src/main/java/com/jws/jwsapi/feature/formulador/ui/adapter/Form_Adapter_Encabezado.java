@@ -5,14 +5,11 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.feature.formulador.ui.animations.AnimationsAdapter;
 
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class Form_Adapter_Encabezado extends RecyclerView.Adapter<Form_Adapter_E
     private List<String> mData;
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private int lastPosition = -1;
+    private int lastPositionAdapter = -1;
     private Context context;
 
     public Form_Adapter_Encabezado(Context context, List<String> data) {
@@ -62,7 +59,7 @@ public class Form_Adapter_Encabezado extends RecyclerView.Adapter<Form_Adapter_E
             holder.myTextView.setTextColor(Color.DKGRAY);
 
         }
-        setAnimation(holder.itemView, position);
+        lastPositionAdapter= AnimationsAdapter.setAnimationPivot(holder.itemView,position,lastPositionAdapter,context);
         holder.itemView.setSelected(selectedPos == position);
     }
 
@@ -87,14 +84,6 @@ public class Form_Adapter_Encabezado extends RecyclerView.Adapter<Form_Adapter_E
             notifyItemChanged(selectedPos);
             selectedPos = getLayoutPosition();
             notifyItemChanged(selectedPos);
-        }
-    }
-
-    private void setAnimation(View viewToAnimate, int position) {
-        if (position > lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.pivot);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
         }
     }
 

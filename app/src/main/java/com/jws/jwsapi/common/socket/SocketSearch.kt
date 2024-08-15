@@ -1,6 +1,6 @@
 package com.jws.jwsapi.common.socket
 
-import com.jws.jwsapi.base.activities.MainActivity
+import com.jws.jwsapi.base.ui.activities.MainActivity
 import com.jws.jwsapi.R
 import com.jws.jwsapi.utils.Utils
 import java.io.IOException

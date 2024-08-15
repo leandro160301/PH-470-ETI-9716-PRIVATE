@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_RecetaDB;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.feature.formulador.ui.animations.AnimationsAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class Form_Adapter_Guardados_Recetas extends RecyclerView.Adapter<Form_Ad
     private ItemClickListener mClickListener;
     private ButtonClickListener mButtonClickListener;
     private boolean permitirClic = true;
-    private int lastPosition = -1;
+    private int lastPositionAdapter = -1;
     Context context;
     // data is passed into the constructor
     public Form_Adapter_Guardados_Recetas(Context context, List<Form_Model_RecetaDB> data) {
@@ -87,17 +89,10 @@ public class Form_Adapter_Guardados_Recetas extends RecyclerView.Adapter<Form_Ad
            // holder.itemView.setBackgroundResource(R.drawable.fondolineainferiornegra2);
         }
 
-        setAnimation(holder.itemView, position);
+        lastPositionAdapter= AnimationsAdapter.setAnimationPivot(holder.itemView,position,lastPositionAdapter,context);
         holder.itemView.setSelected(selectedPos == position);
     }
 
-    private void setAnimation(View viewToAnimate, int position) {
-        if (position > lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.pivot);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        }
-    }
     @Override
     public int getItemCount() {
         return mData.size();
@@ -164,12 +159,7 @@ public class Form_Adapter_Guardados_Recetas extends RecyclerView.Adapter<Form_Ad
                 selectedPos = getLayoutPosition();
                 notifyItemChanged(selectedPos);
                 permitirClic = false;
-                view.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        permitirClic = true;
-                    }
-                }, 2000);
+                view.postDelayed(() -> permitirClic = true, 2000);
             }
 
         }

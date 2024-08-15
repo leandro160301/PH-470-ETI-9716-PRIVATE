@@ -4,13 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.jws.jwsapi.databinding.ProgFormuladorAdapterIngredientesBinding;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Ingredientes;
-import com.jws.jwsapi.R;
+import com.jws.jwsapi.feature.formulador.ui.animations.AnimationsAdapter;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterIngredientesInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,86 +18,62 @@ public class Form_Adapter_Ingredientes extends RecyclerView.Adapter<Form_Adapter
     private List<Form_Model_Ingredientes> mData;
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private int lastPosition = -1;
-    Boolean altaybaja;
+    private int lastPositionAdapter = -1;
+    Boolean altayBaja;
     AdapterIngredientesInterface ingredientesInterface;
     Context context;
 
-    public Form_Adapter_Ingredientes(Context context, List<Form_Model_Ingredientes> data,Boolean altaybaja,AdapterIngredientesInterface ingredientesInterface) {
+    public Form_Adapter_Ingredientes(Context context, List<Form_Model_Ingredientes> data, Boolean altaybaja, AdapterIngredientesInterface ingredientesInterface) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.context=context;
-        this.altaybaja = altaybaja;
-        this.ingredientesInterface=ingredientesInterface;
+        this.context = context;
+        this.altayBaja = altaybaja;
+        this.ingredientesInterface = ingredientesInterface;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.prog_formulador_adapter_ingredientes, parent, false);
-        return new ViewHolder(view);
+        // Inflating the layout using ViewBinding
+        ProgFormuladorAdapterIngredientesBinding binding = ProgFormuladorAdapterIngredientesBinding.inflate(mInflater, parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
-        int posi=position;
-        holder.tv_codigo.setText(mData.get(position).getCodigo());
-        holder.tv_nombre.setText(mData.get(position).getNombre());
-        if(!altaybaja){
-            holder.ln_eliminar.setVisibility(View.GONE);
-            holder.ln_print.setVisibility(View.GONE);
+        Form_Model_Ingredientes item = mData.get(position);
+        holder.binding.tvCodigoingrediente.setText(item.getCodigo());
+        holder.binding.tvDescripcioningrediente.setText(item.getNombre());
+        if (!altayBaja) {
+            holder.binding.lnEditar.setVisibility(View.GONE);
+            holder.binding.lnPrint.setVisibility(View.GONE);
         }
-        holder.ln_eliminar.setOnClickListener(view -> {
-            ingredientesInterface.eliminarIngrediente(mData,posi);
+        holder.binding.lnEditar.setOnClickListener(view -> {
+            ingredientesInterface.eliminarIngrediente(mData, position);
         });
-        holder.ln_print.setOnClickListener(view -> {
-            ingredientesInterface.imprimirEtiqueta(mData.get(posi).getCodigo(),mData.get(posi).getNombre());
-
+        holder.binding.lnPrint.setOnClickListener(view -> {
+            ingredientesInterface.imprimirEtiqueta(item.getCodigo(), item.getNombre());
         });
-        setAnimation(holder.itemView, position);
+        lastPositionAdapter = AnimationsAdapter.setAnimationPivot(holder.itemView, position, lastPositionAdapter, context);
         holder.itemView.setSelected(selectedPos == position);
     }
 
-    private void setAnimation(View viewToAnimate, int position) {
-        // If the bound view wasn't previously displayed on screen, it's animated
-        if (position > lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.pivot);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        }
-    }
-
-
-
-    // total number of rows
     @Override
-    public int getItemCount() {
-        return mData.size();
-    }
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-    @Override
-    public int getItemViewType(int position)
-    {
-        return position;
-    }
+    public int getItemCount() {return mData.size();}
 
-    // stores and recycles views as they are scrolled off screen
+    @Override
+    public long getItemId(int position) {return position;}
+
+    @Override
+    public int getItemViewType(int position) {return position;}
+
+    // ViewHolder class using ViewBinding
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tv_nombre,tv_codigo;
-        LinearLayout ln_eliminar,ln_print;
+        final ProgFormuladorAdapterIngredientesBinding binding;
 
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            tv_nombre = itemView.findViewById(R.id.tv_descripcioningrediente);
-            tv_codigo = itemView.findViewById(R.id.tv_codigoingrediente);
-            ln_eliminar = itemView.findViewById(R.id.ln_editar);
-            ln_print=itemView.findViewById(R.id.ln_print);
-            itemView.setOnClickListener(this);
-
+        ViewHolder(ProgFormuladorAdapterIngredientesBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            binding.getRoot().setOnClickListener(this);
         }
 
         @Override
@@ -115,18 +88,22 @@ public class Form_Adapter_Ingredientes extends RecyclerView.Adapter<Form_Adapter
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
+
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
     public void removeAt(int position) {
         mData.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mData.size());
     }
+
     public void filterList(ArrayList<Form_Model_Ingredientes> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();
     }
+
     public void refrescarList(List<Form_Model_Ingredientes> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();

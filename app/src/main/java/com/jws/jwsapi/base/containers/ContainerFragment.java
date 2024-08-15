@@ -21,8 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.jws.JwsManager;
-import com.jws.jwsapi.base.activities.MainActivity;
-import com.jws.jwsapi.base.fragments.MenuFragment;
+import com.jws.jwsapi.base.ui.activities.MainActivity;
+import com.jws.jwsapi.base.ui.fragments.MenuFragment;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;

@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.jws.jwsapi.base.activities.MainActivity;
+import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaIngredientesBinding;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Ingredientes;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;

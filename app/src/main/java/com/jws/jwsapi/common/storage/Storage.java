@@ -385,7 +385,7 @@ public class Storage {
         return jsonArray.toString();
     }
 
-    public static List<String> obtenerArchivos(String extension){
+    public static List<String> getArchivosExtension(String extension){
         List <String>lista =new ArrayList<>();
         File root = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
         if(root.exists()){

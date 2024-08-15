@@ -1,7 +1,7 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
-import static com.jws.jwsapi.utils.DialogUtil.TecladoEntero;
-import static com.jws.jwsapi.utils.DialogUtil.TecladoFlotante;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoEntero;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlotante;
 import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.os.Bundle;
 import android.view.LayoutInflater;

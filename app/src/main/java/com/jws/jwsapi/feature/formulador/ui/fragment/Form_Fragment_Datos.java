@@ -1,6 +1,6 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
-import static com.jws.jwsapi.utils.DialogUtil.Teclado;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.Teclado;
 import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.app.AlertDialog;
 import android.os.Bundle;

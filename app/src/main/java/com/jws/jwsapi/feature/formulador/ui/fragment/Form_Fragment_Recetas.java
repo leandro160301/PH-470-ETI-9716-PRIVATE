@@ -1,6 +1,10 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
 import static android.view.View.GONE;
+import static com.jws.jwsapi.common.storage.Storage.getArchivosExtension;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.Teclado;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlotante;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -8,7 +12,6 @@ import android.os.Environment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +44,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,12 +72,12 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     List<Integer> posiciones= new ArrayList<>();
     Boolean filtro=false;
     ProgFormuladorPantallaRecetasBinding binding;
-
-
+    public RecyclerView lista_recetas;
     Boolean filtroAdapter = false;
     public Form_Adapter_Ingredientes adapterIngredientes;
     ArrayList<Form_Model_Ingredientes> filteredListAdapterIngredientes = new ArrayList<>();
     ArrayList<Integer> filteredListAdapterNumeric = new ArrayList<>();
+    public Form_Adapter_Recetas adapter_recetas;
 
     @Nullable
     @Override
@@ -89,9 +91,9 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
-        archivos=getArchivos();
+        archivos=filtrarRecetasEnArchivos(getArchivosExtension(".csv"));
         configuracionBotones();
-        mainActivity.mainClass.lista_recetas =view.findViewById(R.id.lista_recetas);
+        lista_recetas =view.findViewById(R.id.lista_recetas);
         recetaelegida=recetaManager.recetaActual;
         cargarRecyclerView();
 
@@ -99,9 +101,9 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     }
 
     public void SeleccionarItem(int numero){
-        mainActivity.mainClass.lista_recetas.post(() -> {
+       lista_recetas.post(() -> {
             try {
-                Objects.requireNonNull(mainActivity.mainClass.lista_recetas.findViewHolderForAdapterPosition(numero)).itemView.performClick();
+                Objects.requireNonNull(lista_recetas.findViewHolderForAdapterPosition(numero)).itemView.performClick();
                 binding.lnLista.setVisibility(GONE);
                 if(recetaManager.listRecetaActual.size()>0){
                     String nomb= recetaManager.listRecetaActual.get(0).getNombre();
@@ -122,12 +124,12 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
                 exception.printStackTrace();
             }
         });
-        mainActivity.mainClass.lista_recetas.smoothScrollToPosition(numero);
+        lista_recetas.smoothScrollToPosition(numero);
     }
     public void SeleccionarItem2(int numero){
-        mainActivity.mainClass.lista_recetas.post(() -> {
+        lista_recetas.post(() -> {
             try {
-                Objects.requireNonNull(mainActivity.mainClass.lista_recetas.findViewHolderForAdapterPosition(numero)).itemView.performClick();
+                Objects.requireNonNull(lista_recetas.findViewHolderForAdapterPosition(numero)).itemView.performClick();
                 if(recetaManager.listRecetaActual.size()>0){
                     String nomb= recetaManager.listRecetaActual.get(0).getNombre();
                     if(nomb.length()>20){
@@ -143,21 +145,20 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
                 exception.printStackTrace();
             }
         });
-        mainActivity.mainClass.lista_recetas.smoothScrollToPosition(numero);
+        lista_recetas.smoothScrollToPosition(numero);
     }
 
     private void cargarRecyclerView(){
-        mainActivity.mainClass.lista_recetas.setLayoutManager(new LinearLayoutManager(getContext()));
+        lista_recetas.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new Form_Adapter_Encabezado(getContext(), archivos);
         adapter.setClickListener(this);
-        mainActivity.mainClass.lista_recetas.setAdapter(adapter);
+        lista_recetas.setAdapter(adapter);
 
         if(recetaManager.ejecutando){
             int item=archivos.indexOf(recetaManager.recetaActual);
             if(item>-1&&item<archivos.size()){
                 SeleccionarItem(item);
             }
-
         }
 
     }
@@ -165,13 +166,13 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     private void cargarRecyclerViewReceta(String archivo){
         if(recetaManager.ejecutando){
             binding.receta.setLayoutManager(new LinearLayoutManager(getContext()));
-            mainActivity.mainClass.adapter_recetas = new Form_Adapter_Recetas(getContext(), recetaManager.listRecetaActual,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
-            binding.receta.setAdapter(mainActivity.mainClass.adapter_recetas);
+            adapter_recetas = new Form_Adapter_Recetas(getContext(), recetaManager.listRecetaActual,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+            binding.receta.setAdapter(adapter_recetas);
         }else{
             recetaseleccionada=mainActivity.mainClass.getReceta(archivo);
             binding.receta.setLayoutManager(new LinearLayoutManager(getContext()));
-            mainActivity.mainClass.adapter_recetas = new Form_Adapter_Recetas(getContext(), recetaseleccionada,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
-            binding.receta.setAdapter(mainActivity.mainClass.adapter_recetas);
+            adapter_recetas = new Form_Adapter_Recetas(getContext(), recetaseleccionada,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+            binding.receta.setAdapter(adapter_recetas);
             String[]arr= archivo.split("_");
             if(arr.length==3&&recetaseleccionada.size()>0){
                 String nomb=arr[2].replace("_","");
@@ -187,39 +188,6 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
         }
 
-        /*int resId = R.anim.recycler1;
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
-        receta.setLayoutAnimation(animation);
-        adapter_recetas.notifyDataSetChanged();*/
-
-    }
-
-    public List<String> getArchivos() {
-        String[] List = new String[]{};
-        List<String> Lista=new ArrayList<>(Arrays.asList(List));
-        File[] filearrays4;
-        File root2 = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
-
-        if(root2.exists()){
-            filearrays4 = root2.listFiles((dir, filename) -> filename.toLowerCase().endsWith(".csv"));
-            StringBuilder f = new StringBuilder();
-
-            if(filearrays4.length>0){
-                f = new StringBuilder();
-                for(int i=0; i < filearrays4.length; i++){
-                    f.append(filearrays4[i].getName());
-                    String archivo=f.toString();
-                    if(archivo.startsWith("Receta_")){
-                        Lista.add(archivo.replace(".csv",""));
-                    }
-
-                    f = new StringBuilder();
-
-                }
-            }
-
-        }
-        return Lista;
     }
 
     public void DialogoSeteoVariables(TextView textViewelegido,String texto){
@@ -285,7 +253,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         Guardar.setOnClickListener(view -> {
 
             if(!Objects.equals(codigoDialogo, "") && !Objects.equals(descripcionDialogo, "")){
-                List<String> recetascargadas=getArchivos();
+                List<String> recetascargadas=filtrarRecetasEnArchivos(getArchivosExtension(".csv"));
                 List<String> codigoscargados=new ArrayList<>();
                 for(int i=0;i<recetascargadas.size();i++){
                     String[]arr= recetascargadas.get(i).split("_");
@@ -361,6 +329,16 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         });
     }
 
+    private List<String> filtrarRecetasEnArchivos(List<String> archivos){
+        List<String> lista= new ArrayList<>();
+        for(String Archivo:archivos){
+            if(Archivo.startsWith("Receta_")){
+                lista.add(Archivo.replace(".csv",""));
+            }
+        }
+        return lista;
+    }
+
     private void ElimarReceta(String receta,int posicion_recycler) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
 
@@ -423,25 +401,8 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
             bt_6.setVisibility(View.INVISIBLE);
             bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
-            bt_3.setOnClickListener(view -> {
-                if(mainActivity.modificarDatos()){
-                    if(posicion_recycler!=-1&&posicion_recycler<archivos.size()){
-                        ElimarReceta(archivos.get(posicion_recycler),posicion_recycler);
-                    }
-                }else{
-                    Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
-                }
-
-            });
-
-            bt_2.setOnClickListener(view -> {
-                if(mainActivity.modificarDatos()){
-                    DialogoNuevaReceta();
-                }else{
-                    Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
-                }
-            });
-
+            bt_3.setOnClickListener(view -> eliminarReceta());
+            bt_2.setOnClickListener(view -> nuevaReceta());
             bt_1.setOnClickListener(view ->Buscador());
 
             if(recetaManager.ejecutando){
@@ -456,6 +417,24 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         }
     }
 
+    private void nuevaReceta() {
+        if(mainActivity.modificarDatos()){
+            DialogoNuevaReceta();
+        }else{
+            Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
+        }
+    }
+
+    private void eliminarReceta() {
+        if(mainActivity.modificarDatos()){
+            if(posicion_recycler!=-1&&posicion_recycler<archivos.size()){
+                ElimarReceta(archivos.get(posicion_recycler),posicion_recycler);
+            }
+        }else{
+            Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
+        }
+    }
+
     public void Buscador() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
         View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_buscador, null);
@@ -467,7 +446,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
-        List<String>ListfilteredList = getArchivos();
+        List<String>ListfilteredList =filtrarRecetasEnArchivos(getArchivosExtension(".csv"));
         filtro=false;
         listview.setLayoutManager(new LinearLayoutManager(mainActivity));
         Form_Adapter_Encabezado adapter2 = new Form_Adapter_Encabezado(mainActivity, ListfilteredList);
@@ -479,7 +458,6 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
                     SeleccionarItem2(posiciones.get(position));
                 }
             }
-
             dialog.cancel();
         });
         listview.setAdapter(adapter2);
@@ -563,7 +541,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            mainActivity.mainClass.adapter_recetas.refrescarList(mData);
+            adapter_recetas.refrescarList(mData);
             dialog.cancel();
         });
         Cancelar.setOnClickListener(view -> dialog.cancel());
@@ -571,7 +549,6 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
     public void BuscadorAdapter(TextView tv_codigoIngrediente, TextView tv_des) {
         filtroAdapter = false;
-
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
 
         View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_buscador, null);
@@ -644,7 +621,6 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
     private void dialogoAgregarPaso(List<Form_Model_Receta> mData, int posicion) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
-
         View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_pasoreceta, null);
         TextView tv_codigoIngrediente = mView.findViewById(R.id.tv_codigoingrediente);
         TextView tv_descripcionIngrediente = mView.findViewById(R.id.tv_descripcioningrediente);
@@ -654,32 +630,33 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         Button Cancelar = mView.findViewById(R.id.buttonc);
         Guardar.setText("AGREGAR");
 
-
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
 
         tv_codigoIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
         tv_descripcionIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
-        tv_kilos.setOnClickListener(view -> TecladoAdapter(tv_kilos, "Ingrese los kilos a realizar del nuevo paso"));
+        tv_kilos.setOnClickListener(view -> TecladoFlotante(tv_kilos, "Ingrese los kilos a realizar del nuevo paso",mainActivity,null));
 
         Guardar.setOnClickListener(view -> {
-            if (!tv_codigoIngrediente.getText().toString().equals("") && !tv_descripcionIngrediente.getText().toString().equals("") && !tv_kilos.getText().toString().equals("") && Utils.isNumeric(tv_kilos.getText().toString())) {
+            String codigo=tv_codigoIngrediente.getText().toString();
+            String descripcion=tv_descripcionIngrediente.getText().toString();
+            String kilos=tv_kilos.getText().toString();
+            if (!codigo.equals("") && !descripcion.equals("") && !kilos.equals("") && Utils.isNumeric(kilos)) {
                 if (posicion < mData.size() - 1) {
                     mData.add(posicion + 1, new Form_Model_Receta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilos_totales(),
-                            tv_codigoIngrediente.getText().toString(), tv_descripcionIngrediente.getText().toString(), tv_kilos.getText().toString(), "NO", ""));
+                            codigo, descripcion, kilos, "NO", ""));
                 } else {
                     mData.add(new Form_Model_Receta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilos_totales(),
-                            tv_codigoIngrediente.getText().toString(), tv_descripcionIngrediente.getText().toString(), tv_kilos.getText().toString(), "NO", ""));
+                            codigo, descripcion, kilos, "NO", ""));
                 }
-
                 try {
                     mainActivity.mainClass.setReceta(recetaelegida, mData);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                mainActivity.mainClass.adapter_recetas.refrescarList(mData);
-                mainActivity.mainClass.lista_recetas.smoothScrollToPosition(mData.size() - 1);
+                adapter_recetas.refrescarList(mData);
+                lista_recetas.smoothScrollToPosition(mData.size() - 1);
                 dialog.cancel();
             }
 
@@ -710,8 +687,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
         tv_codigoIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
         tv_descripcionIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
-        tv_kilos.setOnClickListener(view -> TecladoAdapter(tv_kilos, "Ingrese los kilos del paso"));
-
+        tv_kilos.setOnClickListener(view -> Teclado(tv_kilos, "Ingrese los kilos del paso",mainActivity,null));
         Guardar.setOnClickListener(view -> {
             if (!tv_codigoIngrediente.getText().toString().equals("") &&
                 !tv_descripcionIngrediente.getText().toString().equals("") &&
@@ -726,7 +702,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    mainActivity.mainClass.adapter_recetas.refrescarList(mData);
+                    adapter_recetas.refrescarList(mData);
                 }
 
                 dialog.cancel();
@@ -736,37 +712,6 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         Cancelar.setOnClickListener(view -> dialog.cancel());
     }
 
-
-    public void TecladoAdapter(TextView View, String texto) {
-
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity);
-        View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_dosopcionespuntos, null);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        TextView textView = mView.findViewById(R.id.textViewt);
-        LinearLayout lndelete_text = mView.findViewById(R.id.lndelete_text);
-        textView.setText(texto);
-        userInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        userInput.setKeyListener(DigitsKeyListener.getInstance(".0123456789"));
-        userInput.setOnLongClickListener(v -> true);
-        userInput.requestFocus();
-
-        lndelete_text.setOnClickListener(view -> userInput.setText(""));
-        Button Guardar = mView.findViewById(R.id.buttons);
-        Button Cancelar = mView.findViewById(R.id.buttonc);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            if (Utils.isNumeric(userInput.getText().toString())) {
-                View.setText(userInput.getText().toString());
-            }
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-
-    }
 
     @Override
     public void eliminarPaso(List<Form_Model_Receta> mData, int posicion) {

@@ -1,4 +1,4 @@
-package com.jws.jwsapi.utils;
+package com.jws.jwsapi.feature.formulador.ui.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.jws.jwsapi.databinding.DialogoDosopcionesBinding;
 import com.jws.jwsapi.databinding.DialogoDosopcionespuntosBinding;
 import com.jws.jwsapi.databinding.DialogoDossinetBinding;
+import com.jws.jwsapi.utils.Utils;
 
 public class DialogUtil {
     public static void Teclado(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {

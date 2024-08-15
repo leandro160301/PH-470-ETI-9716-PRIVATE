@@ -1,7 +1,7 @@
 package com.jws.jwsapi.base.ui.fragments;
 
 import static com.jws.jwsapi.helpers.PrinterHelper.getCamposEtiqueta;
-import static com.jws.jwsapi.common.storage.Storage.obtenerArchivos;
+import static com.jws.jwsapi.common.storage.Storage.getArchivosExtension;
 import static com.jws.jwsapi.common.storage.Storage.openAndReadFile;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -65,7 +65,7 @@ public class EtiquetasFragment extends Fragment implements AdapterMultimedia.Ite
         recyclerEtiquetas =view.findViewById(R.id.listview);
         recyclerCampos =view.findViewById(R.id.recyclerEtiqueta);
 
-        listaEtiquetas=obtenerArchivos(".prn");
+        listaEtiquetas= getArchivosExtension(".prn");
         setupRecycler(listaEtiquetas);
 
     }

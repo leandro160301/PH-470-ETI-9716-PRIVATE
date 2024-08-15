@@ -121,8 +121,8 @@ public class MainFormClass implements OnFragmentChangeListener {
     public PrinterObject onumeroetiqueta=new PrinterObject();
     public List<Printer> variablesImprimibles;
     public List<String> imprimiblesPredefinidas;
-    public Form_Adapter_Recetas adapter_recetas;
-    public RecyclerView lista_recetas;
+
+
     Boolean permitirClic=true;
     public PreferencesManager preferencesManager;
 

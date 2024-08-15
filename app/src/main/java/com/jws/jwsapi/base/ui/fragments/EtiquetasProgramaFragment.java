@@ -1,6 +1,6 @@
 package com.jws.jwsapi.base.ui.fragments;
 
-import static com.jws.jwsapi.common.storage.Storage.obtenerArchivos;
+import static com.jws.jwsapi.common.storage.Storage.getArchivosExtension;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,7 +57,7 @@ public class EtiquetasProgramaFragment extends Fragment implements AdapterEtique
 
     private void cargarRecyclerView(){
         rc_lista_ingredientes.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AdapterEtiquetasDePrograma(getContext(),lista_ingredientes,obtenerArchivos(".prn"));
+        adapter = new AdapterEtiquetasDePrograma(getContext(),lista_ingredientes, getArchivosExtension(".prn"));
         adapter.setClickListener(this);
         rc_lista_ingredientes.setAdapter(adapter);
 

@@ -1,22 +1,19 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
-import android.app.AlertDialog;
+import static com.jws.jwsapi.utils.DialogUtil.TecladoEntero;
+
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaConfiguracionturnosBinding;
-import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -45,60 +42,10 @@ public class Form_Fragment_ConfiguracionTurnos extends Fragment  {
         binding.tvTurno2.setText(String.valueOf(mainActivity.mainClass.preferencesManager.getTurno2()));
         binding.tvTurno3.setText(String.valueOf(mainActivity.mainClass.preferencesManager.getTurno3()));
         binding.tvTurno4.setText(String.valueOf(mainActivity.mainClass.preferencesManager.getTurno4()));
-        binding.tvTurno1.setOnClickListener(view12 -> Teclado(binding.tvTurno1,"Ingrese la hora cuando comienza el turno 1"));
-        binding.tvTurno2.setOnClickListener(view13 -> Teclado(binding.tvTurno2,"Ingrese la hora cuando comienza el turno 2"));
-        binding.tvTurno3.setOnClickListener(view14 -> Teclado(binding.tvTurno3,"Ingrese la hora cuando comienza el turno 3"));
-        binding.tvTurno4.setOnClickListener(view15 -> Teclado(binding.tvTurno4,"Ingrese la hora cuando comienza el turno 4"));
-
-    }
-
-    public void Teclado(TextView View,String texto){
-
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopcionespuntos, null);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        LinearLayout lndelete_text=mView.findViewById(R.id.lndelete_text);
-        textView.setText(texto);
-        if(View==binding.tvTurno1||View==binding.tvTurno2||View==binding.tvTurno3||View==binding.tvTurno4){
-            userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-        }
-        userInput.setOnLongClickListener(v -> true);
-
-        userInput.setText(View.getText().toString());
-        userInput.requestFocus();
-
-        if(!View.getText().toString().equals("") && !View.getText().toString().equals("-")){
-            userInput.setSelection(userInput.getText().length());
-        }
-        lndelete_text.setOnClickListener(view -> userInput.setText(""));
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            if(Utils.isNumeric(userInput.getText().toString())){
-                if(View==binding.tvTurno1){
-                    mainActivity.mainClass.preferencesManager.setTurno1(Integer.parseInt(userInput.getText().toString()));
-                }
-                if(View==binding.tvTurno2){
-                    mainActivity.mainClass.preferencesManager.setTurno2(Integer.parseInt(userInput.getText().toString()));
-                }
-                if(View==binding.tvTurno3){
-                    mainActivity.mainClass.preferencesManager.setTurno3(Integer.parseInt(userInput.getText().toString()));
-                }
-                if(View==binding.tvTurno4){
-                    mainActivity.mainClass.preferencesManager.setTurno4(Integer.parseInt(userInput.getText().toString()));
-                }
-                View.setText(userInput.getText().toString());
-            }
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
+        binding.tvTurno1.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno1, "Ingrese la hora cuando comienza el turno 1", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTurno1(Integer.parseInt(texto))));
+        binding.tvTurno2.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno2, "Ingrese la hora cuando comienza el turno 2", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTurno2(Integer.parseInt(texto))));
+        binding.tvTurno3.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno3, "Ingrese la hora cuando comienza el turno 3", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTurno3(Integer.parseInt(texto))));
+        binding.tvTurno4.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno4, "Ingrese la hora cuando comienza el turno 4", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTurno4(Integer.parseInt(texto))));
 
     }
 

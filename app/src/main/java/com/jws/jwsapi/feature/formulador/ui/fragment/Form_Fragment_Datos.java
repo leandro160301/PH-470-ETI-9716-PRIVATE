@@ -1,7 +1,7 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
-import static com.jws.jwsapi.utils.helpers.DialogHelper.Teclado;
-import static com.jws.jwsapi.utils.helpers.SpinnerHelper.configurarSpinner;
+import static com.jws.jwsapi.utils.DialogUtil.Teclado;
+import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +22,6 @@ import com.jws.jwsapi.databinding.ProgFormuladorPantallaDatosBinding;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.ui.viewmodel.Form_Fragment_DatosViewModel;
 import com.jws.jwsapi.utils.Utils;
-import com.jws.jwsapi.utils.helpers.DialogInterface;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.Arrays;

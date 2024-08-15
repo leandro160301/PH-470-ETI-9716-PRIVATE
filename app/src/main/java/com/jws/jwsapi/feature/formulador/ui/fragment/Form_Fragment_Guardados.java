@@ -1,12 +1,11 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
-import android.app.AlertDialog;
+import static com.jws.jwsapi.utils.DialogUtil.dialogoPreguntaEliminar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,7 +26,7 @@ import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Form_Fragment_Guardados extends Fragment implements Form_Adapter_Guardados_Pesadas.ItemClickListener {
+public class Form_Fragment_Guardados extends Fragment {
 
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
@@ -85,23 +84,20 @@ public class Form_Fragment_Guardados extends Fragment implements Form_Adapter_Gu
     }
 
     private void cargarRecyclerViewPesadas(){
-
         try (Form_SQL_db guardadosSQL = new Form_SQL_db(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
             guardado_pesadas = guardadosSQL.getPesadasSQL(null);
         }
         binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter_pesadas = new Form_Adapter_Guardados_Pesadas(getContext(), guardado_pesadas);
-        adapter_pesadas.setClickListener(this);
         binding.listaacumulados.setAdapter(adapter_pesadas);
     }
-    private void cargarRecyclerViewPesadasconId(String id,Boolean receta){
 
+    private void cargarRecyclerViewPesadasconId(String id,Boolean receta){
         try (Form_SQL_db guardadosSQL = new Form_SQL_db(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
             guardado_pesadas = guardadosSQL.getPesadasSQLconId(id,receta);
         }
         binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter_pesadas = new Form_Adapter_Guardados_Pesadas(getContext(), guardado_pesadas);
-        adapter_pesadas.setClickListener(this);
         binding.listaacumulados.setAdapter(adapter_pesadas);
     }
 
@@ -126,7 +122,6 @@ public class Form_Fragment_Guardados extends Fragment implements Form_Adapter_Gu
     }
 
 
-
     private void configuracionBotones() {
         if (buttonProvider != null) {
             Button bt_home = buttonProvider.getButtonHome();
@@ -144,88 +139,76 @@ public class Form_Fragment_Guardados extends Fragment implements Form_Adapter_Gu
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
             bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
-
-            bt_2.setOnClickListener(view -> {
-                if(guardado_pesadas !=null){
-                    if(guardado_pesadas.size()>0){
-                        int registros=mainActivity.storage.cantidadRegistros();
-                        if(registros>=50 && registros<60){
-                            Utils.Mensaje("El indicador alcanzo el limite recomendado de 50 registros. Quedan "+String.valueOf(60-registros)+" registros disponibles",R.layout.item_customtoasterror,mainActivity);
-                            //mainActivity.Dialogo_excel(guardado_pesadas);
-                        }
-                        if(registros<50){
-                           // mainActivity.Dialogo_excel(guardado_pesadas);
-                        }
-                        if(registros>=60){
-                            Utils.Mensaje("Error el indicador alcanzo el limite de registros excel",R.layout.item_customtoasterror,mainActivity);
-                        }
-
-                    }
-                }
-            });
-
-            bt_1.setOnClickListener(view -> {
-                if(mainActivity.getNivelUsuario()>1){
-                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-                    View mView = getLayoutInflater().inflate(R.layout.dialogo_dossinet, null);
-                    TextView textView=mView.findViewById(R.id.textViewt);
-                    if(menu==0){
-                        textView.setText("¿Esta seguro de eliminar todos los datos de pesadas?");
-                    }
-                    if(menu==1){
-                        textView.setText("¿Esta seguro de eliminar todos los datos de recetas?");
-                    }
-                    if(menu==2){
-                        textView.setText("¿Esta seguro de eliminar todos los datos de pedidos?");
-                    }
-
-                    Button Guardar =  mView.findViewById(R.id.buttons);
-                    Button Cancelar =  mView.findViewById(R.id.buttonc);
-
-                    Guardar.setText("BORRAR");
-
-                    mBuilder.setView(mView);
-                    final AlertDialog dialog = mBuilder.create();
-                    //    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                    //    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    dialog.show();
-
-                    Guardar.setOnClickListener(view1 -> {
-                        if(menu==0){
-                            try (Form_SQL_db productosSQL = new Form_SQL_db(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-                                productosSQL.eliminarPesadas();
-                                cargarRecyclerViewPesadas();
-                            }
-                        }
-                        if(menu==1){
-                            try (Form_SQL_db productosSQL = new Form_SQL_db(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-                                productosSQL.eliminarRecetas();
-                                cargarRecyclerViewRecetas();
-                            }
-                        }
-                        if(menu==2){
-                            try (Form_SQL_db productosSQL = new Form_SQL_db(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-                                productosSQL.eliminarPedidos();
-                                cargarRecyclerViewPedidos();
-                            }
-                        }
-
-                        dialog.cancel();
-                    });
-                    Cancelar.setOnClickListener(view12 -> dialog.cancel());
-                }else{
-                    Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
-                }
-            });
+            bt_2.setOnClickListener(view -> crearExcel());
+            bt_1.setOnClickListener(view -> eliminarDatos());
 
         }
     }
 
+    private void crearExcel() {
+        if(guardado_pesadas !=null){
+            if(guardado_pesadas.size()>0){
+                int registros=mainActivity.storage.cantidadRegistros();
+                if(registros>=50 && registros<60){
+                    Utils.Mensaje("El indicador alcanzo el limite recomendado de 50 registros. Quedan "+String.valueOf(60-registros)+" registros disponibles",R.layout.item_customtoasterror,mainActivity);
+                    //mainActivity.Dialogo_excel(guardado_pesadas);
+                }
+                if(registros<50){
+                    // mainActivity.Dialogo_excel(guardado_pesadas);
+                }
+                if(registros>=60){
+                    Utils.Mensaje("Error el indicador alcanzo el limite de registros excel",R.layout.item_customtoasterror,mainActivity);
+                }
 
-    @Override
-    public void onItemClick(View view, int position) {
-
+            }
+        }
     }
+
+    private void eliminarDatos() {
+        if (mainActivity.getNivelUsuario() > 1) {
+            String texto = obtenerMensajeConfirmacion(menu);
+            if (texto != null) {
+                dialogoPreguntaEliminar(mainActivity, texto, () -> {
+                    try (Form_SQL_db productosSQL = new Form_SQL_db(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
+                        switch (menu) {
+                            case 0:
+                                productosSQL.eliminarPesadas();
+                                cargarRecyclerViewPesadas();
+                                break;
+                            case 1:
+                                productosSQL.eliminarRecetas();
+                                cargarRecyclerViewRecetas();
+                                break;
+                            case 2:
+                                productosSQL.eliminarPedidos();
+                                cargarRecyclerViewPedidos();
+                                break;
+                            default:
+                                Utils.Mensaje("Opción de menú no válida", R.layout.item_customtoasterror, mainActivity);
+                        }
+                    } catch (Exception e) {
+                        Utils.Mensaje("Error al eliminar datos: " + e.getMessage(), R.layout.item_customtoasterror, mainActivity);
+                    }
+                });
+            }
+        } else {
+            Utils.Mensaje("Debe ingresar la clave para acceder a esta configuración", R.layout.item_customtoasterror, mainActivity);
+        }
+    }
+
+    private String obtenerMensajeConfirmacion(int menu) {
+        switch (menu) {
+            case 0:
+                return "¿Está seguro de eliminar todos los datos de pesadas?";
+            case 1:
+                return "¿Está seguro de eliminar todos los datos de recetas?";
+            case 2:
+                return "¿Está seguro de eliminar todos los datos de pedidos?";
+            default:
+                return null;
+        }
+    }
+
 }
 
 

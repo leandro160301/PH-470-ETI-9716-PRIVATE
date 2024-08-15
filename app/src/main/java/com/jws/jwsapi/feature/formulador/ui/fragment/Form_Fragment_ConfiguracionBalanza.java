@@ -1,7 +1,7 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
-import static com.jws.jwsapi.utils.helpers.DialogHelper.TecladoFlotante;
-import static com.jws.jwsapi.utils.helpers.SpinnerHelper.configurarSpinner;
+import static com.jws.jwsapi.utils.DialogUtil.TecladoFlotante;
+import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

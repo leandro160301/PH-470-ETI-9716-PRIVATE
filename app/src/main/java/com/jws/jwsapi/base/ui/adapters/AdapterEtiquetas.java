@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.models.EtiquetasModel;
-import com.jws.jwsapi.utils.helpers.AdapterHelper;
+import com.jws.jwsapi.helpers.AdapterHelper;
 import com.jws.jwsapi.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collections;

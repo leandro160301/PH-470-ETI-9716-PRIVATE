@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jws.jwsapi.feature.formulador.models.Form_Model_PesadasDB;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.utils.helpers.AdapterHelper;
+import com.jws.jwsapi.helpers.AdapterHelper;
 
 import java.util.ArrayList;
 import java.util.List;

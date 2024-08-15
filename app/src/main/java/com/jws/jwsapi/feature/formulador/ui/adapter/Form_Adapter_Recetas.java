@@ -9,7 +9,7 @@ import com.jws.jwsapi.databinding.ProgFormuladorAdapterRecetaBinding;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.utils.helpers.AdapterHelper;
+import com.jws.jwsapi.helpers.AdapterHelper;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
 import java.util.List;
 import java.util.Objects;

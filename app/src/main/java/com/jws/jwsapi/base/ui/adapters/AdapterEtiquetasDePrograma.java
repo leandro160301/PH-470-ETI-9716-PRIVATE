@@ -1,14 +1,13 @@
 package com.jws.jwsapi.base.ui.adapters;
 
-import static com.jws.jwsapi.utils.helpers.AdapterHelper.setAnimationPivot;
-import static com.jws.jwsapi.utils.helpers.SpinnerHelper.configurarSpinner;
+import static com.jws.jwsapi.helpers.AdapterHelper.setAnimationPivot;
+import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.feature.formulador.ui.animations.AnimationsAdapter;
+import com.jws.jwsapi.utils.helpers.AdapterHelper;
 
 import java.util.List;
 
@@ -59,7 +59,7 @@ public class Form_Adapter_Encabezado extends RecyclerView.Adapter<Form_Adapter_E
             holder.myTextView.setTextColor(Color.DKGRAY);
 
         }
-        lastPositionAdapter= AnimationsAdapter.setAnimationPivot(holder.itemView,position,lastPositionAdapter,context);
+        lastPositionAdapter= AdapterHelper.setAnimationPivot(holder.itemView,position,lastPositionAdapter,context);
         holder.itemView.setSelected(selectedPos == position);
     }
 

@@ -1,6 +1,8 @@
 package com.jws.jwsapi.base.ui.adapters;
 
-import static com.jws.jwsapi.feature.formulador.ui.animations.AnimationsAdapter.setAnimationPivot;
+import static com.jws.jwsapi.utils.helpers.AdapterHelper.setAnimationPivot;
+import static com.jws.jwsapi.utils.helpers.SpinnerHelper.configurarSpinner;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +29,6 @@ public class AdapterEtiquetasDePrograma extends RecyclerView.Adapter<AdapterEtiq
     Context context;
     PreferencesManager preferencesManager;
 
-    // data is passed into the constructor
     public AdapterEtiquetasDePrograma(Context context, List<EtiquetasDeProgramaModel> data, List<String>etiquetas) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
@@ -37,41 +38,29 @@ public class AdapterEtiquetasDePrograma extends RecyclerView.Adapter<AdapterEtiq
 
     }
 
-    // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.standar_adapter_etiquetadeprograma, parent, false);
 
         return new ViewHolder(view);
     }
-    // binds the data to the TextView in each row
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
         int posi=position;
         holder.tv_campo.setText(mData.get(position).nombrecampo);
-        holder.spCampo.setPopupBackgroundResource(R.drawable.campollenarclickeable);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(
-                context,
-                R.layout.item_spinner,
-                etiquetas
-        );
-
-        holder.spCampo.setAdapter(adapter2);
+        configurarSpinner(holder.spCampo,context,etiquetas);
         int index= etiquetas.indexOf(preferencesManager.getEtiqueta(posi));
         if (index>-1){
             holder.spCampo.setSelection(index);
         }
-
         holder.spCampo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 preferencesManager.setEtiqueta(etiquetas.get(i),posi);
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
         lastPositionAdapter =setAnimationPivot(holder.itemView,posi, lastPositionAdapter,context);
         holder.itemView.setSelected(selectedPos == position);

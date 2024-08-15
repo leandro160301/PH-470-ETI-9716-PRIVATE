@@ -30,7 +30,7 @@ import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
 import com.jws.jwsapi.feature.formulador.data.sql.Form_SQL_db;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.feature.formulador.viewmodel.Form_PrincipalViewModel;
+import com.jws.jwsapi.feature.formulador.ui.viewmodel.Form_PrincipalViewModel;
 import com.jws.jwsapi.utils.Utils;
 import java.text.DecimalFormat;
 import java.util.ArrayList;

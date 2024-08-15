@@ -1,18 +1,14 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
-import android.app.AlertDialog;
+import static com.jws.jwsapi.utils.helpers.DialogHelper.TecladoEntero;
+import static com.jws.jwsapi.utils.helpers.DialogHelper.TecladoFlotante;
+import static com.jws.jwsapi.utils.helpers.SpinnerHelper.configurarSpinner;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,6 +20,7 @@ import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -53,11 +50,7 @@ public class Form_Fragment_ConfiguracionPrograma extends Fragment  {
 
         mainActivity=(MainActivity)getActivity();
 
-        String[] Receta_arr = getResources().getStringArray(R.array.Receta);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),R.layout.item_spinner,Receta_arr);
-        adapter.setDropDownViewResource(R.layout.item_spinner);
-        binding.spReceta.setAdapter(adapter);
-        binding.spReceta.setPopupBackgroundResource(R.drawable.campollenarclickeable);
+        configurarSpinner(binding.spReceta,getContext(), Arrays.asList(getResources().getStringArray(R.array.Receta)));
         modoreceta=mainActivity.mainClass.preferencesManager.getModoReceta();
         binding.spReceta.setSelection(modoreceta);
 
@@ -67,18 +60,7 @@ public class Form_Fragment_ConfiguracionPrograma extends Fragment  {
                 if(!recetaManager.ejecutando){
                     mainActivity.mainClass.preferencesManager.setModoReceta(i);
                     if(i!=modoreceta){
-                        mainActivity.mainClass.preferencesManager.setRecetaactual("");
-                        recetaManager.recetaActual ="";
-                        mainActivity.mainClass.preferencesManager.setCodigoRecetaactual("");
-                        recetaManager.codigoReceta ="";
-                        mainActivity.mainClass.preferencesManager.setNombreRecetaactual("");
-                        recetaManager.nombreReceta ="";
-                        recetaManager.listRecetaActual =new ArrayList<>();
-                        mainActivity.mainClass.preferencesManager.setPasosRecetaActual(new ArrayList<>());
-                        mainActivity.mainClass.preferencesManager.setCantidad(1);
-                        recetaManager.cantidad.setValue(1);
-                        mainActivity.mainClass.preferencesManager.setRealizadas(0);
-                        recetaManager.realizadas.setValue(0);
+                        resetearValores();
                     }
                 }else{
                     Utils.Mensaje("No puede la cambiar la configuracion mientras hay una receta en ejecucion",R.layout.item_customtoasterror,mainActivity);
@@ -92,11 +74,7 @@ public class Form_Fragment_ConfiguracionPrograma extends Fragment  {
             }
         });
 
-        String[] Mododeuso_arr = getResources().getStringArray(R.array.Mododeuso);
-        ArrayAdapter<String> adapter6 = new ArrayAdapter<>(requireContext(),R.layout.item_spinner,Mododeuso_arr);
-        adapter6.setDropDownViewResource(R.layout.item_spinner);
-        binding.spMododeuso.setAdapter(adapter6);
-        binding.spMododeuso.setPopupBackgroundResource(R.drawable.campollenarclickeable);
+        configurarSpinner(binding.spMododeuso,getContext(), Arrays.asList(getResources().getStringArray(R.array.Mododeuso)));
         modouso=mainActivity.mainClass.preferencesManager.getModoUso();
         binding.spMododeuso.setSelection(modouso);
 
@@ -106,18 +84,7 @@ public class Form_Fragment_ConfiguracionPrograma extends Fragment  {
                 if(!recetaManager.ejecutando){
                     mainActivity.mainClass.preferencesManager.setModoUso(i);
                     if(i!=modouso){
-                        mainActivity.mainClass.preferencesManager.setRecetaactual("");
-                        recetaManager.recetaActual ="";
-                        mainActivity.mainClass.preferencesManager.setCodigoRecetaactual("");
-                        recetaManager.codigoReceta ="";
-                        mainActivity.mainClass.preferencesManager.setNombreRecetaactual("");
-                        recetaManager.nombreReceta ="";
-                        recetaManager.listRecetaActual =new ArrayList<>();
-                        mainActivity.mainClass.preferencesManager.setPasosRecetaActual(new ArrayList<>());
-                        mainActivity.mainClass.preferencesManager.setCantidad(1);
-                        recetaManager.cantidad.setValue(1);
-                        mainActivity.mainClass.preferencesManager.setRealizadas(0);
-                        recetaManager.realizadas.setValue(0);
+                        resetearValores();
                     }
                 }else{
                     Utils.Mensaje("No puede la cambiar la configuracion mientras hay una receta en ejecucion",R.layout.item_customtoasterror,mainActivity);
@@ -152,98 +119,39 @@ public class Form_Fragment_ConfiguracionPrograma extends Fragment  {
         }
 
         binding.toggle.setOnCheckedChangeListener((radioGroup, i) -> {
-            if(binding.toggle.getCheckedRadioButtonId()==R.id.btON){
-                mainActivity.mainClass.preferencesManager.setRecipientexPaso(true);
-            }else{
-                mainActivity.mainClass.preferencesManager.setRecipientexPaso(false);
-            }
+            mainActivity.mainClass.preferencesManager.setRecipientexPaso(binding.toggle.getCheckedRadioButtonId() == R.id.btON);
         });
         binding.toggle2.setOnCheckedChangeListener((radioGroup, i) -> {
-            if(binding.toggle2.getCheckedRadioButtonId()==R.id.btON2){
-                mainActivity.mainClass.preferencesManager.setContinuarFueraRango(true);
-            }else{
-                mainActivity.mainClass.preferencesManager.setContinuarFueraRango(false);
-            }
+            mainActivity.mainClass.preferencesManager.setContinuarFueraRango(binding.toggle2.getCheckedRadioButtonId() == R.id.btON2);
         });
         binding.toggle3.setOnCheckedChangeListener((radioGroup, i) -> {
-            if(binding.toggle3.getCheckedRadioButtonId()==R.id.btON3){
-                mainActivity.mainClass.preferencesManager.setEtiquetaxPaso(true);
-            }else{
-                mainActivity.mainClass.preferencesManager.setEtiquetaxPaso(false);
-            }
+            mainActivity.mainClass.preferencesManager.setEtiquetaxPaso(binding.toggle3.getCheckedRadioButtonId() == R.id.btON3);
         });
         binding.tvTolerancia.setText(mainActivity.mainClass.preferencesManager.getTolerancia());
         binding.tvBza1.setText(mainActivity.mainClass.preferencesManager.getBza1Limite());
         binding.tvBza2.setText(mainActivity.mainClass.preferencesManager.getBza2Limite());
         binding.tvBza3.setText(mainActivity.mainClass.preferencesManager.getBza3Limite());
-        binding.tvTolerancia.setOnClickListener(view1 -> Teclado(binding.tvTolerancia,"Ingrese la tolerancia"));
-        binding.tvBza1.setOnClickListener(view1 -> Teclado(binding.tvBza1,"Ingrese el limite de la balanza 1"));
-        binding.tvBza2.setOnClickListener(view1 -> Teclado(binding.tvBza2,"Ingrese el limite de la balanza 2"));
-        binding.tvBza3.setOnClickListener(view1 -> Teclado(binding.tvBza3,"Ingrese el limite de la balanza 3"));
+        binding.tvTolerancia.setOnClickListener(view12 -> TecladoEntero(binding.tvTolerancia, "Ingrese la tolerancia", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTolerancia(texto)));
+        binding.tvBza1.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setBza1Limite(texto)));
+        binding.tvBza2.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setBza2Limite(texto)));
+        binding.tvBza3.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setBza3Limite(texto)));
 
 
     }
 
-    public void Teclado(TextView View,String texto){
-
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopcionespuntos, null);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        LinearLayout lndelete_text=mView.findViewById(R.id.lndelete_text);
-        textView.setText(texto);
-        if(View==binding.tvTolerancia){
-            userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-        }
-        if(View==binding.tvBza1||View==binding.tvBza2||View==binding.tvBza3){
-            userInput.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            userInput.setKeyListener(DigitsKeyListener.getInstance(".0123456789"));
-        }
-
-        userInput.setOnLongClickListener(v -> true);
-
-        userInput.setText(View.getText().toString());
-        userInput.requestFocus();
-
-        if(!View.getText().toString().equals("") && !View.getText().toString().equals("-")){
-            userInput.setSelection(userInput.getText().length());
-        }
-        lndelete_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View view) {
-                userInput.setText("");
-            }
-        });
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-
-
-            if(Utils.isNumeric(userInput.getText().toString())){
-                if(View==binding.tvTolerancia){
-                    mainActivity.mainClass.preferencesManager.setTolerancia(userInput.getText().toString());
-                }
-                if(View==binding.tvBza1){
-                    mainActivity.mainClass.preferencesManager.setBza1Limite(userInput.getText().toString());
-                }
-                if(View==binding.tvBza2){
-                    mainActivity.mainClass.preferencesManager.setBza2Limite(userInput.getText().toString());
-                }
-                if(View==binding.tvBza3){
-                    mainActivity.mainClass.preferencesManager.setBza3Limite(userInput.getText().toString());
-                }
-                View.setText(userInput.getText().toString());
-            }
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-
+    private void resetearValores() {
+        mainActivity.mainClass.preferencesManager.setRecetaactual("");
+        recetaManager.recetaActual ="";
+        mainActivity.mainClass.preferencesManager.setCodigoRecetaactual("");
+        recetaManager.codigoReceta ="";
+        mainActivity.mainClass.preferencesManager.setNombreRecetaactual("");
+        recetaManager.nombreReceta ="";
+        recetaManager.listRecetaActual =new ArrayList<>();
+        mainActivity.mainClass.preferencesManager.setPasosRecetaActual(new ArrayList<>());
+        mainActivity.mainClass.preferencesManager.setCantidad(1);
+        recetaManager.cantidad.setValue(1);
+        mainActivity.mainClass.preferencesManager.setRealizadas(0);
+        recetaManager.realizadas.setValue(0);
     }
 
     private void configuracionBotones() {

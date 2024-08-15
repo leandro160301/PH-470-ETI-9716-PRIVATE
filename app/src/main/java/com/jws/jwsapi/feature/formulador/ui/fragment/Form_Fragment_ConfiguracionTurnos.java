@@ -81,8 +81,6 @@ public class Form_Fragment_ConfiguracionTurnos extends Fragment  {
         dialog.show();
 
         Guardar.setOnClickListener(view -> {
-
-
             if(Utils.isNumeric(userInput.getText().toString())){
                 if(View==binding.tvTurno1){
                     mainActivity.mainClass.preferencesManager.setTurno1(Integer.parseInt(userInput.getText().toString()));

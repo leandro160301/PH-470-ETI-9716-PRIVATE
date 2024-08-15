@@ -9,17 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.jws.jwsapi.R;
-import com.jws.jwsapi.common.impresora.tipos.ImprimirRed;
-
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;

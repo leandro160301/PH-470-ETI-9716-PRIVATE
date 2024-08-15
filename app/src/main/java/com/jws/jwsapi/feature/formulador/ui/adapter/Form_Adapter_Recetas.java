@@ -9,7 +9,7 @@ import com.jws.jwsapi.databinding.ProgFormuladorAdapterRecetaBinding;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.feature.formulador.ui.animations.AnimationsAdapter;
+import com.jws.jwsapi.utils.helpers.AdapterHelper;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
 import java.util.List;
 import java.util.Objects;
@@ -84,7 +84,7 @@ public class Form_Adapter_Recetas extends RecyclerView.Adapter<Form_Adapter_Rece
             holder.itemView.setBackgroundResource(R.drawable.fondolineainferiornegra2);
         }
 
-        lastPositionAdapter = AnimationsAdapter.setAnimationSlideInLeft(holder.itemView, position, lastPositionAdapter, context);
+        lastPositionAdapter = AdapterHelper.setAnimationSlideInLeft(holder.itemView, position, lastPositionAdapter, context);
         holder.itemView.setSelected(selectedPos == position);
     }
 

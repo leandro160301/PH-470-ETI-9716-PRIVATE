@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaIngresodatosBinding;
-import com.jws.jwsapi.utils.DatePickerDialogFragment;
+import com.jws.jwsapi.base.ui.fragments.DatePickerDialogFragment;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;

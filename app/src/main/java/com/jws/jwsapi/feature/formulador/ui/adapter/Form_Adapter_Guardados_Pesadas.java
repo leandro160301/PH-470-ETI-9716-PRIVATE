@@ -4,15 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jws.jwsapi.feature.formulador.models.Form_Model_PesadasDB;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.feature.formulador.ui.animations.AnimationsAdapter;
+import com.jws.jwsapi.utils.helpers.AdapterHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +77,7 @@ public class Form_Adapter_Guardados_Pesadas extends RecyclerView.Adapter<Form_Ad
             holder.itemView.setBackgroundResource(R.drawable.fondolineainferiornegra2);
         }
 
-        lastPositionAdapter= AnimationsAdapter.setAnimationPivot(holder.itemView,position,lastPositionAdapter,context);
+        lastPositionAdapter= AdapterHelper.setAnimationPivot(holder.itemView,position,lastPositionAdapter,context);
         holder.itemView.setSelected(selectedPos == position);
     }
 

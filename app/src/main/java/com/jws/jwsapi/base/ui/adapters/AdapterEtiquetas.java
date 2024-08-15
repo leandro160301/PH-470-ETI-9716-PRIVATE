@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.models.EtiquetasModel;
-import com.jws.jwsapi.feature.formulador.ui.animations.AnimationsAdapter;
+import com.jws.jwsapi.utils.helpers.AdapterHelper;
 import com.jws.jwsapi.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -224,7 +224,7 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
 
         });
 
-        lastPositionAdapter = AnimationsAdapter.setAnimationSlideInLeft(holder.itemView, position, lastPositionAdapter, context);
+        lastPositionAdapter = AdapterHelper.setAnimationSlideInLeft(holder.itemView, position, lastPositionAdapter, context);
         holder.itemView.setSelected(selectedPos == posi);
     }
 

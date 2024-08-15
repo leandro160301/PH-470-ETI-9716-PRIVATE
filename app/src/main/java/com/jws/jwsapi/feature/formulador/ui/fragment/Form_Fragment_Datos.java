@@ -1,12 +1,13 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
+import static com.jws.jwsapi.utils.helpers.DialogHelper.Teclado;
+import static com.jws.jwsapi.utils.helpers.SpinnerHelper.configurarSpinner;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,13 +21,13 @@ import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaDatosBinding;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
-import com.jws.jwsapi.feature.formulador.viewmodel.Form_Fragment_DatosViewModel;
+import com.jws.jwsapi.feature.formulador.ui.viewmodel.Form_Fragment_DatosViewModel;
 import com.jws.jwsapi.utils.Utils;
+import com.jws.jwsapi.utils.helpers.DialogInterface;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
-
+import java.util.Arrays;
 import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -66,11 +67,7 @@ public class Form_Fragment_Datos extends Fragment{
     }
 
     private void setupSpinnersWithDefaults() {
-        String[] Vencimiento_arr = getResources().getStringArray(R.array.Vencimiento);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(requireContext(),R.layout.item_spinner,Vencimiento_arr);
-        adapter2.setDropDownViewResource(R.layout.item_spinner);
-        binding.spVencimiento.setAdapter(adapter2);
-        binding.spVencimiento.setPopupBackgroundResource(R.drawable.campollenarclickeable);
+        configurarSpinner(binding.spVencimiento,getContext(), Arrays.asList(getResources().getStringArray(R.array.Vencimiento)));
         int modovenc=mainActivity.mainClass.preferencesManager.getModoVencimiento();
         binding.spVencimiento.setSelection(modovenc);
         binding.spVencimiento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -93,17 +90,12 @@ public class Form_Fragment_Datos extends Fragment{
             }
         });
 
-        String[] Lote_arr = getResources().getStringArray(R.array.Lote);
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(requireContext(),R.layout.item_spinner,Lote_arr);
-        adapter3.setDropDownViewResource(R.layout.item_spinner);
-        binding.spLote.setAdapter(adapter3);
-        binding.spLote.setPopupBackgroundResource(R.drawable.campollenarclickeable);
+        configurarSpinner(binding.spLote,getContext(), Arrays.asList(getResources().getStringArray(R.array.Lote)));
         int modolote=mainActivity.mainClass.preferencesManager.getModoLote();
         binding.spLote.setSelection(mainActivity.mainClass.preferencesManager.getModoLote());
         binding.spLote.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
                 if(!recetaManager.ejecutando){
                     if(i!=modolote){
                         mainActivity.mainClass.preferencesManager.setLote("");
@@ -124,11 +116,41 @@ public class Form_Fragment_Datos extends Fragment{
     }
 
     private void setOnClickListeners() {
-        binding.tvCampo1.setOnClickListener(view117 -> Teclado(binding.tvCampo1,"Ingrese el campo"));
-        binding.tvCampo2.setOnClickListener(view116 -> Teclado(binding.tvCampo2,"Ingrese el campo"));
-        binding.tvCampo3.setOnClickListener(view115 -> Teclado(binding.tvCampo3,"Ingrese el campo"));
-        binding.tvCampo4.setOnClickListener(view114 -> Teclado(binding.tvCampo4,"Ingrese el campo"));
-        binding.tvCampo5.setOnClickListener(view113 -> Teclado(binding.tvCampo5,"Ingrese el campo"));
+        binding.tvCampo1.setOnClickListener(view -> Teclado(binding.tvCampo1, "Ingrese el campo", mainActivity, texto -> {
+            if (!texto.isEmpty()) {
+                viewModel.setCampo1(texto);
+            } else {
+                viewModel.disableCampo1();
+            }
+        }));
+        binding.tvCampo2.setOnClickListener(view -> Teclado(binding.tvCampo2, "Ingrese el campo", mainActivity, texto -> {
+            if (!texto.isEmpty()) {
+                viewModel.setCampo2(texto);
+            } else {
+                viewModel.disableCampo2();
+            }
+        }));
+        binding.tvCampo3.setOnClickListener(view -> Teclado(binding.tvCampo3, "Ingrese el campo", mainActivity, texto -> {
+            if (!texto.isEmpty()) {
+                viewModel.setCampo3(texto);
+            } else {
+                viewModel.disableCampo3();
+            }
+        }));
+        binding.tvCampo4.setOnClickListener(view -> Teclado(binding.tvCampo4, "Ingrese el campo", mainActivity, texto -> {
+            if (!texto.isEmpty()) {
+                viewModel.setCampo4(texto);
+            } else {
+                viewModel.disableCampo4();
+            }
+        }));
+        binding.tvCampo5.setOnClickListener(view -> Teclado(binding.tvCampo5, "Ingrese el campo", mainActivity, texto -> {
+            if (!texto.isEmpty()) {
+                viewModel.setCampo5(texto);
+            } else {
+                viewModel.disableCampo5();
+            }
+        }));
 
         binding.imCampo1.setOnClickListener(view112 -> viewModel.disableCampo1());
         binding.imCampo2.setOnClickListener(view111 -> viewModel.disableCampo2());
@@ -179,48 +201,8 @@ public class Form_Fragment_Datos extends Fragment{
 
         }
     }
-    public void Teclado(TextView View,String texto){
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopciones, null);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        final LinearLayout delete_text= mView.findViewById(R.id.lndelete_text);
-        delete_text.setOnClickListener(view -> userInput.setText(""));
-        textView.setText(texto);
-        userInput.setOnLongClickListener(v -> true);
-        userInput.requestFocus();
-        userInput.setText(View.getText().toString());
-        if(!View.getText().toString().equals("") && !View.getText().toString().equals("-")){
-            userInput.setSelection(userInput.getText().length());
-        }
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
 
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            String input = userInput.getText().toString();
-            if (!input.isEmpty()) {
-                if (View == binding.tvCampo1) viewModel.setCampo1(input);
-                if (View == binding.tvCampo2) viewModel.setCampo2(input);
-                if (View == binding.tvCampo3) viewModel.setCampo3(input);
-                if (View == binding.tvCampo4) viewModel.setCampo4(input);
-                if (View == binding.tvCampo5) viewModel.setCampo5(input);
-            } else {
-                if (View == binding.tvCampo1) viewModel.disableCampo1();
-                if (View == binding.tvCampo2) viewModel.disableCampo2();
-                if (View == binding.tvCampo3) viewModel.disableCampo3();
-                if (View == binding.tvCampo4) viewModel.disableCampo4();
-                if (View == binding.tvCampo5) viewModel.disableCampo5();
-            }
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-
-    }
     public void DialogoReset(LinearLayout linearLayout,String titulo,String o1,String o2,String o3){
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);

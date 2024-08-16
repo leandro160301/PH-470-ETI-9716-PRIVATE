@@ -2,6 +2,8 @@ package com.jws.jwsapi.feature.formulador.ui.fragment;
 
 import static android.view.View.GONE;
 import static com.jws.jwsapi.common.storage.Storage.getArchivosExtension;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.Teclado;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoEntero;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlotante;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -34,6 +36,7 @@ import com.jws.jwsapi.feature.formulador.models.Form_Model_Ingredientes;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Encabezado;
+import com.jws.jwsapi.feature.formulador.ui.dialog.DialogInputInterface;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
@@ -186,43 +189,6 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
     }
 
-    public void DialogoSeteoVariables(TextView textViewelegido,String texto){
-
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopciones, null);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        final LinearLayout delete_text= mView.findViewById(R.id.lndelete_text);
-        userInput.setOnLongClickListener(v -> true);
-        delete_text.setOnClickListener(view -> userInput.setText(""));
-        TextView textView=mView.findViewById(R.id.textViewt);
-        textView.setText(texto);
-
-        if(textViewelegido==tv_codigo){
-            userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-        }
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            if(textViewelegido== tv_codigo){
-                tv_codigo.setText(userInput.getText().toString());
-                codigoDialogo=userInput.getText().toString();
-            }
-            if(textViewelegido== tv_descripcion){
-                tv_descripcion.setText(userInput.getText().toString());
-                descripcionDialogo=userInput.getText().toString();
-            }
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-
-    }
-
     public void DialogoNuevaReceta(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_nuevareceta, null);
@@ -234,9 +200,14 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         }else{
             checkBox.setVisibility(View.GONE);
         }
-
-        tv_codigo.setOnClickListener(view -> DialogoSeteoVariables(tv_codigo,"Ingrese el codigo de la receta"));
-        tv_descripcion.setOnClickListener(view -> DialogoSeteoVariables(tv_descripcion,"Ingrese la descripcion de la receta"));
+        tv_codigo.setOnClickListener(view -> TecladoEntero(tv_codigo, "Ingrese el codigo de la receta", getContext(), texto -> {
+            tv_codigo.setText(texto);
+            codigoDialogo=texto;
+        }));
+        tv_descripcion.setOnClickListener(view -> Teclado(tv_descripcion, "Ingrese la descripcion de la receta", getContext(), texto -> {
+            tv_descripcion.setText(texto);
+            descripcionDialogo=texto;
+        }));
 
         Button Guardar =  mView.findViewById(R.id.buttons);
         Button Cancelar =  mView.findViewById(R.id.buttonc);

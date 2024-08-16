@@ -1,13 +1,11 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoEntero;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

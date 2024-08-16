@@ -1,12 +1,9 @@
 package com.jws.jwsapi.feature.formulador.di;
 
 import androidx.lifecycle.MutableLiveData;
-
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Singleton;
 
 @Singleton

@@ -12,7 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class Form_PrincipalViewModel extends ViewModel {
     private final RecetaManager recetaManager;
-    private PreferencesManager preferencesManager;
+    private final PreferencesManager preferencesManager;
 
     @Inject
     public Form_PrincipalViewModel(RecetaManager recetaManager, Application application) {

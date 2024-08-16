@@ -10,7 +10,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +34,6 @@ import com.jws.jwsapi.feature.formulador.models.Form_Model_Ingredientes;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Encabezado;
-import com.jws.jwsapi.feature.formulador.ui.dialog.DialogInputInterface;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
@@ -406,7 +403,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
         View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_buscador, null);
         final EditText userInput = mView.findViewById(R.id.etDatos);
-        RecyclerView listview = mView.findViewById(R.id.listview);
+        RecyclerView recycler = mView.findViewById(R.id.listview);
         ImageView im_buscador = mView.findViewById(R.id.im_buscador);
         Button Cancelar = mView.findViewById(R.id.buttonc);
         Cancelar.setText("CERRAR");
@@ -415,7 +412,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         dialog.show();
         List<String>ListfilteredList =filtrarRecetasEnArchivos(getArchivosExtension(".csv"));
         filtro=false;
-        listview.setLayoutManager(new LinearLayoutManager(mainActivity));
+        recycler.setLayoutManager(new LinearLayoutManager(mainActivity));
         Form_Adapter_Encabezado adapter2 = new Form_Adapter_Encabezado(mainActivity, ListfilteredList);
         adapter2.setClickListener((view, position) -> {
             if(!filtro){
@@ -427,7 +424,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
             }
             dialog.cancel();
         });
-        listview.setAdapter(adapter2);
+        recycler.setAdapter(adapter2);
         userInput.setOnLongClickListener(v -> true);
         userInput.setHint(" Buscar");
         userInput.setOnClickListener(view -> userInput.getText().clear());

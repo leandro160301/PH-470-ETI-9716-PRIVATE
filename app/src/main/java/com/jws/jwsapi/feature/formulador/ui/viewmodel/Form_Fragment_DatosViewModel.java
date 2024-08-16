@@ -19,7 +19,7 @@ public class Form_Fragment_DatosViewModel extends ViewModel {
     private MutableLiveData<Boolean> campo3_b = new MutableLiveData<>(false);
     private MutableLiveData<Boolean> campo4_b = new MutableLiveData<>(false);
     private MutableLiveData<Boolean> campo5_b = new MutableLiveData<>(false);
-    private PreferencesManager preferencesManager;
+    private final PreferencesManager preferencesManager;
 
     @Inject
     public Form_Fragment_DatosViewModel(Application application) {
@@ -29,7 +29,6 @@ public class Form_Fragment_DatosViewModel extends ViewModel {
         campo3 = new MutableLiveData<>(preferencesManager.getCampo3());
         campo4 = new MutableLiveData<>(preferencesManager.getCampo4());
         campo5 = new MutableLiveData<>(preferencesManager.getCampo5());
-        // Actualizar los valores booleanos basado en si están vacíos
         campo1_b.setValue(!campo1.getValue().isEmpty());
         campo2_b.setValue(!campo2.getValue().isEmpty());
         campo3_b.setValue(!campo3.getValue().isEmpty());
@@ -42,30 +41,21 @@ public class Form_Fragment_DatosViewModel extends ViewModel {
     public MutableLiveData<String> getCampo3() {return campo3;}
     public MutableLiveData<String> getCampo4() {return campo4;}
     public MutableLiveData<String> getCampo5() {return campo5;}
+
     public void disableCampo1() {
-        if(campo1_b.getValue() != null && campo1_b.getValue()){
-            setCampo1("");
-        }
+        if(campo1_b.getValue() != null && campo1_b.getValue())setCampo1("");
     }
     public void disableCampo2() {
-        if(campo2_b.getValue() != null && campo2_b.getValue()){
-            setCampo2("");
-        }
+        if(campo2_b.getValue() != null && campo2_b.getValue())setCampo2("");
     }
     public void disableCampo3() {
-        if(campo3_b.getValue() != null && campo3_b.getValue()){
-            setCampo3("");
-        }
+        if(campo3_b.getValue() != null && campo3_b.getValue())setCampo3("");
     }
     public void disableCampo4() {
-        if(campo4_b.getValue() != null && campo4_b.getValue()){
-            setCampo4("");
-        }
+        if(campo4_b.getValue() != null && campo4_b.getValue())setCampo4("");
     }
     public void disableCampo5() {
-        if(campo5_b.getValue() != null && campo5_b.getValue()){
-            setCampo5("");
-        }
+        if(campo5_b.getValue() != null && campo5_b.getValue())setCampo5("");
     }
 
     public void setCampo1(String value) {

@@ -122,7 +122,6 @@ public class MainFormClass implements OnFragmentChangeListener {
     public List<Printer> variablesImprimibles;
     public List<String> imprimiblesPredefinidas;
 
-
     Boolean permitirClic=true;
     public PreferencesManager preferencesManager;
 

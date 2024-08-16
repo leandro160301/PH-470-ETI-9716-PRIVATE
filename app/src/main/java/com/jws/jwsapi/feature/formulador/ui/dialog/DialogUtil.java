@@ -117,12 +117,12 @@ public class DialogUtil {
         deleteText.setOnClickListener(v -> userInput.setText(""));
     }
 
-    public static void dialogoPreguntaEliminar(Context context,String texto, DialogButtonInterface dialogInterface) {
+    public static void dialogoTexto(Context context, String texto, String textoBoton, DialogButtonInterface dialogInterface) {
         LayoutInflater inflater = LayoutInflater.from(context);
         DialogoDossinetBinding dialogBinding = DialogoDossinetBinding.inflate(inflater);
 
         dialogBinding.textViewt.setText(texto);
-        dialogBinding.buttons.setText("ELIMINAR");
+        dialogBinding.buttons.setText(textoBoton);
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context);
         mBuilder.setView(dialogBinding.getRoot());
@@ -130,11 +130,10 @@ public class DialogUtil {
         dialog.show();
 
         dialogBinding.buttons.setOnClickListener(view -> {
-            dialogInterface.botonEliminar();
+            dialogInterface.buttonClick();
             dialog.cancel();
         });
         dialogBinding.buttonc.setOnClickListener(view -> dialog.cancel());
     }
-
 
 }

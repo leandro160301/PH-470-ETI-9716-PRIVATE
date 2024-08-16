@@ -2,7 +2,7 @@ package com.jws.jwsapi.feature.formulador.ui.fragment;
 
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.Teclado;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoEntero;
-import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoPreguntaEliminar;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -228,7 +228,7 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
     }
 
     private void dialogoEliminarIngrediente(int posicion, List<Form_Model_Ingredientes> mData) {
-        dialogoPreguntaEliminar(mainActivity, "¿Quiere eliminar el ingrediente " + mData.get(posicion).getNombre() + "?", () -> {
+        dialogoTexto(mainActivity, "¿Quiere eliminar el ingrediente " + mData.get(posicion).getNombre() + "?","ELIMINAR" ,() -> {
             mData.remove(posicion);
             try {
                 mainActivity.mainClass.setIngredientes(mData);

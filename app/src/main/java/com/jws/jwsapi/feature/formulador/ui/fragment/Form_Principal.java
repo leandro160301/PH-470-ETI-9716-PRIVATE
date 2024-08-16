@@ -1,5 +1,7 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
+import static com.jws.jwsapi.utils.Utils.format;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -33,7 +35,6 @@ import com.jws.jwsapi.feature.formulador.data.sql.Form_SQL_db;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.viewmodel.Form_PrincipalViewModel;
 import com.jws.jwsapi.utils.Utils;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +51,7 @@ public class Form_Principal extends Fragment  {
     Handler mHandler= new Handler();
     MainActivity mainActivity;
     private ButtonProvider_Principal buttonProvider;
-    Boolean stoped=false;
+    boolean stoped=false;
     String campo1="";
     String campo2="";
     String campo3="";
@@ -262,7 +263,7 @@ public class Form_Principal extends Fragment  {
         recetaManager.listRecetaActual = mainActivity.mainClass.getReceta(recetaManager.recetaActual);
         preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
         if(recetaManager.listRecetaActual.size()>0){
-            Boolean empezar=true;
+            boolean empezar=true;
             int mododeuso=preferencesManager.getModoUso();
             if(mododeuso==0){
                 preferencesManager.setRecetacomopedido(false);
@@ -498,58 +499,18 @@ public class Form_Principal extends Fragment  {
         preferencesManager.setRecetacomopedidoCheckbox(modo);
     }
     private void IngresoRecipiente() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dossinet, null);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        textView.setText("Ingrese recipiente y luego presione SIGUIENTE");
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        Cancelar.setVisibility(View.INVISIBLE);
-        Guardar.setText("SIGUIENTE");
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
+        dialogoTexto(mainActivity, "Ingrese recipiente y luego presione SIGUIENTE", "SIGUIENTE", () -> {
             mainActivity.mainClass.BZA.setTaraDigital(mainActivity.mainClass.N_BZA,mainActivity.mainClass.BZA.getBruto(mainActivity.mainClass.N_BZA));
             recetaManager.estado=2;
             preferencesManager.setEstado(2);
-            dialog.cancel();
         });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
     }
+
 
     private void ConsultaFin() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dossinet, null);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        textView.setText("¿Quiere detener la receta?");
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        Guardar.setText("DETENER");
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            recetaManager.ejecutando=false;
-            preferencesManager.setEjecutando(false);
-            mainActivity.mainClass.oidreceta.value="0";
-            preferencesManager.setRecetaId(0);
-            preferencesManager.setPedidoId(0);
-            binding.btStart.setBackgroundResource(R.drawable.boton__arranqueparada_selector);
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
+        dialogoTexto(mainActivity, "¿Quiere detener la receta?", "DETENER", this::detener);
     }
+
 
     private void configuracionBotonesBalanza() {
         if (buttonProvider != null) {
@@ -582,9 +543,6 @@ public class Form_Principal extends Fragment  {
 
             });
 
-
-
-
         }
     }
 
@@ -611,7 +569,6 @@ public class Form_Principal extends Fragment  {
 
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza);
             bt_1.setOnClickListener(view -> {
-
                 if(!recetaManager.ejecutando){
                     IngresaCantidad();
                 }else{
@@ -630,63 +587,57 @@ public class Form_Principal extends Fragment  {
         if(recetaManager.ejecutando){
             if(recetaManager.pasoActual<=recetaManager.listRecetaActual.size()){
                 if(rango==1||preferencesManager.getContinuarFueraRango()){
-                    String netoactual=mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA);
-                    recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).setKilos_reales_ing(netoactual);
-                    mainActivity.mainClass.okilosreales.value=netoactual+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
-                    Float porcentaje=((mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)*100)/setPoint)-100;
-                    if(porcentaje<0){
-                        porcentaje=porcentaje*(-1);
-                    }
-                    String formato="0.";
-
-                    StringBuilder capacidadBuilder = new StringBuilder(formato);
-                    for(int i=0;i<2;i++){
-                        capacidadBuilder.append("0");
-                    }
-                    formato = capacidadBuilder.toString();
-                    DecimalFormat df = new DecimalFormat(formato);
-                    String porcentajestr = df.format(porcentaje);
-
-                    recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).setTolerancia_ing(porcentajestr + "%");
-                    if(preferencesManager.getPasoActual()==1&&!preferencesManager.getRecetacomopedido()){
-                        insertarPrimerPasoRecetaBatchSQL();
-                        if(preferencesManager.getEtiquetaxPaso()){
-                            mainActivity.mainClass.Imprimir(0);
-                        }
-                    }
-                    if(preferencesManager.getPasoActual()>1&&!preferencesManager.getRecetacomopedido()){
-                        insertarNuevoPasoRecetaBatchSQL();
-                        if(preferencesManager.getEtiquetaxPaso()){
-                            mainActivity.mainClass.Imprimir(0);
-                        }
-                    }
-                    if(preferencesManager.getPasoActual()==1&&preferencesManager.getRecetacomopedido()){
-                        insertarPrimerPasoPedidoBatchSQL();
-                        if(preferencesManager.getEtiquetaxPaso()){
-                            mainActivity.mainClass.Imprimir(0);
-                        }
-                    }
-                    if(preferencesManager.getPasoActual()>1&&preferencesManager.getRecetacomopedido()){
-                        insertarNuevoPasoPedidoBatchSQL();
-                        if(preferencesManager.getEtiquetaxPaso()){
-                            mainActivity.mainClass.Imprimir(0);
-                        }
-                    }
-                    if(recetaManager.pasoActual<recetaManager.listRecetaActual.size()){
-                        nuevoPaso();
-                    }else{
-                        imprimirEtiquetaFinal();
-                    }
-
-
+                    calculaPorcentajeError();
+                    manejoBasedeDatoseImpresion();
                 }else{
                     Utils.Mensaje("Ingrediente fuera de rango",R.layout.item_customtoasterror,mainActivity);
                 }
-
             }else{
                 recetaFinalizada();
             }
+        }
+    }
 
+    private void calculaPorcentajeError() {
+        String netoactual=mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA);
+        recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).setKilos_reales_ing(netoactual);
+        mainActivity.mainClass.okilosreales.value=netoactual+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
+        float porcentaje=((mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)*100)/setPoint)-100;
+        if(porcentaje<0){
+            porcentaje=porcentaje*(-1);
+        }
+        recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).setTolerancia_ing(format(String.valueOf(porcentaje),2) + "%");
+    }
+
+    private void manejoBasedeDatoseImpresion() {
+        if(preferencesManager.getPasoActual()==1&&!preferencesManager.getRecetacomopedido()){
+            insertarPrimerPasoRecetaBatchSQL();
+            if(preferencesManager.getEtiquetaxPaso()){
+                mainActivity.mainClass.Imprimir(0);
+            }
+        }
+        if(preferencesManager.getPasoActual()>1&&!preferencesManager.getRecetacomopedido()){
+            insertarNuevoPasoRecetaBatchSQL();
+            if(preferencesManager.getEtiquetaxPaso()){
+                mainActivity.mainClass.Imprimir(0);
+            }
+        }
+        if(preferencesManager.getPasoActual()==1&&preferencesManager.getRecetacomopedido()){
+            insertarPrimerPasoPedidoBatchSQL();
+            if(preferencesManager.getEtiquetaxPaso()){
+                mainActivity.mainClass.Imprimir(0);
+            }
+        }
+        if(preferencesManager.getPasoActual()>1&&preferencesManager.getRecetacomopedido()){
+            insertarNuevoPasoPedidoBatchSQL();
+            if(preferencesManager.getEtiquetaxPaso()){
+                mainActivity.mainClass.Imprimir(0);
+            }
+        }
+        if(recetaManager.pasoActual<recetaManager.listRecetaActual.size()){
+            nuevoPaso();
+        }else{
+            imprimirEtiquetaFinal();
         }
     }
 
@@ -944,17 +895,15 @@ public class Form_Principal extends Fragment  {
     private void recetaFinalizada() {
         requireActivity().runOnUiThread(() -> {
             binding.tvEstado.setText("FINALIZADO");
-            binding.btStart.setBackgroundResource(R.drawable.boton__arranqueparada_selector);
+            detener();
         });
-        mainActivity.mainClass.oidreceta.value="0";
-        preferencesManager.setRecetaId(0);
-        preferencesManager.setPedidoId(0);
-        recetaManager.estado=0;
-        preferencesManager.setEstado(0);
-        recetaManager.ejecutando=false;
-        preferencesManager.setEjecutando(false);
-        Boolean arealizarfinalizados=false;
-        if(recetaManager.cantidad.getValue()>0&&(recetaManager.cantidad.getValue()-recetaManager.realizadas.getValue()>0)){
+        restaurarDatos(aRealizarFinalizados());
+
+    }
+
+    private boolean aRealizarFinalizados() {
+        boolean arealizarfinalizados=false;
+        if(recetaManager.cantidad.getValue()!=null&&recetaManager.cantidad.getValue()>0&&(recetaManager.cantidad.getValue()-recetaManager.realizadas.getValue()>0)){
             recetaManager.realizadas.setValue(recetaManager.realizadas.getValue()+1);
             preferencesManager.setRealizadas(recetaManager.realizadas.getValue());
             if(recetaManager.cantidad.getValue()<=recetaManager.realizadas.getValue()){
@@ -966,63 +915,47 @@ public class Form_Principal extends Fragment  {
             recetaManager.realizadas.setValue(recetaManager.cantidad.getValue());
             preferencesManager.setRealizadas(recetaManager.cantidad.getValue());
             arealizarfinalizados=true;
-
         }
-        restaurarDatos(arealizarfinalizados);
+        return arealizarfinalizados;
+    }
+
+    private void detener() {
+        mainActivity.mainClass.oidreceta.value="0";
+        preferencesManager.setRecetaId(0);
+        preferencesManager.setPedidoId(0);
+        recetaManager.estado=0;
+        preferencesManager.setEstado(0);
+        recetaManager.ejecutando=false;
+        preferencesManager.setEjecutando(false);
+        binding.btStart.setBackgroundResource(R.drawable.boton__arranqueparada_selector);
 
     }
 
-    private void restaurarDatos(Boolean arealizarfinalizados) {
-        if(preferencesManager.getResetLote()==1){
+    private void restaurarDatos(boolean arealizarfinalizados) {
+        restaurarLote(arealizarfinalizados);
+        restaurarVencimiento(arealizarfinalizados);
+        restaurarCampo1(arealizarfinalizados);
+        restaurarCampo2(arealizarfinalizados);
+        restaurarCampo3(arealizarfinalizados);
+        restaurarCampo4(arealizarfinalizados);
+        restaurarCampo5(arealizarfinalizados);
+
+    }
+
+    private void restaurarCampo5(boolean arealizarfinalizados) {
+        if(preferencesManager.getResetCampo5()==1){
             if(arealizarfinalizados){
-                preferencesManager.setLote("");
-                mainActivity.mainClass.olote.value="";
+                preferencesManager.setCampo5Valor("");
+                mainActivity.mainClass.ocampo5.value="";
             }
         }
-        if(preferencesManager.getResetLote()==2){
-            preferencesManager.setLote("");
-            mainActivity.mainClass.olote.value="";
+        if(preferencesManager.getResetCampo5()==2){
+            preferencesManager.setCampo5Valor("");
+            mainActivity.mainClass.ocampo5.value="";
         }
-        if(preferencesManager.getResetVencimiento()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setVencimiento("");
-                mainActivity.mainClass.ovenci.value="";
-            }
-        }
-        if(preferencesManager.getResetVencimiento()==2){
-            preferencesManager.setVencimiento("");
-            mainActivity.mainClass.ovenci.value="";
-        }
-        if(preferencesManager.getResetCampo1()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo1Valor("");
-                mainActivity.mainClass.ocampo1.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo1()==2){
-            preferencesManager.setCampo1Valor("");
-            mainActivity.mainClass.ocampo1.value="";
-        }
-        if(preferencesManager.getResetCampo2()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo2Valor("");
-                mainActivity.mainClass.ocampo2.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo2()==2){
-            preferencesManager.setCampo2Valor("");
-            mainActivity.mainClass.ocampo2.value="";
-        }
-        if(preferencesManager.getResetCampo3()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo3Valor("");
-                mainActivity.mainClass.ocampo3.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo3()==2){
-            preferencesManager.setCampo3Valor("");
-            mainActivity.mainClass.ocampo3.value="";
-        }
+    }
+
+    private void restaurarCampo4(boolean arealizarfinalizados) {
         if(preferencesManager.getResetCampo4()==1){
             if(arealizarfinalizados){
                 preferencesManager.setCampo4Valor("");
@@ -1033,16 +966,70 @@ public class Form_Principal extends Fragment  {
             preferencesManager.setCampo4Valor("");
             mainActivity.mainClass.ocampo4.value="";
         }
+    }
 
-        if(preferencesManager.getResetCampo5()==1){
+    private void restaurarCampo3(boolean arealizarfinalizados) {
+        if(preferencesManager.getResetCampo3()==1){
             if(arealizarfinalizados){
-                preferencesManager.setCampo5Valor("");
-                mainActivity.mainClass.ocampo5.value="";
+                preferencesManager.setCampo3Valor("");
+                mainActivity.mainClass.ocampo3.value="";
             }
         }
-        if(preferencesManager.getResetCampo5()==2){
-            preferencesManager.setCampo5Valor("");
-            mainActivity.mainClass.ocampo5.value="";
+        if(preferencesManager.getResetCampo3()==2){
+            preferencesManager.setCampo3Valor("");
+            mainActivity.mainClass.ocampo3.value="";
+        }
+    }
+
+    private void restaurarCampo2(boolean arealizarfinalizados) {
+        if(preferencesManager.getResetCampo2()==1){
+            if(arealizarfinalizados){
+                preferencesManager.setCampo2Valor("");
+                mainActivity.mainClass.ocampo2.value="";
+            }
+        }
+        if(preferencesManager.getResetCampo2()==2){
+            preferencesManager.setCampo2Valor("");
+            mainActivity.mainClass.ocampo2.value="";
+        }
+    }
+
+    private void restaurarCampo1(boolean arealizarfinalizados) {
+        if(preferencesManager.getResetCampo1()==1){
+            if(arealizarfinalizados){
+                preferencesManager.setCampo1Valor("");
+                mainActivity.mainClass.ocampo1.value="";
+            }
+        }
+        if(preferencesManager.getResetCampo1()==2){
+            preferencesManager.setCampo1Valor("");
+            mainActivity.mainClass.ocampo1.value="";
+        }
+    }
+
+    private void restaurarVencimiento(boolean arealizarfinalizados) {
+        if(preferencesManager.getResetVencimiento()==1){
+            if(arealizarfinalizados){
+                preferencesManager.setVencimiento("");
+                mainActivity.mainClass.ovenci.value="";
+            }
+        }
+        if(preferencesManager.getResetVencimiento()==2){
+            preferencesManager.setVencimiento("");
+            mainActivity.mainClass.ovenci.value="";
+        }
+    }
+
+    private void restaurarLote(boolean arealizarfinalizados) {
+        if(preferencesManager.getResetLote()==1){
+            if(arealizarfinalizados){
+                preferencesManager.setLote("");
+                mainActivity.mainClass.olote.value="";
+            }
+        }
+        if(preferencesManager.getResetLote()==2){
+            preferencesManager.setLote("");
+            mainActivity.mainClass.olote.value="";
         }
     }
 
@@ -1076,35 +1063,18 @@ public class Form_Principal extends Fragment  {
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza_seleccionado);
         }
         binding.tvNumpaso.setText("-");
-        binding.tvNeto.setTextColor(Color.BLACK);
-        binding.tvBruto.setTextColor(Color.BLACK);
-        binding.tvNetoUnidad.setTextColor(Color.BLACK);
-        binding.tvBrutoUnidad.setTextColor(Color.BLACK);
-
-        binding.tvEstado.setTextColor(Color.BLACK);
-        binding.tvNumpaso.setTextColor(Color.BLACK);
+        setupProgressBarPasoStyle(Color.BLACK);
         binding.progressBar.setProgress(0);
-        binding.lnNumpaso.setBackgroundResource(R.drawable.stylekeycortransparent);
-        binding.lnLinea.setBackgroundResource(R.color.negro);
-        binding.imEstable.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.estable));
         binding.imRango.setVisibility(View.INVISIBLE);
-        if(Utils.isNumeric(mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA))){
-            if(mainActivity.mainClass.BZA.getTara(mainActivity.mainClass.N_BZA)!=0||
-                    Float.parseFloat(mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA))!=0){
-                binding.imTare.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.tare_black));
-                binding.imTare.setVisibility(View.VISIBLE);
-            }else{
-                binding.imTare.setVisibility(View.INVISIBLE);
-            }
-        }
-        Boolean empezar=true;
-        if(mainActivity.mainClass.olote.value==""&&mainActivity.mainClass.oturno.value==""&&
-                mainActivity.mainClass.ovenci.value==""){
-            empezar=false;
-        }
-        if(recetaManager.recetaActual.equals("")){
-            empezar=false;
-        }
+        setupViewsColor(Color.BLACK,R.color.negro,R.drawable.estable);
+        setupTaraView(R.drawable.tare_black);
+        setupLabelDescripcionPaso();
+    }
+
+
+    private void setupLabelDescripcionPaso() {
+        boolean empezar= (mainActivity.mainClass.olote.value != "" || mainActivity.mainClass.oturno.value != "" ||
+                mainActivity.mainClass.ovenci.value != "") && !recetaManager.recetaActual.isEmpty();
         if(empezar){
             binding.tvEstado.setText("Listo para comenzar");
             binding.tvNumpaso.setText("-");
@@ -1148,11 +1118,11 @@ public class Form_Principal extends Fragment  {
         if(Utils.isNumeric(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())){
             if(Float.parseFloat(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())==0){
                 binding.tvEstado.setText("Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
-                        " en balanza "+String.valueOf(num));
+                        " en balanza "+ num);
             }else{
                 binding.tvEstado.setText("Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
                         mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA)+ " de "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
-                        " en balanza "+String.valueOf(num));
+                        " en balanza "+ num);
             }
 
         }
@@ -1160,45 +1130,34 @@ public class Form_Principal extends Fragment  {
 
     private void actualizarDisplayPeso(Float lim_min, Float lim_max) {
         if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)>=lim_min&&mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)<=lim_max){
-            // lnSemaforo.setBackgroundResource(R.drawable.semaforo_acepto);
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza_enrango);
             rango=1;
-            binding.tvNeto.setTextColor(Color.WHITE);
-            binding.lnLinea.setBackgroundResource(R.color.blanco);
-            binding.tvBruto.setTextColor(Color.WHITE);
-            binding.tvNetoUnidad.setTextColor(Color.WHITE);
-            binding.tvBrutoUnidad.setTextColor(Color.WHITE);
-            binding.imEstable.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.estable_blanco));
             binding.imRango.setVisibility(View.INVISIBLE);
+            setupViewsColor(Color.WHITE,R.color.blanco,R.drawable.estable_blanco);
         }
         if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)<lim_min){
-            //lnSemaforo.setBackgroundResource(R.drawable.semaforo_bajo);
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza_fuerarango);
-            binding.tvNeto.setTextColor(Color.WHITE);
-            binding.tvBruto.setTextColor(Color.WHITE);
-            binding.lnLinea.setBackgroundResource(R.color.blanco);
-            binding.tvNetoUnidad.setTextColor(Color.WHITE);
-            binding.tvBrutoUnidad.setTextColor(Color.WHITE);
-            binding.imEstable.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.estable_blanco));
-            binding.imRango.setVisibility(View.VISIBLE);
             binding.imRango.setBackgroundResource(R.drawable.flecha_arribablanca);
+            binding.imRango.setVisibility(View.VISIBLE);
+            setupViewsColor(Color.WHITE,R.color.blanco,R.drawable.estable_blanco);
             rango=0;
         }
         if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)>lim_max){
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza_fuerarango);
-            binding.tvNeto.setTextColor(Color.WHITE);
-            binding.tvBruto.setTextColor(Color.WHITE);
-            binding.tvNetoUnidad.setTextColor(Color.WHITE);
-            binding.lnLinea.setBackgroundResource(R.color.blanco);
-            binding.tvBrutoUnidad.setTextColor(Color.WHITE);
-            binding.imEstable.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.estable_blanco));
-            binding.imRango.setVisibility(View.VISIBLE);
             binding.imRango.setBackgroundResource(R.drawable.flecha_abajoblanca);
+            binding.imRango.setVisibility(View.VISIBLE);
+            setupViewsColor(Color.WHITE,R.color.blanco,R.drawable.estable_blanco);
             rango=2;
         }
+        setupTaraView(R.drawable.tare_white);
+
+    }
+
+    private void setupTaraView(int color) {
         if(Utils.isNumeric(mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA))){
-            if(mainActivity.mainClass.BZA.getTara(mainActivity.mainClass.N_BZA)!=0||Float.parseFloat(mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA))!=0){
-                binding.imTare.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.tare_white));
+            if(mainActivity.mainClass.BZA.getTara(mainActivity.mainClass.N_BZA)!=0||
+                    Float.parseFloat(mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA))!=0){
+                binding.imTare.setImageDrawable(ContextCompat.getDrawable(requireContext(),color));
                 binding.imTare.setVisibility(View.VISIBLE);
             }else{
                 binding.imTare.setVisibility(View.INVISIBLE);
@@ -1206,39 +1165,48 @@ public class Form_Principal extends Fragment  {
         }
     }
 
+    private void setupViewsColor(int Color, int Rcolor, int estable) {
+        binding.tvNeto.setTextColor(Color);
+        binding.tvBruto.setTextColor(Color);
+        binding.lnLinea.setBackgroundResource(Rcolor);
+        binding.tvNetoUnidad.setTextColor(Color);
+        binding.tvBrutoUnidad.setTextColor(Color);
+        binding.imEstable.setImageDrawable(ContextCompat.getDrawable(requireContext(),estable));
+    }
+
+
     private void actualizarBarraProgreso(Float lim_max) {
         if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)>=0){
             float porcentaje= 100*mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)/setPoint;
             if(porcentaje<=100){
                 binding.progressBar.setProgress((int) porcentaje);
-                Drawable draw = ResourcesCompat.getDrawable(getResources(), R.drawable.progress, null);
-                binding.progressBar.setProgressDrawable(draw);
-                binding.tvEstado.setTextColor(Color.BLACK);
-                binding.tvNumpaso.setTextColor(Color.BLACK);
-                binding.lnNumpaso.setBackgroundResource(R.drawable.stylekeycortransparent);
+                setupProgressBarStyle(R.drawable.progress,Color.BLACK);
             }else{
                 if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)>lim_max){
-                    Drawable draw = ResourcesCompat.getDrawable(getResources(), R.drawable.progress2, null);
-                    binding.progressBar.setProgressDrawable(draw);
-                    binding.tvEstado.setTextColor(Color.WHITE);
-                    binding.tvNumpaso.setTextColor(Color.WHITE);
-                    binding.lnNumpaso.setBackgroundResource(R.drawable.stylekeycorblancotransparent);
+                    setupProgressBarStyle(R.drawable.progress2,Color.WHITE);
                 }else{
-                    Drawable draw = ResourcesCompat.getDrawable(getResources(), R.drawable.progress, null);
-                    binding.progressBar.setProgressDrawable(draw);
-                    binding.tvEstado.setTextColor(Color.BLACK);
-                    binding.tvNumpaso.setTextColor(Color.BLACK);
-                    binding.lnNumpaso.setBackgroundResource(R.drawable.stylekeycortransparent);
+                    setupProgressBarStyle(R.drawable.progress,Color.WHITE);
                 }
                 binding.progressBar.setProgress(100);
             }
 
         }else{
             binding.progressBar.setProgress(0);
-            binding.tvEstado.setTextColor(Color.BLACK);
-            binding.tvNumpaso.setTextColor(Color.BLACK);
-            binding.lnNumpaso.setBackgroundResource(R.drawable.stylekeycortransparent);
+            setupProgressBarPasoStyle(Color.BLACK);
         }
+    }
+
+    private void setupProgressBarStyle(int progress, int black) {
+        Drawable draw = ResourcesCompat.getDrawable(getResources(), progress, null);
+        binding.progressBar.setProgressDrawable(draw);
+        setupProgressBarPasoStyle(black);
+
+    }
+
+    private void setupProgressBarPasoStyle(int black) {
+        binding.tvEstado.setTextColor(black);
+        binding.tvNumpaso.setTextColor(black);
+        binding.lnNumpaso.setBackgroundResource(R.drawable.stylekeycortransparent);
     }
 
     private int determinarBalanza() {

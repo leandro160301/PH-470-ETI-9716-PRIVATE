@@ -1,6 +1,6 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
-import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoPreguntaEliminar;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -168,7 +168,7 @@ public class Form_Fragment_Guardados extends Fragment {
         if (mainActivity.getNivelUsuario() > 1) {
             String texto = obtenerMensajeConfirmacion(menu);
             if (texto != null) {
-                dialogoPreguntaEliminar(mainActivity, texto, () -> {
+                dialogoTexto(mainActivity, texto,"ELIMINAR",() -> {
                     try (Form_SQL_db productosSQL = new Form_SQL_db(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
                         switch (menu) {
                             case 0:

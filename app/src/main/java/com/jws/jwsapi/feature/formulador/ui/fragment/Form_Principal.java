@@ -1,6 +1,9 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlotanteConCancelar;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoCheckboxVisibilidad;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTextoConCancelar;
 import static com.jws.jwsapi.utils.Utils.format;
 import android.app.AlertDialog;
 import android.graphics.Color;
@@ -33,6 +36,9 @@ import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
 import com.jws.jwsapi.feature.formulador.data.sql.Form_SQL_db;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.feature.formulador.ui.dialog.DialogButtonInterface;
+import com.jws.jwsapi.feature.formulador.ui.dialog.DialogCheckboxInterface;
+import com.jws.jwsapi.feature.formulador.ui.dialog.DialogInputInterface;
 import com.jws.jwsapi.feature.formulador.ui.viewmodel.Form_PrincipalViewModel;
 import com.jws.jwsapi.utils.Utils;
 import java.util.ArrayList;
@@ -263,134 +269,122 @@ public class Form_Principal extends Fragment  {
         recetaManager.listRecetaActual = mainActivity.mainClass.getReceta(recetaManager.recetaActual);
         preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
         if(recetaManager.listRecetaActual.size()>0){
-            boolean empezar=true;
             int mododeuso=preferencesManager.getModoUso();
             if(mododeuso==0){
-                preferencesManager.setRecetacomopedido(false);
-                recetaManager.recetaComoPedido =false;
+                setupModoUso(false);
             }
             if(mododeuso==1){
-                preferencesManager.setRecetacomopedido(true);
-                recetaManager.recetaComoPedido =true;
+                setupModoUso(true);
             }
-            if(preferencesManager.getRecetacomopedido()||preferencesManager.getRecetacomopedidoCheckbox()){
-                float kilostotalesfloat=0;
-                List<Form_Model_Receta> nuevareceta=new ArrayList<>();
-                for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                    for(int k = 0; k<recetaManager.cantidad.getValue(); k++){
-                        Form_Model_Receta nuevaInstancia = new Form_Model_Receta(
-                                recetaManager.listRecetaActual.get(i).getCodigo(),
-                                recetaManager.listRecetaActual.get(i).getNombre(),
-                                recetaManager.listRecetaActual.get(i).getKilos_totales(),
-                                recetaManager.listRecetaActual.get(i).getCodigo_ing(),
-                                recetaManager.listRecetaActual.get(i).getDescrip_ing(),
-                                recetaManager.listRecetaActual.get(i).getKilos_ing(),
-                                recetaManager.listRecetaActual.get(i).getKilos_reales_ing(),
-                                recetaManager.listRecetaActual.get(i).getTolerancia_ing()
-                        );
-                        nuevareceta.add(nuevaInstancia); // si en vez de crear la nueva instancia le pasamos mainActivity.mainClass.listRecetaActual.get(i) entonces apuntara a las mismas direcciones de memoria
-                        if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_ing())){
-                            kilostotalesfloat=kilostotalesfloat+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_ing());
-                        }
-                    }
-                }
-                for(int i=0;i<nuevareceta.size();i++){
-                    nuevareceta.get(i).setKilos_totales(String.valueOf(kilostotalesfloat));
-                }
-                recetaManager.listRecetaActual =nuevareceta;
-                preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
-            }
+            configurarRecetaParaPedido();
             if(preferencesManager.getModoReceta()==0){
                 //respeta el setpoint de cada paso
-                if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
-                    //por batch
-                    IngresoRecipiente();
-                }else{
-                    //por pedido
-                    if(recetaManager.realizadas.getValue()==0){
-                        IngresoRecipiente();
-                    }else {
-                        empezar=false;
-                        Utils.Mensaje("Ingrese una cantidad",R.layout.item_customtoasterror,mainActivity);
-                    }
+                boolean empezarKilos=modoKilos();
+                if(empezarKilos){
+                    setupValoresParaInicio();
                 }
-
             }else{
                 //ingresa porcentaje
-                if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
-                    //por batch
-                    if(recetaManager.realizadas.getValue()==0||recetaManager.realizadas.getValue()-recetaManager.cantidad.getValue()==0){
-                        IngresaPorcentaje();
-                    }else {
-                        calculoporcentajeReceta();
-                        IngresoRecipiente();
-                    }
-                }else{
-                    //por pedido
-                    if(recetaManager.realizadas.getValue()==0){
-                        IngresaPorcentaje();
-                    }else {
-                        empezar=false;
-                        Utils.Mensaje("Ingrese una cantidad",R.layout.item_customtoasterror,mainActivity);
-                    }
+                boolean empezarPorcentaje=modoPorcentaje();
+                if(empezarPorcentaje){
+                    setupValoresParaInicio();
                 }
-
-
             }
-            if(empezar){
-                recetaManager.ejecutando=true;
-                preferencesManager.setEjecutando(true);
-                mainActivity.mainClass.onetototal.value="0";
-                recetaManager.netoTotal.setValue("0");
-                preferencesManager.setNetototal("0");
-                mainActivity.mainClass.onetototal.value = "0";
-                binding.btStart.setBackgroundResource(R.drawable.circlebuttonon1);
-                recetaManager.pasoActual=1;
-                mainActivity.mainClass.opaso.value=recetaManager.pasoActual;
-                preferencesManager.setPasoActual(recetaManager.pasoActual);
-            }
+
 
         }else{
             Utils.Mensaje("Error en la receta elegida",R.layout.item_customtoasterror,mainActivity);
         }
     }
 
-    private void IngresaPorcentaje() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopciones, null);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        final LinearLayout delete_text= mView.findViewById(R.id.lndelete_text);
-        userInput.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        userInput.setKeyListener(DigitsKeyListener.getInstance(".0123456789"));
-        delete_text.setOnClickListener(view -> userInput.setText(""));
-        textView.setText("Ingrese los kilos a realizar totales y presione SIGUIENTE o si quiere continuar con la receta original presione CONTINUAR");
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        Cancelar.setText("CONTINUAR");
-        Guardar.setText("SIGUIENTE");
-        userInput.setOnLongClickListener(v -> true);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            if(!userInput.getText().toString().equals("")&&Utils.isNumeric(userInput.getText().toString())){
-                calculoporcentajeRecetaDialogo(userInput.getText().toString(),dialog);
-            }else{
-                Utils.Mensaje("Ingreso un valor incorrecto",R.layout.item_customtoasterror,mainActivity);
+    private void configurarRecetaParaPedido() {
+        if((preferencesManager.getRecetacomopedido()||preferencesManager.getRecetacomopedidoCheckbox())&&recetaManager.cantidad.getValue()!=null){
+            float kilostotalesfloat=0;
+            List<Form_Model_Receta> nuevareceta=new ArrayList<>();
+            for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
+                for(int k = 0; k<recetaManager.cantidad.getValue(); k++){
+                    Form_Model_Receta nuevaInstancia = new Form_Model_Receta(
+                            recetaManager.listRecetaActual.get(i).getCodigo(),
+                            recetaManager.listRecetaActual.get(i).getNombre(),
+                            recetaManager.listRecetaActual.get(i).getKilos_totales(),
+                            recetaManager.listRecetaActual.get(i).getCodigo_ing(),
+                            recetaManager.listRecetaActual.get(i).getDescrip_ing(),
+                            recetaManager.listRecetaActual.get(i).getKilos_ing(),
+                            recetaManager.listRecetaActual.get(i).getKilos_reales_ing(),
+                            recetaManager.listRecetaActual.get(i).getTolerancia_ing()
+                    );
+                    nuevareceta.add(nuevaInstancia); // si en vez de crear la nueva instancia le pasamos mainActivity.mainClass.listRecetaActual.get(i) entonces apuntara a las mismas direcciones de memoria
+                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_ing())){
+                        kilostotalesfloat=kilostotalesfloat+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_ing());
+                    }
+                }
             }
-
-        });
-        Cancelar.setOnClickListener(view -> {
-            IngresoRecipiente();
-            dialog.cancel();
-        });
+            for(int i=0;i<nuevareceta.size();i++){
+                nuevareceta.get(i).setKilos_totales(String.valueOf(kilostotalesfloat));
+            }
+            recetaManager.listRecetaActual =nuevareceta;
+            preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
+        }
     }
 
-    private void calculoporcentajeRecetaDialogo(String toString, AlertDialog dialog) {
+    private boolean modoPorcentaje() {
+        boolean empezar=true;
+        if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
+            //por batch
+            if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0||recetaManager.realizadas.getValue()-recetaManager.cantidad.getValue()==0){
+                IngresaPorcentaje();
+            }else {
+                calculoporcentajeReceta();
+                IngresoRecipiente();
+            }
+        }else{
+            //por pedido
+            if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0){
+                IngresaPorcentaje();
+            }else {
+                empezar=false;
+                Utils.Mensaje("Ingrese una cantidad",R.layout.item_customtoasterror,mainActivity);
+            }
+        }
+        return empezar;
+    }
+
+    private boolean modoKilos() {
+        boolean empezar=true;
+        if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
+            //por batch
+            IngresoRecipiente();
+        }else{
+            //por pedido
+            if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0){
+                IngresoRecipiente();
+            }else {
+                empezar=false;
+                Utils.Mensaje("Ingrese una cantidad",R.layout.item_customtoasterror,mainActivity);
+            }
+        }
+        return empezar;
+    }
+
+    private void setupValoresParaInicio() {
+        recetaManager.ejecutando=true;
+        preferencesManager.setEjecutando(true);
+        mainActivity.mainClass.onetototal.value="0";
+        recetaManager.netoTotal.setValue("0");
+        preferencesManager.setNetototal("0");
+        mainActivity.mainClass.onetototal.value = "0";
+        binding.btStart.setBackgroundResource(R.drawable.circlebuttonon1);
+        recetaManager.pasoActual=1;
+        mainActivity.mainClass.opaso.value=recetaManager.pasoActual;
+        preferencesManager.setPasoActual(recetaManager.pasoActual);
+    }
+
+    private void IngresaPorcentaje() {
+        String text="Ingrese los kilos a realizar totales y presione SIGUIENTE o si quiere continuar con la receta original presione CONTINUAR";
+        TecladoFlotanteConCancelar(null, text, mainActivity, this::calculoporcentajeRecetaDialogo, this::IngresoRecipiente,"CONTINUAR");
+    }
+
+    private void calculoporcentajeRecetaDialogo(String toString) {
 
         if(recetaManager.listRecetaActual.size()>0&&Utils.isNumeric(recetaManager.listRecetaActual.get(0).getKilos_totales())){
             List<String> kilos_ing_originales = new ArrayList<>();
@@ -411,11 +405,9 @@ public class Form_Principal extends Fragment  {
             preferencesManager.setPorcentajeReceta(toString);
             preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
             IngresoRecipiente();
-            dialog.cancel();
         }else{
             Utils.Mensaje("Ocurrio un error con la carga de la receta",R.layout.item_customtoasterror,mainActivity);
             IngresoRecipiente();
-            dialog.cancel();
         }
     }
 
@@ -435,75 +427,59 @@ public class Form_Principal extends Fragment  {
         }
     }
     private void IngresaCantidad() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopcionescheckbox, null);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-        final LinearLayout delete_text= mView.findViewById(R.id.lndelete_text);
-
-        CheckBox checkBox= mView.findViewById(R.id.checkBox);
-        checkBox.setText("RECETAS COMO PEDIDO (BOLSAS)");
+        String text="Ingrese la cantidad de recetas que quiere realizar y presione CONTINUAR";
         int mododeuso=preferencesManager.getModoUso();
+        int visible=View.VISIBLE;
+        boolean checkboxState=false;
         if(mododeuso==0){
-            checkBox.setVisibility(View.INVISIBLE);
+            visible=View.INVISIBLE;
         }
         if(mododeuso==1){
-            checkBox.setChecked(true);
-            checkBox.setVisibility(View.INVISIBLE);
+            checkboxState=true;
+            visible=View.INVISIBLE;
         }
-        delete_text.setOnClickListener(view -> userInput.setText(""));
-        textView.setText("Ingrese la cantidad de recetas que quiere realizar y presione CONTINUAR");
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        Cancelar.setText("CANCELAR");
-        Guardar.setText("CONTINUAR");
-        userInput.setOnLongClickListener(v -> true);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            if(!userInput.getText().toString().equals("")&&Utils.isNumeric(userInput.getText().toString())){
-                if(Float.parseFloat(userInput.getText().toString())>0){
-                    recetaManager.cantidad.setValue ((int) Float.parseFloat(userInput.getText().toString()));
-                    preferencesManager.setCantidad(recetaManager.cantidad.getValue());
-                    recetaManager.realizadas.setValue(0);
-                    preferencesManager.setRealizadas(0);
-                    if(mododeuso==1){
-                        setupModoUso(true);
-                    }else{
-                        setupModoUso(false);
-                        if(checkBox.isChecked()){
-                            setupModoUso(true);
-                        }
-                    }
-                    dialog.cancel();
+        dialogoCheckboxVisibilidad(null, text, mainActivity, (DialogCheckboxInterface) (texto, checkbox) -> {
+            if(Float.parseFloat(texto)>0){
+                recetaManager.cantidad.setValue ((int) Float.parseFloat(texto));
+                preferencesManager.setCantidad(recetaManager.cantidad.getValue());
+                recetaManager.realizadas.setValue(0);
+                preferencesManager.setRealizadas(0);
+                if(mododeuso==1){
+                    setupModoUsoCheckBox(true);
                 }else{
-                    dialog.cancel();
+                    setupModoUsoCheckBox(false);
+                    if(checkbox){
+                        setupModoUsoCheckBox(true);
+                    }
                 }
-
-            }else{
-                Utils.Mensaje("Ingreso un valor incorrecto",R.layout.item_customtoasterror,mainActivity);
             }
+        },true,InputType.TYPE_CLASS_NUMBER,null,"RECETAS COMO PEDIDO (BOLSAS)",visible,checkboxState);
+    }
 
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
+    private void setupModoUsoCheckBox(boolean modo) {
+        recetaManager.recetaComoPedido =modo;
+        setupModoUso(modo);
+
     }
 
     private void setupModoUso(boolean modo) {
-        recetaManager.recetaComoPedido =modo;
         preferencesManager.setRecetacomopedido(modo);
         preferencesManager.setRecetacomopedidoCheckbox(modo);
     }
+
     private void IngresoRecipiente() {
-        dialogoTexto(mainActivity, "Ingrese recipiente y luego presione SIGUIENTE", "SIGUIENTE", () -> {
-            mainActivity.mainClass.BZA.setTaraDigital(mainActivity.mainClass.N_BZA,mainActivity.mainClass.BZA.getBruto(mainActivity.mainClass.N_BZA));
-            recetaManager.estado=2;
-            preferencesManager.setEstado(2);
-        });
+        //si no poNe siguiente y le pone cancerlar lo manda a tara igual
+        dialogoTextoConCancelar(mainActivity, "Ingrese recipiente y luego presione SIGUIENTE", "SIGUIENTE", this::realizarTaraComienzaPesar, this::setEstadoPesar);
+    }
+
+    private void realizarTaraComienzaPesar() {
+        mainActivity.mainClass.BZA.setTaraDigital(mainActivity.mainClass.N_BZA, mainActivity.mainClass.BZA.getBruto(mainActivity.mainClass.N_BZA));
+        setEstadoPesar();
+    }
+
+    private void setEstadoPesar() {
+        recetaManager.estado = 2;
+        preferencesManager.setEstado(2);
     }
 
 
@@ -610,34 +586,48 @@ public class Form_Principal extends Fragment  {
     }
 
     private void manejoBasedeDatoseImpresion() {
-        if(preferencesManager.getPasoActual()==1&&!preferencesManager.getRecetacomopedido()){
-            insertarPrimerPasoRecetaBatchSQL();
-            if(preferencesManager.getEtiquetaxPaso()){
-                mainActivity.mainClass.Imprimir(0);
-            }
-        }
-        if(preferencesManager.getPasoActual()>1&&!preferencesManager.getRecetacomopedido()){
-            insertarNuevoPasoRecetaBatchSQL();
-            if(preferencesManager.getEtiquetaxPaso()){
-                mainActivity.mainClass.Imprimir(0);
-            }
-        }
-        if(preferencesManager.getPasoActual()==1&&preferencesManager.getRecetacomopedido()){
-            insertarPrimerPasoPedidoBatchSQL();
-            if(preferencesManager.getEtiquetaxPaso()){
-                mainActivity.mainClass.Imprimir(0);
-            }
-        }
-        if(preferencesManager.getPasoActual()>1&&preferencesManager.getRecetacomopedido()){
-            insertarNuevoPasoPedidoBatchSQL();
-            if(preferencesManager.getEtiquetaxPaso()){
-                mainActivity.mainClass.Imprimir(0);
-            }
-        }
+        imprimeyGuardaPrimerPasoRecetaBatch();
+        imprimeyGuardaNuevoPasoRecetaBatch();
+        imprimeyGuardaPrimerPasoPedidoBatch();
+        imprimeyGuardaNuevoPasoPedidoBatch();
         if(recetaManager.pasoActual<recetaManager.listRecetaActual.size()){
             nuevoPaso();
         }else{
             imprimirEtiquetaFinal();
+        }
+    }
+
+    private void imprimeyGuardaNuevoPasoPedidoBatch() {
+        if(preferencesManager.getPasoActual()>1&&preferencesManager.getRecetacomopedido()){
+            insertarNuevoPasoPedidoBatchSQL();
+            imprimirEtiquetaPaso();
+        }
+    }
+
+    private void imprimeyGuardaPrimerPasoPedidoBatch() {
+        if(preferencesManager.getPasoActual()==1&&preferencesManager.getRecetacomopedido()){
+            insertarPrimerPasoPedidoBatchSQL();
+            imprimirEtiquetaPaso();
+        }
+    }
+
+    private void imprimeyGuardaNuevoPasoRecetaBatch() {
+        if(preferencesManager.getPasoActual()>1&&!preferencesManager.getRecetacomopedido()){
+            insertarNuevoPasoRecetaBatchSQL();
+            imprimirEtiquetaPaso();
+        }
+    }
+
+    private void imprimeyGuardaPrimerPasoRecetaBatch() {
+        if(preferencesManager.getPasoActual()==1&&!preferencesManager.getRecetacomopedido()){
+            insertarPrimerPasoRecetaBatchSQL();
+            imprimirEtiquetaPaso();
+        }
+    }
+
+    private void imprimirEtiquetaPaso() {
+        if(preferencesManager.getEtiquetaxPaso()){
+            mainActivity.mainClass.Imprimir(0);
         }
     }
 
@@ -1124,7 +1114,6 @@ public class Form_Principal extends Fragment  {
                         mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA)+ " de "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
                         " en balanza "+ num);
             }
-
         }
     }
 
@@ -1185,7 +1174,7 @@ public class Form_Principal extends Fragment  {
                 if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)>lim_max){
                     setupProgressBarStyle(R.drawable.progress2,Color.WHITE);
                 }else{
-                    setupProgressBarStyle(R.drawable.progress,Color.WHITE);
+                    setupProgressBarStyle(R.drawable.progress,Color.BLACK);
                 }
                 binding.progressBar.setProgress(100);
             }

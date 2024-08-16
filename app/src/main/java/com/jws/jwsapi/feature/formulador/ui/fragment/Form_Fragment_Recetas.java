@@ -2,9 +2,7 @@ package com.jws.jwsapi.feature.formulador.ui.fragment;
 
 import static android.view.View.GONE;
 import static com.jws.jwsapi.common.storage.Storage.getArchivosExtension;
-import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.Teclado;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlotante;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -46,9 +44,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import javax.inject.Inject;
-
 import au.com.bytecode.opencsv.CSVWriter;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -356,8 +352,8 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
         Guardar.setOnClickListener(view -> {
             File file= new File("/storage/emulated/0/Memoria/"+receta+".csv");
-            if (file != null && file.exists()) {
-                Boolean eliminacion=file.delete();
+            if (file.exists()) {
+                boolean eliminacion=file.delete();
                 if(eliminacion){
                     Utils.Mensaje("Receta eliminada", R.layout.item_customtoastok,mainActivity);
                     recetaManager.recetaActual ="";
@@ -687,7 +683,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
         tv_codigoIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
         tv_descripcionIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
-        tv_kilos.setOnClickListener(view -> Teclado(tv_kilos, "Ingrese los kilos del paso",mainActivity,null));
+        tv_kilos.setOnClickListener(view -> TecladoFlotante(tv_kilos, "Ingrese los kilos del paso",mainActivity,null));
         Guardar.setOnClickListener(view -> {
             if (!tv_codigoIngrediente.getText().toString().equals("") &&
                 !tv_descripcionIngrediente.getText().toString().equals("") &&

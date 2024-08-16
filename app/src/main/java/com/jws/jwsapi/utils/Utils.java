@@ -59,16 +59,17 @@ public class Utils {
         }
         return true;
     }
-
-    public static String format(String peso, int decimales){
-        String formato="0.";
+    public static String format(String peso, int decimales) {
+        String formato = "0.";
         StringBuilder capacidadBuilder = new StringBuilder(formato);
-        for(int i=0;i<decimales;i++){
+        for (int i = 0; i < decimales; i++) {
             capacidadBuilder.append("0");
         }
         formato = capacidadBuilder.toString();
         DecimalFormat df = new DecimalFormat(formato);
-        return df.format(peso);
+
+        double pesoNumero = Double.parseDouble(peso);
+        return df.format(pesoNumero);
     }
 
     public static void Mensaje(String texto, int Color, AppCompatActivity appCompatActivity) {

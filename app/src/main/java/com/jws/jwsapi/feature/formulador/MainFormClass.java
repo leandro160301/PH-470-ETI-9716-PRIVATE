@@ -36,7 +36,6 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.impresora.clases.Printer;
 import com.jws.jwsapi.common.impresora.clases.PrinterObject;
@@ -47,7 +46,6 @@ import com.jws.jwsapi.common.impresora.ImprimirEstandar;
 import com.service.Comunicacion.OnFragmentChangeListener;
 import com.jws.jwsapi.base.containers.ContainerFragment;
 import com.jws.jwsapi.base.containers.ContainerPrincipalFragment;
-import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Recetas;
 import com.jws.jwsapi.feature.formulador.ui.fragment.Form_Principal;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_Ingredientes;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_PesadasDB;
@@ -201,69 +199,69 @@ public class MainFormClass implements OnFragmentChangeListener {
         nombreEtiquetas.add("INGREDIENTE");
 
         variablesImprimibles = new ArrayList<>();
-        variablesImprimibles.add(new Printer("x0001",olote, "Lote", variablesImprimibles.size(), context));
-        variablesImprimibles.add(new Printer("x0002",ovenci, "Vencimiento", variablesImprimibles.size(), context));
-        variablesImprimibles.add(new Printer("x0003",oturno, "Turno", variablesImprimibles.size(), context));
-        variablesImprimibles.add(new Printer("x0004",oreceta,"Receta",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0005",ocodigoreceta,"Codigo receta",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0006",oingredientes,"Ingrediente",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0007",ocodigoingrediente,"Codigo ingrediente",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0008",okilos,"Kilos",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0009",okilosreales,"Kilos reales",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0010",onetototal,"Neto total",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0011",opaso,"Numero paso",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0012",oidreceta,"Id receta",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0013",oidpesada,"Id pesada",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0014",opaso1,"N° paso 1",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0015",opaso2,"N° paso 2",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0016",opaso3,"N° paso 3",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0017",opaso4,"N° paso 4",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0018",opaso5,"N° paso 5",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0019",oingrediente1,"Ingrediente 1",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0020",oingrediente2,"Ingrediente 2",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0021",oingrediente3,"Ingrediente 3",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0022",oingrediente4,"Ingrediente 4",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0023",oingrediente5,"Ingrediente 5",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0024",ocodigoingrediente1,"Codigo ingrediente 1",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0025",ocodigoingrediente2,"Codigo ingrediente 2",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0026",ocodigoingrediente3,"Codigo ingrediente 3",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0027",ocodigoingrediente4,"Codigo ingrediente 4",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0028",ocodigoingrediente5,"Codigo ingrediente 5",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0029",opeso1,"Peso 1",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0030",opeso2,"Peso 2",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0031",opeso3,"Peso 3",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0032",opeso4,"Peso 4",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0033",opeso5,"Peso 5",variablesImprimibles.size(),context));
-        variablesImprimibles.add(new Printer("x0034",onumeroetiqueta,"N° etiqueta",variablesImprimibles.size(),context));
+        variablesImprimibles.add(new Printer("x0001",olote, "Lote", variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0002",ovenci, "Vencimiento", variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0003",oturno, "Turno", variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0004",oreceta,"Receta",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0005",ocodigoreceta,"Codigo receta",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0006",oingredientes,"Ingrediente",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0007",ocodigoingrediente,"Codigo ingrediente",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0008",okilos,"Kilos",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0009",okilosreales,"Kilos reales",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0010",onetototal,"Neto total",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0011",opaso,"Numero paso",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0012",oidreceta,"Id receta",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0013",oidpesada,"Id pesada",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0014",opaso1,"N° paso 1",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0015",opaso2,"N° paso 2",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0016",opaso3,"N° paso 3",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0017",opaso4,"N° paso 4",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0018",opaso5,"N° paso 5",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0019",oingrediente1,"Ingrediente 1",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0020",oingrediente2,"Ingrediente 2",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0021",oingrediente3,"Ingrediente 3",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0022",oingrediente4,"Ingrediente 4",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0023",oingrediente5,"Ingrediente 5",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0024",ocodigoingrediente1,"Codigo ingrediente 1",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0025",ocodigoingrediente2,"Codigo ingrediente 2",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0026",ocodigoingrediente3,"Codigo ingrediente 3",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0027",ocodigoingrediente4,"Codigo ingrediente 4",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0028",ocodigoingrediente5,"Codigo ingrediente 5",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0029",opeso1,"Peso 1",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0030",opeso2,"Peso 2",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0031",opeso3,"Peso 3",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0032",opeso4,"Peso 4",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0033",opeso5,"Peso 5",variablesImprimibles.size()));
+        variablesImprimibles.add(new Printer("x0034",onumeroetiqueta,"N° etiqueta",variablesImprimibles.size()));
 
         if(!Objects.equals(preferencesManager.getCampo1(), "") ||!Objects.equals(preferencesManager.getCampo1(), " ") ){
-            variablesImprimibles.add(new Printer("x0035",ocampo1, preferencesManager.getCampo1(), variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0035",ocampo1, preferencesManager.getCampo1(), variablesImprimibles.size()));
         }else{
-            variablesImprimibles.add(new Printer("x0035",ocampo1, "Campo 1", variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0035",ocampo1, "Campo 1", variablesImprimibles.size()));
         }
 
         if(!Objects.equals(preferencesManager.getCampo2(), "") ||!Objects.equals(preferencesManager.getCampo2(), " ") ){
-            variablesImprimibles.add(new Printer("x0036",ocampo2, preferencesManager.getCampo2(), variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0036",ocampo2, preferencesManager.getCampo2(), variablesImprimibles.size()));
         }else{
-            variablesImprimibles.add(new Printer("x0036",ocampo2, "Campo 2", variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0036",ocampo2, "Campo 2", variablesImprimibles.size()));
         }
 
         if(!Objects.equals(preferencesManager.getCampo3(), "") ||!Objects.equals(preferencesManager.getCampo3(), " ") ){
-            variablesImprimibles.add(new Printer("x0037",ocampo3, preferencesManager.getCampo3(), variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0037",ocampo3, preferencesManager.getCampo3(), variablesImprimibles.size()));
         }else{
-            variablesImprimibles.add(new Printer("x0037",ocampo3, "Campo 3", variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0037",ocampo3, "Campo 3", variablesImprimibles.size()));
         }
 
         if(!Objects.equals(preferencesManager.getCampo4(), "") ||!Objects.equals(preferencesManager.getCampo4(), " ") ){
-            variablesImprimibles.add(new Printer("x0038",ocampo4, preferencesManager.getCampo4(), variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0038",ocampo4, preferencesManager.getCampo4(), variablesImprimibles.size()));
         }else{
-            variablesImprimibles.add(new Printer("x0038",ocampo4, "Campo 4", variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0038",ocampo4, "Campo 4", variablesImprimibles.size()));
         }
 
         if(!Objects.equals(preferencesManager.getCampo5(), "") ||!Objects.equals(preferencesManager.getCampo5(), " ") ){
-            variablesImprimibles.add(new Printer("x0039",ocampo5, preferencesManager.getCampo5(), variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0039",ocampo5, preferencesManager.getCampo5(), variablesImprimibles.size()));
         }else{
-            variablesImprimibles.add(new Printer("x0039",ocampo5, "Campo 5", variablesImprimibles.size(), context));
+            variablesImprimibles.add(new Printer("x0039",ocampo5, "Campo 5", variablesImprimibles.size()));
         }
     }
 
@@ -547,7 +545,7 @@ public class MainFormClass implements OnFragmentChangeListener {
     }
 
     public String JSONpesadas(Map<String, List<String>> filtros, String columnaEspecifica) throws JSONException {
-        List<Form_Model_PesadasDB> guardado = new ArrayList<>();
+        List<Form_Model_PesadasDB> guardado;
         try (Form_SQL_db guardadosSQL = new Form_SQL_db(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
             guardado = guardadosSQL.getPesadasSQL(filtros);
         }
@@ -604,7 +602,7 @@ public class MainFormClass implements OnFragmentChangeListener {
         return jsonArray.toString();
     }
     public String JSONrecetas(Map<String, List<String>> filtros, String columnaEspecifica) throws JSONException {
-        List<Form_Model_RecetaDB> guardado = new ArrayList<>();
+        List<Form_Model_RecetaDB> guardado;
         // Supongamos que tienes un método para obtener los datos desde la base de datos
         try (Form_SQL_db guardadosSQL = new Form_SQL_db(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
             guardado = guardadosSQL.getRecetasSQL(filtros);

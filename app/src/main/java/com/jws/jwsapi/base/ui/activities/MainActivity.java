@@ -1,13 +1,7 @@
-/********************************************************************************
- ################################################################################
- --------------------------------------------------------------------------------
- ################################################################################
- *******************************************************************************/
-
 package com.jws.jwsapi.base.ui.activities;
 
 import static com.jws.jwsapi.common.storage.Storage.createMemoryDirectory;
-import static com.jws.jwsapi.common.users.UsersManager.obtenerUsuarios;
+import static com.jws.jwsapi.common.storage.Storage.deleteCache;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -140,10 +134,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     public void clearCache(){
         Context context=getApplicationContext();
         if(usersManager.getNivelUsuario()>2){
@@ -165,13 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    private void deleteCache(Context context) {
-        try {
-            context.getCacheDir().deleteOnExit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
 
 
@@ -214,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void cargadeUsuariosFtp(){
-        List<UsuariosModel> lista= obtenerUsuarios();
+        List<UsuariosModel> lista= usersManager.obtenerUsuarios();
         for(int i=0;i<lista.size();i++){
             BaseUser user = new BaseUser();
             user.setName(lista.get(i).usuario);
@@ -230,8 +214,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     public void openSettings(){
         Intent launchIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.android.settings");
         if (launchIntent != null) {
@@ -239,86 +221,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public void dialogoExcel(List<Form_Model_Guardados> lista) throws IOException {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this,R.style.AlertDialogCustom);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_transferenciaarchivo, null);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-        ExcelEstadisticas(lista);
-        new Thread(() -> {
-            try {
-                Thread.sleep(7000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            runOnUiThread(() -> {
-                dialog.cancel();
-                Utils.Mensaje("Excel creado", R.layout.item_customtoastok,this);
-            });
-        }).start();
-    }
-
-    public int DevuelveCodigoUnico() {
-        int min = 1000;
-        int max = 9999;
-        int random_int = (int)Math.floor(Math.random() * (max - min + 1) + min);
-        // Printing the generated random numbers
-        return random_int;
-    }
-
-    public void ExcelEstadisticas(List<Form_Model_Guardados> lista) throws IOException {
-        if(lista.size()>0){
-            int j=1;
-            File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Registro.xls");
-            while(filePath.exists()){
-                filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Registro ("+ j +").xls");
-                j++;
-            }
-            HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-            HSSFSheet hssfSheet = hssfWorkbook.createSheet("Pesadas");
-            HSSFRow row = hssfSheet.createRow(0);
-            row.createCell(0).setCellValue("Id");
-            row.createCell(1).setCellValue("Producto");
-            row.createCell(2).setCellValue("Lote");
-            row.createCell(3).setCellValue("Cliente");
-            row.createCell(4).setCellValue("Dimensiones");
-            row.createCell(5).setCellValue("Neto");
-            row.createCell(6).setCellValue("Bruto");
-            row.createCell(7).setCellValue("Tara");
-            row.createCell(8).setCellValue("Fecha");
-            row.createCell(9).setCellValue("Hora");
-
-            int i;
-            for(i=0;i<lista.size();i++){
-                row = hssfSheet.createRow(i + 1); // Crea una nueva fila en cada iteración
-                row.createCell(0).setCellValue(lista.get(i).getId());
-                row.createCell(1).setCellValue(lista.get(i).getProducto());
-                row.createCell(2).setCellValue(lista.get(i).getLote());
-                row.createCell(3).setCellValue(lista.get(i).getEmpresa());
-                row.createCell(4).setCellValue(lista.get(i).getDimensiones());
-                row.createCell(5).setCellValue(lista.get(i).getNeto());
-                row.createCell(6).setCellValue(lista.get(i).getBruto());
-                row.createCell(7).setCellValue(lista.get(i).getTara());
-                row.createCell(8).setCellValue(lista.get(i).getFecha());
-                row.createCell(9).setCellValue(lista.get(i).getHora());
-            }
-            try {
-                if (!filePath.exists()){
-                    filePath.createNewFile();
-                }
-                FileOutputStream fileOutputStream= new FileOutputStream(filePath);
-                hssfWorkbook.write(fileOutputStream);
-                if (fileOutputStream!=null){
-                    fileOutputStream.flush();
-                    fileOutputStream.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -100,7 +100,7 @@ public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemCl
 
     public void DevuelveElementos(){
 
-        List<UsuariosModel> lista= UsersManager.obtenerUsuarios();
+        List<UsuariosModel> lista= usersManager.obtenerUsuarios();
         for(int i=0;i<lista.size();i++){
             ListElementsArrayList.add(new UsuariosModel(lista.get(i).id,lista.get(i).nombre,lista.get(i).usuario,lista.get(i).password, lista.get(i).codigo,
                     lista.get(i).tipo));

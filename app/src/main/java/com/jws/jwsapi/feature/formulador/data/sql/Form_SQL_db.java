@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import androidx.annotation.Nullable;
-
 import com.jws.jwsapi.feature.formulador.models.Form_Model_PesadasDB;
 import com.jws.jwsapi.feature.formulador.models.Form_Model_RecetaDB;
 import com.jws.jwsapi.utils.Utils;

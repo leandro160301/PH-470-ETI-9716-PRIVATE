@@ -1,6 +1,7 @@
 package com.jws.jwsapi.common.storage;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -16,11 +17,9 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.ui.adapters.AdapterMultimedia2;
 import com.jws.jwsapi.utils.Utils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -204,10 +203,16 @@ public class Storage {
         });
     }
 
-    public static String openAndReadFile(String archivo, MainActivity mainActivity) {
-        // Ruta del archivo que quieres leer
-        String filePath = "/storage/emulated/0/Memoria/"+archivo;
+    public static void deleteCache(Context context) {
+        try {
+            context.getCacheDir().deleteOnExit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static String openAndReadFile(String archivo, MainActivity mainActivity) {
+        String filePath = "/storage/emulated/0/Memoria/"+archivo;
         File file = new File(filePath);
         if (!file.exists()) {
             Utils.Mensaje("La etiqueta ya no esta disponible",R.layout.item_customtoasterror,mainActivity);

@@ -1,5 +1,7 @@
 package com.jws.jwsapi.base.ui.fragments;
 
+import static com.jws.jwsapi.utils.Utils.devuelveCodigoUnico;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.InputType;
@@ -529,7 +531,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
         dialog.show();
         tvpin.setOnClickListener(view -> DialogoTeclado(tvpin));
         bt_generar.setOnClickListener(view -> {
-            int Codigo=mainActivity.DevuelveCodigoUnico();
+            int Codigo=devuelveCodigoUnico();
             pin=String.valueOf(((Codigo+3031)*6)/4);
             tvCodigo.setText(String.valueOf(Codigo));
         });

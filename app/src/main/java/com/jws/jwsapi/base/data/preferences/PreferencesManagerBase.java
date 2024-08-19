@@ -2,7 +2,6 @@ package com.jws.jwsapi.base.data.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.jws.jwsapi.R;
 
 public class PreferencesManagerBase {

@@ -338,6 +338,14 @@ public class Utils {
         }
     }
 
+    public static int devuelveCodigoUnico() {
+        int min = 1000;
+        int max = 9999;
+        int random_int = (int)Math.floor(Math.random() * (max - min + 1) + min);
+        // Printing the generated random numbers
+        return random_int;
+    }
+
     public static String pointDecimalFormat(String numero, int decimales) {
         try {
             Double.parseDouble(numero);

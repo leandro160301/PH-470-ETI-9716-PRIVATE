@@ -22,14 +22,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class UsersManager {
 
-    private static Application application;
+    private final Application application;
     public static String DB_USERS_NAME ="Usuarios_DB";
     public static int DB_USERS_VERSION =1;
     String usuario ="";
@@ -37,31 +36,29 @@ public class UsersManager {
     public static final String[] USUARIOS = {
             "ADMINISTRADOR", "PROGRAMADOR",
     };
-    String Contrasena="";
+    String password ="";
 
     @Inject
     public UsersManager(Application application){
-        UsersManager.application =application;
+        this.application =application;
     }
 
-    public static List<UsuariosModel> obtenerUsuarios(){
-        List<UsuariosModel> lista;
-        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            lista=dbHelper.obtenerUsuarios();
-        }
-        return lista;
-    }
 
     public int cantidadUsuarios(){
-        List<UsuariosModel> lista;
-        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            lista=dbHelper.obtenerUsuarios();
-        }
+        List<UsuariosModel> lista=obtenerUsuarios();
         if(lista!=null){
             return lista.size();
         }else {
             return 0;
         }
+    }
+
+    public List<UsuariosModel> obtenerUsuarios(){
+        List<UsuariosModel> lista;
+        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
+            lista=dbHelper.obtenerUsuarios();
+        }
+        return lista;
     }
     public void BotonLogeo (Context context){
         PreferencesManagerBase preferencesManagerBase=new PreferencesManagerBase(application);
@@ -88,16 +85,16 @@ public class UsersManager {
 
         });
         Guardar.setOnClickListener(view -> {
-            if(!Contrasena.equals("") && !spinner.getSelectedItem().toString().equals("")){
-                Boolean logeo=false;
-                if((Contrasena.equals(preferencesManagerBase.consultaPIN())) && spinner.getSelectedItemPosition()==0){
+            if(!password.equals("") && !spinner.getSelectedItem().toString().equals("")){
+                boolean logeo=false;
+                if((password.equals(preferencesManagerBase.consultaPIN())) && spinner.getSelectedItemPosition()==0){
                     nivelUsuario =3;
                     logeo=true;
                     usuario ="ADMINISTRADOR";
                    // Utils.Mensaje("LOGEO CORRECTO",R.layout.item_customtoastok,this);
 
                 }
-                if((Contrasena.equals("3031")) && spinner.getSelectedItemPosition()==1){
+                if((password.equals("3031")) && spinner.getSelectedItemPosition()==1){
                     nivelUsuario =4;
                     logeo=true;
                     usuario ="PROGRAMADOR";
@@ -105,9 +102,9 @@ public class UsersManager {
 
                 }
                 if(!logeo){
-                    BuscarUsuario(spinner.getSelectedItem().toString(),Contrasena);
+                    BuscarUsuario(spinner.getSelectedItem().toString(), password);
                 }
-                Contrasena="";
+                password ="";
                 dialog.cancel();
 
             }
@@ -128,8 +125,7 @@ public class UsersManager {
         try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
             lista=dbHelper.obtenerUsuarios();
         }
-        List<String> listElementsArrayList =new ArrayList<>();
-        listElementsArrayList.addAll(Arrays.asList(USUARIOS));
+        List<String> listElementsArrayList = new ArrayList<>(Arrays.asList(USUARIOS));
         for(int i=0;i<lista.size();i++){
             listElementsArrayList.add(lista.get(i).usuario);
         }
@@ -143,8 +139,8 @@ public class UsersManager {
 
     public void Logeo(TextView textView,Context context){
         TecladoPassword(null, "", context, texto -> {
-            Contrasena=texto;
-            String copia = Contrasena;
+            password =texto;
+            String copia = password;
             copia=copia.replaceAll("(?s).", "*");
             textView.setText(copia);
         }, PasswordTransformationMethod.getInstance());

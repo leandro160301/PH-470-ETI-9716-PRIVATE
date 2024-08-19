@@ -3,16 +3,6 @@ package com.jws.jwsapi.common.impresora.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 public class PreferencesPrinterManager {
     private Context context;
     public static String SP_NAME = "Impresoras_SP";

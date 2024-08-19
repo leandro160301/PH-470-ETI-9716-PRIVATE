@@ -8,7 +8,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.feature.formulador.models.Form_Model_Guardados;
+import com.jws.jwsapi.feature.formulador.models.FormModelGuardados;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ExcelHelper {
 
-    public void dialogoExcel(List<Form_Model_Guardados> lista, Context context) throws IOException {
+    public void dialogoExcel(List<FormModelGuardados> lista, Context context) throws IOException {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         View mView = LayoutInflater.from(context).inflate(R.layout.dialogo_transferenciaarchivo, null);
         mBuilder.setView(mView);
@@ -42,7 +42,7 @@ public class ExcelHelper {
     }
 
 
-    public void excelGuardados(List<Form_Model_Guardados> lista) throws IOException {
+    public void excelGuardados(List<FormModelGuardados> lista) throws IOException {
         if(lista.size()>0){
             int j=1;
             File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Registro.xls");

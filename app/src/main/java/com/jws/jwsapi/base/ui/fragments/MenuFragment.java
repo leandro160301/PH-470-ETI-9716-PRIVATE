@@ -22,10 +22,10 @@ import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.ui.adapters.AdapterConfig;
 import com.jws.jwsapi.base.ui.adapters.AdapterConfigDinamico;
 import com.jws.jwsapi.common.users.UsersManager;
-import com.jws.jwsapi.feature.formulador.ui.fragment.Form_Fragment_ConfiguracionBalanza;
-import com.jws.jwsapi.feature.formulador.ui.fragment.Form_Fragment_ConfiguracionPrograma;
-import com.jws.jwsapi.feature.formulador.ui.fragment.Form_Fragment_ConfiguracionTurnos;
-import com.jws.jwsapi.feature.formulador.ui.fragment.Form_Fragment_Datos;
+import com.jws.jwsapi.feature.formulador.ui.fragment.FormFragmentDatos;
+import com.jws.jwsapi.feature.formulador.ui.fragment.FormFragmentConfiguracionBalanza;
+import com.jws.jwsapi.feature.formulador.ui.fragment.FormFragmentConfiguracionPrograma;
+import com.jws.jwsapi.feature.formulador.ui.fragment.FormFragmentConfiguracionTurnos;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Balanzas.Fragments.ServiceFragment;
@@ -210,16 +210,16 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
             if(menuElegido ==1){
                 if(usersManager.getNivelUsuario()>1){
                     if(position==0){
-                        mainActivity.mainClass.openFragment(new Form_Fragment_ConfiguracionPrograma());
+                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionPrograma());
                     }
                     if(position==1){
-                        mainActivity.mainClass.openFragment(new Form_Fragment_ConfiguracionBalanza());
+                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionBalanza());
                     }
                     if(position==2){
-                        mainActivity.mainClass.openFragment(new Form_Fragment_ConfiguracionTurnos());
+                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionTurnos());
                     }
                     if(position==3){
-                        mainActivity.mainClass.openFragment(new Form_Fragment_Datos());
+                        mainActivity.mainClass.openFragment(new FormFragmentDatos());
                     }
                     if(position==4){
                         mainActivity.mainClass.openFragment(new EtiquetasProgramaFragment());

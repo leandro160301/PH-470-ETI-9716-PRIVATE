@@ -41,33 +41,24 @@ import com.jws.jwsapi.common.impresora.clases.Printer;
 import com.jws.jwsapi.common.impresora.clases.PrinterObject;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.ui.fragment.FormPrincipal;
 import com.service.Balanzas.BalanzaService;
 import com.jws.jwsapi.common.impresora.ImprimirEstandar;
 import com.service.Comunicacion.OnFragmentChangeListener;
 import com.jws.jwsapi.base.containers.ContainerFragment;
 import com.jws.jwsapi.base.containers.ContainerPrincipalFragment;
-import com.jws.jwsapi.feature.formulador.ui.fragment.Form_Principal;
-import com.jws.jwsapi.feature.formulador.models.Form_Model_Ingredientes;
-import com.jws.jwsapi.feature.formulador.models.Form_Model_PesadasDB;
-import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
-import com.jws.jwsapi.feature.formulador.models.Form_Model_RecetaDB;
-import com.jws.jwsapi.feature.formulador.data.sql.Form_SQL_db;
+import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
+import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.Utils;
 import com.opencsv.CSVReader;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import au.com.bytecode.opencsv.CSVWriter;
 
 public class MainFormClass implements OnFragmentChangeListener {
@@ -279,7 +270,7 @@ public class MainFormClass implements OnFragmentChangeListener {
     }
 
     public void openFragmentPrincipal() {
-        Fragment fragment = new Form_Principal();
+        Fragment fragment = new FormPrincipal();
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
         Fragment fragmentoActual = new ContainerPrincipalFragment();
         ContainerPrincipalFragment containerFragment = ContainerPrincipalFragment.newInstance(fragment.getClass());
@@ -361,8 +352,8 @@ public class MainFormClass implements OnFragmentChangeListener {
     /////////////////////////////////////Getters ///////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
 
-    public List<Form_Model_Ingredientes> getIngredientes() {
-        List<Form_Model_Ingredientes> cod = new ArrayList<>();
+    public List<FormModelIngredientes> getIngredientes() {
+        List<FormModelIngredientes> cod = new ArrayList<>();
         try {
             String filePath = Environment.getExternalStorageDirectory() + "/Memoria/Ingredientes.csv";
             File filess = new File(filePath);
@@ -375,7 +366,7 @@ public class MainFormClass implements OnFragmentChangeListener {
                         if (nextLine.length > 1) {
                             String pos0 = nextLine[0].replace("\"", "");
                             String pos1 = nextLine[1].replace("\"", "");
-                            cod.add(new Form_Model_Ingredientes(pos0, pos1));
+                            cod.add(new FormModelIngredientes(pos0, pos1));
                         } else {
                             error = true;
                         }
@@ -396,8 +387,8 @@ public class MainFormClass implements OnFragmentChangeListener {
         return cod;
     }
 
-    public List<Form_Model_Receta> getReceta(String receta) {
-        List<Form_Model_Receta> listreceta = new ArrayList<>();
+    public List<FormModelReceta> getReceta(String receta) {
+        List<FormModelReceta> listreceta = new ArrayList<>();
         String[] arr = receta.split("_");
         float total = 0f;
         try {
@@ -414,7 +405,7 @@ public class MainFormClass implements OnFragmentChangeListener {
                             String kilos = nextLine[2].replace("\"", "");
                             if (codigo != null && ingrediente != null && kilos != null && arr.length == 3 && Utils.isNumeric(kilos)) {
 
-                                listreceta.add(new Form_Model_Receta(arr[1].replace("_", ""), arr[2].replace("_", ""),
+                                listreceta.add(new FormModelReceta(arr[1].replace("_", ""), arr[2].replace("_", ""),
                                         "0", codigo, ingrediente, kilos, "NO", ""));
                                 if (Utils.isNumeric(kilos)) {
                                     total = total + Float.parseFloat(kilos);
@@ -447,7 +438,7 @@ public class MainFormClass implements OnFragmentChangeListener {
 
     }
 
-    public void setReceta(String receta, List<Form_Model_Receta> lista) throws IOException {
+    public void setReceta(String receta, List<FormModelReceta> lista) throws IOException {
         Runnable myRunnable = () -> {
             File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/" + receta + ".csv");
             // Si el archivo no existe, crearlo
@@ -481,7 +472,7 @@ public class MainFormClass implements OnFragmentChangeListener {
 
     }
 
-    public void setIngredientes(List<Form_Model_Ingredientes> lista) throws IOException {
+    public void setIngredientes(List<FormModelIngredientes> lista) throws IOException {
         Runnable myRunnable = () -> {
             File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Ingredientes.csv");
             if (filePath.exists()) {
@@ -507,204 +498,6 @@ public class MainFormClass implements OnFragmentChangeListener {
         Thread myThread = new Thread(myRunnable);
         myThread.start();
 
-
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////Pagina web ////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-
-    public String JSONconsultas() throws JSONException {
-        JSONArray jsonArray = new JSONArray();
-
-        try {
-
-            JSONObject PESADAS = new JSONObject();
-            PESADAS.put("GET", "GetPesadas");
-            PESADAS.put("Nombre", "PESADAS");
-
-            JSONObject RECETAS = new JSONObject();
-            RECETAS.put("GET", "GetRecetas");
-            RECETAS.put("Nombre", "RECETAS");
-
-            JSONObject INGREDIENTES = new JSONObject();
-            INGREDIENTES.put("GET", "GetPedidos");
-            INGREDIENTES.put("Nombre", "PEDIDOS");
-
-
-            jsonArray.put(PESADAS);
-            jsonArray.put(RECETAS);
-            jsonArray.put(INGREDIENTES);
-
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return jsonArray.toString();
-    }
-
-    public String JSONpesadas(Map<String, List<String>> filtros, String columnaEspecifica) throws JSONException {
-        List<Form_Model_PesadasDB> guardado;
-        try (Form_SQL_db guardadosSQL = new Form_SQL_db(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-            guardado = guardadosSQL.getPesadasSQL(filtros);
-        }
-
-        Set<Object> valoresUnicos = new HashSet<>();
-        JSONArray jsonArray = new JSONArray();
-
-        try {
-            for (int i = 0; i < guardado.size(); i++) {
-                JSONObject Pesada = new JSONObject();
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[0], String.valueOf(guardado.get(i).getId()));
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[1], guardado.get(i).getIdReceta());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[2], String.valueOf(guardado.get(i).getIdPedido()));
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[3], guardado.get(i).getCodigoReceta());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[4], guardado.get(i).getDescripcionReceta());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[5], guardado.get(i).getCodigoIngrediente());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[6], guardado.get(i).getDescripcionIngrediente());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[7], guardado.get(i).getLote());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[8], guardado.get(i).getVencimiento());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[9], guardado.get(i).getTurno());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[10], guardado.get(i).getNeto());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[25], guardado.get(i).getOperador());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[26], guardado.get(i).getSetPoint());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[27], guardado.get(i).getReales());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[11], guardado.get(i).getBruto());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[12], guardado.get(i).getTara());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[13], guardado.get(i).getFecha());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[14], guardado.get(i).getHora());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[15], guardado.get(i).getCampo1());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[16], guardado.get(i).getCampo2());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[17], guardado.get(i).getCampo3());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[18], guardado.get(i).getCampo4());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[19], guardado.get(i).getCampo5());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[20], guardado.get(i).getCampo1Valor());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[21], guardado.get(i).getCampo2Valor());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[22], guardado.get(i).getCampo3Valor());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[23], guardado.get(i).getCampo4Valor());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[24], guardado.get(i).getCampo5Valor());
-                Pesada.put(Form_SQL_db.COLUMN_PESADAS_DES[30], guardado.get(i).getBalanza());
-
-                if (columnaEspecifica != null && !columnaEspecifica.isEmpty()) {
-                    Object valorColumna = Pesada.get(columnaEspecifica);
-                    if (valoresUnicos.add(valorColumna)) {
-                        jsonArray.put(valorColumna);
-                    }
-                }else {
-                    jsonArray.put(Pesada);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonArray.toString();
-    }
-    public String JSONrecetas(Map<String, List<String>> filtros, String columnaEspecifica) throws JSONException {
-        List<Form_Model_RecetaDB> guardado;
-        // Supongamos que tienes un método para obtener los datos desde la base de datos
-        try (Form_SQL_db guardadosSQL = new Form_SQL_db(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-            guardado = guardadosSQL.getRecetasSQL(filtros);
-        }
-        Set<Object> valoresUnicos = new HashSet<>();
-        JSONArray jsonArray = new JSONArray();
-
-        try {
-            for (Form_Model_RecetaDB receta : guardado) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[0], String.valueOf(receta.getId()));
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[1], receta.getCodigoReceta());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[2], receta.getDescripcionReceta());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[3], receta.getLote());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[4], receta.getVencimiento());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[5], receta.getTurno());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[6], receta.getNeto());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[22], receta.getKilosAProducir());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[21], receta.getOperador());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[7], receta.getBruto());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[8], receta.getTara());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[9], receta.getFecha());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[10], receta.getHora());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[11], receta.getCampo1());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[12], receta.getCampo2());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[13], receta.getCampo3());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[14], receta.getCampo4());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[15], receta.getCampo5());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[16], receta.getCampo1Valor());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[17], receta.getCampo2Valor());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[18], receta.getCampo3Valor());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[19], receta.getCampo4Valor());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[20], receta.getCampo5Valor());
-
-               // jsonObject.put("CampoExtra1", receta.campoExtra1);
-               // jsonObject.put("CampoExtra2", receta.campoExtra2);
-                if (columnaEspecifica != null && !columnaEspecifica.isEmpty()) {
-                    Object valorColumna = jsonObject.get(columnaEspecifica);
-                    if (valoresUnicos.add(valorColumna)) {
-                        jsonArray.put(valorColumna);
-                    }
-                }else {
-                    jsonArray.put(jsonObject);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonArray.toString();
-    }
-
-    public String JSONpedidos(Map<String, List<String>> filtros, String columnaEspecifica) throws JSONException {
-        List<Form_Model_RecetaDB> guardado = new ArrayList<>();
-        // Supongamos que tienes un método para obtener los datos desde la base de datos
-        try (Form_SQL_db guardadosSQL = new Form_SQL_db(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-            guardado = guardadosSQL.getPedidosSQL(filtros);
-        }
-        Set<Object> valoresUnicos = new HashSet<>();
-        JSONArray jsonArray = new JSONArray();
-
-        try {
-            for (Form_Model_RecetaDB receta : guardado) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[0], String.valueOf(receta.getId()));
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[1], receta.getCodigoReceta());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[2], receta.getDescripcionReceta());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[3], receta.getLote());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[4], receta.getVencimiento());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[5], receta.getTurno());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[6], receta.getNeto());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[22], receta.getKilosAProducir());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[21], receta.getOperador());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[7], receta.getBruto());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[8], receta.getTara());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[9], receta.getFecha());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[10], receta.getHora());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[11], receta.getCampo1());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[12], receta.getCampo2());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[13], receta.getCampo3());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[14], receta.getCampo4());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[15], receta.getCampo5());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[16], receta.getCampo1Valor());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[17], receta.getCampo2Valor());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[18], receta.getCampo3Valor());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[19], receta.getCampo4Valor());
-                jsonObject.put(Form_SQL_db.COLUMN_RECETAS_DES[20], receta.getCampo5Valor());
-
-                if (columnaEspecifica != null && !columnaEspecifica.isEmpty()) {
-                    Object valorColumna = jsonObject.get(columnaEspecifica);
-                    if (valoresUnicos.add(valorColumna)) {
-                        jsonArray.put(valorColumna);
-                    }
-                }else {
-                    jsonArray.put(jsonObject);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonArray.toString();
     }
 
 

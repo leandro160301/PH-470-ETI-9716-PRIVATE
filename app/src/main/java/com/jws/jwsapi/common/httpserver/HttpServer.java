@@ -1,5 +1,10 @@
 package com.jws.jwsapi.common.httpserver;
 
+import static com.jws.jwsapi.feature.formulador.data.sql.FormSqlUtil.JSONconsultas;
+import static com.jws.jwsapi.feature.formulador.data.sql.FormSqlUtil.JSONpedidos;
+import static com.jws.jwsapi.feature.formulador.data.sql.FormSqlUtil.JSONpesadas;
+import static com.jws.jwsapi.feature.formulador.data.sql.FormSqlUtil.JSONrecetas;
+
 import android.content.Context;
 import android.util.Log;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
@@ -214,7 +219,7 @@ public class HttpServer extends NanoWSD {
 
         if (uri.endsWith("getConsultas")){
 
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,mainActivity.mainClass.JSONconsultas());
+            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JSONconsultas());
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
@@ -227,7 +232,7 @@ public class HttpServer extends NanoWSD {
         if (uri.endsWith("GetPesadas")){
             Map<String, List<String>> filtros = extraerFiltros(session);
             String columnaEspecifica = session.getParameters().get("columna") != null ? session.getParameters().get("columna").get(0) : null;
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,mainActivity.mainClass.JSONpesadas(filtros,columnaEspecifica));
+            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JSONpesadas(filtros,columnaEspecifica,mainActivity));
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
@@ -235,7 +240,7 @@ public class HttpServer extends NanoWSD {
         if (uri.endsWith("GetRecetas")){
             Map<String, List<String>> filtros = extraerFiltros(session);
             String columnaEspecifica = session.getParameters().get("columna") != null ? session.getParameters().get("columna").get(0) : null;
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,mainActivity.mainClass.JSONrecetas(filtros,columnaEspecifica));
+            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JSONrecetas(filtros,columnaEspecifica,mainActivity));
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
@@ -244,7 +249,7 @@ public class HttpServer extends NanoWSD {
         if (uri.endsWith("GetPedidos")){
             Map<String, List<String>> filtros = extraerFiltros(session);
             String columnaEspecifica = session.getParameters().get("columna") != null ? session.getParameters().get("columna").get(0) : null;
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,mainActivity.mainClass.JSONpedidos(filtros,columnaEspecifica));
+            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JSONpedidos(filtros,columnaEspecifica,mainActivity));
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
@@ -296,8 +301,8 @@ public class HttpServer extends NanoWSD {
             return newFixedLengthResponse("Hecho");
         }
         else if(uri.endsWith("INSTALLAPK")){
-
-            Storage.installApk(mainActivity);
+            Storage storage= new Storage(mainActivity);
+            storage.installApk(mainActivity);
             return newFixedLengthResponse("Hecho");
         }
         else if(uri.endsWith("CONFIGURACION")){

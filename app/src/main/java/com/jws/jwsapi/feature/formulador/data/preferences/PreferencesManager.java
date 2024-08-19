@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.jws.jwsapi.feature.formulador.MainFormClass;
-import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
+import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class PreferencesManager {
     }
 
 
-    public void setPasosRecetaActual(List<Form_Model_Receta> recetaActual) {
+    public void setPasosRecetaActual(List<FormModelReceta> recetaActual) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
@@ -64,11 +63,11 @@ public class PreferencesManager {
         editor.apply();
     }
 
-    public List<Form_Model_Receta> getPasosRecetaActual() {
+    public List<FormModelReceta> getPasosRecetaActual() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("pasos_recetaactual", null);
-        Type type = new TypeToken<ArrayList<Form_Model_Receta>>() {}.getType();
+        Type type = new TypeToken<ArrayList<FormModelReceta>>() {}.getType();
         return gson.fromJson(json, type);
     }
 

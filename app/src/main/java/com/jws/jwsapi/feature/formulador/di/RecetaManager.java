@@ -1,7 +1,7 @@
 package com.jws.jwsapi.feature.formulador.di;
 
 import androidx.lifecycle.MutableLiveData;
-import com.jws.jwsapi.feature.formulador.models.Form_Model_Receta;
+import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Singleton;
@@ -14,7 +14,7 @@ public class RecetaManager {
     public String recetaActual = "";
     public Boolean ejecutando = false;
     public Boolean recetaComoPedido =false;
-    public List<Form_Model_Receta> listRecetaActual = new ArrayList<>();
+    public List<FormModelReceta> listRecetaActual = new ArrayList<>();
     public int pasoActual = 0;
     public MutableLiveData<Integer> cantidad = new MutableLiveData<>(0);
     public MutableLiveData<Integer> realizadas = new MutableLiveData<>(0);

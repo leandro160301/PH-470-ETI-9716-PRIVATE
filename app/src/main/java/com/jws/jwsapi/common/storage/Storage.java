@@ -3,7 +3,6 @@ package com.jws.jwsapi.common.storage;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
@@ -56,7 +55,7 @@ public class Storage {
     File file;
     int updateUsbState =0;
     public static Handler mHandler= new Handler();
-    private static AppCompatActivity activity;
+    private final AppCompatActivity activity;
 
     public Storage(AppCompatActivity activity){
         this.activity=activity;
@@ -92,10 +91,10 @@ public class Storage {
             updateUsbState =0;
         }
     }
-    public static boolean isPackageExisted(String targetPackage){
+    public boolean isPackageExisted(String targetPackage){
         PackageManager pm= activity.getApplicationContext().getPackageManager();
         try {
-            PackageInfo info=pm.getPackageInfo(targetPackage,PackageManager.GET_META_DATA);
+            pm.getPackageInfo(targetPackage,PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
@@ -104,10 +103,9 @@ public class Storage {
     public Boolean DevuelveEstadoUSB(){
         return updateUsbState == 1;
     }
-    public static void installApk(AppCompatActivity activity){
+    public void installApk(AppCompatActivity activity){
         if(isPackageExisted("com.android.documentsui")){
-            Intent launchIntent=null;
-            launchIntent = activity.getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.android.documentsui");
+            Intent launchIntent = activity.getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.android.documentsui");
             if (launchIntent != null) {
                 activity.startActivity(launchIntent);
             }
@@ -191,7 +189,7 @@ public class Storage {
         Cancelar.setOnClickListener(view -> dialogusb.cancel());
         Borrar.setOnClickListener(view -> {
             if (file != null && file.exists()) {
-                Boolean eliminacion=file.delete();
+                boolean eliminacion=file.delete();
                 if(eliminacion){
                     Utils.Mensaje("Archivo borrado", R.layout.item_customtoastok,activity);
                 }else{
@@ -222,7 +220,6 @@ public class Storage {
             FileInputStream fis = null;
             InputStreamReader isr = null;
             BufferedReader br = null;
-
             try {
                 fis = new FileInputStream(file);
                 isr = new InputStreamReader(fis);
@@ -236,7 +233,7 @@ public class Storage {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Utils.Mensaje("Error al intentar leer la etiqueta"+ e.toString(),R.layout.item_customtoasterror,mainActivity);
+                Utils.Mensaje("Error al intentar leer la etiqueta"+ e,R.layout.item_customtoasterror,mainActivity);
             } finally {
                 try {
                     if (br != null) br.close();
@@ -259,17 +256,17 @@ public class Storage {
             File[] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(tipo));
             File[] fileArray2 = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(".png"));
             StringBuilder f = new StringBuilder();
-            if(fileArray.length>0){
-                for(int i=0; i < fileArray.length; i++){
-                    f.append(fileArray[i].getName());
+            if(fileArray!=null&&fileArray.length>0){
+                for (File value : fileArray) {
+                    f.append(value.getName());
                     ListElementsArrayList2.add(f.toString());
                     f = new StringBuilder();
                 }
             }
-            if(fileArray2.length>0){
+            if(fileArray2!=null&&fileArray2.length>0){
                 f = new StringBuilder();
-                for(int i=0; i < fileArray2.length; i++){
-                    f.append(fileArray2[i].getName());
+                for (File value : fileArray2) {
+                    f.append(value.getName());
                     ListElementsArrayList2.add(f.toString());
                     f = new StringBuilder();
                 }
@@ -281,7 +278,7 @@ public class Storage {
         return adapter3;
     }
 
-    public static void copyFileProgress(final File file, final File dir) {
+    public void copyFileProgress(final File file, final File dir) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(activity,R.style.AlertDialogCustom);
         View mView = activity.getLayoutInflater().inflate(R.layout.dialogo_transferenciaarchivo, null);
         TextView textView= mView.findViewById(R.id.textView);
@@ -316,15 +313,14 @@ public class Storage {
     }
 
     public int cantidadRegistros() {
-        String[] ListElementos = new String[] {};
-        List<String> Lista=new ArrayList<>(Arrays.asList(ListElementos));
+        List<String> Lista=new ArrayList<>();
         File  root = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
         if(root.exists()){
             File[] filearr = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(".xls") && filename.toLowerCase().startsWith("registro"));
             StringBuilder f = new StringBuilder();
-            if(filearr.length>0){
-                for(int i=0; i < filearr.length; i++){
-                    f.append(filearr[i].getName());
+            if(filearr!=null&&filearr.length>0){
+                for (File value : filearr) {
+                    f.append(value.getName());
                     Lista.add(f.toString());
                     f = new StringBuilder();
                 }
@@ -352,7 +348,6 @@ public class Storage {
         List<String> guardado= getArchivos();
         JSONArray jsonArray = new JSONArray();
         try {
-
             for(int i=0;i<guardado.size();i++){
                 JSONObject Usuario = new JSONObject();
                 Usuario.put("Nombre", guardado.get(i).replace(".pdf","").replace(".png","").replace(".xls","").replace(".csv","").replace(".jpg","").replace(".prn","").replace(".lbl","").replace(".nlbl",""));

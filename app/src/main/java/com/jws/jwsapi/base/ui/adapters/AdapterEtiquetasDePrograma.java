@@ -28,12 +28,12 @@ public class AdapterEtiquetasDePrograma extends RecyclerView.Adapter<AdapterEtiq
     Context context;
     PreferencesManager preferencesManager;
 
-    public AdapterEtiquetasDePrograma(Context context, List<EtiquetasDeProgramaModel> data, List<String>etiquetas) {
+    public AdapterEtiquetasDePrograma(Context context, List<EtiquetasDeProgramaModel> data, List<String>etiquetas,PreferencesManager preferencesManager) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.etiquetas= etiquetas;
         this.context=context;
-        this.preferencesManager= new PreferencesManager(context);
+        this.preferencesManager= preferencesManager;
 
     }
 

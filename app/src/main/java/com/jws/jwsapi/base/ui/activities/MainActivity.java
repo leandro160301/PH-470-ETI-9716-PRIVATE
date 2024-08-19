@@ -6,6 +6,9 @@ import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoText
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +16,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.WindowManager;
 import com.android.jws.JwsManager;
+import com.jws.jwsapi.base.containers.ContainerFragment;
+import com.jws.jwsapi.base.containers.ContainerPrincipalFragment;
 import com.jws.jwsapi.base.data.preferences.PreferencesManagerBase;
 import com.jws.jwsapi.common.ftpserver.FtpInit;
 import com.jws.jwsapi.common.httpserver.InitServer;
@@ -24,19 +30,24 @@ import com.jws.jwsapi.feature.formulador.MainFormClass;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.dialog.DialogButtonInterface;
+import com.jws.jwsapi.feature.formulador.ui.fragment.FormPrincipal;
 import com.jws.jwsapi.utils.Utils;
+import com.service.Balanzas.BalanzaService;
+import com.service.Comunicacion.OnFragmentChangeListener;
+
 import java.io.IOException;
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnFragmentChangeListener {
     public static String VERSION ="PH 470 FRM 1.02";
     public JwsManager jwsObject;
     public MainFormClass mainClass;
     public Storage storage;
     InitServer initServer;
     public PreferencesManagerBase preferencesManagerBase;
+    Boolean permitirClic=true;
     @Inject
     UsersManager usersManager;
 
@@ -54,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         initPendrive();
 
     }
+
 
     private void initPendrive() {
         storage =new Storage(this);
@@ -82,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initMainClass() {
-        mainClass = new MainFormClass(this,this,usersManager);
+        mainClass = new MainFormClass(this,this,usersManager,new PreferencesManager(this.getApplication()));
         mainClass.init();
     }
 
@@ -151,6 +163,45 @@ public class MainActivity extends AppCompatActivity {
         initServer.handleActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void openFragmentService(Fragment fragment, Bundle arg) {
+        if(permitirClic){
+            FragmentManager fragmentManager = ((AppCompatActivity) this).getSupportFragmentManager();
+            Fragment fragmentoActual = new ContainerFragment();
+            boolean programador= usersManager.getNivelUsuario() > 3;
+            ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(),arg,programador);
+            containerFragment.setFragmentActual(fragmentoActual);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container_fragment, containerFragment)
+                    .commit();
+            permitirClic = false;
+            Handler handler= new Handler();
+            handler.postDelayed(() -> permitirClic = true, 1000); //arreglar problema de que mas de una optima llame a service al mismo tiempo
+        }
+    }
+
+    @Override
+    public void openFragmentPrincipal() {
+        Fragment fragment = new FormPrincipal();
+        FragmentManager fragmentManager = ((AppCompatActivity) this).getSupportFragmentManager();
+        Fragment fragmentoActual = new ContainerPrincipalFragment();
+        ContainerPrincipalFragment containerFragment = ContainerPrincipalFragment.newInstance(fragment.getClass());
+        containerFragment.setFragmentActual(fragmentoActual);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container_fragment, containerFragment)
+                .commit();
+    }
+
+    public void openFragment(Fragment fragment) {
+        FragmentManager fragmentManager = ((AppCompatActivity) this).getSupportFragmentManager();
+        Fragment fragmentoActual = new ContainerFragment();
+
+        ContainerFragment containerFragment = ContainerFragment.newInstance(fragment.getClass());
+        containerFragment.setFragmentActual(fragmentoActual);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container_fragment, containerFragment)
+                .commit();
+    }
 }
 
 

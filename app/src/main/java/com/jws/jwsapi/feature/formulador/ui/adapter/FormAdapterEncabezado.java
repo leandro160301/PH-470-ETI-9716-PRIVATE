@@ -20,7 +20,7 @@ public class FormAdapterEncabezado extends RecyclerView.Adapter<FormAdapterEncab
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private int lastPositionAdapter = -1;
-    private Context context;
+    private final Context context;
 
     public FormAdapterEncabezado(Context context, List<String> data) {
         this.mInflater = LayoutInflater.from(context);

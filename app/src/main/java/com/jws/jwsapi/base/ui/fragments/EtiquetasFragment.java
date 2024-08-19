@@ -18,13 +18,24 @@ import com.jws.jwsapi.base.ui.adapters.AdapterMultimedia;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.models.EtiquetasModel;
 import com.jws.jwsapi.base.ui.adapters.AdapterEtiquetas;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EtiquetasFragment extends Fragment implements AdapterMultimedia.ItemClickListener {
 
+    @Inject
+    PreferencesManager preferencesManager;
+    @Inject
+    LabelManager labelManager;
     Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
@@ -97,16 +108,16 @@ public class EtiquetasFragment extends Fragment implements AdapterMultimedia.Ite
             bt_1.setOnClickListener(view -> {
                 if(adapterCampos !=null){
                     if(adapterCampos.ListElementsInt!=null){
-                        mainActivity.mainClass.preferencesManager.saveListSpinner(adapterCampos.ListElementsInternaInt, adapterCampos.etiqueta);
+                        preferencesManager.saveListSpinner(adapterCampos.ListElementsInternaInt, adapterCampos.etiqueta);
                     }
                     if(adapterCampos.ListElementsInternaFijo!=null){
-                        mainActivity.mainClass.preferencesManager.saveListFijo(adapterCampos.ListElementsInternaFijo, adapterCampos.etiqueta);
+                        preferencesManager.saveListFijo(adapterCampos.ListElementsInternaFijo, adapterCampos.etiqueta);
                     }
 
                 }
             });
 
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
         }
     }
@@ -121,7 +132,7 @@ public class EtiquetasFragment extends Fragment implements AdapterMultimedia.Ite
     }
     private void setupRecyclerCampos(List<EtiquetasModel> lista,int posi) {
         recyclerCampos.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterCampos = new AdapterEtiquetas(getContext(), lista,mainActivity, etiquetaNombre,posi);
+        adapterCampos = new AdapterEtiquetas(getContext(), lista,mainActivity, etiquetaNombre,posi,labelManager,preferencesManager);
         recyclerCampos.setAdapter(adapterCampos);
     }
 

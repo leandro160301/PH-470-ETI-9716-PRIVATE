@@ -23,20 +23,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
+import com.jws.jwsapi.common.impresora.ImprimirEstandar;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaIngredientesBinding;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterIngredientes;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterIngredientesInterface;
+import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -46,6 +48,10 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
 
     @Inject
     RecetaManager recetaManager;
+    @Inject
+    LabelManager labelManager;
+    @Inject
+    PreferencesManager preferencesManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     FormAdapterIngredientes adapter;
@@ -155,7 +161,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
             bt_2.setOnClickListener(view -> DialogoNuevoIngrediente());
             bt_1.setOnClickListener(view -> Buscador());
@@ -260,12 +266,17 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
             Utils.Mensaje("No puede eliminar mas ingredientes",R.layout.item_customtoasterror,mainActivity);
         }
     }
+    public void Imprimir(int etiqueta) {
+        ImprimirEstandar imprimirEstandar = new ImprimirEstandar(getContext(), mainActivity,usersManager,preferencesManager,labelManager);
+        imprimirEstandar.EnviarEtiqueta(mainActivity.mainClass.BZA.serialPortB,etiqueta);
+
+    }
 
     @Override
     public void imprimirEtiqueta(String codigo, String nombre) {
-        mainActivity.mainClass.ocodigoingrediente.value=codigo;
-        mainActivity.mainClass.oingredientes.value=nombre;
-        mainActivity.mainClass.Imprimir(3);
+        labelManager.ocodigoingrediente.value=codigo;
+        labelManager.oingredientes.value=nombre;
+        Imprimir(3);
     }
 }
 

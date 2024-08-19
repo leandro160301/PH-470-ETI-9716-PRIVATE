@@ -19,8 +19,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaDatosBinding;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.ui.viewmodel.FormFragmentDatosViewModel;
+import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -32,6 +34,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class FormFragmentDatos extends Fragment{
     @Inject
     RecetaManager recetaManager;
+    @Inject
+    PreferencesManager preferencesManager;
+    @Inject
+    LabelManager labelManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     private ProgFormuladorPantallaDatosBinding binding;
@@ -66,16 +72,16 @@ public class FormFragmentDatos extends Fragment{
 
     private void setupSpinnersWithDefaults() {
         configurarSpinner(binding.spVencimiento,getContext(), Arrays.asList(getResources().getStringArray(R.array.Vencimiento)));
-        int modovenc=mainActivity.mainClass.preferencesManager.getModoVencimiento();
+        int modovenc=preferencesManager.getModoVencimiento();
         binding.spVencimiento.setSelection(modovenc);
         binding.spVencimiento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(!recetaManager.ejecutando){
                     if(i!=modovenc){
-                        mainActivity.mainClass.preferencesManager.setModoVencimiento(i);
-                        mainActivity.mainClass.preferencesManager.setVencimiento("");
-                        mainActivity.mainClass.ovenci.value="";
+                        preferencesManager.setModoVencimiento(i);
+                        preferencesManager.setVencimiento("");
+                        labelManager.ovenci.value="";
                     }
                 }else{
                     Utils.Mensaje("No puede la cambiar la configuracion mientras hay una receta en ejecucion",R.layout.item_customtoasterror,mainActivity);
@@ -89,16 +95,16 @@ public class FormFragmentDatos extends Fragment{
         });
 
         configurarSpinner(binding.spLote,getContext(), Arrays.asList(getResources().getStringArray(R.array.Lote)));
-        int modolote=mainActivity.mainClass.preferencesManager.getModoLote();
-        binding.spLote.setSelection(mainActivity.mainClass.preferencesManager.getModoLote());
+        int modolote=preferencesManager.getModoLote();
+        binding.spLote.setSelection(preferencesManager.getModoLote());
         binding.spLote.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(!recetaManager.ejecutando){
                     if(i!=modolote){
-                        mainActivity.mainClass.preferencesManager.setLote("");
-                        mainActivity.mainClass.olote.value="";
-                        mainActivity.mainClass.preferencesManager.setModoLote(i);
+                        preferencesManager.setLote("");
+                        labelManager.olote.value="";
+                        preferencesManager.setModoLote(i);
                     }
 
                 }else{
@@ -195,7 +201,7 @@ public class FormFragmentDatos extends Fragment{
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
         }
     }
@@ -215,19 +221,19 @@ public class FormFragmentDatos extends Fragment{
         tvopcion2.setText(o2);
         tvopcion3.setText(o3);
         if (linearLayout == binding.lnEditarlote) {
-            actualizarFondo(mainActivity.mainClass.preferencesManager.getResetLote(),tvopcion1,tvopcion2,tvopcion3);
+            actualizarFondo(preferencesManager.getResetLote(),tvopcion1,tvopcion2,tvopcion3);
         } else if (linearLayout == binding.lnEditarvencimiento) {
-            actualizarFondo(mainActivity.mainClass.preferencesManager.getResetVencimiento(),tvopcion1,tvopcion2,tvopcion3);
+            actualizarFondo(preferencesManager.getResetVencimiento(),tvopcion1,tvopcion2,tvopcion3);
         } else if (linearLayout == binding.lnEditar1) {
-            actualizarFondo(mainActivity.mainClass.preferencesManager.getResetCampo1(),tvopcion1,tvopcion2,tvopcion3);
+            actualizarFondo(preferencesManager.getResetCampo1(),tvopcion1,tvopcion2,tvopcion3);
         } else if (linearLayout == binding.lnEditar2) {
-            actualizarFondo(mainActivity.mainClass.preferencesManager.getResetCampo2(),tvopcion1,tvopcion2,tvopcion3);
+            actualizarFondo(preferencesManager.getResetCampo2(),tvopcion1,tvopcion2,tvopcion3);
         } else if (linearLayout == binding.lnEditar3) {
-            actualizarFondo(mainActivity.mainClass.preferencesManager.getResetCampo3(),tvopcion1,tvopcion2,tvopcion3);
+            actualizarFondo(preferencesManager.getResetCampo3(),tvopcion1,tvopcion2,tvopcion3);
         } else if (linearLayout == binding.lnEditar4) {
-            actualizarFondo(mainActivity.mainClass.preferencesManager.getResetCampo4(),tvopcion1,tvopcion2,tvopcion3);
+            actualizarFondo(preferencesManager.getResetCampo4(),tvopcion1,tvopcion2,tvopcion3);
         } else if (linearLayout == binding.lnEditar5) {
-            actualizarFondo(mainActivity.mainClass.preferencesManager.getResetCampo5(),tvopcion1,tvopcion2,tvopcion3);
+            actualizarFondo(preferencesManager.getResetCampo5(),tvopcion1,tvopcion2,tvopcion3);
         }
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
@@ -262,25 +268,25 @@ public class FormFragmentDatos extends Fragment{
 
     public void setearResets(LinearLayout linearLayout,int posi){
         if(linearLayout==binding.lnEditarlote){
-            mainActivity.mainClass.preferencesManager.setResetLote(posi);
+            preferencesManager.setResetLote(posi);
         }
         if(linearLayout==binding.lnEditarvencimiento){
-            mainActivity.mainClass.preferencesManager.setResetVencimiento(posi);
+            preferencesManager.setResetVencimiento(posi);
         }
         if(linearLayout==binding.lnEditar1){
-            mainActivity.mainClass.preferencesManager.setResetCampo1(posi);
+            preferencesManager.setResetCampo1(posi);
         }
         if(linearLayout==binding.lnEditar2){
-            mainActivity.mainClass.preferencesManager.setResetCampo2(posi);
+            preferencesManager.setResetCampo2(posi);
         }
         if(linearLayout==binding.lnEditar3){
-            mainActivity.mainClass.preferencesManager.setResetCampo3(posi);
+            preferencesManager.setResetCampo3(posi);
         }
         if(linearLayout==binding.lnEditar4){
-            mainActivity.mainClass.preferencesManager.setResetCampo4(posi);
+            preferencesManager.setResetCampo4(posi);
         }
         if(linearLayout==binding.lnEditar5){
-            mainActivity.mainClass.preferencesManager.setResetCampo5(posi);
+            preferencesManager.setResetCampo5(posi);
         }
     }
     void actualizarFondo(int opcion,TextView tvopcion1,TextView tvopcion2,TextView tvopcion3) {

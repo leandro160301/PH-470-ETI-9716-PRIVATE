@@ -5,6 +5,8 @@ import static com.jws.jwsapi.common.storage.Storage.getArchivosExtension;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.Teclado;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoEntero;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlotante;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaRecetasBinding;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterIngredientes;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterRecetas;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
@@ -36,6 +39,7 @@ import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterEncabezado;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
+import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -56,6 +60,10 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
     RecetaManager recetaManager;
     @Inject
     UsersManager usersManager;
+    @Inject
+    PreferencesManager preferencesManager;
+    @Inject
+    LabelManager labelManager;
     Button bt_1,bt_2;
     TextView titulo;
     MainActivity mainActivity;
@@ -319,12 +327,12 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
                 if(eliminacion){
                     Utils.Mensaje("Receta eliminada", R.layout.item_customtoastok,mainActivity);
                     recetaManager.recetaActual ="";
-                    mainActivity.mainClass.preferencesManager.setRecetaactual("");
-                    mainActivity.mainClass.preferencesManager.setCodigoRecetaactual("");
-                    mainActivity.mainClass.ocodigoreceta.value="";
+                    preferencesManager.setRecetaactual("");
+                    preferencesManager.setCodigoRecetaactual("");
+                    labelManager.ocodigoreceta.value="";
                     recetaManager.codigoReceta ="";
-                    mainActivity.mainClass.preferencesManager.setNombreRecetaactual("");
-                    mainActivity.mainClass.oreceta.value="";
+                    preferencesManager.setNombreRecetaactual("");
+                    labelManager.oreceta.value="";
                     recetaManager.nombreReceta ="";
                     archivos.remove(posicion_recycler);
                     adapter.filterList(archivos);
@@ -357,7 +365,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
             bt_3.setOnClickListener(view -> eliminarReceta());
             bt_2.setOnClickListener(view -> nuevaReceta());
@@ -464,35 +472,24 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         posicion_recycler=position;
         cargarRecyclerViewReceta(archivos.get(position));
         recetaManager.recetaActual =archivos.get(posicion_recycler);
-        mainActivity.mainClass.preferencesManager.setRecetaactual(archivos.get(posicion_recycler));
+        preferencesManager.setRecetaactual(archivos.get(posicion_recycler));
 
         if(!Objects.equals(recetaManager.recetaActual, "")){
             String[]arr= recetaManager.recetaActual.split("_");
             if(arr.length==3){
                 recetaManager.codigoReceta =arr[1].replace("_","");
                 recetaManager.nombreReceta =arr[2].replace("_","");
-                mainActivity.mainClass.ocodigoreceta.value=recetaManager.codigoReceta;
-                mainActivity.mainClass.oreceta.value=recetaManager.nombreReceta;
-                mainActivity.mainClass.preferencesManager.setCodigoRecetaactual(recetaManager.codigoReceta);
-                mainActivity.mainClass.preferencesManager.setNombreRecetaactual(recetaManager.nombreReceta);
+                labelManager.ocodigoreceta.value=recetaManager.codigoReceta;
+                labelManager.oreceta.value=recetaManager.nombreReceta;
+                preferencesManager.setCodigoRecetaactual(recetaManager.codigoReceta);
+                preferencesManager.setNombreRecetaactual(recetaManager.nombreReceta);
             }
         }
 
     }
 
     private void dialogoEliminarPaso(List<FormModelReceta> mData, int posicion) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
-        View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_dossinet, null);
-        TextView textView = mView.findViewById(R.id.textViewt);
-        textView.setText("¿Quiere eliminar el paso " + (posicion + 1) + "?");
-
-        Button Guardar = mView.findViewById(R.id.buttons);
-        Button Cancelar = mView.findViewById(R.id.buttonc);
-        Guardar.setText("ELIMINAR");
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-        Guardar.setOnClickListener(view -> {
+        dialogoTexto(getContext(), "¿Quiere eliminar el paso " + (posicion + 1) + "?", "ELIMINAR", () -> {
             mData.remove(posicion);
             try {
                 mainActivity.mainClass.setReceta(recetaelegida, mData);
@@ -500,9 +497,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
                 throw new RuntimeException(e);
             }
             adapter_recetas.refrescarList(mData);
-            dialog.cancel();
         });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
     }
 
     public void BuscadorAdapter(TextView tv_codigoIngrediente, TextView tv_des) {

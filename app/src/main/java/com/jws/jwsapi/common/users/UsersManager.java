@@ -11,10 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.data.preferences.PreferencesManagerBase;
 import com.jws.jwsapi.base.data.sql.Usuarios_SQL_db;
 import com.jws.jwsapi.base.models.UsuariosModel;
+import com.jws.jwsapi.utils.Utils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,7 +65,7 @@ public class UsersManager {
         }
         return lista;
     }
-    public void BotonLogeo (Context context){
+    public void BotonLogeo (Context context,AppCompatActivity activity){
         PreferencesManagerBase preferencesManagerBase=new PreferencesManagerBase(application);
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         View mView = LayoutInflater.from(context).inflate(R.layout.dialogo_logeo, null);
@@ -102,7 +107,7 @@ public class UsersManager {
 
                 }
                 if(!logeo){
-                    BuscarUsuario(spinner.getSelectedItem().toString(), password);
+                    BuscarUsuario(spinner.getSelectedItem().toString(), password,activity);
                 }
                 password ="";
                 dialog.cancel();
@@ -145,14 +150,14 @@ public class UsersManager {
             textView.setText(copia);
         }, PasswordTransformationMethod.getInstance());
     }
-    public void BuscarUsuario(String user,String contrasenia){
+    public void BuscarUsuario(String user, String contrasenia, AppCompatActivity activity){
         List<UsuariosModel> lista;
         try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
             lista=dbHelper.buscarUsuario(user);
         }
         try {
             if(lista.size()==0){
-                //Utils.Mensaje("No existe el usuario ingresado", R.layout.item_customtoasterror,this);
+                Utils.Mensaje("No existe el usuario ingresado", R.layout.item_customtoasterror,activity);
             }
             else{
                 for(int i=0;i<lista.size();i++){
@@ -164,11 +169,11 @@ public class UsersManager {
                         if(Objects.equals(lista.get(i).tipo, "Operador")){
                             nivelUsuario=1;
                         }
-                        //Utils.Mensaje("LOGEO CORRECTO",R.layout.item_customtoastok,this);
+                        Utils.Mensaje("LOGEO CORRECTO",R.layout.item_customtoastok,activity);
                     }
                     else
                     {
-                        //Utils.Mensaje("Contraseña incorrecta",R.layout.item_customtoasterror,this);
+                        Utils.Mensaje("Contraseña incorrecta",R.layout.item_customtoasterror,activity);
                     }
                 }
 

@@ -173,7 +173,7 @@ public class ManualesArchivosFragment extends Fragment implements AdapterMultime
                     seteo(tipo);
                 }
             });
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
         }
     }

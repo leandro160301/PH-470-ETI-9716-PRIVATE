@@ -146,7 +146,7 @@ public class FormFragmentGuardados extends Fragment {
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
             bt_2.setOnClickListener(view -> crearExcel());
             bt_1.setOnClickListener(view -> eliminarDatos());
 

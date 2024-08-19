@@ -15,6 +15,7 @@ import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaConfiguracionbalanzaBinding;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
@@ -30,6 +31,8 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
     RecetaManager recetaManager;
     @Inject
     UsersManager usersManager;
+    @Inject
+    PreferencesManager preferencesManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     ProgFormuladorPantallaConfiguracionbalanzaBinding binding;
@@ -52,9 +55,9 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
     }
 
     private void setOnClickListeners() {
-        binding.tvBza1.setOnClickListener(view -> TecladoFlotante(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setBza1Limite(texto)));
-        binding.tvBza2.setOnClickListener(view -> TecladoFlotante(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setBza2Limite(texto)));
-        binding.tvBza3.setOnClickListener(view -> TecladoFlotante(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setBza3Limite(texto)));
+        binding.tvBza1.setOnClickListener(view -> TecladoFlotante(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> preferencesManager.setBza1Limite(texto)));
+        binding.tvBza2.setOnClickListener(view -> TecladoFlotante(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> preferencesManager.setBza2Limite(texto)));
+        binding.tvBza3.setOnClickListener(view -> TecladoFlotante(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> preferencesManager.setBza3Limite(texto)));
     }
 
     private void initializateViews() {
@@ -63,12 +66,12 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
             binding.ln18.setVisibility(View.GONE);
         }
         configurarSpinner(binding.spBalanzas,getContext(), Arrays.asList(getResources().getStringArray(R.array.balanzas)));
-        binding.spBalanzas.setSelection(mainActivity.mainClass.preferencesManager.getModoBalanza());
+        binding.spBalanzas.setSelection(preferencesManager.getModoBalanza());
         binding.spBalanzas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(!recetaManager.ejecutando){
-                    mainActivity.mainClass.preferencesManager.setModoBalanza(i);
+                    preferencesManager.setModoBalanza(i);
                 }else{
                     Utils.Mensaje("No puede la cambiar la configuracion mientras hay una receta en ejecucion",R.layout.item_customtoasterror,mainActivity);
                 }
@@ -77,9 +80,9 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        binding.tvBza1.setText(mainActivity.mainClass.preferencesManager.getBza1Limite());
-        binding.tvBza2.setText(mainActivity.mainClass.preferencesManager.getBza2Limite());
-        binding.tvBza3.setText(mainActivity.mainClass.preferencesManager.getBza3Limite());
+        binding.tvBza1.setText(preferencesManager.getBza1Limite());
+        binding.tvBza2.setText(preferencesManager.getBza2Limite());
+        binding.tvBza3.setText(preferencesManager.getBza3Limite());
 
     }
 
@@ -103,7 +106,7 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
 
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
         }
     }

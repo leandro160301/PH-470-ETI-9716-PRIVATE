@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.models.EtiquetasModel;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.helpers.AdapterHelper;
 import com.jws.jwsapi.utils.Utils;
 import java.util.ArrayList;
@@ -43,14 +45,18 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
     int posicionconcat=-1;
     public int numposicion;
     private int lastPositionAdapter = -1;
+    LabelManager labelManager;
+    PreferencesManager preferencesManager;
 
-    public AdapterEtiquetas(Context context, List<EtiquetasModel> mData, MainActivity mainActivity, String etiqueta, int numposicion) {
+    public AdapterEtiquetas(Context context, List<EtiquetasModel> mData, MainActivity mainActivity, String etiqueta, int numposicion, LabelManager labelManager, PreferencesManager preferencesManager) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = mData;
         this.context=context;
         this.mainActivity=mainActivity;
         this.etiqueta=etiqueta;
         this.numposicion=numposicion;
+        this.labelManager=labelManager;
+        this.preferencesManager=preferencesManager;
 
         setupVariablesList();
         setupSpinnerList();
@@ -61,16 +67,16 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
 
     private void setupVariablesList() {
         listaVariables =new ArrayList<>();
-        for(int i = 0; i<mainActivity.mainClass.imprimiblesPredefinidas.size(); i++){
-            listaVariables.add(mainActivity.mainClass.imprimiblesPredefinidas.get(i));
+        for(int i = 0; i<labelManager.imprimiblesPredefinidas.size(); i++){
+            listaVariables.add(labelManager.imprimiblesPredefinidas.get(i));
         }
-        for(int i = 0; i<mainActivity.mainClass.variablesImprimibles.size(); i++){
-            listaVariables.add(mainActivity.mainClass.variablesImprimibles.get(i).descripcion);
+        for(int i = 0; i<labelManager.variablesImprimibles.size(); i++){
+            listaVariables.add(labelManager.variablesImprimibles.get(i).descripcion);
         }
     }
 
     private void setupSpinnerList() {
-        ListElementsInt=mainActivity.mainClass.preferencesManager.getListSpinner(etiqueta);
+        ListElementsInt=preferencesManager.getListSpinner(etiqueta);
         if(ListElementsInt==null){
             ListElementsInt = new ArrayList<>(Collections.nCopies(mData.size(), 0));
         }
@@ -81,7 +87,7 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
     }
 
     private void setupTextoFijo() {
-        ListElementsFijo=mainActivity.mainClass.preferencesManager.getListFijo(etiqueta);
+        ListElementsFijo=preferencesManager.getListFijo(etiqueta);
         if(ListElementsFijo==null){
             ListElementsFijo = new ArrayList<>(Collections.nCopies(mData.size(), ""));
         }
@@ -112,7 +118,7 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
 
             if(ListElementsInt!=null&&ListElementsInt.size()>posi){
                 holder.spCampo.setSelection(ListElementsInt.get(posi));
-                if(ListElementsInt.get(posi)==mainActivity.mainClass.imprimiblesPredefinidas.size()-1){
+                if(ListElementsInt.get(posi)==labelManager.imprimiblesPredefinidas.size()-1){
                     holder.tv_textoconcatenado.setText("A,SD,AS,D");
                     if(ListElementsPosicionesTipo.size()>posi){
                         ListElementsPosicionesTipo.set(posi,2);
@@ -124,8 +130,8 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
                     holder.ln_textoconcatenado.setVisibility(View.GONE);
                     holder.ln_editar.setVisibility(View.GONE);
                 }
-                if(ListElementsInt.get(posi)!=mainActivity.mainClass.imprimiblesPredefinidas.size()-1){
-                    if(ListElementsInt.get(posi)==mainActivity.mainClass.imprimiblesPredefinidas.size()-2){
+                if(ListElementsInt.get(posi)!=labelManager.imprimiblesPredefinidas.size()-1){
+                    if(ListElementsInt.get(posi)==labelManager.imprimiblesPredefinidas.size()-2){
                         holder.ln_textoconcatenado.setVisibility(View.GONE);
                         if(ListElementsPosicionesTipo.size()>posi){
                             ListElementsPosicionesTipo.set(posi,1);
@@ -153,10 +159,10 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
                         if(ListElementsInt!=null&&ListElementsInt.size()>posi){
                             ListElementsInternaInt.set(posi,i);
 
-                            if(i==mainActivity.mainClass.imprimiblesPredefinidas.size()-1){
-                                ListElementsInternalConcat=mainActivity.mainClass.preferencesManager.getListConcat(etiqueta,posi);
+                            if(i==labelManager.imprimiblesPredefinidas.size()-1){
+                                ListElementsInternalConcat=preferencesManager.getListConcat(etiqueta,posi);
                                 String concat="";
-                                String sepa=mainActivity.mainClass.preferencesManager.getSeparador(etiqueta,posi);
+                                String sepa=preferencesManager.getSeparador(etiqueta,posi);
                                 if(ListElementsInternalConcat!=null){
                                     for(int j=0;j<ListElementsInternalConcat.size();j++){
                                         if(listaVariables.size()>ListElementsInternalConcat.get(j)){
@@ -181,8 +187,8 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
                                 holder.ln_textoconcatenado.setVisibility(View.GONE);
                                 holder.ln_editar.setVisibility(View.GONE);
                             }
-                            if(i!=mainActivity.mainClass.imprimiblesPredefinidas.size()-1){
-                                if(i==mainActivity.mainClass.imprimiblesPredefinidas.size()-2){
+                            if(i!=labelManager.imprimiblesPredefinidas.size()-1){
+                                if(i==labelManager.imprimiblesPredefinidas.size()-2){
                                     if(ListElementsFijo!=null&&ListElementsFijo.size()>posi){
                                         holder.tv_textofijo.setText(ListElementsFijo.get(posi));
                                     }
@@ -289,7 +295,7 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
 
         AdapterMultimedia adapter;
         listview.setLayoutManager(new LinearLayoutManager(context));
-        ListElementsArrayConcatFormat=mainActivity.mainClass.preferencesManager.getListConcat(etiqueta,posicion);
+        ListElementsArrayConcatFormat=preferencesManager.getListConcat(etiqueta,posicion);
         List<String> ListElementsArrayConcat=new ArrayList<>();
         if(ListElementsArrayConcatFormat==null){
             ListElementsArrayConcatFormat=new ArrayList<>();
@@ -306,7 +312,7 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
         spCampo.setAdapter(adapter2);
 
         Selected=0;
-        String separacion= mainActivity.mainClass.preferencesManager.getSeparador(etiqueta,posicion);
+        String separacion=preferencesManager.getSeparador(etiqueta,posicion);
         if(Objects.equals(separacion, bt_coma.getText().toString())){
             bt_coma.setBackgroundResource(R.drawable.botoneraprincipal_selectorgris);
             bt_coma.setTextColor(Color.WHITE);
@@ -417,22 +423,22 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
         dialog.show();
 
         Guardar.setOnClickListener(view -> {
-            mainActivity.mainClass.preferencesManager.saveListConcat(ListElementsArrayConcatFormat,etiqueta,posicion);
+            preferencesManager.saveListConcat(ListElementsArrayConcatFormat,etiqueta,posicion);
             String separated="";
             if(Selected==1){
-                mainActivity.mainClass.preferencesManager.setSeparador(",",etiqueta,posicion);
+                preferencesManager.setSeparador(",",etiqueta,posicion);
                 separated=",";
             }
             if(Selected==2){
-                mainActivity.mainClass.preferencesManager.setSeparador(":",etiqueta,posicion);
+                preferencesManager.setSeparador(":",etiqueta,posicion);
                 separated=":";
             }
             if(Selected==3){
-                mainActivity.mainClass.preferencesManager.setSeparador(";",etiqueta,posicion);
+                preferencesManager.setSeparador(";",etiqueta,posicion);
                 separated=";";
             }
             if(Selected==4){
-                mainActivity.mainClass.preferencesManager.setSeparador("|",etiqueta,posicion);
+                preferencesManager.setSeparador("|",etiqueta,posicion);
                 separated="|";
             }
 

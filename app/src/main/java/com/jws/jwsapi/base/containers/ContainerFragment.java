@@ -131,8 +131,8 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
             }
         });
 
-        ln_menu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new MenuFragment()));
-        lr_usuario.setOnClickListener(view13 -> usersManager.BotonLogeo(mainActivity));
+        ln_menu.setOnClickListener(view1 -> mainActivity.openFragment(new MenuFragment()));
+        lr_usuario.setOnClickListener(view13 -> usersManager.BotonLogeo(mainActivity,mainActivity));
         bt_wifi.setOnClickListener(view12 -> DialogoInformacion());
 
         ButtonProvider buttonProvider = this;

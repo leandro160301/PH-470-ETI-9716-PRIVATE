@@ -19,11 +19,11 @@ public class FormFragmentDatosViewModel extends ViewModel {
     private MutableLiveData<Boolean> campo3_b = new MutableLiveData<>(false);
     private MutableLiveData<Boolean> campo4_b = new MutableLiveData<>(false);
     private MutableLiveData<Boolean> campo5_b = new MutableLiveData<>(false);
-    private final PreferencesManager preferencesManager;
+    @Inject
+    PreferencesManager preferencesManager;
 
     @Inject
-    public FormFragmentDatosViewModel(Application application) {
-        this.preferencesManager = new PreferencesManager(application.getApplicationContext());
+    public FormFragmentDatosViewModel(PreferencesManager preferencesManager) {
         campo1 = new MutableLiveData<>(preferencesManager.getCampo1());
         campo2 = new MutableLiveData<>(preferencesManager.getCampo2());
         campo3 = new MutableLiveData<>(preferencesManager.getCampo3());

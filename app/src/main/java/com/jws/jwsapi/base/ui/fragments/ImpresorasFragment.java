@@ -24,6 +24,8 @@ import com.jws.jwsapi.common.impresora.ImprimirEstandar;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.common.impresora.preferences.PreferencesPrinterManager;
 import com.jws.jwsapi.common.users.UsersManager;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -33,7 +35,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class ImpresorasFragment extends Fragment{
-
+    @Inject
+    PreferencesManager preferencesManager;
+    @Inject
+    LabelManager labelManager;
     Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
@@ -59,7 +64,7 @@ public class ImpresorasFragment extends Fragment{
         configuracionBotones();
         tv_ipimpresora=view.findViewById(R.id.tv_ipimpresora);
         sp_impresora= view.findViewById(R.id.sp_impresora);
-        imprimirStandar=new ImprimirEstandar(getContext(),mainActivity,usersManager);
+        imprimirStandar=new ImprimirEstandar(getContext(),mainActivity,usersManager,preferencesManager,labelManager);
         preferencesPrinterManager= new PreferencesPrinterManager(mainActivity);
         tv_ipimpresora.setText(preferencesPrinterManager.consultaIP());
         tv_ipimpresora.setOnClickListener(view1 -> Teclado(tv_ipimpresora,"Ingrese IP de Impresora"));
@@ -105,7 +110,7 @@ public class ImpresorasFragment extends Fragment{
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
         }
     }

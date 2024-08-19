@@ -78,7 +78,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
             ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.BZA);
             Bundle args = new Bundle();
             args.putSerializable("instanceService", mainActivity.mainClass.BZA);
-            mainActivity.mainClass.openFragmentService(fragment,args);
+            mainActivity.openFragmentService(fragment,args);
         }
         if(position==1){
             ListElementsArrayListdinamicos1=new ArrayList<>(Arrays.asList(ListElementsdinamicos1));
@@ -98,7 +98,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
         }
         if(position==3){
             if(usersManager.getNivelUsuario()>2){
-                mainActivity.mainClass.openFragment(new UsuariosFragment());
+                mainActivity.openFragment(new UsuariosFragment());
             }else{
                 Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
             }
@@ -116,7 +116,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
             CargarDatosADinamico(ListElementsArrayListdinamicos1);
         }
         if(position==6){
-            mainActivity.mainClass.openFragment(new ManualesArchivosFragment());
+            mainActivity.openFragment(new ManualesArchivosFragment());
         }
         if(position==7){
             mainActivity.clearCache();
@@ -193,7 +193,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
 
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
         }
     }
@@ -210,19 +210,19 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
             if(menuElegido ==1){
                 if(usersManager.getNivelUsuario()>1){
                     if(position==0){
-                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionPrograma());
+                        mainActivity.openFragment(new FormFragmentConfiguracionPrograma());
                     }
                     if(position==1){
-                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionBalanza());
+                        mainActivity.openFragment(new FormFragmentConfiguracionBalanza());
                     }
                     if(position==2){
-                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionTurnos());
+                        mainActivity.openFragment(new FormFragmentConfiguracionTurnos());
                     }
                     if(position==3){
-                        mainActivity.mainClass.openFragment(new FormFragmentDatos());
+                        mainActivity.openFragment(new FormFragmentDatos());
                     }
                     if(position==4){
-                        mainActivity.mainClass.openFragment(new EtiquetasProgramaFragment());
+                        mainActivity.openFragment(new EtiquetasProgramaFragment());
                     }
                 }else{
                     Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
@@ -231,10 +231,10 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
             }
             if(menuElegido ==2){
                 if(position==0){
-                    mainActivity.mainClass.openFragment(new WifiFragment());
+                    mainActivity.openFragment(new WifiFragment());
                 }
                 if(position==1){
-                    mainActivity.mainClass.openFragment(new EthernetFragment());
+                    mainActivity.openFragment(new EthernetFragment());
                 }
             }
 
@@ -293,11 +293,11 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
                 if(usersManager.getNivelUsuario()>1){
                     if(menuElegido2==0){
                         if(position==0){
-                            mainActivity.mainClass.openFragment(new ImpresorasFragment());
+                            mainActivity.openFragment(new ImpresorasFragment());
 
                         }
                         if(position==1){
-                            mainActivity.mainClass.openFragment(new EtiquetasFragment());
+                            mainActivity.openFragment(new EtiquetasFragment());
                         }
                     }
                 }
@@ -308,12 +308,12 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
             }
              if(menuElegido ==1&&menuElegido2==1){
                 if(position==0){
-                    mainActivity.mainClass.openFragment(new WifiFragment());
+                    mainActivity.openFragment(new WifiFragment());
                 }
                 if(position==1){
 
                     if(usersManager.getUsuarioActual().equals("*Programador*")){
-                        mainActivity.mainClass.openFragment(new EthernetFragment());
+                        mainActivity.openFragment(new EthernetFragment());
                     }
                     else{
                         Utils.Mensaje("Debe ingresar la clave de programador para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);

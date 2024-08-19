@@ -16,13 +16,24 @@ import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.ui.adapters.AdapterEtiquetasDePrograma;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.models.EtiquetasDeProgramaModel;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EtiquetasProgramaFragment extends Fragment implements AdapterEtiquetasDePrograma.ItemClickListener {
 
+    @Inject
+    PreferencesManager preferencesManager;
+    @Inject
+    LabelManager labelManager;
     Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
@@ -44,10 +55,10 @@ public class EtiquetasProgramaFragment extends Fragment implements AdapterEtique
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         rc_lista_ingredientes =view.findViewById(R.id.lista_ingredientes);
-        List<String> nombreetiquetas=mainActivity.mainClass.nombreEtiquetas;
+        List<String> nombreetiquetas=labelManager.nombreEtiquetas;
         lista_ingredientes= new ArrayList<>();
         for(int i=0;i<nombreetiquetas.size();i++){
-            lista_ingredientes.add(new EtiquetasDeProgramaModel(nombreetiquetas.get(i),mainActivity.mainClass.preferencesManager.getEtiqueta(i)));
+            lista_ingredientes.add(new EtiquetasDeProgramaModel(nombreetiquetas.get(i),preferencesManager.getEtiqueta(i)));
         }
         configuracionBotones();
         cargarRecyclerView();
@@ -57,7 +68,7 @@ public class EtiquetasProgramaFragment extends Fragment implements AdapterEtique
 
     private void cargarRecyclerView(){
         rc_lista_ingredientes.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AdapterEtiquetasDePrograma(getContext(),lista_ingredientes, getArchivosExtension(".prn"));
+        adapter = new AdapterEtiquetasDePrograma(getContext(),lista_ingredientes, getArchivosExtension(".prn"),preferencesManager);
         adapter.setClickListener(this);
         rc_lista_ingredientes.setAdapter(adapter);
 
@@ -83,7 +94,7 @@ public class EtiquetasProgramaFragment extends Fragment implements AdapterEtique
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
 
 

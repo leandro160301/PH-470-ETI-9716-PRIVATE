@@ -14,15 +14,23 @@ import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaIngresodatosBinding;
 import com.jws.jwsapi.base.ui.fragments.DatePickerDialogFragment;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import javax.inject.Inject;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDialogFragment.DatePickerListener{
 
+    @Inject
+    PreferencesManager preferencesManager;
+    @Inject
+    LabelManager labelManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     public String campo1="";
@@ -31,7 +39,6 @@ public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDia
     public String campo4="";
     public String campo5="";
     ProgFormuladorPantallaIngresodatosBinding binding;
-    PreferencesManager preferencesManager;
 
     @Nullable
     @Override
@@ -60,36 +67,35 @@ public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDia
         binding.tvCampo4.setOnClickListener(view -> Teclado(binding.tvCampo4, "Ingrese "+campo4, mainActivity, this::setearCampo4));
         binding.tvCampo5.setOnClickListener(view -> Teclado(binding.tvCampo5, "Ingrese "+campo5, mainActivity, this::setearCampo5));
 
-
     }
 
     private void setearLote(String texto) {
-        mainActivity.mainClass.olote.value=texto;
+        labelManager.olote.value=texto;
         preferencesManager.setLote(texto);
     }
 
     private void setearCampo1(String texto) {
-        mainActivity.mainClass.ocampo1.value=texto;
+        labelManager.ocampo1.value=texto;
         preferencesManager.setCampo1Valor(texto);
     }
 
     private void setearCampo2(String texto) {
-        mainActivity.mainClass.ocampo2.value=texto;
+        labelManager.ocampo2.value=texto;
         preferencesManager.setCampo2Valor(texto);
     }
 
     private void setearCampo3(String texto) {
-        mainActivity.mainClass.ocampo3.value=texto;
+        labelManager.ocampo3.value=texto;
         preferencesManager.setCampo3Valor(texto);
     }
 
     private void setearCampo4(String texto) {
-        mainActivity.mainClass.ocampo4.value=texto;
+        labelManager.ocampo4.value=texto;
         preferencesManager.setCampo4Valor(texto);
     }
 
     private void setearCampo5(String texto) {
-        mainActivity.mainClass.ocampo5.value=texto;
+        labelManager.ocampo5.value=texto;
         preferencesManager.setCampo5Valor(texto);
     }
 
@@ -111,7 +117,7 @@ public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDia
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String fechaFormateada = formatoFecha.format(nuevaFecha);
         binding.tvVencimiento.setText(fechaFormateada);
-        mainActivity.mainClass.ovenci.value=fechaFormateada;
+        labelManager.ovenci.value=fechaFormateada;
         preferencesManager.setVencimiento(fechaFormateada);
     }
 
@@ -123,13 +129,13 @@ public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDia
         binding.tv3.setText(campo3);
         binding.tv4.setText(campo4);
         binding.tv5.setText(campo5);
-        binding.tvLote.setText(mainActivity.mainClass.olote.value.toString());
-        binding.tvVencimiento.setText(mainActivity.mainClass.ovenci.value.toString());
-        binding.tvCampo1.setText(mainActivity.mainClass.ocampo1.value.toString());
-        binding.tvCampo2.setText(mainActivity.mainClass.ocampo2.value.toString());
-        binding.tvCampo3.setText(mainActivity.mainClass.ocampo3.value.toString());
-        binding.tvCampo4.setText(mainActivity.mainClass.ocampo4.value.toString());
-        binding.tvCampo5.setText(mainActivity.mainClass.ocampo5.value.toString());
+        binding.tvLote.setText(labelManager.olote.value.toString());
+        binding.tvVencimiento.setText(labelManager.ovenci.value.toString());
+        binding.tvCampo1.setText(labelManager.ocampo1.value.toString());
+        binding.tvCampo2.setText(labelManager.ocampo2.value.toString());
+        binding.tvCampo3.setText(labelManager.ocampo3.value.toString());
+        binding.tvCampo4.setText(labelManager.ocampo4.value.toString());
+        binding.tvCampo5.setText(labelManager.ocampo5.value.toString());
         deshabilitarCampos();
 
     }
@@ -151,7 +157,6 @@ public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDia
     }
 
     private void initializatePreferences() {
-        preferencesManager=new PreferencesManager(getContext());
         campo1=preferencesManager.getCampo1();
         campo2=preferencesManager.getCampo2();
         campo3=preferencesManager.getCampo3();
@@ -175,7 +180,7 @@ public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDia
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
         }
     }
@@ -189,7 +194,7 @@ public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDia
     @Override
     public void onDateSelected(String selectedDate) {
         binding.tvVencimiento.setText(selectedDate);
-        mainActivity.mainClass.ovenci.value=selectedDate;
+        labelManager.ovenci.value=selectedDate;
         preferencesManager.setVencimiento(selectedDate);
     }
 }

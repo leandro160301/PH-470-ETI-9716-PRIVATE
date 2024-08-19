@@ -12,14 +12,21 @@ import androidx.fragment.app.Fragment;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaConfiguracionturnosBinding;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class FormFragmentConfiguracionTurnos extends Fragment  {
 
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     ProgFormuladorPantallaConfiguracionturnosBinding binding;
+    @Inject
+    PreferencesManager preferencesManager;
 
     @Nullable
     @Override
@@ -36,14 +43,14 @@ public class FormFragmentConfiguracionTurnos extends Fragment  {
 
         mainActivity=(MainActivity)getActivity() ;
 
-        binding.tvTurno1.setText(String.valueOf(mainActivity.mainClass.preferencesManager.getTurno1()));
-        binding.tvTurno2.setText(String.valueOf(mainActivity.mainClass.preferencesManager.getTurno2()));
-        binding.tvTurno3.setText(String.valueOf(mainActivity.mainClass.preferencesManager.getTurno3()));
-        binding.tvTurno4.setText(String.valueOf(mainActivity.mainClass.preferencesManager.getTurno4()));
-        binding.tvTurno1.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno1, "Ingrese la hora cuando comienza el turno 1", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTurno1(Integer.parseInt(texto))));
-        binding.tvTurno2.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno2, "Ingrese la hora cuando comienza el turno 2", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTurno2(Integer.parseInt(texto))));
-        binding.tvTurno3.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno3, "Ingrese la hora cuando comienza el turno 3", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTurno3(Integer.parseInt(texto))));
-        binding.tvTurno4.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno4, "Ingrese la hora cuando comienza el turno 4", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTurno4(Integer.parseInt(texto))));
+        binding.tvTurno1.setText(String.valueOf(preferencesManager.getTurno1()));
+        binding.tvTurno2.setText(String.valueOf(preferencesManager.getTurno2()));
+        binding.tvTurno3.setText(String.valueOf(preferencesManager.getTurno3()));
+        binding.tvTurno4.setText(String.valueOf(preferencesManager.getTurno4()));
+        binding.tvTurno1.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno1, "Ingrese la hora cuando comienza el turno 1", mainActivity, texto -> preferencesManager.setTurno1(Integer.parseInt(texto))));
+        binding.tvTurno2.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno2, "Ingrese la hora cuando comienza el turno 2", mainActivity, texto -> preferencesManager.setTurno2(Integer.parseInt(texto))));
+        binding.tvTurno3.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno3, "Ingrese la hora cuando comienza el turno 3", mainActivity, texto -> preferencesManager.setTurno3(Integer.parseInt(texto))));
+        binding.tvTurno4.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno4, "Ingrese la hora cuando comienza el turno 4", mainActivity, texto -> preferencesManager.setTurno4(Integer.parseInt(texto))));
 
     }
 
@@ -66,7 +73,7 @@ public class FormFragmentConfiguracionTurnos extends Fragment  {
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
 
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
         }
     }

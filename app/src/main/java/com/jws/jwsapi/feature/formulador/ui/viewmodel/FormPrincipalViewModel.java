@@ -15,9 +15,9 @@ public class FormPrincipalViewModel extends ViewModel {
     private final PreferencesManager preferencesManager;
 
     @Inject
-    public FormPrincipalViewModel(RecetaManager recetaManager, Application application) {
+    public FormPrincipalViewModel(RecetaManager recetaManager, Application application, PreferencesManager preferencesManager) {
         this.recetaManager = recetaManager;
-        this.preferencesManager = new PreferencesManager(application.getApplicationContext());
+        this.preferencesManager = preferencesManager;
         initializeRecetaManager();
     }
 

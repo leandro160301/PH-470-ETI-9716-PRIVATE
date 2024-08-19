@@ -1,9 +1,8 @@
 package com.jws.jwsapi.feature.formulador.di;
 
-
 import android.app.Application;
-
 import com.jws.jwsapi.common.users.UsersManager;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
@@ -26,7 +25,16 @@ public class AppModule {
         return new UsersManager(application);
     }
 
+    @Provides
+    @Singleton
+    public PreferencesManager providePreferencesManager(Application application) {
+        return new PreferencesManager(application);
+    }
 
-
+    @Provides
+    @Singleton
+    public LabelManager provideLabelManager(PreferencesManager preferencesManager){
+        return new LabelManager(preferencesManager);
+    }
 
 }

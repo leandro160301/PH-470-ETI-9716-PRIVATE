@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaConfiguracionpBinding;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
@@ -29,6 +30,8 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
 
     @Inject
     RecetaManager recetaManager;
+    @Inject
+    PreferencesManager preferencesManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     int modoreceta=0;
@@ -51,14 +54,14 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
         mainActivity=(MainActivity)getActivity();
 
         configurarSpinner(binding.spReceta,getContext(), Arrays.asList(getResources().getStringArray(R.array.Receta)));
-        modoreceta=mainActivity.mainClass.preferencesManager.getModoReceta();
+        modoreceta=preferencesManager.getModoReceta();
         binding.spReceta.setSelection(modoreceta);
 
         binding.spReceta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(!recetaManager.ejecutando){
-                    mainActivity.mainClass.preferencesManager.setModoReceta(i);
+                    preferencesManager.setModoReceta(i);
                     if(i!=modoreceta){
                         resetearValores();
                     }
@@ -75,14 +78,14 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
         });
 
         configurarSpinner(binding.spMododeuso,getContext(), Arrays.asList(getResources().getStringArray(R.array.Mododeuso)));
-        modouso=mainActivity.mainClass.preferencesManager.getModoUso();
+        modouso=preferencesManager.getModoUso();
         binding.spMododeuso.setSelection(modouso);
 
         binding.spMododeuso.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(!recetaManager.ejecutando){
-                    mainActivity.mainClass.preferencesManager.setModoUso(i);
+                    preferencesManager.setModoUso(i);
                     if(i!=modouso){
                         resetearValores();
                     }
@@ -99,19 +102,19 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
         });
 
 
-        if(mainActivity.mainClass.preferencesManager.getRecipientexPaso()){
+        if(preferencesManager.getRecipientexPaso()){
             binding.toggle.check(R.id.btON);
         }
         else {
             binding.toggle.check(R.id.btOFF);
         }
-        if(mainActivity.mainClass.preferencesManager.getContinuarFueraRango()){
+        if(preferencesManager.getContinuarFueraRango()){
             binding.toggle2.check(R.id.btON2);
         }
         else {
             binding.toggle2.check(R.id.btOFF2);
         }
-        if(mainActivity.mainClass.preferencesManager.getEtiquetaxPaso()){
+        if(preferencesManager.getEtiquetaxPaso()){
             binding.toggle3.check(R.id.btON3);
         }
         else {
@@ -119,38 +122,39 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
         }
 
         binding.toggle.setOnCheckedChangeListener((radioGroup, i) -> {
-            mainActivity.mainClass.preferencesManager.setRecipientexPaso(binding.toggle.getCheckedRadioButtonId() == R.id.btON);
+            preferencesManager.setRecipientexPaso(binding.toggle.getCheckedRadioButtonId() == R.id.btON);
         });
         binding.toggle2.setOnCheckedChangeListener((radioGroup, i) -> {
-            mainActivity.mainClass.preferencesManager.setContinuarFueraRango(binding.toggle2.getCheckedRadioButtonId() == R.id.btON2);
+            preferencesManager.setContinuarFueraRango(binding.toggle2.getCheckedRadioButtonId() == R.id.btON2);
         });
         binding.toggle3.setOnCheckedChangeListener((radioGroup, i) -> {
-            mainActivity.mainClass.preferencesManager.setEtiquetaxPaso(binding.toggle3.getCheckedRadioButtonId() == R.id.btON3);
+            preferencesManager.setEtiquetaxPaso(binding.toggle3.getCheckedRadioButtonId() == R.id.btON3);
         });
-        binding.tvTolerancia.setText(mainActivity.mainClass.preferencesManager.getTolerancia());
-        binding.tvBza1.setText(mainActivity.mainClass.preferencesManager.getBza1Limite());
-        binding.tvBza2.setText(mainActivity.mainClass.preferencesManager.getBza2Limite());
-        binding.tvBza3.setText(mainActivity.mainClass.preferencesManager.getBza3Limite());
-        binding.tvTolerancia.setOnClickListener(view12 -> TecladoEntero(binding.tvTolerancia, "Ingrese la tolerancia", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setTolerancia(texto)));
-        binding.tvBza1.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setBza1Limite(texto)));
-        binding.tvBza2.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setBza2Limite(texto)));
-        binding.tvBza3.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> mainActivity.mainClass.preferencesManager.setBza3Limite(texto)));
+        binding.tvTolerancia.setText(preferencesManager.getTolerancia());
+        binding.tvBza1.setText(preferencesManager.getBza1Limite());
+        binding.tvBza2.setText(preferencesManager.getBza2Limite());
+        binding.tvBza3.setText(preferencesManager.getBza3Limite());
+        binding.tvTolerancia.setOnClickListener(view12 -> TecladoEntero(binding.tvTolerancia, "Ingrese la tolerancia", mainActivity, texto -> preferencesManager.setTolerancia(texto)));
+        binding.tvBza1.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> preferencesManager.setBza1Limite(texto)));
+        binding.tvBza2.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> preferencesManager.setBza2Limite(texto)));
+        binding.tvBza3.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> preferencesManager.setBza3Limite(texto)));
 
 
     }
 
     private void resetearValores() {
-        mainActivity.mainClass.preferencesManager.setRecetaactual("");
-        recetaManager.recetaActual ="";
-        mainActivity.mainClass.preferencesManager.setCodigoRecetaactual("");
-        recetaManager.codigoReceta ="";
-        mainActivity.mainClass.preferencesManager.setNombreRecetaactual("");
+
+        preferencesManager.setRecetaactual("");
+        preferencesManager.setCodigoRecetaactual("");
+        preferencesManager.setNombreRecetaactual("");
+        preferencesManager.setPasosRecetaActual(new ArrayList<>());
+        preferencesManager.setCantidad(1);
+        preferencesManager.setRealizadas(0);
         recetaManager.nombreReceta ="";
+        recetaManager.recetaActual ="";
+        recetaManager.codigoReceta ="";
         recetaManager.listRecetaActual =new ArrayList<>();
-        mainActivity.mainClass.preferencesManager.setPasosRecetaActual(new ArrayList<>());
-        mainActivity.mainClass.preferencesManager.setCantidad(1);
         recetaManager.cantidad.setValue(1);
-        mainActivity.mainClass.preferencesManager.setRealizadas(0);
         recetaManager.realizadas.setValue(0);
     }
 
@@ -173,7 +177,7 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
 
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
 
         }
     }

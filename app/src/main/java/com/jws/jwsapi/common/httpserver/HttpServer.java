@@ -279,7 +279,7 @@ public class HttpServer extends NanoWSD {
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mainActivity.mainClass.openFragmentPrincipal();
+                        mainActivity.openFragmentPrincipal();
                     }
                 });
 

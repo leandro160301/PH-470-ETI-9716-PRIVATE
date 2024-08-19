@@ -10,6 +10,8 @@ import com.jws.jwsapi.common.impresora.tipos.ImprimirRS232;
 import com.jws.jwsapi.common.impresora.tipos.ImprimirRed;
 import com.jws.jwsapi.common.impresora.tipos.ImprimirUSB;
 import com.jws.jwsapi.common.users.UsersManager;
+import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.PuertosSerie.PuertosSerie;
 import com.jws.jwsapi.R;
@@ -30,10 +32,14 @@ public class ImprimirEstandar {
     private MainActivity mainActivity;
     private PreferencesPrinterManager preferencesPrinterManager;
     UsersManager usersManager;
+    PreferencesManager preferencesManager;
+    LabelManager labelManager;
 
-    public ImprimirEstandar(Context context, MainActivity activity, UsersManager usersManager) {
+    public ImprimirEstandar(Context context, MainActivity activity, UsersManager usersManager, PreferencesManager preferencesManager, LabelManager labelManager) {
         this.context = context;
         this.mainActivity = activity;
+        this.preferencesManager=preferencesManager;
+        this.labelManager=labelManager;
         preferencesPrinterManager=new PreferencesPrinterManager(context);
         this.usersManager=usersManager;
     }
@@ -137,11 +143,11 @@ public class ImprimirEstandar {
 
     public String etiqueta(int numetiqueta){
         try {
-            String etiquetaActual=mainActivity.mainClass.preferencesManager.getEtiqueta(numetiqueta);
+            String etiquetaActual=preferencesManager.getEtiqueta(numetiqueta);
             String etiqueta =openAndReadFile(etiquetaActual,mainActivity);
             if(etiqueta!=null&& !etiqueta.equals("") && !Objects.equals(etiquetaActual, "")){
-                List<Integer>ListElementsInt=mainActivity.mainClass.preferencesManager.getListSpinner(etiquetaActual);
-                List<String>ListElementsFijo=mainActivity.mainClass.preferencesManager.getListFijo(etiquetaActual);
+                List<Integer>ListElementsInt=preferencesManager.getListSpinner(etiquetaActual);
+                List<String>ListElementsFijo=preferencesManager.getListFijo(etiquetaActual);
                 List<String>ListElementsFinales=new ArrayList<>();
                 if(ListElementsInt!=null&&ListElementsFijo!=null){
                     String[] arr = etiqueta.split("\\^FN");
@@ -154,7 +160,7 @@ public class ImprimirEstandar {
                             String []arr2= arr[i+1].split("\\^FS");
                             if(arr2.length>1){
                                 System.out.println("var campo:"+arr2[0]);//este string luego debemos reemplazar por FS+valorvariable con el .replace
-                                if(ListElementsInt.get(i)<mainActivity.mainClass.imprimiblesPredefinidas.size()){
+                                if(ListElementsInt.get(i)<labelManager.imprimiblesPredefinidas.size()){
                                     if(ListElementsInt.get(i)==0){
                                         ListElementsFinales.add("");
                                     }
@@ -176,15 +182,15 @@ public class ImprimirEstandar {
                                     if(ListElementsInt.get(i)==6){
                                         ListElementsFinales.add(Utils.getHora());
                                     }
-                                    if(ListElementsInt.get(i)==mainActivity.mainClass.imprimiblesPredefinidas.size()-1){//concat
-                                        List<Integer>ListElementsConcat= mainActivity.mainClass.preferencesManager.getListConcat(etiquetaActual,i);
-                                        String separador= mainActivity.mainClass.preferencesManager.getSeparador(etiquetaActual,i);
+                                    if(ListElementsInt.get(i)==labelManager.imprimiblesPredefinidas.size()-1){//concat
+                                        List<Integer>ListElementsConcat= preferencesManager.getListConcat(etiquetaActual,i);
+                                        String separador= preferencesManager.getSeparador(etiquetaActual,i);
                                         String concat="";
 
                                         if(ListElementsConcat!=null){
                                             for(int j=0;j<ListElementsConcat.size();j++){
-                                                if(mainActivity.mainClass.imprimiblesPredefinidas.size()+mainActivity.mainClass.variablesImprimibles.size()>ListElementsConcat.get(j)){
-                                                    if(ListElementsConcat.get(j)<mainActivity.mainClass.imprimiblesPredefinidas.size()){
+                                                if(labelManager.imprimiblesPredefinidas.size()+labelManager.variablesImprimibles.size()>ListElementsConcat.get(j)){
+                                                    if(ListElementsConcat.get(j)<labelManager.imprimiblesPredefinidas.size()){
                                                         if(ListElementsConcat.get(j)==0){
                                                             concat=concat.concat(""+separador);
                                                         }
@@ -207,10 +213,10 @@ public class ImprimirEstandar {
                                                             concat=concat.concat(Utils.getHora()+separador);
                                                         }
 
-                                                    }else if(ListElementsConcat.get(j)<mainActivity.mainClass.variablesImprimibles.size()+mainActivity.mainClass.imprimiblesPredefinidas.size()){
-                                                        for(int o = 0; o<mainActivity.mainClass.variablesImprimibles.size(); o++){
-                                                            if(ListElementsConcat.get(j)-mainActivity.mainClass.imprimiblesPredefinidas.size()==o){
-                                                                concat=concat.concat(mainActivity.mainClass.variablesImprimibles.get(o).value()+separador);
+                                                    }else if(ListElementsConcat.get(j)<labelManager.variablesImprimibles.size()+labelManager.imprimiblesPredefinidas.size()){
+                                                        for(int o = 0; o<labelManager.variablesImprimibles.size(); o++){
+                                                            if(ListElementsConcat.get(j)-labelManager.imprimiblesPredefinidas.size()==o){
+                                                                concat=concat.concat(labelManager.variablesImprimibles.get(o).value()+separador);
                                                                 //  System.out.println("esta entrando a concatenar variables");
                                                             }
                                                         }
@@ -229,13 +235,13 @@ public class ImprimirEstandar {
 
                                         ListElementsFinales.add(resultado);
                                     }
-                                    if(ListElementsInt.get(i)==mainActivity.mainClass.imprimiblesPredefinidas.size()-2){//fijo
+                                    if(ListElementsInt.get(i)==labelManager.imprimiblesPredefinidas.size()-2){//fijo
                                         ListElementsFinales.add(ListElementsFijo.get(i));
                                     }
-                                }else if(ListElementsInt.get(i)<mainActivity.mainClass.variablesImprimibles.size()+mainActivity.mainClass.imprimiblesPredefinidas.size()){
-                                    for(int j = 0; j<mainActivity.mainClass.variablesImprimibles.size(); j++){
-                                        if(ListElementsInt.get(i)-mainActivity.mainClass.imprimiblesPredefinidas.size()==j){
-                                            ListElementsFinales.add(mainActivity.mainClass.variablesImprimibles.get(j).value());
+                                }else if(ListElementsInt.get(i)<labelManager.variablesImprimibles.size()+labelManager.imprimiblesPredefinidas.size()){
+                                    for(int j = 0; j<labelManager.variablesImprimibles.size(); j++){
+                                        if(ListElementsInt.get(i)-labelManager.imprimiblesPredefinidas.size()==j){
+                                            ListElementsFinales.add(labelManager.variablesImprimibles.get(j).value());
                                         }
                                     }
                                 }

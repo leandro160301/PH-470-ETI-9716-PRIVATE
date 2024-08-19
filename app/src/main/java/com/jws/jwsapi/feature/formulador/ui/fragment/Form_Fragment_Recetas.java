@@ -58,7 +58,6 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     UsersManager usersManager;
     Button bt_1,bt_2;
     TextView titulo;
-    TextView tv_codigo,tv_descripcion;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     Form_Adapter_Encabezado adapter;
@@ -68,9 +67,9 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     List<Form_Model_Receta> recetaseleccionada= new ArrayList<>();
     List<Integer> posiciones= new ArrayList<>();
     Boolean filtro=false;
+    Boolean filtroAdapter = false;
     ProgFormuladorPantallaRecetasBinding binding;
     public RecyclerView lista_recetas;
-    Boolean filtroAdapter = false;
     public Form_Adapter_Ingredientes adapterIngredientes;
     ArrayList<Form_Model_Ingredientes> filteredListAdapterIngredientes = new ArrayList<>();
     ArrayList<Integer> filteredListAdapterNumeric = new ArrayList<>();
@@ -191,8 +190,8 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_nuevareceta, null);
         CheckBox checkBox = ((CheckBox) mView.findViewById(R.id.checkBox));
-        tv_codigo=mView.findViewById(R.id.tv_codigoingrediente);
-        tv_descripcion=mView.findViewById(R.id.tv_descripcioningrediente);
+        TextView tv_codigo=mView.findViewById(R.id.tv_codigoingrediente);
+        TextView tv_descripcion=mView.findViewById(R.id.tv_descripcioningrediente);
         if(recetaseleccionada!=null&&recetaseleccionada.size()>0){
             checkBox.setVisibility(View.VISIBLE);
         }else{

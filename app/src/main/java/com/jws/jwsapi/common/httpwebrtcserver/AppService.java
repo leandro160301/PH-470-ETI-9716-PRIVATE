@@ -18,7 +18,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.jws.jwsapi.base.ui.activities.MainActivity;
+import com.jws.jwsapi.common.users.UsersManager;
 
+import org.apache.ftpserver.ftplet.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,27 +28,18 @@ import java.io.IOException;
 
 public class AppService extends Service {
     private static final String TAG = AppService.class.getSimpleName();
-
     private static final int SERVICE_ID = 101;
-
     private static final String NOTIFICATION_CHANNEL_ID = "WebScreenServiceChannel";
     private static final String NOTIFICATION_CHANNEL_NAME = "WebScreen notification channel";
-
     private static final String NOTIFICATION_TITLE = "WebScreen is running";
     private static final String NOTIFICATION_CONTENT = "Tap to stop";
-
     private static final String MOUSE_PARAM_X = "x";
     private static final String MOUSE_PARAM_Y = "y";
-
     private static boolean isRunning = false;
-
     private final IBinder iBinder = new AppServiceBinder();
-
     private WebRtcManager webRtcManager = null;
-
     private HttpServer httpServer = null;
     private boolean isWebServerRunning = false;
-
     private MouseAccessibilityService mouseAccessibilityService = null;
     public MainActivity mainActivity;
 
@@ -117,9 +110,9 @@ public class AppService extends Service {
     }
 
     public boolean serverStart(Intent intent, int port,
-                               boolean isAccessibilityServiceEnabled, Context context,MainActivity mainActivity) {
+                               boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity, UsersManager usersManager) {
         this.mainActivity=mainActivity;
-        if (!(isWebServerRunning = startHttpServer(port)))
+        if (!(isWebServerRunning = startHttpServer(port,usersManager)))
             return false;
 
         webRtcManager = new WebRtcManager(intent, context, httpServer,mainActivity);
@@ -145,15 +138,9 @@ public class AppService extends Service {
         return isWebServerRunning;
     }
 
-    public boolean serverRestart(int port) {
-        stopHttpServer();
-        isWebServerRunning = startHttpServer(port);
 
-        return isWebServerRunning;
-    }
-
-    public boolean startHttpServer(int httpServerPort) {
-        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface,mainActivity);
+    public boolean startHttpServer(int httpServerPort, UsersManager usersManager) {
+        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface,mainActivity,usersManager);
         try {
             httpServer.start();
         } catch (IOException e) {

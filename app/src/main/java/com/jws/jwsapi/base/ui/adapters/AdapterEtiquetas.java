@@ -94,7 +94,6 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.standar_adapter_etiqueta, parent, false);
-
         return new ViewHolder(view);
     }
 

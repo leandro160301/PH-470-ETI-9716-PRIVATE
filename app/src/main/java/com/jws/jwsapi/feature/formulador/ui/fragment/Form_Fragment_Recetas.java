@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaRecetasBinding;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Ingredientes;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Recetas;
@@ -53,6 +54,8 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
     @Inject
     RecetaManager recetaManager;
+    @Inject
+    UsersManager usersManager;
     Button bt_1,bt_2;
     TextView titulo;
     TextView tv_codigo,tv_descripcion;
@@ -382,7 +385,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     }
 
     private void nuevaReceta() {
-        if(mainActivity.modificarDatos()){
+        if(usersManager.modificarDatos()){
             DialogoNuevaReceta();
         }else{
             Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
@@ -390,7 +393,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     }
 
     private void eliminarReceta() {
-        if(mainActivity.modificarDatos()){
+        if(usersManager.modificarDatos()){
             if(posicion_recycler!=-1&&posicion_recycler<archivos.size()){
                 ElimarReceta(archivos.get(posicion_recycler),posicion_recycler);
             }
@@ -680,7 +683,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     @Override
     public void eliminarPaso(List<Form_Model_Receta> mData, int posicion) {
         if (mData.size() > 1) {
-            if(mainActivity.modificarDatos()){
+            if(usersManager.modificarDatos()){
                 dialogoEliminarPaso(mData,posicion);
             }else{
                 Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
@@ -692,7 +695,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
     @Override
     public void agregarPaso(List<Form_Model_Receta> mData, int posicion) {
-        if(mainActivity.modificarDatos()){
+        if(usersManager.modificarDatos()){
             dialogoAgregarPaso(mData,posicion);
         }else{
             Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
@@ -701,7 +704,7 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
 
     @Override
     public void modificarPaso(List<Form_Model_Receta> mData, int posicion) {
-        if(mainActivity.modificarDatos()){
+        if(usersManager.modificarDatos()){
             dialogoModificarPaso(mData,posicion);
         }else{
             Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);

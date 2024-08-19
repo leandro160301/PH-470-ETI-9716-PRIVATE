@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import androidx.core.content.ContextCompat;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
+import com.jws.jwsapi.common.users.UsersManager;
 
 
 public class InitServer {
@@ -19,8 +20,9 @@ public class InitServer {
     private PermissionHelper permissionHelper;
     private ServiceConnection serviceConnection;
     MainActivity mainActivity;
+    UsersManager usersManager;
 
-    public InitServer(Context context,MainActivity mainActivity) {
+    public InitServer(Context context, MainActivity mainActivity, UsersManager usersManager) {
         this.context = context;
         this.mainActivity=mainActivity;
         this.permissionHelper = new PermissionHelper((Activity) context, new OnPermissionGrantedListener());
@@ -128,7 +130,7 @@ public class InitServer {
                     Runnable myRunnable = () -> {
                         if (appService != null) {
                             if (!appService.serverStart(data, 8001,
-                                    isAccessibilityServiceEnabled(), context, mainActivity)) {
+                                    isAccessibilityServiceEnabled(), context, mainActivity,usersManager)) {
                                 return;
                             }
                         }

@@ -24,10 +24,16 @@ import com.android.jws.JwsManager;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.ui.fragments.MenuFragment;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ContainerFragment extends Fragment implements ButtonProvider {
 
     Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6,bt_arriba;
@@ -47,6 +53,8 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
     Animation blinkAnimation;
     ImageView imuser;
     int iconflag=-1;
+    @Inject
+    UsersManager usersManager;
 
     public static ContainerFragment newInstance(Class<? extends Fragment> fragmentClass) {
         ContainerFragment fragment = new ContainerFragment();
@@ -124,7 +132,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         });
 
         ln_menu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new MenuFragment()));
-        lr_usuario.setOnClickListener(view13 -> mainActivity.BotonLogeo());
+        lr_usuario.setOnClickListener(view13 -> usersManager.BotonLogeo(mainActivity));
         bt_wifi.setOnClickListener(view12 -> DialogoInformacion());
 
         ButtonProvider buttonProvider = this;
@@ -189,23 +197,23 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         runnable = new Runnable() {
             @Override
             public void run() {
-                if(mainActivity.getNivelUsuario()==4&&iconflag!=4){
+                if(usersManager.getNivelUsuario()==4&&iconflag!=4){
                     imuser.setImageResource(R.drawable.icono_programador);
                     iconflag=4;
                 }
-                if(mainActivity.getNivelUsuario()==3&&iconflag!=3){
+                if(usersManager.getNivelUsuario()==3&&iconflag!=3){
                     imuser.setImageResource(R.drawable.icono_administrador);
                     iconflag=3;
                 }
-                if(mainActivity.getNivelUsuario()==2&&iconflag!=2){
+                if(usersManager.getNivelUsuario()==2&&iconflag!=2){
                     imuser.setImageResource(R.drawable.icono_supervisor);
                     iconflag=2;
                 }
-                if(mainActivity.getNivelUsuario()==1&&iconflag!=1){
+                if(usersManager.getNivelUsuario()==1&&iconflag!=1){
                     imuser.setImageResource(R.drawable.icon_user);
                     iconflag=1;
                 }
-                if(mainActivity.getNivelUsuario()==0&&iconflag!=0){
+                if(usersManager.getNivelUsuario()==0&&iconflag!=0){
                     imuser.setImageResource(R.drawable.icono_nologin);
                     iconflag=0;
                 }
@@ -254,7 +262,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
                     bt_wifi.setBackgroundResource(R.color.transparente);
                 }
                 tv_fecha.setText(Utils.getFecha()+" "+ Utils.getHora());
-                tv_usuario.setText(mainActivity.getUsuarioActual());
+                tv_usuario.setText(usersManager.getUsuarioActual());
 
                 if(!stoped){
                     handler.postDelayed(this, 50);

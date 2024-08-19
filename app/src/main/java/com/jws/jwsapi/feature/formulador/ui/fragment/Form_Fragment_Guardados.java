@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.tabs.TabLayout;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaGuardadosBinding;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Guardados_Pesadas;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Guardados_Recetas;
@@ -26,6 +27,11 @@ import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class Form_Fragment_Guardados extends Fragment {
 
     MainActivity mainActivity;
@@ -36,6 +42,8 @@ public class Form_Fragment_Guardados extends Fragment {
     List<Form_Model_RecetaDB> guardado_recetasypedidos = new ArrayList<>();
     int menu=0;
     ProgFormuladorPantallaGuardadosBinding binding;
+    @Inject
+    UsersManager usersManager;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -165,7 +173,7 @@ public class Form_Fragment_Guardados extends Fragment {
     }
 
     private void eliminarDatos() {
-        if (mainActivity.getNivelUsuario() > 1) {
+        if (usersManager.getNivelUsuario() > 1) {
             String texto = obtenerMensajeConfirmacion(menu);
             if (texto != null) {
                 dialogoTexto(mainActivity, texto,"ELIMINAR",() -> {

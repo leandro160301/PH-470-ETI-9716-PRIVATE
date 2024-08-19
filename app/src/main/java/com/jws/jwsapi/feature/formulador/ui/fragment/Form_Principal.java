@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.containers.clases.ButtonProviderSingletonPrincipal;
 import com.jws.jwsapi.base.containers.interfaces.ButtonProvider_Principal;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPrincipalBinding;
 import com.jws.jwsapi.feature.formulador.MainFormClass;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
@@ -47,6 +48,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class Form_Principal extends Fragment  {
     @Inject
     RecetaManager recetaManager;
+    @Inject
+    UsersManager usersManager;
     Form_PrincipalViewModel viewModel;
     Handler mHandler= new Handler();
     MainActivity mainActivity;
@@ -761,7 +764,7 @@ public class Form_Principal extends Fragment  {
                 mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                 Utils.getFecha(),Utils.getHora(),(String) mainActivity.mainClass.ocampo1.value,(String) mainActivity.mainClass.ocampo2.value,
                 (String) mainActivity.mainClass.ocampo3.value,(String) mainActivity.mainClass.ocampo4.value,(String) mainActivity.mainClass.ocampo5.value,preferencesManager.getCampo1(),
-                preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),mainActivity.getUsuarioActual(),
+                preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
                 recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
     }
 
@@ -771,7 +774,7 @@ public class Form_Principal extends Fragment  {
                 mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                 Utils.getFecha(),Utils.getHora(),(String) mainActivity.mainClass.ocampo1.value,(String) mainActivity.mainClass.ocampo2.value,
                 (String) mainActivity.mainClass.ocampo3.value,(String) mainActivity.mainClass.ocampo4.value,(String) mainActivity.mainClass.ocampo5.value,preferencesManager.getCampo1(),
-                preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),mainActivity.getUsuarioActual(),
+                preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
                 recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_totales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
     }
 
@@ -784,7 +787,7 @@ public class Form_Principal extends Fragment  {
                         mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                         Utils.getFecha(),Utils.getHora(),(String) mainActivity.mainClass.ocampo1.value,(String) mainActivity.mainClass.ocampo2.value,
                         (String) mainActivity.mainClass.ocampo3.value,(String) mainActivity.mainClass.ocampo4.value,(String) mainActivity.mainClass.ocampo5.value,preferencesManager.getCampo1(),
-                        preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),mainActivity.getUsuarioActual(),
+                        preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
                         recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_totales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
                 if(id>-1){
                     mainActivity.mainClass.oidreceta.value=String.valueOf(id);
@@ -795,7 +798,7 @@ public class Form_Principal extends Fragment  {
                             mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                             Utils.getFecha(),Utils.getHora(),(String) mainActivity.mainClass.ocampo1.value,(String) mainActivity.mainClass.ocampo2.value,
                             (String) mainActivity.mainClass.ocampo3.value,(String) mainActivity.mainClass.ocampo4.value,(String) mainActivity.mainClass.ocampo5.value,preferencesManager.getCampo1(),
-                            preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),mainActivity.getUsuarioActual(),
+                            preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
                             recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
                     if(id2!=-1){
                         mainActivity.mainClass.oidpesada.value=String.valueOf(id2);
@@ -823,7 +826,7 @@ public class Form_Principal extends Fragment  {
                         mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                         Utils.getFecha(),Utils.getHora(),(String) mainActivity.mainClass.ocampo1.value,(String) mainActivity.mainClass.ocampo2.value,
                         (String) mainActivity.mainClass.ocampo3.value,(String) mainActivity.mainClass.ocampo4.value,(String) mainActivity.mainClass.ocampo5.value,preferencesManager.getCampo1(),
-                        preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),mainActivity.getUsuarioActual(),
+                        preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
                         recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing(),"","",String.valueOf(mainActivity.mainClass.N_BZA));
 
                 if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
@@ -872,9 +875,9 @@ public class Form_Principal extends Fragment  {
                    preferencesManager.getCampo3(),
                    preferencesManager.getCampo4(),
                    preferencesManager.getCampo5(),
-                   mainActivity.getUsuarioActual(),
-                        recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing(),
-                        recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing(),
+                   usersManager.getUsuarioActual(),
+                   recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing(),
+                   recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing(),
                    "","",String.valueOf(mainActivity.mainClass.N_BZA));
 
                 if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){

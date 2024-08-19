@@ -1,8 +1,7 @@
 package com.jws.jwsapi.base.ui.fragments;
 
-
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
 import android.app.AlertDialog;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -24,28 +23,29 @@ import com.jws.jwsapi.base.data.sql.Usuarios_SQL_db;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.ui.adapters.AdapterUsuarios;
 import com.jws.jwsapi.base.models.UsuariosModel;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
-
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
-public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemClickListener {
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemClickListener, AdapterUsuariosInterface {
 
     Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-
     TextView tv_nnombre, tv_nusuario, tv_ncontrasena,tvcodigo;
     RecyclerView recycler_usuarios;
     AdapterUsuarios adapter;
     List<UsuariosModel> ListElementsArrayList=new ArrayList<>();
-    Cursor fila;
-    long count=0;
     String nusuario="",nnombre="",ncontrasena="",ncodigo="";
-    int posicion=-100;
-
+    @Inject
+    UsersManager usersManager;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemCl
         DevuelveElementos();
 
         recycler_usuarios.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AdapterUsuarios(getContext(), ListElementsArrayList,mainActivity);
+        adapter = new AdapterUsuarios(getContext(), ListElementsArrayList,this);
         adapter.setClickListener(this);
         recycler_usuarios.setAdapter(adapter);
 
@@ -100,11 +100,7 @@ public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemCl
 
     public void DevuelveElementos(){
 
-        List<UsuariosModel> lista=new ArrayList<>();
-        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(getContext(), MainActivity.DB_USERS_NAME, null, MainActivity.DB_USERS_VERSION)) {
-            lista=dbHelper.obtenerUsuarios();
-        }
-
+        List<UsuariosModel> lista= UsersManager.obtenerUsuarios();
         for(int i=0;i<lista.size();i++){
             ListElementsArrayList.add(new UsuariosModel(lista.get(i).id,lista.get(i).nombre,lista.get(i).usuario,lista.get(i).password, lista.get(i).codigo,
                     lista.get(i).tipo));
@@ -145,13 +141,13 @@ public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemCl
         dialog.show();
 
         Guardar.setOnClickListener(view -> {
-            if(mainActivity.getNivelUsuario()>2){
+            if(usersManager.getNivelUsuario()>2){
                 if(!nnombre.equals("")&&!nusuario.equals("")
                         &&!ncontrasena.equals("")&&!ncodigo.equals("")){
 
                     long id=-1;
 
-                    try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(getContext(), MainActivity.DB_USERS_NAME, null, MainActivity.DB_USERS_VERSION)) {
+                    try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(getContext(), UsersManager.DB_USERS_NAME, null, UsersManager.DB_USERS_VERSION)) {
                         id=dbHelper.nuevoUsuario(nnombre,nusuario,ncontrasena,ncodigo,spinnertipo.getSelectedItem().toString(),"SI","SI","SI");
                     }
                     if(id!=-1){
@@ -247,14 +243,13 @@ public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemCl
     }
 
     public boolean BuscarNombre(String nombre){
-
         return false;
 
     }
     public boolean BuscarUsuario(String user){
 
         List<UsuariosModel> lista=new ArrayList<>();
-        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(getContext(), MainActivity.DB_USERS_NAME, null, MainActivity.DB_USERS_VERSION)) {
+        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(getContext(), UsersManager.DB_USERS_NAME, null, UsersManager.DB_USERS_VERSION)) {
             lista=dbHelper.obtenerUsuarios();
         }
         for(int i=0;i<lista.size();i++){
@@ -265,9 +260,8 @@ public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemCl
         return false;
     }
     public boolean BuscarCodigo(String codigo){
-
-        List<UsuariosModel> lista=new ArrayList<>();
-        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(getContext(), MainActivity.DB_USERS_NAME, null, MainActivity.DB_USERS_VERSION)) {
+        List<UsuariosModel> lista;
+        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(getContext(), UsersManager.DB_USERS_NAME, null, UsersManager.DB_USERS_VERSION)) {
             lista=dbHelper.obtenerUsuarios();
         }
         for(int i=0;i<lista.size();i++){
@@ -279,6 +273,31 @@ public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemCl
     }
 
 
+    @Override
+    public void eliminarUsuario(List<UsuariosModel> mData, int posicion) {
+        if(usersManager.getNivelUsuario()>2){
+            if (mData.size() > 0) {
+                if(!mData.get(posicion).nombre.equals(usersManager.getUsuarioActual())){
+                    dialogoTexto(getContext(), "Quiere eliminar el usuario " + mData.get(posicion).nombre + "?", "ELIMINAR", () -> {
+                        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(mainActivity, UsersManager.DB_USERS_NAME, null, UsersManager.DB_USERS_VERSION)) {
+                            dbHelper.eliminarUsuario(mData.get(posicion).usuario);
+                        }
+                        mData.remove(posicion);
+                        adapter.filterList(mData);
+                    });
+                }
+                else {
+                    Utils.Mensaje("No puedes eliminar el usuario actual",R.layout.item_customtoasterror,mainActivity);
+                }
+            }
+            else {
+                Utils.Mensaje("No puedes eliminar mas usuarios",R.layout.item_customtoasterror,mainActivity);
+            }
+        }else{
+            Utils.Mensaje("El usuario logeado no puede modificar otros usuarios",R.layout.item_customtoasterror,mainActivity);
+        }
+
+    }
 }
 
 

@@ -19,6 +19,7 @@ import com.android.jws.JwsManager;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.ui.adapters.AdapterConfig;
 import com.jws.jwsapi.base.ui.adapters.AdapterConfigDinamico;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.feature.formulador.ui.fragment.Form_Fragment_ConfiguracionBalanza;
 import com.jws.jwsapi.feature.formulador.ui.fragment.Form_Fragment_ConfiguracionPrograma;
 import com.jws.jwsapi.feature.formulador.ui.fragment.Form_Fragment_ConfiguracionTurnos;
@@ -33,6 +34,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MenuFragment extends Fragment implements AdapterConfig.ItemClickListener {
 
     Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
@@ -53,6 +59,8 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
     private ButtonProvider buttonProvider;
     TextView tv_minutos, tv_hora, tv_dia, tv_mes, tv_anio;
     int num=0;
+    @Inject
+    UsersManager usersManager;
 
     @Nullable
     @Override
@@ -87,7 +95,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
             CargarDatosADinamico(ListElementsArrayListdinamicos1);
         }
         if(position==3){
-            if(mainActivity.getNivelUsuario()>2){
+            if(usersManager.getNivelUsuario()>2){
                 mainActivity.mainClass.openFragment(new UsuariosFragment());
             }else{
                 Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
@@ -142,7 +150,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
         lr_dinamico2.setVisibility(View.INVISIBLE);
         jwsManager= JwsManager.create(requireActivity());
 
-        cantidadUsuarios = mainActivity.cantidadUsuarios();
+        cantidadUsuarios = usersManager.cantidadUsuarios();
 
 
         ListElementsArrayList=new ArrayList<>(Arrays.asList(ListElements));
@@ -198,7 +206,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
         adapterDinamicos1.setClickListener((view, position) -> {
             menuElegido2=position;
             if(menuElegido ==1){
-                if(mainActivity.getNivelUsuario()>1){
+                if(usersManager.getNivelUsuario()>1){
                     if(position==0){
                         mainActivity.mainClass.openFragment(new Form_Fragment_ConfiguracionPrograma());
                     }
@@ -230,7 +238,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
 
             if(menuElegido ==4){
                 if(position==0){
-                    if(mainActivity.getNivelUsuario()>1){
+                    if(usersManager.getNivelUsuario()>1){
                         DialogoCambiarHorayFecha();
                     }
                     else{
@@ -238,7 +246,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
                     }
                 }
                 if(position==1){
-                    if(mainActivity.getNivelUsuario()>1){
+                    if(usersManager.getNivelUsuario()>1){
                         DialogoCambiarTema();
                     }
                     else{
@@ -280,7 +288,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
         recycler3.setAdapter(adapterDinamicos2);
         adapterDinamicos2.setClickListener((view, position) -> {
             if(menuElegido ==5){
-                if(mainActivity.getNivelUsuario()>1){
+                if(usersManager.getNivelUsuario()>1){
                     if(menuElegido2==0){
                         if(position==0){
                             mainActivity.mainClass.openFragment(new ImpresorasFragment());
@@ -302,7 +310,7 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
                 }
                 if(position==1){
 
-                    if(mainActivity.getUsuarioActual().equals("*Programador*")){
+                    if(usersManager.getUsuarioActual().equals("*Programador*")){
                         mainActivity.mainClass.openFragment(new EthernetFragment());
                     }
                     else{

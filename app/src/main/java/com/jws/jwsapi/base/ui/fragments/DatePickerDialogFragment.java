@@ -7,10 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-
 import com.jws.jwsapi.R;
 
 import java.util.Calendar;
@@ -33,20 +31,12 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Obtener la fecha actual
-
-        // Obtener el DatePicker del diseño personalizado
-
-
-        // Crear y retornar una instancia de AlertDialog utilizando el diseño personalizado
-
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
 
         View mView = getLayoutInflater().inflate(R.layout.dialogo_fecha, null);
         DatePicker datePicker = mView.findViewById(R.id.datePicker2);
 
-        // Obtener la fecha actual
         final Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);

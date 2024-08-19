@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaConfiguracionbalanzaBinding;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.utils.Utils;
@@ -27,6 +28,8 @@ public class Form_Fragment_ConfiguracionBalanza extends Fragment  {
 
     @Inject
     RecetaManager recetaManager;
+    @Inject
+    UsersManager usersManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     ProgFormuladorPantallaConfiguracionbalanzaBinding binding;
@@ -55,7 +58,7 @@ public class Form_Fragment_ConfiguracionBalanza extends Fragment  {
     }
 
     private void initializateViews() {
-        if(mainActivity.getNivelUsuario()<4){
+        if(usersManager.getNivelUsuario()<4){
             binding.ln17.setVisibility(View.GONE);
             binding.ln18.setVisibility(View.GONE);
         }

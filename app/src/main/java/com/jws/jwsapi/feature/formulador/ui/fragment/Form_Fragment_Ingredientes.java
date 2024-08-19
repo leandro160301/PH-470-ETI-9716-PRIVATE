@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaIngredientesBinding;
 import com.jws.jwsapi.feature.formulador.ui.adapter.Form_Adapter_Ingredientes;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
@@ -56,6 +57,8 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
     List<Integer> posiciones= new ArrayList<>();
     Boolean filtro=false;
     ProgFormuladorPantallaIngredientesBinding binding;
+    @Inject
+    UsersManager usersManager;
 
     @Nullable
     @Override
@@ -249,7 +252,7 @@ public class Form_Fragment_Ingredientes extends Fragment implements Form_Adapter
     @Override
     public void eliminarIngrediente(List<Form_Model_Ingredientes> mData, int posicion) {
         if(mData.size()>1){
-            if(mainActivity.modificarDatos()){
+            if(usersManager.modificarDatos()){
                 dialogoEliminarIngrediente(posicion,mData);
             }else{
                 Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);

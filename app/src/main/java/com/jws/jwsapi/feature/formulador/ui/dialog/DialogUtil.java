@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.InputType;
 import android.text.method.DigitsKeyListener;
 import android.text.method.KeyListener;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import com.jws.jwsapi.utils.Utils;
 
 public class DialogUtil {
 
-    private static void mostrarDialogo(TextView view, String texto, Context context, DialogInputInterface dialogInterface, boolean numeric, Integer inputType, KeyListener key, DialogButtonInterface dialogButtonInterface, String textoCancelar){
+    private static void mostrarDialogo(TextView view, String texto, Context context, DialogInputInterface dialogInterface, boolean numeric, Integer inputType, KeyListener key, DialogButtonInterface dialogButtonInterface, String textoCancelar , PasswordTransformationMethod passwordTransformationMethod){
         LayoutInflater inflater = LayoutInflater.from(context);
         DialogoDosopcionesBinding dialogBinding = DialogoDosopcionesBinding.inflate(inflater);
         final EditText userInput = dialogBinding.etDatos;
@@ -25,6 +26,7 @@ public class DialogUtil {
         userInput.setOnLongClickListener(v -> true);
         if(inputType!=null)userInput.setInputType(inputType);
         if(key!=null)userInput.setKeyListener(key);
+        if(passwordTransformationMethod!=null)userInput.setTransformationMethod(passwordTransformationMethod);
         userInput.requestFocus();
         if(view!=null)userInput.setText(view.getText().toString());
         if(view!=null&&!view.getText().toString().equals("")) userInput.setSelection(userInput.getText().length());
@@ -111,19 +113,23 @@ public class DialogUtil {
     }
 
     public static void Teclado(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
-        mostrarDialogo(view,texto,context,dialogInterface,false,null,null,null, null);
+        mostrarDialogo(view,texto,context,dialogInterface,false,null,null,null, null,null);
+    }
+
+    public static void TecladoPassword(TextView view, String texto, Context context, DialogInputInterface dialogInterface, PasswordTransformationMethod passwordTransformationMethod) {
+        mostrarDialogo(view,texto,context,dialogInterface,false,InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS| InputType.TYPE_CLASS_NUMBER| InputType.TYPE_TEXT_VARIATION_PASSWORD,null,null, null,passwordTransformationMethod);
     }
 
     public static void TecladoFlotante(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
-        mostrarDialogo(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),null, null);
+        mostrarDialogo(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),null, null,null);
     }
 
     public static void TecladoEntero(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
-        mostrarDialogo(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER,null,null, null);
+        mostrarDialogo(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER,null,null, null,null);
     }
 
     public static void TecladoFlotanteConCancelar(TextView view, String texto, Context context, DialogInputInterface dialogInterface,DialogButtonInterface buttonInterface,String textoCancelar) {
-        mostrarDialogo(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),buttonInterface,textoCancelar);
+        mostrarDialogo(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),buttonInterface,textoCancelar,null);
     }
 
     public static void dialogoTexto(Context context, String texto, String textoBoton, DialogButtonInterface dialogInterface) {

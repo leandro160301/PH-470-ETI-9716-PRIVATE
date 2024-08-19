@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.storage.Storage;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.feature.formulador.MainFormClass;
 import org.apache.poi.util.IOUtils;
 import org.json.JSONException;
@@ -59,15 +60,17 @@ public class HttpServer extends NanoWSD {
     private MainActivity mainActivity;
     private Context context;
     Ws webSocket = null;
+    UsersManager usersManager;
 
     private HttpServerInterface httpServerInterface;
 
     public HttpServer(int port, Context context,
-                      HttpServerInterface httpServerInterface,MainActivity activity) {
+                      HttpServerInterface httpServerInterface,MainActivity activity,UsersManager usersManager) {
         super(port);
         this.context = context;
         this.httpServerInterface = httpServerInterface;
         this.mainActivity=activity;
+        this.usersManager= usersManager;
     }
 
     class Ws extends WebSocket {
@@ -217,7 +220,7 @@ public class HttpServer extends NanoWSD {
 
         }
         if(uri.endsWith("GetUsuarios")){
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,mainActivity.JSONusuarios());
+            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,usersManager.JSONusuarios());
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
         }

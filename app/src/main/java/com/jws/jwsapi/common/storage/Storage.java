@@ -402,6 +402,15 @@ public class Storage {
         return lista;
     }
 
+
+    public static void createMemoryDirectory() {
+        String memoryPath ="/storage/emulated/0/Memoria";
+        File fileMemoria = new File(memoryPath);
+        if (!fileMemoria.isDirectory()){
+            fileMemoria.mkdir();
+        }
+    }
+
     public static List<String> getArchivos() {
         List<String> lista = new ArrayList<>();
         File root2 = new File(Environment.getExternalStorageDirectory().toString() + "/Memoria");

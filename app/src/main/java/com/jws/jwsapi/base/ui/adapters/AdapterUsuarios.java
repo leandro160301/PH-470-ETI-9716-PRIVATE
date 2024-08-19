@@ -1,41 +1,33 @@
 package com.jws.jwsapi.base.ui.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.jws.jwsapi.base.ui.activities.MainActivity;
-import com.jws.jwsapi.base.data.sql.Usuarios_SQL_db;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.models.UsuariosModel;
-import com.jws.jwsapi.utils.Utils;
-
+import com.jws.jwsapi.base.ui.fragments.AdapterUsuariosInterface;
 import java.util.List;
 import java.util.Objects;
 
 public class AdapterUsuarios extends RecyclerView.Adapter<AdapterUsuarios.ViewHolder> {
 
-
     private int selectedPos = RecyclerView.NO_POSITION;
     List<UsuariosModel> ListElementsArrayList2;
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    MainActivity mainActivity;
+    AdapterUsuariosInterface adapterUsuariosInterface;
 
     // data is passed into the constructor
-    public AdapterUsuarios(Context context, List<UsuariosModel> data, MainActivity mainActivity) {
+    public AdapterUsuarios(Context context, List<UsuariosModel> data, AdapterUsuariosInterface adapterUsuariosInterface) {
         this.mInflater = LayoutInflater.from(context);
         this.ListElementsArrayList2 = data;
-        this.mainActivity=mainActivity;
+        this.adapterUsuariosInterface=adapterUsuariosInterface;
     }
 
     // inflates the row layout from xml when needed
@@ -47,13 +39,11 @@ public class AdapterUsuarios extends RecyclerView.Adapter<AdapterUsuarios.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        int posi=position;
         holder.tv_nombre.setText( ListElementsArrayList2.get(position).nombre);
         holder.tv_tipo.setText( ListElementsArrayList2.get(position).tipo);
         holder.tv_id.setText(String.valueOf(ListElementsArrayList2.get(position).id));
         holder.tv_codigo.setText(ListElementsArrayList2.get(position).codigo);
-
-        holder.ln_eliminar.setOnClickListener(view -> DialogoEliminarUsuario(posi));
+        holder.ln_eliminar.setOnClickListener(view -> adapterUsuariosInterface.eliminarUsuario(ListElementsArrayList2, position));
 
         if(Objects.equals(ListElementsArrayList2.get(position).tipo, "Supervisor")){
             holder.idIVCourseImage.setImageResource(R.drawable.icono_supervisor_negro);
@@ -108,24 +98,6 @@ public class AdapterUsuarios extends RecyclerView.Adapter<AdapterUsuarios.ViewHo
 
             itemView.setOnClickListener(this);
 
-
-           /* itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {
-                        // run scale animation and make it bigger
-                        Animation anim = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.scaleintv);
-                        itemView.startAnimation(anim);
-                        anim.setFillAfter(true);
-                    } else {
-                        // run scale animation and make it smaller
-                        Animation anim = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.scaleouttv);
-                        itemView.startAnimation(anim);
-                        anim.setFillAfter(true);
-                    }
-                }
-            });*/
-
         }
 
         @Override
@@ -137,63 +109,10 @@ public class AdapterUsuarios extends RecyclerView.Adapter<AdapterUsuarios.ViewHo
         }
     }
 
-    // convenience method for getting data at click position
-    //public String getItem(int id) { return ListElementsArrayList2.get(id); }
-
-    // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    public void DialogoEliminarUsuario(int posicion) {
-        if(mainActivity.getNivelUsuario()>2){
-            if (ListElementsArrayList2.size() > 0) {
-                if(!ListElementsArrayList2.get(posicion).nombre.equals(mainActivity.getUsuarioActual())){
-                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
-                    View mView = mainActivity.getLayoutInflater().inflate(R.layout.dialogo_dossinet, null);
-                    TextView textView = mView.findViewById(R.id.textViewt);
-                    textView.setText("Quiere eliminar el usuario " + ListElementsArrayList2.get(posicion).nombre + "?");
-
-                    Button Guardar = mView.findViewById(R.id.buttons);
-                    Button Cancelar = mView.findViewById(R.id.buttonc);
-
-                    Guardar.setText("ELIMINAR");
-                    mBuilder.setView(mView);
-                    final AlertDialog dialog = mBuilder.create();
-                    dialog.show();
-
-                    Guardar.setOnClickListener(view -> {
-
-                        try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(mainActivity, MainActivity.DB_USERS_NAME, null, MainActivity.DB_USERS_VERSION)) {
-                            dbHelper.eliminarUsuario(ListElementsArrayList2.get(posicion).usuario);
-                        }
-                        ListElementsArrayList2.remove(posicion);
-                        filterList(ListElementsArrayList2);
-
-
-                        dialog.cancel();
-
-                    });
-                    Cancelar.setOnClickListener(view -> dialog.cancel());
-                }
-                else {
-
-                    Utils.Mensaje("No puedes eliminar el usuario actual",R.layout.item_customtoasterror,mainActivity);
-
-                }
-            }
-            else {
-
-                Utils.Mensaje("No puedes eliminar mas usuarios",R.layout.item_customtoasterror,mainActivity);
-
-            }
-        }else{
-            Utils.Mensaje("El usuario logeado no puede modificar otros usuarios",R.layout.item_customtoasterror,mainActivity);
-        }
-
-    }
-
-    // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }

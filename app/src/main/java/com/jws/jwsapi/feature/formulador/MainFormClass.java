@@ -40,6 +40,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.impresora.clases.Printer;
 import com.jws.jwsapi.common.impresora.clases.PrinterObject;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.service.Balanzas.BalanzaService;
 import com.jws.jwsapi.common.impresora.ImprimirEstandar;
@@ -121,13 +122,15 @@ public class MainFormClass implements OnFragmentChangeListener {
     public PrinterObject onumeroetiqueta=new PrinterObject();
     public List<Printer> variablesImprimibles;
     public List<String> imprimiblesPredefinidas;
+    UsersManager usersManager;
 
     Boolean permitirClic=true;
     public PreferencesManager preferencesManager;
 
-    public MainFormClass(Context context, MainActivity activity) { //constructor
+    public MainFormClass(Context context, MainActivity activity,UsersManager usersManager) { //constructor
         this.context = context;
         this.mainActivity = activity;
+        this.usersManager = usersManager;
     }
 
     public void init() {
@@ -266,13 +269,13 @@ public class MainFormClass implements OnFragmentChangeListener {
 
 
     public void Imprimir(int etiqueta) {
-        ImprimirEstandar imprimirEstandar = new ImprimirEstandar(context, mainActivity);
+        ImprimirEstandar imprimirEstandar = new ImprimirEstandar(context, mainActivity,usersManager);
         imprimirEstandar.EnviarEtiqueta(BZA.serialPortB,etiqueta);
 
     }
 
     public void ImprimirUltima() {
-        ImprimirEstandar imprimirEstandar = new ImprimirEstandar(context, mainActivity);
+        ImprimirEstandar imprimirEstandar = new ImprimirEstandar(context, mainActivity,usersManager);
         imprimirEstandar.EnviarUltimaEtiqueta(BZA.serialPortB);
 
     }
@@ -303,10 +306,7 @@ public class MainFormClass implements OnFragmentChangeListener {
         if(permitirClic){
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             Fragment fragmentoActual = new ContainerFragment();
-            Boolean programador=false;
-            if(mainActivity.getNivelUsuario()>3) {
-                programador = true;
-            }
+            boolean programador= usersManager.getNivelUsuario() > 3;
             ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(),arg,programador);
             containerFragment.setFragmentActual(fragmentoActual);
             fragmentManager.beginTransaction()

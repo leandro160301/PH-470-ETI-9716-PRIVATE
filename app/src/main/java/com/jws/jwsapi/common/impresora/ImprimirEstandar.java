@@ -9,9 +9,13 @@ import com.jws.jwsapi.common.impresora.preferences.PreferencesPrinterManager;
 import com.jws.jwsapi.common.impresora.tipos.ImprimirRS232;
 import com.jws.jwsapi.common.impresora.tipos.ImprimirRed;
 import com.jws.jwsapi.common.impresora.tipos.ImprimirUSB;
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.PuertosSerie.PuertosSerie;
 import com.jws.jwsapi.R;
+
+import org.apache.ftpserver.ftplet.User;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,11 +29,13 @@ public class ImprimirEstandar {
     private final Context context;
     private MainActivity mainActivity;
     private PreferencesPrinterManager preferencesPrinterManager;
+    UsersManager usersManager;
 
-    public ImprimirEstandar(Context context, MainActivity activity) {
+    public ImprimirEstandar(Context context, MainActivity activity, UsersManager usersManager) {
         this.context = context;
         this.mainActivity = activity;
         preferencesPrinterManager=new PreferencesPrinterManager(context);
+        this.usersManager=usersManager;
     }
 
     public void EnviarEtiqueta(PuertosSerie serialPort,int numetiqueta){
@@ -162,7 +168,7 @@ public class ImprimirEstandar {
                                         ListElementsFinales.add(mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
                                     }
                                     if(ListElementsInt.get(i)==4){
-                                        ListElementsFinales.add(mainActivity.getUsuarioActual());
+                                        ListElementsFinales.add(usersManager.getUsuarioActual());
                                     }
                                     if(ListElementsInt.get(i)==5){
                                         ListElementsFinales.add(Utils.getFecha());
@@ -192,7 +198,7 @@ public class ImprimirEstandar {
                                                             concat=concat.concat(mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==4){
-                                                            concat=concat.concat(mainActivity.getUsuarioActual()+separador);
+                                                            concat=concat.concat(usersManager.getUsuarioActual()+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==5){
                                                             concat=concat.concat(Utils.getFecha()+separador);

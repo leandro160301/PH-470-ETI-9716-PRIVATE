@@ -190,7 +190,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <service
-            android:name=".common.httpwebrtcserver.MouseAccessibilityService"
+            android:name=".common.httpserver.MouseAccessibilityService"
             android:enabled="true"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
@@ -205,7 +205,7 @@
         </service>
 
         <service
-            android:name=".common.httpwebrtcserver.AppService"
+            android:name=".common.httpserver.AppService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaProjection" />

@@ -102,6 +102,7 @@ public class CalibracionOptimaFragment extends Fragment   {
                 args.putSerializable("instanceService", service);
                 service.fragmentChangeListener.openFragmentService(fragment,args);
 
+
             });
 
         }else{

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.models.UsuariosModel;
-import com.jws.jwsapi.base.ui.fragments.AdapterUsuariosInterface;
+import com.jws.jwsapi.base.ui.interfaces.AdapterUsuariosInterface;
 import java.util.List;
 import java.util.Objects;
 

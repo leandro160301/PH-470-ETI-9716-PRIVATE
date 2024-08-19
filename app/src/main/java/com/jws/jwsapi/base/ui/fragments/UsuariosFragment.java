@@ -23,6 +23,7 @@ import com.jws.jwsapi.base.data.sql.Usuarios_SQL_db;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.ui.adapters.AdapterUsuarios;
 import com.jws.jwsapi.base.models.UsuariosModel;
+import com.jws.jwsapi.base.ui.interfaces.AdapterUsuariosInterface;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;

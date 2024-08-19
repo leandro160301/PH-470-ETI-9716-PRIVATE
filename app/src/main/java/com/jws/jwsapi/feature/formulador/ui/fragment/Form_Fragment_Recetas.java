@@ -65,8 +65,6 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
     List<String> archivos= new ArrayList<>();
     String recetaelegida="";
     int posicion_recycler=-1;
-    String codigoDialogo="";
-    String descripcionDialogo="";
     List<Form_Model_Receta> recetaseleccionada= new ArrayList<>();
     List<Integer> posiciones= new ArrayList<>();
     Boolean filtro=false;
@@ -200,14 +198,8 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         }else{
             checkBox.setVisibility(View.GONE);
         }
-        tv_codigo.setOnClickListener(view -> TecladoEntero(tv_codigo, "Ingrese el codigo de la receta", getContext(), texto -> {
-            tv_codigo.setText(texto);
-            codigoDialogo=texto;
-        }));
-        tv_descripcion.setOnClickListener(view -> Teclado(tv_descripcion, "Ingrese la descripcion de la receta", getContext(), texto -> {
-            tv_descripcion.setText(texto);
-            descripcionDialogo=texto;
-        }));
+        tv_codigo.setOnClickListener(view -> TecladoEntero(tv_codigo, "Ingrese el codigo de la receta", getContext(),null));
+        tv_descripcion.setOnClickListener(view -> Teclado(tv_descripcion, "Ingrese la descripcion de la receta", getContext(), null));
 
         Button Guardar =  mView.findViewById(R.id.buttons);
         Button Cancelar =  mView.findViewById(R.id.buttonc);
@@ -218,83 +210,83 @@ public class Form_Fragment_Recetas extends Fragment implements Form_Adapter_Enca
         dialog.show();
 
         Guardar.setOnClickListener(view -> {
-
-            if(!Objects.equals(codigoDialogo, "") && !Objects.equals(descripcionDialogo, "")){
-                List<String> recetascargadas=filtrarRecetasEnArchivos(getArchivosExtension(".csv"));
-                List<String> codigoscargados=new ArrayList<>();
-                for(int i=0;i<recetascargadas.size();i++){
-                    String[]arr= recetascargadas.get(i).split("_");
-                    if(arr.length==3){
-                        codigoscargados.add(arr[1].replace("_",""));
-                    }
-                }
-
-                int index=codigoscargados.indexOf(codigoDialogo);
-                if(index==-1){
-                    if(checkBox.isChecked()&&recetaseleccionada!=null&&recetaseleccionada.size()>0){
-                        //chequear que el codigo no exista
-                        File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Receta_"+codigoDialogo+"_"+descripcionDialogo+".csv");
-                        char separador= ',';
-                        CSVWriter writer;
-                        try {
-
-                            writer = new CSVWriter(new FileWriter(filePath.getAbsolutePath(), true), separador);
-                            for(int i=0;i<recetaseleccionada.size();i++){
-                                writer.writeNext(new String[]{recetaseleccionada.get(i).getCodigo_ing(), recetaseleccionada.get(i).getDescrip_ing(), recetaseleccionada.get(i).getKilos_ing()});
-                            }
-
-                            writer.close();
-
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        archivos.add("Receta_"+codigoDialogo+"_"+descripcionDialogo);
-                        adapter.filterList(archivos);
-                        binding.receta.smoothScrollToPosition(archivos.size()-1);
-                        codigoDialogo="";
-                        descripcionDialogo="";
-                    }else{
-                        //chequear que el codigo no exista
-                        File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Receta_"+codigoDialogo+"_"+descripcionDialogo+".csv");
-                        char separador= ',';
-                        CSVWriter writer;
-                        List<Form_Model_Ingredientes> ing=mainActivity.mainClass.getIngredientes();
-                        String cod_nueva="001";
-                        String des_nueva="Ingrediente 1";
-                        if(ing.size()>0){
-                            cod_nueva=ing.get(0).getCodigo();
-                            des_nueva=ing.get(0).getNombre();
-                        }
-                        try {
-                            writer = new CSVWriter(new FileWriter(filePath.getAbsolutePath(), true), separador);
-                            writer.writeNext(new String[]{cod_nueva,des_nueva,"1.5"});
-                            writer.close();
-
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        archivos.add("Receta_"+codigoDialogo+"_"+descripcionDialogo);
-                        adapter.filterList(archivos);
-                        adapter.notifyDataSetChanged();
-                        codigoDialogo="";
-                        descripcionDialogo="";
-                    }
-                }else{
-                    Utils.Mensaje("Ya existe el codigo de receta ingresado",R.layout.item_customtoasterror,mainActivity);
-                }
-
+            String codigoDialogo=tv_codigo.getText().toString();
+            String descripcionDialogo=tv_descripcion.getText().toString();
+            if(!codigoDialogo.isEmpty() && !descripcionDialogo.isEmpty()){
+                agregarNuevaReceta(checkBox.isChecked(),codigoDialogo,descripcionDialogo);
             }else{
                 Utils.Mensaje("Los valores ingresados no son validos",R.layout.item_customtoasterror,mainActivity);
             }
             dialog.cancel();
 
         });
-        Cancelar.setOnClickListener(view -> {
-            codigoDialogo="";
-            descripcionDialogo="";
-            dialog.cancel();
-        });
+        Cancelar.setOnClickListener(view -> dialog.cancel());
     }
+
+    private void agregarNuevaReceta(boolean checked,String codigo, String descripcion) {
+        List<String> recetascargadas=filtrarRecetasEnArchivos(getArchivosExtension(".csv"));
+        List<String> codigoscargados=new ArrayList<>();
+        for(int i=0;i<recetascargadas.size();i++){
+            String[]arr= recetascargadas.get(i).split("_");
+            if(arr.length==3){
+                codigoscargados.add(arr[1].replace("_",""));
+            }
+        }
+        int index=codigoscargados.indexOf(codigo);
+        if(index==-1){
+            if(checked&&recetaseleccionada!=null&&recetaseleccionada.size()>0){
+                //chequear que el codigo no exista
+                crearNuevaRecetaConCopia(codigo,descripcion);
+            }else{
+                crearNuevaRecetaBase(codigo,descripcion);
+            }
+        }else{
+            Utils.Mensaje("Ya existe el codigo de receta ingresado",R.layout.item_customtoasterror,mainActivity);
+        }
+    }
+
+    private void crearNuevaRecetaBase(String codigo, String descripcion) {
+        File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Receta_"+codigo+"_"+descripcion+".csv");
+        char separador= ',';
+        CSVWriter writer;
+        List<Form_Model_Ingredientes> ing=mainActivity.mainClass.getIngredientes();
+        String cod_nueva="001";
+        String des_nueva="Ingrediente 1";
+        if(ing.size()>0){
+            cod_nueva=ing.get(0).getCodigo();
+            des_nueva=ing.get(0).getNombre();
+        }
+        try {
+            writer = new CSVWriter(new FileWriter(filePath.getAbsolutePath(), true), separador);
+            writer.writeNext(new String[]{cod_nueva,des_nueva,"1.5"});
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        archivos.add("Receta_"+codigo+"_"+descripcion);
+        adapter.filterList(archivos);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void crearNuevaRecetaConCopia(String codigo, String descripcion) {
+        File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Receta_"+codigo+"_"+descripcion+".csv");
+        char separador= ',';
+        CSVWriter writer;
+        try {
+            writer = new CSVWriter(new FileWriter(filePath.getAbsolutePath(), true), separador);
+            for(int i=0;i<recetaseleccionada.size();i++){
+                writer.writeNext(new String[]{recetaseleccionada.get(i).getCodigo_ing(), recetaseleccionada.get(i).getDescrip_ing(), recetaseleccionada.get(i).getKilos_ing()});
+            }
+            writer.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        archivos.add("Receta_"+codigo+"_"+descripcion);
+        adapter.filterList(archivos);
+        binding.receta.smoothScrollToPosition(archivos.size()-1);
+    }
+
 
     private List<String> filtrarRecetasEnArchivos(List<String> archivos){
         List<String> lista= new ArrayList<>();

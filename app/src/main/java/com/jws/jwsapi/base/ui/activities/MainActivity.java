@@ -5,8 +5,7 @@ import static com.jws.jwsapi.common.storage.Storage.deleteCache;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
@@ -14,37 +13,19 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.view.View;
 import android.view.WindowManager;
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.base.data.preferences.PreferencesManagerBase;
-import com.jws.jwsapi.base.models.UsuariosModel;
-import com.jws.jwsapi.common.httpwebrtcserver.InitServer;
+import com.jws.jwsapi.common.ftpserver.FtpInit;
+import com.jws.jwsapi.common.httpserver.InitServer;
 import com.jws.jwsapi.common.storage.Storage;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.feature.formulador.MainFormClass;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
-import com.jws.jwsapi.feature.formulador.models.Form_Model_Guardados;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.dialog.DialogButtonInterface;
 import com.jws.jwsapi.utils.Utils;
-import org.apache.ftpserver.ConnectionConfigFactory;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.ftpserver.FtpServer;
-import org.apache.ftpserver.FtpServerFactory;
-import org.apache.ftpserver.ftplet.Authority;
-import org.apache.ftpserver.ftplet.FtpException;
-import org.apache.ftpserver.listener.ListenerFactory;
-import org.apache.ftpserver.usermanager.impl.BaseUser;
-import org.apache.ftpserver.usermanager.impl.WritePermission;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -52,7 +33,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity {
     public static String VERSION ="PH 470 FRM 1.02";
     public JwsManager jwsObject;
-    FtpServerFactory serverFactory;
     public MainFormClass mainClass;
     public Storage storage;
     InitServer initServer;
@@ -82,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFtpWebRTC() {
         try {
-            FtpServidor();
+            FtpInit ftpInit= new FtpInit(getApplicationContext(),usersManager.obtenerUsuarios());
+            ftpInit.ftpServer();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateViews() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-        @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = getResources().getDrawable(R.drawable.blanco);
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.blanco);
         Bitmap bitmap = Utils.drawableToBitmap(drawable);
         try {
             wallpaperManager.setBitmap(bitmap);
@@ -153,63 +134,6 @@ public class MainActivity extends AppCompatActivity {
             Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,this);
         }
 
-
-    }
-
-
-
-
-    public void FtpServidor(){
-        serverFactory = new FtpServerFactory();
-        ListenerFactory factory = new ListenerFactory();
-        factory.setPort(2221);
-        serverFactory.addListener("default", factory.createListener());
-        ConnectionConfigFactory connectionConfigFactory = new ConnectionConfigFactory();
-        connectionConfigFactory.setAnonymousLoginEnabled(false);
-        serverFactory.setConnectionConfig(connectionConfigFactory.createConnectionConfig());
-        List<Authority> authorities = new ArrayList<>();
-        authorities.add(new WritePermission());
-        BaseUser usuarioGregoArchivos = new BaseUser();
-        usuarioGregoArchivos.setName(UsersManager.USUARIOS[1]);
-        usuarioGregoArchivos.setPassword("3031");
-        usuarioGregoArchivos.setAuthorities(authorities);
-        try {
-            serverFactory.getUserManager().save(usuarioGregoArchivos);
-        } catch (FtpException e) {
-            e.printStackTrace();
-        }
-        BaseUser user = new BaseUser();
-        user.setName(UsersManager.USUARIOS[0]);
-        user.setPassword(preferencesManagerBase.consultaPIN());
-        user.setHomeDirectory(Environment.getExternalStorageDirectory().toString()+"/Memoria");
-        user.setAuthorities(authorities);
-        try {
-            serverFactory.getUserManager().save(user);
-        } catch (FtpException e) {
-            e.printStackTrace();
-        }
-        cargadeUsuariosFtp();
-        FtpServer server = serverFactory.createServer();
-        try {
-            server.start();
-        } catch (FtpException e) {
-            e.printStackTrace();
-        }
-
-    }
-    public void cargadeUsuariosFtp(){
-        List<UsuariosModel> lista= usersManager.obtenerUsuarios();
-        for(int i=0;i<lista.size();i++){
-            BaseUser user = new BaseUser();
-            user.setName(lista.get(i).usuario);
-            user.setPassword(lista.get(i).password);
-            user.setHomeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath());
-            try {
-                serverFactory.getUserManager().save(user);
-            } catch (FtpException e) {
-                e.printStackTrace();
-            }
-        }
 
     }
 

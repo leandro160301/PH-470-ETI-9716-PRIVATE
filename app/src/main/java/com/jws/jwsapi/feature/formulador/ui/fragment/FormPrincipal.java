@@ -581,7 +581,7 @@ public class FormPrincipal extends Fragment  {
     }
 
     private void btPesar(float neto, String netoStr) {
-        if(recetaManager.ejecutando){
+        if(recetaManager.ejecutando&&!recetaManager.automatico){
             if(recetaManager.pasoActual<=recetaManager.listRecetaActual.size()){
                 if(rango==1||preferencesManager.getContinuarFueraRango()){
                     calculaPorcentajeError(neto,netoStr);
@@ -1276,6 +1276,7 @@ public class FormPrincipal extends Fragment  {
     private void setupProgressBarStyle(int progress, int black) {
         Drawable draw = ResourcesCompat.getDrawable(getResources(), progress, null);
         binding.progressBar.setProgressDrawable(draw);
+        binding.lnNumpaso.setBackgroundResource(progress);
         setupProgressBarPasoStyle(black);
 
     }
@@ -1283,7 +1284,7 @@ public class FormPrincipal extends Fragment  {
     private void setupProgressBarPasoStyle(int black) {
         binding.tvEstado.setTextColor(black);
         binding.tvNumpaso.setTextColor(black);
-        binding.lnNumpaso.setBackgroundResource(R.drawable.stylekeycortransparent);
+        //binding.lnNumpaso.setBackgroundResource(R.drawable.stylekeycortransparent);
     }
 
     private int determinarBalanza() {

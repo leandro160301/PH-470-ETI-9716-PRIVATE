@@ -3,7 +3,7 @@
     <item android:id="@android:id/background">
         <shape>
             <stroke android:width="3sp"
-                android:color="@color/celeste"/>
+                android:color="@color/grisoscuro"/>
             <corners android:radius="15sp"/>
             <gradient android:type="linear" android:angle="270" android:startColor="@color/blanco"
                 android:endColor="@color/blanco" />
@@ -14,10 +14,10 @@
         <clip>
             <shape>
                 <stroke android:width="3sp"
-                    android:color="@color/blanco"/>
+                    android:color="@color/gris"/>
                 <corners android:radius="15sp"/>
-                <gradient android:type="linear" android:angle="270" android:startColor="@color/gregorutti_color_claro"
-                    android:endColor="@color/gregorutti_color_claro" />
+                <gradient android:type="linear" android:angle="270" android:startColor="@color/azuloscuro"
+                    android:endColor="@color/azuloscuro" />
             </shape>
         </clip>
     </item>

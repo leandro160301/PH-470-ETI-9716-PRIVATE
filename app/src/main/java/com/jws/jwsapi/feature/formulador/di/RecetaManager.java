@@ -13,6 +13,7 @@ public class RecetaManager {
     public String nombreReceta = "";
     public String recetaActual = "";
     public Boolean ejecutando = false;
+    public Boolean automatico = false;
     public Boolean recetaComoPedido =false;
     public List<FormModelReceta> listRecetaActual = new ArrayList<>();
     public int pasoActual = 0;
@@ -22,6 +23,7 @@ public class RecetaManager {
     public MutableLiveData<Integer> progreso = new MutableLiveData<>(0);
     public String porcentajeReceta= "0";
     public int estado = 0;
+    public Float setPoint=0f;
     //estado 1=que pida recipiente en los pasos
     //estado 2=que pese el paso
 }

@@ -688,4 +688,39 @@ public class OPTIMA_ID_I implements Balanza, Balanza.Struct, Serializable {
     public void setEstado(int numero, String estado) {
         this.estado=estado;
     }
+
+    @Override
+    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
+
+    }
+
+    @Override
+    public String Itw410FrmGetSetPoint(int numero) {
+        return null;
+    }
+
+    @Override
+    public int Itw410FrmGetSalida(int numero) {
+        return 0;
+    }
+
+    @Override
+    public void Itw410FrmStart() {
+
+    }
+
+    @Override
+    public int Itw410FrmGetEstado() {
+        return 0;
+    }
+
+    @Override
+    public String Itw410FrmGetUltimoPeso() {
+        return null;
+    }
+
+    @Override
+    public int Itw410FrmGetUltimoIndice() {
+        return 0;
+    }
 }

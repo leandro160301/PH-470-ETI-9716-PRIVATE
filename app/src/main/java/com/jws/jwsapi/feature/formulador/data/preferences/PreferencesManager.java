@@ -744,4 +744,29 @@ public class PreferencesManager {
         Type type = new TypeToken<List<String>>() {}.getType();
         return gson.fromJson(json, type);
     }
+
+    public Boolean getAutomatico() {
+        SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        return Preferencias.getBoolean("Automatico", false);
+    }
+
+    public void setAutomatico(Boolean Ejecutando) {
+        SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
+        ObjEditor2.putBoolean("Automatico", Ejecutando);
+        ObjEditor2.apply();
+    }
+
+
+    public int getIndice() {
+        SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        return Preferencias.getInt("Indice", 0);
+    }
+
+    public void setIndice(int indice) {
+        SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
+        ObjEditor2.putInt("Indice", indice);
+        ObjEditor2.apply();
+    }
 }

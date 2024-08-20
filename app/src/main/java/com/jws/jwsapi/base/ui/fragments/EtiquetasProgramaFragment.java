@@ -1,7 +1,6 @@
 package com.jws.jwsapi.base.ui.fragments;
 
 import static com.jws.jwsapi.common.storage.Storage.getArchivosExtension;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +21,7 @@ import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint

@@ -372,4 +372,39 @@ public class BalanzaService implements Balanza, Balanza.Struct, Serializable {
             balanza.setEstado(numero,estado);
         }
     }
+
+    @Override
+    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
+
+    }
+
+    @Override
+    public String Itw410FrmGetSetPoint(int numero) {
+        return null;
+    }
+
+    @Override
+    public int Itw410FrmGetSalida(int numero) {
+        return 0;
+    }
+
+    @Override
+    public void Itw410FrmStart() {
+
+    }
+
+    @Override
+    public int Itw410FrmGetEstado() {
+        return 1;
+    }
+
+    @Override
+    public String Itw410FrmGetUltimoPeso() {
+        return "10.45";
+    }
+
+    @Override
+    public int Itw410FrmGetUltimoIndice() {
+        return 1;
+    }
 }

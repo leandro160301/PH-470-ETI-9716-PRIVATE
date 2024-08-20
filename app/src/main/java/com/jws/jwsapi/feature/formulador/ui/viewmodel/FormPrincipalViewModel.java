@@ -36,6 +36,7 @@ public class FormPrincipalViewModel extends ViewModel {
         this.recetaManager.nombreReceta =preferencesManager.getNombreRecetaactual();
         this.recetaManager.listRecetaActual = preferencesManager.getPasosRecetaActual();
         this.recetaManager.ejecutando=preferencesManager.getEjecutando();
+        this.recetaManager.automatico=preferencesManager.getAutomatico();
         this.recetaManager.recetaComoPedido =preferencesManager.getRecetacomopedido();
         this.recetaManager.porcentajeReceta=preferencesManager.getPorcentajeReceta();
         if(this.recetaManager.listRecetaActual ==null){

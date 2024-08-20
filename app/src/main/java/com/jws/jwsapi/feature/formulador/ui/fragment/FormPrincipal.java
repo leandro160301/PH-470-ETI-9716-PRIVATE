@@ -371,15 +371,20 @@ public class FormPrincipal extends Fragment  {
     private void verificarPasoEsAutomatico() {
         boolean isAutomatic=false;
         List<FormModelIngredientes> lista= mainClass.getIngredientes();
+        int salida=0;
         for(FormModelIngredientes ing: lista){
             if(Objects.equals(ing.getCodigo(), recetaManager.listRecetaActual.get(0).getCodigo_ing())){
-                if(ing.getSalida()>0) isAutomatic=true;
+                if(ing.getSalida()>0) {
+                    isAutomatic=true;
+                    salida=ing.getSalida();
+                }
             }
         }
         if(isAutomatic){
             Utils.Mensaje("AUTOMATICO",R.layout.item_customtoastok,mainActivity);
             recetaManager.automatico=true;
             preferencesManager.setAutomatico(true);
+            preferencesManager.setSalida(salida);
             //mandar el setpoint y la salida, esperamos y leemos que le llegue bien
             //si le llego bien ponemose el sharedpreferences automatico y recetamanager.automatico en true
         }else{
@@ -1106,6 +1111,7 @@ public class FormPrincipal extends Fragment  {
                 labelManager.ovenci.value != "") && !recetaManager.recetaActual.isEmpty();
         if(empezar){
             binding.tvEstado.setText("Listo para comenzar");
+            setupProgressBarStyle(R.drawable.progress,Color.BLACK);
             binding.tvNumpaso.setText("-");
         }else{
             binding.tvEstado.setText("Proceso Detenido");
@@ -1122,8 +1128,6 @@ public class FormPrincipal extends Fragment  {
     }
 
     private void procesoEjecucionAutomatico() {
-        binding.tvNumpaso.setText(recetaManager.pasoActual +"/"+recetaManager.listRecetaActual.size());
-        setupProgressBarStyle(R.drawable.progressautomatico,Color.BLACK);
         int estado=mainClass.BZA.Itw410FrmGetEstado();
         switch (estado){
             case 0:
@@ -1146,8 +1150,10 @@ public class FormPrincipal extends Fragment  {
     private void automaticoFinalizado() {
         recetaManager.automatico=false;
         preferencesManager.setAutomatico(false);
-        if(mainClass.BZA.Itw410FrmGetUltimoIndice()>preferencesManager.getIndice()){
+        int nuevoIndice=mainClass.BZA.Itw410FrmGetUltimoIndice();
+        if(nuevoIndice>preferencesManager.getIndice()){
             String ultimoPeso=mainClass.BZA.Itw410FrmGetUltimoPeso();
+            preferencesManager.setIndice(nuevoIndice);
             if(ultimoPeso!=null&&isNumeric(ultimoPeso)) btPesar(Float.parseFloat(ultimoPeso),ultimoPeso);
         }
     }
@@ -1185,12 +1191,21 @@ public class FormPrincipal extends Fragment  {
     private void actualizarBarraProceso(int num) {
         if(Utils.isNumeric(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())){
             if(Float.parseFloat(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())==0){
-                binding.tvEstado.setText("Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
-                        " en balanza "+ num);
+                String texto="Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +" en balanza "+ num;
+                if(recetaManager.automatico){
+                    texto="Cargando "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +" en salida "+ preferencesManager.getSalida();
+                }
+                binding.tvEstado.setText(texto);
             }else{
-                binding.tvEstado.setText("Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
+                String texto="Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
                         mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA)+ " de "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
-                        " en balanza "+ num);
+                        " en balanza "+ num;
+                if(recetaManager.automatico){
+                    texto="Cargando "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
+                            mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA)+ " de "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
+                            " en salida "+ preferencesManager.getSalida();
+                }
+                binding.tvEstado.setText(texto);
             }
         }
     }
@@ -1236,14 +1251,18 @@ public class FormPrincipal extends Fragment  {
     private void actualizarBarraProgreso(Float lim_max) {
         if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)>=0){
             float porcentaje= 100*mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)/recetaManager.setPoint;
+            int progresoRango=R.drawable.progress;
+            int progresoFuera=R.drawable.progress2;
+            if(recetaManager.automatico) progresoRango=R.drawable.progressautomatico;
+            if(recetaManager.automatico) progresoFuera=R.drawable.progressautomatico2;
             if(porcentaje<=100){
                 binding.progressBar.setProgress((int) porcentaje);
-                setupProgressBarStyle(R.drawable.progress,Color.BLACK);
+                setupProgressBarStyle(progresoRango,Color.BLACK);
             }else{
                 if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)>lim_max){
-                    setupProgressBarStyle(R.drawable.progress2,Color.WHITE);
+                    setupProgressBarStyle(progresoFuera,Color.WHITE);
                 }else{
-                    setupProgressBarStyle(R.drawable.progress,Color.BLACK);
+                    setupProgressBarStyle(progresoRango,Color.BLACK);
                 }
                 binding.progressBar.setProgress(100);
             }
@@ -1268,36 +1287,44 @@ public class FormPrincipal extends Fragment  {
     }
 
     private int determinarBalanza() {
-        String kilos= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing();
-        int modo=preferencesManager.getModoBalanza();
-        int num=0;
-        if(Utils.isNumeric(kilos)){
-            float kilosFloat=Float.parseFloat(kilos);
-            if(kilosFloat>Float.parseFloat(preferencesManager.getBza2Limite())&&modo>1){
-                num=3;
-            }
-            if(kilosFloat<Float.parseFloat(preferencesManager.getBza2Limite())&&modo>0){
-                num=2;
-                mainActivity.mainClass.N_BZA=2;
-            }
-            if(kilosFloat<Float.parseFloat(preferencesManager.getBza1Limite())){
-                num=1;
-                mainActivity.mainClass.N_BZA=1;
+        String kilos = recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing();
+        int modo = preferencesManager.getModoBalanza();
+        int num = 0;
+        if (Utils.isNumeric(kilos)) {
+            float kilosFloat = Float.parseFloat(kilos);
+            float bza1Limite = Float.parseFloat(preferencesManager.getBza1Limite());
+            float bza2Limite = Float.parseFloat(preferencesManager.getBza2Limite());
+            if (kilosFloat > bza2Limite && modo > 1) {
+                num = 3;
+            } else if (kilosFloat < bza2Limite && modo > 0) {
+                num = 2;
+                mainActivity.mainClass.N_BZA = 2;
+            } else if (kilosFloat < bza1Limite) {
+                num = 1;
+                mainActivity.mainClass.N_BZA = 1;
             }
         }
-        if (num==0){
-            if(modo==0){
-                num=1;
-                mainActivity.mainClass.N_BZA=1;
-            }
-            if(modo==1){
-                num=2;
-                mainActivity.mainClass.N_BZA=2;
-            }
-            if(modo==2){
-                num=3;
-            }
+        if (num == 0) {
+            num = determinarBalanzaPorModo(modo);
+        }
 
+        return num;
+    }
+
+    private int determinarBalanzaPorModo(int modo) {
+        int num = 0;
+        switch (modo) {
+            case 0:
+                num = 1;
+                mainActivity.mainClass.N_BZA = 1;
+                break;
+            case 1:
+                num = 2;
+                mainActivity.mainClass.N_BZA = 2;
+                break;
+            case 2:
+                num = 3;
+                break;
         }
         return num;
     }

@@ -67,14 +67,10 @@ public class FormAdapterRecetas extends RecyclerView.Adapter<FormAdapterRecetas.
         holder.binding.lnAgregar.setOnClickListener(view -> recetasInterface.agregarPaso(mData, position));
 
         if (Objects.equals(item.getKilos_reales_ing(), "NO")) {
-            if (recetaManager.ejecutando) {
-                holder.binding.imCampo.setBackgroundResource(R.drawable.unchecked);
-            }
+            if (recetaManager.ejecutando) holder.binding.imCampo.setBackgroundResource(R.drawable.unchecked);
             holder.binding.tvPesoreal.setVisibility(View.GONE);
         } else {
-            if (recetaManager.ejecutando) {
-                holder.binding.imCampo.setBackgroundResource(R.drawable.checked);
-            }
+            if (recetaManager.ejecutando) holder.binding.imCampo.setBackgroundResource(R.drawable.checked);
             holder.binding.tvPesoreal.setText(item.getKilos_reales_ing() + unidad);
         }
 

@@ -5,13 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.jws.jwsapi.feature.formulador.models.FormModelPesadasDB;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.helpers.AdapterHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 

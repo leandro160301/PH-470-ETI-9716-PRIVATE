@@ -94,7 +94,7 @@ public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemCl
             bt_6.setVisibility(View.INVISIBLE);
 
             bt_1.setOnClickListener(view -> DialogoNuevoUsuario());
-            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
     }

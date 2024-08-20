@@ -33,7 +33,6 @@ public class FormAdapterIngredientes extends RecyclerView.Adapter<FormAdapterIng
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Inflating the layout using ViewBinding
         ProgFormuladorAdapterIngredientesBinding binding = ProgFormuladorAdapterIngredientesBinding.inflate(mInflater, parent, false);
         return new ViewHolder(binding);
     }
@@ -43,6 +42,7 @@ public class FormAdapterIngredientes extends RecyclerView.Adapter<FormAdapterIng
         FormModelIngredientes item = mData.get(position);
         holder.binding.tvCodigoingrediente.setText(item.getCodigo());
         holder.binding.tvDescripcioningrediente.setText(item.getNombre());
+        holder.binding.tvSalida.setText(String.valueOf(item.getSalida()));
         if (!altayBaja) {
             holder.binding.lnEditar.setVisibility(View.GONE);
             holder.binding.lnPrint.setVisibility(View.GONE);
@@ -66,7 +66,6 @@ public class FormAdapterIngredientes extends RecyclerView.Adapter<FormAdapterIng
     @Override
     public int getItemViewType(int position) {return position;}
 
-    // ViewHolder class using ViewBinding
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ProgFormuladorAdapterIngredientesBinding binding;
 

@@ -4,13 +4,16 @@ public class FormModelIngredientes {
 
     private String codigo;
     private String nombre;
+    private int salida;
 
 
     public FormModelIngredientes(String codigo,
-                                 String nombre) {
+                                 String nombre,
+                                 int salida) {
 
         this.codigo=codigo;
         this.nombre=nombre;
+        this.salida=salida;
 
     }
     // Getters
@@ -21,6 +24,10 @@ public class FormModelIngredientes {
     public String getNombre(){
         return nombre;
     }
+
+    public int getSalida(){
+        return salida;
+    }
     // Setters
     public void setCodigo(String codigo){
         this.codigo=codigo;
@@ -28,6 +35,10 @@ public class FormModelIngredientes {
 
     public void setNombre(String nombre){
         this.nombre=nombre;
+    }
+
+    public void setSalida(int salida){
+        this.salida=salida;
     }
 
 }

@@ -1,24 +1,28 @@
 package com.jws.jwsapi.feature.formulador.ui.viewmodel;
 
-import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+
+import java.util.Objects;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class FormFragmentDatosViewModel extends ViewModel {
-    private MutableLiveData<String> campo1;
-    private MutableLiveData<String> campo2;
-    private MutableLiveData<String> campo3;
-    private MutableLiveData<String> campo4;
-    private MutableLiveData<String> campo5;
-    private MutableLiveData<Boolean> campo1_b = new MutableLiveData<>(false);
-    private MutableLiveData<Boolean> campo2_b = new MutableLiveData<>(false);
-    private MutableLiveData<Boolean> campo3_b = new MutableLiveData<>(false);
-    private MutableLiveData<Boolean> campo4_b = new MutableLiveData<>(false);
-    private MutableLiveData<Boolean> campo5_b = new MutableLiveData<>(false);
+    private final MutableLiveData<String> campo1;
+    private final MutableLiveData<String> campo2;
+    private final MutableLiveData<String> campo3;
+    private final MutableLiveData<String> campo4;
+    private final MutableLiveData<String> campo5;
+    private final MutableLiveData<Boolean> campo1_b = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> campo2_b = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> campo3_b = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> campo4_b = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> campo5_b = new MutableLiveData<>(false);
     @Inject
     PreferencesManager preferencesManager;
 
@@ -29,11 +33,11 @@ public class FormFragmentDatosViewModel extends ViewModel {
         campo3 = new MutableLiveData<>(preferencesManager.getCampo3());
         campo4 = new MutableLiveData<>(preferencesManager.getCampo4());
         campo5 = new MutableLiveData<>(preferencesManager.getCampo5());
-        campo1_b.setValue(!campo1.getValue().isEmpty());
-        campo2_b.setValue(!campo2.getValue().isEmpty());
-        campo3_b.setValue(!campo3.getValue().isEmpty());
-        campo4_b.setValue(!campo4.getValue().isEmpty());
-        campo5_b.setValue(!campo5.getValue().isEmpty());
+        campo1_b.setValue(!Objects.requireNonNull(campo1.getValue()).isEmpty());
+        campo2_b.setValue(!Objects.requireNonNull(campo2.getValue()).isEmpty());
+        campo3_b.setValue(!Objects.requireNonNull(campo3.getValue()).isEmpty());
+        campo4_b.setValue(!Objects.requireNonNull(campo4.getValue()).isEmpty());
+        campo5_b.setValue(!Objects.requireNonNull(campo5.getValue()).isEmpty());
     }
 
     public MutableLiveData<String> getCampo1() {return campo1;}

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,7 +39,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -52,6 +50,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
     LabelManager labelManager;
     @Inject
     PreferencesManager preferencesManager;
+    public static final int CANTIDAD=8;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     FormAdapterIngredientes adapter;
@@ -90,16 +89,16 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
 
     }
 
-    public void DialogoNuevoIngrediente(){
+    public void dialogoNuevoIngrediente(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_nuevareceta, null);
-        CheckBox checkBox = mView.findViewById(R.id.checkBox);
-        checkBox.setVisibility(View.GONE);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_nuevo_ingrediente, null);
         TextView tv_codigo=  mView.findViewById(R.id.tv_codigoingrediente);
         TextView tv_descripcion=  mView.findViewById(R.id.tv_descripcioningrediente);
+        TextView tv_salida= mView.findViewById(R.id.tv_salida);
 
         tv_codigo.setOnClickListener(view -> TecladoEntero(tv_codigo,"Ingrese el codigo del ingrediente",mainActivity,null));
         tv_descripcion.setOnClickListener(view -> Teclado(tv_descripcion,"Ingrese la descripcion del ingrediente",mainActivity,null));
+        tv_salida.setOnClickListener(view -> TecladoEntero(tv_salida,"Ingrese el numero de salida del 1 al 8 (0 para manual)",mainActivity,null));
 
         Button Guardar =  mView.findViewById(R.id.buttons);
         Button Cancelar =  mView.findViewById(R.id.buttonc);
@@ -112,7 +111,8 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
         Guardar.setOnClickListener(view -> {
             String codigo=tv_codigo.getText().toString();
             String descripcion=tv_descripcion.getText().toString();
-            if(!codigo.isEmpty() && !descripcion.isEmpty()&& Utils.isNumeric(codigo)){
+            String salida=tv_salida.getText().toString();
+            if(!codigo.isEmpty() && !descripcion.isEmpty()&& Utils.isNumeric(codigo)&& Utils.isNumeric(salida)&&Integer.parseInt(salida)<=CANTIDAD){
                 List<FormModelIngredientes> ing=mainActivity.mainClass.getIngredientes();
                 boolean existe=false;
                 for(int i=0;i<ing.size();i++){
@@ -121,7 +121,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
                     }
                 }
                 if(!existe){
-                    FormModelIngredientes form_model_ingredientes=new FormModelIngredientes(codigo,descripcion);
+                    FormModelIngredientes form_model_ingredientes=new FormModelIngredientes(codigo,descripcion,Integer.parseInt(salida));
                     ing.add(form_model_ingredientes);
                     try {
                         mainActivity.mainClass.setIngredientes(ing);
@@ -161,9 +161,9 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
-            bt_2.setOnClickListener(view -> DialogoNuevoIngrediente());
+            bt_2.setOnClickListener(view -> dialogoNuevoIngrediente());
             bt_1.setOnClickListener(view -> Buscador());
 
         }
@@ -251,7 +251,6 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
     @Override
     public void onItemClick(View view, int position) {
         posicion_recycler=position;
-
     }
 
     @Override

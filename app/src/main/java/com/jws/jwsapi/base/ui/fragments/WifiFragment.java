@@ -384,7 +384,7 @@ public class WifiFragment extends Fragment  {
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
 
-            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
     }

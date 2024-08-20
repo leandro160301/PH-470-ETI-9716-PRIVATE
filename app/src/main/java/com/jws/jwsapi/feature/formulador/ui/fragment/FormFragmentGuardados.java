@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.tabs.TabLayout;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
@@ -16,39 +17,33 @@ import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaGuardadosBinding;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterGuardadosPesadas;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterGuardadosRecetas;
-import com.jws.jwsapi.feature.formulador.MainFormClass;
-import com.jws.jwsapi.feature.formulador.models.FormModelPesadasDB;
-import com.jws.jwsapi.feature.formulador.models.FormModelRecetaDB;
-import com.jws.jwsapi.feature.formulador.data.sql.FormSqlHelper;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.feature.formulador.ui.viewmodel.FormFragmentGuardadosViewModel;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class FormFragmentGuardados extends Fragment {
 
-    MainActivity mainActivity;
-    private ButtonProvider buttonProvider;
-    FormAdapterGuardadosPesadas adapter_pesadas;
-    FormAdapterGuardadosRecetas adapter_recetas;
-    List<FormModelPesadasDB> guardado_pesadas = new ArrayList<>();
-    List<FormModelRecetaDB> guardado_recetasypedidos = new ArrayList<>();
-    int menu=0;
-    ProgFormuladorPantallaGuardadosBinding binding;
+
     @Inject
     UsersManager usersManager;
+    MainActivity mainActivity;
+    private ButtonProvider buttonProvider;
+    private FormFragmentGuardadosViewModel viewModel;
+    private ProgFormuladorPantallaGuardadosBinding binding;
+    private FormAdapterGuardadosPesadas adapterPesadas;
+    private FormAdapterGuardadosRecetas adapterRecetas;
+    private int menu = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
         binding = ProgFormuladorPantallaGuardadosBinding.inflate(inflater, container, false);
+        viewModel = new ViewModelProvider(this).get(FormFragmentGuardadosViewModel.class);
         return binding.getRoot();
     }
     @Override
@@ -58,7 +53,29 @@ public class FormFragmentGuardados extends Fragment {
         mainActivity=(MainActivity)getActivity();
         configuracionBotones();
         tabLayoutListener();
-        cargarRecyclerViewPesadas();
+        viewModel.getPesadas().observe(getViewLifecycleOwner(), pesadas -> {
+            adapterPesadas = new FormAdapterGuardadosPesadas(getContext(), pesadas);
+            binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
+            binding.listaacumulados.setAdapter(adapterPesadas);
+        });
+
+        viewModel.getRecetas().observe(getViewLifecycleOwner(), recetas -> {
+            adapterRecetas = new FormAdapterGuardadosRecetas(getContext(), recetas);
+            adapterRecetas.setButtonClickListener((v, position) ->
+                    viewModel.cargarPesadasConId(getContext(), String.valueOf(recetas.get(position).getId()), true));
+            binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
+            binding.listaacumulados.setAdapter(adapterRecetas);
+        });
+
+        viewModel.getPedidos().observe(getViewLifecycleOwner(), pedidos -> {
+            adapterRecetas = new FormAdapterGuardadosRecetas(getContext(), pedidos);
+            adapterRecetas.setButtonClickListener((v, position) ->
+                    viewModel.cargarPesadasConId(getContext(), String.valueOf(pedidos.get(position).getId()), true));
+            binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
+            binding.listaacumulados.setAdapter(adapterRecetas);
+        });
+
+        viewModel.cargarPesadas(getContext());
 
 
     }
@@ -68,65 +85,24 @@ public class FormFragmentGuardados extends Fragment {
             @Override
             public void onTabSelected(@NonNull TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                menu=position;
+                menu = position;
                 switch (position) {
                     case 0:
-                        cargarRecyclerViewPesadas();
+                        viewModel.cargarPesadas(getContext());
                         break;
                     case 1:
-                        cargarRecyclerViewRecetas();
+                        viewModel.cargarRecetas(getContext());
                         break;
                     case 2:
-                        cargarRecyclerViewPedidos();
+                        viewModel.cargarPedidos(getContext());
                         break;
                 }
             }
             @Override
-            public void onTabUnselected(@NonNull TabLayout.Tab tab) {
-            }
-
+            public void onTabUnselected(@NonNull TabLayout.Tab tab) {}
             @Override
-            public void onTabReselected(@NonNull TabLayout.Tab tab) {
-            }
+            public void onTabReselected(@NonNull TabLayout.Tab tab) {}
         });
-    }
-
-    private void cargarRecyclerViewPesadas(){
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-            guardado_pesadas = guardadosSQL.getPesadasSQL(null);
-        }
-        binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter_pesadas = new FormAdapterGuardadosPesadas(getContext(), guardado_pesadas);
-        binding.listaacumulados.setAdapter(adapter_pesadas);
-    }
-
-    private void cargarRecyclerViewPesadasconId(String id,Boolean receta){
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-            guardado_pesadas = guardadosSQL.getPesadasSQLconId(id,receta);
-        }
-        binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter_pesadas = new FormAdapterGuardadosPesadas(getContext(), guardado_pesadas);
-        binding.listaacumulados.setAdapter(adapter_pesadas);
-    }
-
-    private void cargarRecyclerViewRecetas(){
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-            guardado_recetasypedidos = guardadosSQL.getRecetasSQL(null);
-        }
-        binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter_recetas = new FormAdapterGuardadosRecetas(getContext(), guardado_recetasypedidos);
-        adapter_recetas.setButtonClickListener((view, position) -> cargarRecyclerViewPesadasconId(String.valueOf(guardado_recetasypedidos.get(position).getId()),true));
-        binding.listaacumulados.setAdapter(adapter_recetas);
-    }
-
-    private void cargarRecyclerViewPedidos(){
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-            guardado_recetasypedidos = guardadosSQL.getPedidosSQL(null);
-        }
-        binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter_recetas = new FormAdapterGuardadosRecetas(getContext(), guardado_recetasypedidos);
-        adapter_recetas.setButtonClickListener((view, position) -> cargarRecyclerViewPesadasconId(String.valueOf(guardado_recetasypedidos.get(position).getId()),false));
-        binding.listaacumulados.setAdapter(adapter_recetas);
     }
 
 
@@ -146,7 +122,7 @@ public class FormFragmentGuardados extends Fragment {
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
             bt_2.setOnClickListener(view -> crearExcel());
             bt_1.setOnClickListener(view -> eliminarDatos());
 
@@ -154,20 +130,17 @@ public class FormFragmentGuardados extends Fragment {
     }
 
     private void crearExcel() {
-        if(guardado_pesadas !=null){
-            if(guardado_pesadas.size()>0){
-                int registros=mainActivity.storage.cantidadRegistros();
-                if(registros>=50 && registros<60){
-                    Utils.Mensaje("El indicador alcanzo el limite recomendado de 50 registros. Quedan "+String.valueOf(60-registros)+" registros disponibles",R.layout.item_customtoasterror,mainActivity);
-                    //mainActivity.Dialogo_excel(guardado_pesadas);
-                }
-                if(registros<50){
-                    // mainActivity.Dialogo_excel(guardado_pesadas);
-                }
-                if(registros>=60){
-                    Utils.Mensaje("Error el indicador alcanzo el limite de registros excel",R.layout.item_customtoasterror,mainActivity);
-                }
-
+        if(viewModel.getPesadas().getValue() !=null&&viewModel.getPesadas().getValue().size()>0){
+            int registros=mainActivity.storage.cantidadRegistros();
+            if(registros>=50 && registros<60){
+                Utils.Mensaje("El indicador alcanzo el limite recomendado de 50 registros. Quedan "+ (60 - registros) +" registros disponibles",R.layout.item_customtoasterror,mainActivity);
+                //mainActivity.Dialogo_excel(guardado_pesadas);
+            }
+            if(registros<50){
+                // mainActivity.Dialogo_excel(guardado_pesadas);
+            }
+            if(registros>=60){
+                Utils.Mensaje("Error el indicador alcanzo el limite de registros excel",R.layout.item_customtoasterror,mainActivity);
             }
         }
     }
@@ -176,28 +149,7 @@ public class FormFragmentGuardados extends Fragment {
         if (usersManager.getNivelUsuario() > 1) {
             String texto = obtenerMensajeConfirmacion(menu);
             if (texto != null) {
-                dialogoTexto(mainActivity, texto,"ELIMINAR",() -> {
-                    try (FormSqlHelper productosSQL = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-                        switch (menu) {
-                            case 0:
-                                productosSQL.eliminarPesadas();
-                                cargarRecyclerViewPesadas();
-                                break;
-                            case 1:
-                                productosSQL.eliminarRecetas();
-                                cargarRecyclerViewRecetas();
-                                break;
-                            case 2:
-                                productosSQL.eliminarPedidos();
-                                cargarRecyclerViewPedidos();
-                                break;
-                            default:
-                                Utils.Mensaje("Opción de menú no válida", R.layout.item_customtoasterror, mainActivity);
-                        }
-                    } catch (Exception e) {
-                        Utils.Mensaje("Error al eliminar datos: " + e.getMessage(), R.layout.item_customtoasterror, mainActivity);
-                    }
-                });
+                dialogoTexto(getContext(), texto,"ELIMINAR",() -> viewModel.eliminarDatos(getContext(), menu));
             }
         } else {
             Utils.Mensaje("Debe ingresar la clave para acceder a esta configuración", R.layout.item_customtoasterror, mainActivity);
@@ -218,5 +170,3 @@ public class FormFragmentGuardados extends Fragment {
     }
 
 }
-
-

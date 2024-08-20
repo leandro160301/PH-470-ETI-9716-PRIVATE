@@ -201,7 +201,7 @@ public class FormFragmentDatos extends Fragment{
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
     }

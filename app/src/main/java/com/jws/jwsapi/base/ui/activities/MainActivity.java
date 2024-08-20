@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
@@ -32,15 +31,13 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.dialog.DialogButtonInterface;
 import com.jws.jwsapi.feature.formulador.ui.fragment.FormPrincipal;
 import com.jws.jwsapi.utils.Utils;
-import com.service.Balanzas.BalanzaService;
 import com.service.Comunicacion.OnFragmentChangeListener;
-
 import java.io.IOException;
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity implements OnFragmentChangeListener {
+public class MainActivity extends AppCompatActivity {
     public static String VERSION ="PH 470 FRM 1.02";
     public JwsManager jwsObject;
     public MainFormClass mainClass;
@@ -161,46 +158,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentChangeL
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         initServer.handleActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void openFragmentService(Fragment fragment, Bundle arg) {
-        if(permitirClic){
-            FragmentManager fragmentManager = ((AppCompatActivity) this).getSupportFragmentManager();
-            Fragment fragmentoActual = new ContainerFragment();
-            boolean programador= usersManager.getNivelUsuario() > 3;
-            ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(),arg,programador);
-            containerFragment.setFragmentActual(fragmentoActual);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container_fragment, containerFragment)
-                    .commit();
-            permitirClic = false;
-            Handler handler= new Handler();
-            handler.postDelayed(() -> permitirClic = true, 1000); //arreglar problema de que mas de una optima llame a service al mismo tiempo
-        }
-    }
-
-    @Override
-    public void openFragmentPrincipal() {
-        Fragment fragment = new FormPrincipal();
-        FragmentManager fragmentManager = ((AppCompatActivity) this).getSupportFragmentManager();
-        Fragment fragmentoActual = new ContainerPrincipalFragment();
-        ContainerPrincipalFragment containerFragment = ContainerPrincipalFragment.newInstance(fragment.getClass());
-        containerFragment.setFragmentActual(fragmentoActual);
-        fragmentManager.beginTransaction()
-                .replace(R.id.container_fragment, containerFragment)
-                .commit();
-    }
-
-    public void openFragment(Fragment fragment) {
-        FragmentManager fragmentManager = ((AppCompatActivity) this).getSupportFragmentManager();
-        Fragment fragmentoActual = new ContainerFragment();
-
-        ContainerFragment containerFragment = ContainerFragment.newInstance(fragment.getClass());
-        containerFragment.setFragmentActual(fragmentoActual);
-        fragmentManager.beginTransaction()
-                .replace(R.id.container_fragment, containerFragment)
-                .commit();
     }
 }
 

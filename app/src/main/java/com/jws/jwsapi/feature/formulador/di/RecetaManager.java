@@ -19,6 +19,7 @@ public class RecetaManager {
     public MutableLiveData<Integer> cantidad = new MutableLiveData<>(0);
     public MutableLiveData<Integer> realizadas = new MutableLiveData<>(0);
     public MutableLiveData<String> netoTotal= new MutableLiveData<>("0");
+    public MutableLiveData<Integer> progreso = new MutableLiveData<>(0);
     public String porcentajeReceta= "0";
     public int estado = 0;
     //estado 1=que pida recipiente en los pasos

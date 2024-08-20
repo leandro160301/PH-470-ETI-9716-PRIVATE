@@ -1,32 +1,3 @@
-/**
- * /////////////////////////////////////////////////////////////////////////////////
- * /////////////////////////////480_FORM 1.00///////////////////////////////////
- * /////////////////////////////////////////////////////////////////////////////////
- * <p>
- * ---------------------------------------------------------------------------------
- * ----Release version 1.00 --------------------------------------------------------
- * ---------------------------------------------------------------------------------
- * <p>
- * <p>
- * /********************************************************************************
- * ################################################################################
- * Puerto A(232)(/dev/ttyXRUSB0)= OPTIMA
- * Puerto B(232)(/dev/ttyXRUSB1)= -
- * Puerto C(485)(/dev/ttyXRUSB2)= -
- * Puerto D(USB)= DISPONIBLE PARA IMPRESORA
- * --------------------------------------------------------------------------------
- * ################################################################################
- * --------------------------------------------------------------------------------
- * Key store path: Navega y selecciona my-release-key.jks.
- * Key store password: myP12Password
- * Key alias: my-key-alias
- * Key password: myP12Password
- *******************************************************************************/
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
 package com.jws.jwsapi.feature.formulador;
 
 import android.content.Context;
@@ -40,9 +11,7 @@ import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.ui.fragment.FormPrincipal;
-import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.service.Balanzas.BalanzaService;
-import com.jws.jwsapi.common.impresora.ImprimirEstandar;
 import com.service.Comunicacion.OnFragmentChangeListener;
 import com.jws.jwsapi.base.containers.ContainerFragment;
 import com.jws.jwsapi.base.containers.ContainerPrincipalFragment;
@@ -62,7 +31,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 public class MainFormClass implements OnFragmentChangeListener {
 
     private final Context context;
-    private MainActivity mainActivity;
+    private final MainActivity mainActivity;
     public static String DB_NAME = "Frm_DB";
     public static int db_version = 4;
     public BalanzaService BZA;
@@ -70,7 +39,6 @@ public class MainFormClass implements OnFragmentChangeListener {
     UsersManager usersManager;
     Boolean permitirClic=true;
     PreferencesManager preferencesManager;
-
 
     public MainFormClass(Context context, MainActivity activity,UsersManager usersManager,PreferencesManager preferencesManager) { //constructor
         this.context = context;
@@ -164,25 +132,23 @@ public class MainFormClass implements OnFragmentChangeListener {
         return turno;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////Getters ///////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-
     public List<FormModelIngredientes> getIngredientes() {
         List<FormModelIngredientes> cod = new ArrayList<>();
         try {
             String filePath = Environment.getExternalStorageDirectory() + "/Memoria/Ingredientes.csv";
             File filess = new File(filePath);
-
-            Boolean error = false;
+            boolean error = false;
             if (filess.exists()) {
                 try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
                     String[] nextLine;
                     while ((nextLine = reader.readNext()) != null) {
-                        if (nextLine.length > 1) {
+                        if (nextLine.length > 2) {
                             String pos0 = nextLine[0].replace("\"", "");
                             String pos1 = nextLine[1].replace("\"", "");
-                            cod.add(new FormModelIngredientes(pos0, pos1));
+                            String pos2 = nextLine[2].replace("\"", "");
+                            int pos2Int=0;
+                            if (Utils.isNumeric(pos2))pos2Int=Integer.parseInt(pos2);
+                            cod.add(new FormModelIngredientes(pos0, pos1,pos2Int));
                         } else {
                             error = true;
                         }
@@ -197,7 +163,6 @@ public class MainFormClass implements OnFragmentChangeListener {
                 Utils.Mensaje("Error no se encuentran los ingredientes", R.layout.item_customtoasterror,mainActivity);
             }
         } catch (Exception e) {
-            // Manejar la excepción de manera apropiada (por ejemplo, imprimir un mensaje de registro)
             e.printStackTrace();
         }
         return cod;
@@ -210,7 +175,7 @@ public class MainFormClass implements OnFragmentChangeListener {
         try {
             String filePath = Environment.getExternalStorageDirectory() + "/Memoria/" + receta + ".csv";
             File filess = new File(filePath);
-            Boolean error = false;
+            boolean error = false;
             if (filess.exists()) {
                 try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
                     String[] nextLine;
@@ -223,9 +188,7 @@ public class MainFormClass implements OnFragmentChangeListener {
 
                                 listreceta.add(new FormModelReceta(arr[1].replace("_", ""), arr[2].replace("_", ""),
                                         "0", codigo, ingrediente, kilos, "NO", ""));
-                                if (Utils.isNumeric(kilos)) {
-                                    total = total + Float.parseFloat(kilos);
-                                }
+                                if (Utils.isNumeric(kilos))total = total + Float.parseFloat(kilos);
 
                             } else {
                                 error = true;
@@ -247,7 +210,6 @@ public class MainFormClass implements OnFragmentChangeListener {
                 Utils.Mensaje("Error no se encuentra el archivo", R.layout.item_customtoasterror,mainActivity);
             }
         } catch (Exception e) {
-            // Manejar la excepción de manera apropiada (por ejemplo, imprimir un mensaje de registro)
             e.printStackTrace();
         }
         return listreceta;
@@ -257,7 +219,6 @@ public class MainFormClass implements OnFragmentChangeListener {
     public void setReceta(String receta, List<FormModelReceta> lista) throws IOException {
         Runnable myRunnable = () -> {
             File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/" + receta + ".csv");
-            // Si el archivo no existe, crearlo
             if (!filePath.exists()) {
                 try {
                     filePath.createNewFile();
@@ -266,7 +227,6 @@ public class MainFormClass implements OnFragmentChangeListener {
                 }
             }
             filePath.delete();
-
             try {
                 filePath.createNewFile();
             } catch (IOException e) {
@@ -303,7 +263,7 @@ public class MainFormClass implements OnFragmentChangeListener {
             try {
                 CSVWriter writer = new CSVWriter(new FileWriter(filePath.getAbsolutePath(), true), separador);
                 for (int i = 0; i < lista.size(); i++) {
-                    writer.writeNext(new String[]{lista.get(i).getCodigo(), lista.get(i).getNombre()});
+                    writer.writeNext(new String[]{lista.get(i).getCodigo(), lista.get(i).getNombre(),String.valueOf(lista.get(i).getSalida())});
                 }
                 writer.close();
             } catch (IOException e) {

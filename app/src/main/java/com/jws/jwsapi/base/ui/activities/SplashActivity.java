@@ -9,9 +9,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.jws.jwsapi.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -55,10 +53,7 @@ public class SplashActivity extends AppCompatActivity {
 
        Animation slide = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
 
-       // Asignar la animación al TextView
        tvVersion.startAnimation(slide);
-
-       // Hacer que el TextView sea visible cuando la animación termine
        slide.setAnimationListener(new Animation.AnimationListener() {
            @Override
            public void onAnimationStart(Animation animation) { }
@@ -72,21 +67,10 @@ public class SplashActivity extends AppCompatActivity {
            public void onAnimationRepeat(Animation animation) { }
        });
 
-       new Handler().postDelayed(new Runnable() {
-           @Override
-           public void run() {
-               // on below line we are
-               // creating a new intent
-               Intent i = new Intent(SplashActivity.this, MainActivity.class);
-
-               // on below line we are
-               // starting a new activity.
-               startActivity(i);
-
-               // on the below line we are finishing
-               // our current activity.
-               finish();
-           }
+       new Handler().postDelayed(() -> {
+           Intent i = new Intent(SplashActivity.this, MainActivity.class);
+           startActivity(i);
+           finish();
        }, 3000);
 
 

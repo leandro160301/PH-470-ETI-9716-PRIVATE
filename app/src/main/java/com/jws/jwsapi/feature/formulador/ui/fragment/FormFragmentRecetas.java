@@ -365,7 +365,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             bt_4.setVisibility(View.INVISIBLE);
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
             bt_3.setOnClickListener(view -> eliminarReceta());
             bt_2.setOnClickListener(view -> nuevaReceta());
@@ -559,7 +559,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         filteredListAdapterNumeric = new ArrayList<>();
         for (int i= 0; i < inge.size(); i++) {
             if (inge.get(i).getNombre().toLowerCase().contains(text.toLowerCase()) || inge.get(i).getCodigo().toLowerCase().contains(text.toLowerCase())) {
-                filteredListAdapterIngredientes.add(new FormModelIngredientes(inge.get(i).getCodigo(), inge.get(i).getNombre()));
+                filteredListAdapterIngredientes.add(new FormModelIngredientes(inge.get(i).getCodigo(), inge.get(i).getNombre(),inge.get(i).getSalida()));
                 filteredListAdapterNumeric.add(i);
             }
         }

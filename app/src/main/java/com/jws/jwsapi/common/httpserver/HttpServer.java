@@ -276,12 +276,7 @@ public class HttpServer extends NanoWSD {
         if (uri.endsWith("inicio")){
             try {
                //mainActivity.installApk();
-                mainActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainActivity.openFragmentPrincipal();
-                    }
-                });
+                mainActivity.runOnUiThread(() -> mainActivity.mainClass.openFragmentPrincipal());
 
             } catch (Exception e) {
                 Response response = newFixedLengthResponse("Error:"+ e.getMessage());

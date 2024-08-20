@@ -117,7 +117,7 @@ public class EtiquetasFragment extends Fragment implements AdapterMultimedia.Ite
                 }
             });
 
-            bt_home.setOnClickListener(view -> mainActivity.openFragmentPrincipal());
+            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
     }

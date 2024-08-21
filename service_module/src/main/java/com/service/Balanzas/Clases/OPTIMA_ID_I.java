@@ -705,22 +705,23 @@ public class OPTIMA_ID_I implements Balanza, Balanza.Struct, Serializable {
     }
 
     @Override
-    public void Itw410FrmStart() {
+    public void Itw410FrmStart(int numero) {
 
     }
 
     @Override
-    public int Itw410FrmGetEstado() {
+    public int Itw410FrmGetEstado(int numero) {
         return 0;
     }
 
     @Override
-    public String Itw410FrmGetUltimoPeso() {
+    public String Itw410FrmGetUltimoPeso(int numero) {
         return null;
     }
 
     @Override
-    public int Itw410FrmGetUltimoIndice() {
+    public int Itw410FrmGetUltimoIndice(int numero) {
         return 0;
     }
+
 }

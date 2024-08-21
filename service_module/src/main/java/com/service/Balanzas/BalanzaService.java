@@ -389,22 +389,23 @@ public class BalanzaService implements Balanza, Balanza.Struct, Serializable {
     }
 
     @Override
-    public void Itw410FrmStart() {
+    public void Itw410FrmStart(int numero) {
 
     }
 
     @Override
-    public int Itw410FrmGetEstado() {
+    public int Itw410FrmGetEstado(int numero) {
         return 1;
     }
 
     @Override
-    public String Itw410FrmGetUltimoPeso() {
+    public String Itw410FrmGetUltimoPeso(int numero) {
         return "10.45";
     }
 
     @Override
-    public int Itw410FrmGetUltimoIndice() {
-        return 1;
+    public int Itw410FrmGetUltimoIndice(int numero) {
+        return 0;
     }
+
 }

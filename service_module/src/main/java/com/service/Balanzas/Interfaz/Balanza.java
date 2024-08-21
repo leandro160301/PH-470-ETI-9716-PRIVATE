@@ -31,10 +31,10 @@ public interface Balanza {
         void Itw410FrmSetear(int numero,String setPoint, int Salida);
         String Itw410FrmGetSetPoint(int numero);
         int Itw410FrmGetSalida(int numero);
-        void Itw410FrmStart();
-        int Itw410FrmGetEstado();
-        String Itw410FrmGetUltimoPeso();
-        int Itw410FrmGetUltimoIndice();
+        void Itw410FrmStart(int numero);
+        int Itw410FrmGetEstado(int numero);
+        String Itw410FrmGetUltimoPeso(int numero);
+        int Itw410FrmGetUltimoIndice(int numero);
 
     }
 

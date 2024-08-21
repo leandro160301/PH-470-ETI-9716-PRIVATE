@@ -1128,7 +1128,7 @@ public class FormPrincipal extends Fragment  {
     }
 
     private void procesoEjecucionAutomatico() {
-        int estado=mainClass.BZA.Itw410FrmGetEstado();
+        int estado=mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA);
         switch (estado){
             case 0:
                 automaticoFinalizado();
@@ -1150,9 +1150,9 @@ public class FormPrincipal extends Fragment  {
     private void automaticoFinalizado() {
         recetaManager.automatico=false;
         preferencesManager.setAutomatico(false);
-        int nuevoIndice=mainClass.BZA.Itw410FrmGetUltimoIndice();
+        int nuevoIndice=mainClass.BZA.Itw410FrmGetUltimoIndice(mainClass.N_BZA);
         if(nuevoIndice>preferencesManager.getIndice()){
-            String ultimoPeso=mainClass.BZA.Itw410FrmGetUltimoPeso();
+            String ultimoPeso=mainClass.BZA.Itw410FrmGetUltimoPeso(mainClass.N_BZA);
             preferencesManager.setIndice(nuevoIndice);
             if(ultimoPeso!=null&&isNumeric(ultimoPeso)) btPesar(Float.parseFloat(ultimoPeso),ultimoPeso);
         }
@@ -1276,7 +1276,6 @@ public class FormPrincipal extends Fragment  {
     private void setupProgressBarStyle(int progress, int black) {
         Drawable draw = ResourcesCompat.getDrawable(getResources(), progress, null);
         binding.progressBar.setProgressDrawable(draw);
-        binding.lnNumpaso.setBackgroundResource(progress);
         setupProgressBarPasoStyle(black);
 
     }
@@ -1284,7 +1283,9 @@ public class FormPrincipal extends Fragment  {
     private void setupProgressBarPasoStyle(int black) {
         binding.tvEstado.setTextColor(black);
         binding.tvNumpaso.setTextColor(black);
-        //binding.lnNumpaso.setBackgroundResource(R.drawable.stylekeycortransparent);
+        int fondoNumPaso=R.drawable.stylekeycortransparent;
+        if(black==Color.WHITE)fondoNumPaso=R.drawable.stylekeycortransparentclaro;
+        binding.lnNumpaso.setBackgroundResource(fondoNumPaso);
     }
 
     private int determinarBalanza() {

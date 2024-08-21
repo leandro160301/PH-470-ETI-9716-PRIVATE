@@ -704,14 +704,20 @@ public class OPTIMA_I implements Balanza, Balanza.Struct, Serializable {
     }
 
     @Override
+    public void Itw410FrmPause(int numero) {
+
+    }
+
+    @Override
+    public void Itw410FrmStop(int numero) {
+
+    }
+
+    @Override
     public int Itw410FrmGetEstado(int numero) {
         return 0;
     }
 
-    @Override
-    public void Itw410FrmSetEstado(int numero, int estado) {
-
-    }
 
     @Override
     public String Itw410FrmGetUltimoPeso(int numero) {

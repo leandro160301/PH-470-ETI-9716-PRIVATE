@@ -563,16 +563,7 @@ public class FormPrincipal extends Fragment  {
             Button bt_5 = buttonProvider.getButton5();
 
             bt_1.setText("CANTIDAD");
-            if(recetaManager.automatico){
-                if(mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA)==2){
-                    bt_2.setText("REANUDAR");
-                }else{
-                    bt_2.setText("PAUSA");
-                }
-            }else{
-                bt_2.setText("PESAR");
-            }
-
+            bt_2.setText("PESAR");
             bt_3.setText("GUARDADO");
             bt_4.setText("RECETAS");
             bt_5.setText("INGREDIENTES");
@@ -587,11 +578,9 @@ public class FormPrincipal extends Fragment  {
             bt_2.setOnClickListener(view -> {
                 if(recetaManager.automatico){
                     if(mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA)==2){
-                        mainClass.BZA.Itw410FrmSetEstado(mainClass.N_BZA,1);
-                        bt_2.setText("PAUSAR");
+                        mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
                     }else{
-                        mainClass.BZA.Itw410FrmSetEstado(mainClass.N_BZA,2);
-                        bt_2.setText("REANUDAR");
+                        mainClass.BZA.Itw410FrmPause(mainClass.N_BZA);
                     }
                 }else{
                     btPesar(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA));
@@ -615,12 +604,11 @@ public class FormPrincipal extends Fragment  {
             bt_2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mainClass.BZA.estado=3;
                     if(recetaManager.automatico){
                         if(mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA)==2){
-                            mainClass.BZA.Itw410FrmSetEstado(mainClass.N_BZA,1);
+                            mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
                         }else{
-                            mainClass.BZA.Itw410FrmSetEstado(mainClass.N_BZA,2);
+                            mainClass.BZA.Itw410FrmPause(mainClass.N_BZA);
                         }
                     }else{
                         btPesar(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA));
@@ -632,6 +620,13 @@ public class FormPrincipal extends Fragment  {
                 public void onClick(View view) {
                     mainActivity.mainClass.openFragment(new FormFragmentGuardados());
                     mainClass.BZA.estado=2;
+                }
+            });
+            bt_4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mainClass.BZA.estado=3;
+                    mainActivity.mainClass.openFragment(new FormFragmentRecetas());
                 }
             });
 
@@ -1028,6 +1023,8 @@ public class FormPrincipal extends Fragment  {
         recetaManager.ejecutando=false;
         preferencesManager.setEjecutando(false);
         binding.btStart.setBackgroundResource(R.drawable.boton__arranqueparada_selector);
+        if(recetaManager.automatico)mainClass.BZA.Itw410FrmStop(mainClass.N_BZA);
+        recetaManager.automatico=false;
 
     }
 

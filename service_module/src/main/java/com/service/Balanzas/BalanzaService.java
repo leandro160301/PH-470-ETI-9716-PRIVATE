@@ -396,13 +396,18 @@ public class BalanzaService implements Balanza, Balanza.Struct, Serializable {
     }
 
     @Override
-    public int Itw410FrmGetEstado(int numero) {
-        return estado;
+    public void Itw410FrmPause(int numero) {
+        estado=2;
     }
 
     @Override
-    public void Itw410FrmSetEstado(int numero, int estado) {
-        this.estado=estado;
+    public void Itw410FrmStop(int numero) {
+        estado=0;
+    }
+
+    @Override
+    public int Itw410FrmGetEstado(int numero) {
+        return estado;
     }
 
     @Override

@@ -104,54 +104,53 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
 
     }
 
-    public void SeleccionarItem(int numero){
-       lista_recetas.post(() -> {
-            try {
-                Objects.requireNonNull(lista_recetas.findViewHolderForAdapterPosition(numero)).itemView.performClick();
-                binding.lnLista.setVisibility(GONE);
-                if(recetaManager.listRecetaActual.size()>0){
-                    String nomb= recetaManager.listRecetaActual.get(0).getNombre();
-                    if(nomb.length()>20){
-                        nomb=nomb.substring(0,20).concat("...");
-                    }
-                    if(titulo!=null){
-                        titulo.setText(recetaManager.listRecetaActual.get(0).getCodigo() +" | "+nomb+
-                                " | "+ recetaManager.listRecetaActual.get(0).getKilos_totales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
-                    }
-                }
-                if (buttonProvider != null) {
+
+    public void SeleccionarItem(int numero, boolean recetaActual) {
+        lista_recetas.post(() -> {
+            lista_recetas.smoothScrollToPosition(numero);
+
+            RecyclerView.ViewHolder viewHolder = lista_recetas.findViewHolderForAdapterPosition(numero);
+            if (viewHolder != null) {
+                if (recetaActual && buttonProvider != null) {
+                    binding.lnLista.setVisibility(GONE);
                     bt_1.setVisibility(GONE);
                     bt_2.setVisibility(GONE);
                 }
-            } catch (Exception exception) {
-                System.out.println("error item click:" + exception.getMessage());
-                exception.printStackTrace();
-            }
-        });
-        lista_recetas.smoothScrollToPosition(numero);
-    }
-    public void SeleccionarItem2(int numero){
-        lista_recetas.post(() -> {
-            try {
-                Objects.requireNonNull(lista_recetas.findViewHolderForAdapterPosition(numero)).itemView.performClick();
-                if(recetaManager.listRecetaActual.size()>0){
-                    String nomb= recetaManager.listRecetaActual.get(0).getNombre();
-                    if(nomb.length()>20){
-                        nomb=nomb.substring(0,20).concat("...");
-                    }
-                    if(titulo!=null){
-                        titulo.setText(recetaManager.listRecetaActual.get(0).getCodigo() +" | "+nomb+
-                                " | "+ recetaManager.listRecetaActual.get(0).getKilos_totales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
-                    }
-                }
-            } catch (Exception exception) {
-                System.out.println("error item click:" + exception.getMessage());
-                exception.printStackTrace();
-            }
-        });
-        lista_recetas.smoothScrollToPosition(numero);
-    }
+                viewHolder.itemView.performClick();
+            } else {
+                lista_recetas.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
 
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE) { // El scroll ha terminado
+                            RecyclerView.ViewHolder viewHolder = lista_recetas.findViewHolderForAdapterPosition(numero);
+                            if (viewHolder != null) {
+                                viewHolder.itemView.performClick();
+                                if (recetaActual && buttonProvider != null) {
+                                    binding.lnLista.setVisibility(GONE);
+                                    bt_1.setVisibility(GONE);
+                                    bt_2.setVisibility(GONE);
+                                }
+                                if (recetaManager.listRecetaActual.size() > 0) {
+                                    String nomb = recetaManager.listRecetaActual.get(0).getNombre();
+                                    if (nomb.length() > 20) {
+                                        nomb = nomb.substring(0, 20).concat("...");
+                                    }
+                                    if (titulo != null) {
+                                        titulo.setText(recetaManager.listRecetaActual.get(0).getCodigo() + " | " + nomb +
+                                                " | " + recetaManager.listRecetaActual.get(0).getKilos_totales() + mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+                                    }
+                                }
+
+                                lista_recetas.removeOnScrollListener(this); // Remover el listener después de seleccionar el item
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
     private void cargarRecyclerView(){
         lista_recetas.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new FormAdapterEncabezado(getContext(), archivos);
@@ -161,7 +160,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         if(recetaManager.ejecutando){
             int item=archivos.indexOf(recetaManager.recetaActual);
             if(item>-1&&item<archivos.size()){
-                SeleccionarItem(item);
+                SeleccionarItem(item,true);
             }
         }
 
@@ -418,10 +417,10 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         FormAdapterEncabezado adapter2 = new FormAdapterEncabezado(mainActivity, ListfilteredList);
         adapter2.setClickListener((view, position) -> {
             if(!filtro){
-                SeleccionarItem2(position);
+                SeleccionarItem(position,false);
             }else{
                 if(posiciones.size()>position){
-                    SeleccionarItem2(posiciones.get(position));
+                    SeleccionarItem(posiciones.get(position),false);
                 }
             }
             dialog.cancel();

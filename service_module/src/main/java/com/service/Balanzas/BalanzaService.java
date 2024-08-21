@@ -25,6 +25,8 @@ import android_serialport_api.SerialPort;
 
 public class BalanzaService implements Balanza, Balanza.Struct, Serializable {
 
+    public int estado=0;
+    public int ultimo=1;
     public Map<Integer, Struct> balanzas = new HashMap<>();
     public PuertosSerie serialPortA;
     public PuertosSerie serialPortB;
@@ -380,22 +382,27 @@ public class BalanzaService implements Balanza, Balanza.Struct, Serializable {
 
     @Override
     public String Itw410FrmGetSetPoint(int numero) {
-        return null;
+        return "37.1";
     }
 
     @Override
     public int Itw410FrmGetSalida(int numero) {
-        return 0;
+        return 1;
     }
 
     @Override
     public void Itw410FrmStart(int numero) {
-
+        estado=1;
     }
 
     @Override
     public int Itw410FrmGetEstado(int numero) {
-        return 1;
+        return estado;
+    }
+
+    @Override
+    public void Itw410FrmSetEstado(int numero, int estado) {
+        this.estado=estado;
     }
 
     @Override
@@ -405,7 +412,7 @@ public class BalanzaService implements Balanza, Balanza.Struct, Serializable {
 
     @Override
     public int Itw410FrmGetUltimoIndice(int numero) {
-        return 0;
+        return ultimo+1;
     }
 
 }

@@ -1053,6 +1053,11 @@ public class MINIMA_I implements Balanza, Balanza.Struct, Serializable {
     }
 
     @Override
+    public void Itw410FrmSetEstado(int numero, int estado) {
+
+    }
+
+    @Override
     public String Itw410FrmGetUltimoPeso(int numero) {
         return null;
     }

@@ -2,14 +2,10 @@ package com.jws.jwsapi.feature.formulador.ui.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
-
 import java.util.ArrayList;
-
 import javax.inject.Inject;
-
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
@@ -47,5 +43,6 @@ public class FormPrincipalViewModel extends ViewModel {
     public MutableLiveData<Integer> getCantidad(){return recetaManager.cantidad;}
     public MutableLiveData<Integer> getRealizadas(){return recetaManager.realizadas;}
     public MutableLiveData<Integer> getProgreso(){return recetaManager.progreso;}
+    public MutableLiveData<String> getEstadoMensajeStr(){return recetaManager.estadoMensajeStr;}
 
 }

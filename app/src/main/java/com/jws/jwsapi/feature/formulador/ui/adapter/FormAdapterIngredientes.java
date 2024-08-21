@@ -42,7 +42,12 @@ public class FormAdapterIngredientes extends RecyclerView.Adapter<FormAdapterIng
         FormModelIngredientes item = mData.get(position);
         holder.binding.tvCodigoingrediente.setText(item.getCodigo());
         holder.binding.tvDescripcioningrediente.setText(item.getNombre());
-        holder.binding.tvSalida.setText(String.valueOf(item.getSalida()));
+        if(item.getSalida()==0){
+            holder.binding.tvSalida.setVisibility(View.INVISIBLE);
+        }else{
+            holder.binding.tvSalida.setText("SALIDA "+ item.getSalida());
+        }
+
         if (!altayBaja) {
             holder.binding.lnEditar.setVisibility(View.GONE);
             holder.binding.lnPrint.setVisibility(View.GONE);

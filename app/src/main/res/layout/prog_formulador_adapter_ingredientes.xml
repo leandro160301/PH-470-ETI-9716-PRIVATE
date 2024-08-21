@@ -84,19 +84,6 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="22dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="13dp"
-                            android:layout_weight="1"
-                            android:padding="5dp"
-                            android:text="SALIDA"
-                            android:textAlignment="viewEnd"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
-
-                        <TextView
                             android:id="@+id/tv_salida"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -105,6 +92,7 @@
                             android:layout_weight="1"
                             android:padding="5dp"
                             android:text="0"
+                            android:textAlignment="textEnd"
                             android:textColor="@color/negro"
                             android:textSize="24sp"
                             android:textStyle="bold" />

@@ -156,6 +156,48 @@
 
                                     </LinearLayout>
 
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="70dp"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="653dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:fontFamily="sans-serif-black"
+                                            android:text="Tiempo estabilizacion"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="30sp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_tiempo_estabilizacion"
+                                            android:layout_width="180dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/stylekeycor6ceropaddin"
+                                            android:gravity="center"
+                                            android:text="10"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="24sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:fontFamily="sans-serif-black"
+                                            android:text="ms"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="30sp" />
+
+                                    </LinearLayout>
+
                                     <LinearLayout
                                         android:id="@+id/ln9"
                                         android:layout_width="match_parent"

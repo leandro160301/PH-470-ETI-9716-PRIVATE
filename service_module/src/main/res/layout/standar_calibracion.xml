@@ -159,7 +159,7 @@
                                         android:layout_marginTop="15dp">
 
                                         <TextView
-                                            android:id="@+id/StopasdCZXCXsZCbit"
+                                            android:id="@+id/StopCZXCXsZCbit"
                                             android:layout_width="wrap_content"
                                             android:layout_height="65dp"
                                             android:fontFamily="sans-serif-medium"
@@ -168,7 +168,7 @@
                                             android:textSize="20sp" />
 
                                         <TextView
-                                            android:id="@+id/textsadView17"
+                                            android:id="@+id/textView17"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content" />
 
@@ -205,7 +205,7 @@
                                         android:layout_marginTop="50dp">
 
                                         <TextView
-                                            android:id="@+id/StopCZXCXsdsdsZCbit"
+                                            android:id="@+id/StopCZXCXsZCbit"
                                             android:layout_width="wrap_content"
                                             android:layout_height="65dp"
                                             android:fontFamily="sans-serif-medium"
@@ -214,7 +214,7 @@
                                             android:textSize="20sp" />
 
                                         <TextView
-                                            android:id="@+id/tesdsdsxtView17"
+                                            android:id="@+id/textView17"
                                             android:layout_width="151dp"
                                             android:layout_height="3dp" />
 
@@ -237,7 +237,7 @@
                                         android:layout_marginTop="5dp">
 
                                         <TextView
-                                            android:id="@+id/StopCZXCXsdZCbit"
+                                            android:id="@+id/StopCZXCXsZCbit"
                                             android:layout_width="wrap_content"
                                             android:layout_height="65dp"
                                             android:fontFamily="sans-serif-medium"
@@ -246,7 +246,7 @@
                                             android:textSize="20sp" />
 
                                         <TextView
-                                            android:id="@+id/textVsdiew17"
+                                            android:id="@+id/textView17"
                                             android:layout_width="222dp"
                                             android:layout_height="7dp" />
 

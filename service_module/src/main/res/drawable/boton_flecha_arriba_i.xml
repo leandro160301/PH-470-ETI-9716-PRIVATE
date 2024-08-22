@@ -6,7 +6,7 @@
 
     <!-- Icono -->
     <item android:id="@+id/icono"
-        android:drawable="@drawable/boton_flecha_arriba"
+        android:drawable="@drawable/flecha_arriba"
         android:gravity="center"
         />
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 
+import com.service.Balanzas.Interfaz.Balanza;
 import com.service.Utils;
 import com.service.PuertosSerie.PuertosSerie;
 
@@ -11,9 +12,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
-public class SPIDER3 {
+public class SPIDER3 implements Balanza, Balanza.Struct {
 
-
+    public int numeroid=0;
     /** si ponemos tara digital, entonces toma la tara como tara digital,
      * si le damos a tara normal la tara digital pasa a cero y la tara es la tara
      *
@@ -83,6 +84,58 @@ public class SPIDER3 {
         taraDigitalStr=String.valueOf(tara);
 
     }
+
+
+    @Override
+    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
+
+    }
+
+    @Override
+    public String Itw410FrmGetSetPoint(int numero) {
+        return null;
+    }
+
+    @Override
+    public int Itw410FrmGetSalida(int numero) {
+        return -1;
+    }
+
+    @Override
+    public void Itw410FrmStart(int numero) {
+
+    }
+
+    @Override
+    public int Itw410FrmGetEstado(int numero) {
+        return -1;
+    }
+
+    @Override
+    public String Itw410FrmGetUltimoPeso(int numero) {
+        return "null";
+    }
+
+    @Override
+    public int Itw410FrmGetUltimoIndice(int numero) {
+        return -1;
+    }
+
+    @Override
+    public void itw410FrmPause(int numero) {
+
+    }
+
+    @Override
+    public void itw410FrmStop(int numero) {
+
+    }
+
+    @Override
+    public void Itw410FrmSetTiempoEstabilizacion(int numero, int Tiempo) {
+
+    }
+
     public String format(String numero) {
         String formato = "0.";
 
@@ -143,6 +196,222 @@ public class SPIDER3 {
         }
         return "T\r\n";
     }
+
+    @Override
+    public void setID(int numID,int numBza) {
+        numeroid=numID;
+    }
+
+    @Override
+    public int getID(int numBza) {
+        return numeroid;
+    }
+
+    @Override
+    public float getNeto(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public String getNetoStr(int numBza) {
+        return "";
+    }
+
+    @Override
+    public float getBruto(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public String getBrutoStr(int numBza) {
+        return "";
+    }
+
+    @Override
+    public float getTara(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public String getTaraStr(int numBza) {
+        return "";
+    }
+
+    @Override
+    public void setTara(int numBza) {
+
+    }
+
+    @Override
+    public void setCero(int numBza) {
+
+    }
+
+    @Override
+    public void setTaraDigital(int numBza, float TaraDigital) {
+
+    }
+
+    @Override
+    public String getTaraDigital(int numBza) {
+        return "";
+    }
+
+    @Override
+    public Boolean getBandaCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public void setBandaCero(int numBza, Boolean bandaCeroi) {
+
+    }
+
+    @Override
+    public float getBandaCeroValue(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public void setBandaCeroValue(int numBza, float bandaCeroValue) {
+
+    }
+
+    @Override
+    public Boolean getEstable(int numBza) {
+        return null;
+    }
+
+    @Override
+    public String format(int numero, String peso) {
+        return "";
+    }
+
+    @Override
+    public String getUnidad(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getPicoStr(int numBza) {
+        return "";
+    }
+
+    @Override
+    public float getPico(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public void init(int numBza) {
+
+    }
+
+    @Override
+    public void escribir(String msj,int numBza) {
+        serialPort.write(msj);
+    }
+
+    @Override
+    public void stop(int numBza) {
+
+    }
+
+    @Override
+    public void start(int numBza) {
+
+    }
+
+    @Override
+    public Boolean calibracionHabilitada(int numBza) {
+        return null;
+    }
+
+    @Override
+    public void openCalibracion(int numero) {
+
+    }
+
+    @Override
+    public Boolean getSobrecarga(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoCentroCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoSobrecarga(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoNeto(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoPesoNeg(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoBajoCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoBzaEnCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoBajaBateria(int numBza) {
+        return null;
+    }
+
+    @Override
+    public String getFiltro1(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getFiltro2(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getFiltro3(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getFiltro4(int numBza) {
+        return "";
+    }
+
+    @Override
+    public Boolean getEstadoEstable(int numBza) {
+        return null;
+    }
+
+    @Override
+    public String getEstado(int numBza) {
+        return estado;
+    }
+    @Override
+    public void setEstado(int numBza, String estado) {
+        this.estado=estado;
+    }
+
+
+    @Override
+    public void onEvent() {
+
+    }
+
     public void ConsultaPesoUnitario(){
         serialPort.write(CONSULTA_PUNITARIO);
     }

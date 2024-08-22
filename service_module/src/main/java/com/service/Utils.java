@@ -1,5 +1,7 @@
 package com.service;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.service.Balanzas.BalanzaService;
 import com.service.R;
 
 import java.io.BufferedInputStream;
@@ -28,8 +31,8 @@ import java.util.List;
 import java.util.Locale;
 //import org.apache.http.conn.util.InetAddressUtils;
 
-public class Utils {
 
+public class Utils {
     private static Toast toast;
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
@@ -176,23 +179,36 @@ public class Utils {
         } catch (Exception ignored) { } // for now eat exceptions
         return "";
     }
+
     public static void Mensaje(String texto, int Color, AppCompatActivity appCompatActivity) {
-        appCompatActivity.runOnUiThread(() -> {
-            if (toast != null) {
-                toast.cancel();
+        appCompatActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                float scale = appCompatActivity.getResources().getDisplayMetrics().scaledDensity;
+                float size = 30 * (scale * 2);
+                String txtanterior = "";
+
+                if (toast != null && toast.getView().isShown()) {
+                    txtanterior = ((TextView) toast.getView().findViewById(R.id.text)).getText().toString() + "\n" + "\n";
+                    //System.out.println("WOLOLO"+toast.getView().isShown());
+                    toast.cancel();
+                    toast = null;
+                    size = size - (10 * (scale * 2));
+                }
+                LayoutInflater inflater = appCompatActivity.getLayoutInflater();
+                View layout = inflater.inflate(Color, appCompatActivity.findViewById(R.id.toast_layout_root));
+                TextView text = layout.findViewById(R.id.text);
+                text.setText(txtanterior + texto);
+                text.setTextSize(size);
+
+                toast = new Toast(appCompatActivity.getApplicationContext());
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
-            LayoutInflater inflater = appCompatActivity.getLayoutInflater();
-            View layout = inflater.inflate(Color, appCompatActivity.findViewById(R.id.toast_layout_root));
 
-            TextView text = layout.findViewById(R.id.text);
-            text.setText(texto);
-            toast = new Toast(appCompatActivity);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
         });
-
     }
 
     public static String getHora(){
@@ -205,6 +221,7 @@ public class Utils {
         String segundos=String.valueOf(seconds);
         return hora24 +":"+minutos+":"+segundos;
     }
+
     public static String getFecha(){
         return new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
     }

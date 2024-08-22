@@ -15,7 +15,7 @@
 
     <!-- Icono -->
     <item android:id="@+id/icono"
-        android:drawable="@drawable/flecha_abajo"
+        android:drawable="@drawable/flecha_abajo_i"
         android:gravity="center"
         android:width="80dp"
         android:height="50dp"

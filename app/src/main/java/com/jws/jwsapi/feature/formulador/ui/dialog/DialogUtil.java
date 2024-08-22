@@ -112,6 +112,7 @@ public class DialogUtil {
         });
     }
 
+
     public static void Teclado(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
         mostrarDialogo(view,texto,context,dialogInterface,false,null,null,null, null,null);
     }

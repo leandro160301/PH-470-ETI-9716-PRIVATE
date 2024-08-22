@@ -368,12 +368,12 @@ public class FormPrincipal extends Fragment  {
         verificarPasoEsAutomatico();
     }
 
-    private void verificarPasoEsAutomatico() {
+    private boolean verificarPasoEsAutomatico() {
         boolean isAutomatic=false;
         List<FormModelIngredientes> lista= mainClass.getIngredientes();
         int salida=0;
         for(FormModelIngredientes ing: lista){
-            if(Objects.equals(ing.getCodigo(), recetaManager.listRecetaActual.get(0).getCodigo_ing())){
+            if(Objects.equals(ing.getCodigo(), recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigo_ing())){
                 if(ing.getSalida()>0) {
                     isAutomatic=true;
                     salida=ing.getSalida();
@@ -381,21 +381,36 @@ public class FormPrincipal extends Fragment  {
             }
         }
         configuracionAutomatico(isAutomatic,salida);
-
+        return isAutomatic;
     }
 
     private void configuracionAutomatico(boolean isAutomatic, int salida) {
         if(isAutomatic){
-            recetaManager.automatico=true;
-            preferencesManager.setAutomatico(true);
-            preferencesManager.setSalida(salida);
             String setPoint=String.valueOf(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing());
-            mainClass.BZA.itw410FrmSetear(mainClass.N_BZA,setPoint,salida);
-            if(mainClass.BZA.itw410FrmGetSalida(mainClass.N_BZA)==salida&& Objects.equals(mainClass.BZA.itw410FrmGetSetPoint(mainClass.N_BZA), setPoint)) {
-                mainClass.BZA.itw410FrmStart(mainClass.N_BZA);
-            }else{
-                Utils.Mensaje("Error de balanza",R.layout.item_customtoasterror,mainActivity);
-            }
+            Runnable myRunnable = () -> {
+                mainClass.BZA.Itw410FrmSetear(mainClass.N_BZA,setPoint,salida);
+                int valorsal1=mainClass.BZA.Itw410FrmGetSalida(mainClass.N_BZA);
+                String valorsp1=mainClass.BZA.Itw410FrmGetSetPoint(mainClass.N_BZA);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                int valorsal=mainClass.BZA.Itw410FrmGetSalida(mainClass.N_BZA);
+                String valorsp=mainClass.BZA.Itw410FrmGetSetPoint(mainClass.N_BZA);
+                if(Objects.equals(valorsal,salida)&& Objects.equals(valorsp, setPoint)) {
+                    mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
+                    recetaManager.automatico=true;
+                    preferencesManager.setAutomatico(true);
+                    preferencesManager.setSalida(salida);
+                }else{
+                    mainActivity.runOnUiThread(() -> Utils.Mensaje("Error de balanza",R.layout.item_customtoasterror,mainActivity));
+                }
+            };
+
+            Thread myThread = new Thread(myRunnable);
+            myThread.start();
+
             //mandar el setpoint y la salida, esperamos y leemos que le llegue bien
             //si le llego bien ponemose el sharedpreferences automatico y recetamanager.automatico en true
         }else{
@@ -436,7 +451,6 @@ public class FormPrincipal extends Fragment  {
     }
 
     private void calculoporcentajeReceta() {
-        System.out.println(recetaManager.listRecetaActual);
         if(recetaManager.listRecetaActual.size()>0&&Utils.isNumeric(recetaManager.listRecetaActual.get(0).getKilos_totales())){
             float nuevo=Float.parseFloat(recetaManager.porcentajeReceta);
             float kilos_totales_original=Float.parseFloat(recetaManager.listRecetaActual.get(0).getKilos_totales());
@@ -549,7 +563,7 @@ public class FormPrincipal extends Fragment  {
 
     public void ImprimirUltima() {
         ImprimirEstandar imprimirEstandar = new ImprimirEstandar(getContext(), mainActivity,usersManager,preferencesManager,labelManager);
-        imprimirEstandar.EnviarUltimaEtiqueta(mainClass.BZA.serialPortB);
+        imprimirEstandar.EnviarUltimaEtiqueta(mainClass.Service.B);
 
     }
 
@@ -577,8 +591,8 @@ public class FormPrincipal extends Fragment  {
             bt_1.setOnClickListener(view -> btCantidad());
             bt_2.setOnClickListener(view -> {
                 if(recetaManager.automatico){
-                    if(mainClass.BZA.itw410FrmGetEstado(mainClass.N_BZA)==2){
-                        mainClass.BZA.itw410FrmStart(mainClass.N_BZA);
+                    if(mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA)==2){
+                        mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
                     }else{
                         mainClass.BZA.itw410FrmPause(mainClass.N_BZA);
                     }
@@ -592,7 +606,7 @@ public class FormPrincipal extends Fragment  {
             bt_5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentIngredientes()));
 
 
-
+/*
             bt_1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -605,8 +619,8 @@ public class FormPrincipal extends Fragment  {
                 @Override
                 public void onClick(View view) {
                     if(recetaManager.automatico){
-                        if(mainClass.BZA.itw410FrmGetEstado(mainClass.N_BZA)==2){
-                            mainClass.BZA.itw410FrmStart(mainClass.N_BZA);
+                        if(mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA)==2){
+                            mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
                         }else{
                             mainClass.BZA.itw410FrmPause(mainClass.N_BZA);
                         }
@@ -629,7 +643,7 @@ public class FormPrincipal extends Fragment  {
                     mainActivity.mainClass.openFragment(new FormFragmentRecetas());
                 }
             });
-
+*/
         }
     }
 
@@ -721,12 +735,12 @@ public class FormPrincipal extends Fragment  {
     }
     public void Imprimir(int etiqueta) {
         ImprimirEstandar imprimirEstandar = new ImprimirEstandar(getContext(), mainActivity,usersManager,preferencesManager,labelManager);
-        imprimirEstandar.EnviarEtiqueta(mainClass.BZA.serialPortB,etiqueta);
+        imprimirEstandar.EnviarEtiqueta(mainClass.Service.B, etiqueta);
 
     }
 
     private void imprimirEtiquetaFinal() {
-        labelManager.onetototal.value=recetaManager.netoTotal;
+        labelManager.onetototal.value=recetaManager.netoTotal.getValue();
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_transferenciaarchivo, null);
         TextView textView = mView.findViewById(R.id.textView);
@@ -806,11 +820,15 @@ public class FormPrincipal extends Fragment  {
             labelManager.onetototal.value = String.valueOf(recetaManager.netoTotal);
         }
         preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
-        if(preferencesManager.getRecipientexPaso()){
-            IngresoRecipiente();
-        }else{
-            mainActivity.mainClass.BZA.setTaraDigital(mainActivity.mainClass.N_BZA,mainActivity.mainClass.BZA.getBruto(mainActivity.mainClass.N_BZA));
+        boolean isAutomatic=verificarPasoEsAutomatico();
+        if(!isAutomatic){
+            if(preferencesManager.getRecipientexPaso()){
+                IngresoRecipiente();
+            }else{
+                mainActivity.mainClass.BZA.setTaraDigital(mainActivity.mainClass.N_BZA,mainActivity.mainClass.BZA.getBruto(mainActivity.mainClass.N_BZA));
+            }
         }
+
 
     }
 
@@ -1143,7 +1161,7 @@ public class FormPrincipal extends Fragment  {
         }else{
             binding.tvDatos.setText("Toque para ingresar los datos");
         }
-        if(mainActivity.mainClass.BZA.getEstable(mainActivity.mainClass.N_BZA)){
+        if(mainActivity.mainClass.BZA.getEstable(mainActivity.mainClass.N_BZA)!=null&&mainActivity.mainClass.BZA.getEstable(mainActivity.mainClass.N_BZA)){
             binding.imEstable.setVisibility(View.VISIBLE);
         }else{
             binding.imEstable.setVisibility(View.INVISIBLE);
@@ -1192,20 +1210,27 @@ public class FormPrincipal extends Fragment  {
     }
 
     private void procesoEjecucionAutomatico() {
-        int estado=mainClass.BZA.itw410FrmGetEstado(mainClass.N_BZA);
-        bt_2.setText("PAUSAR");
+        int estado=mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA);
+        if(botonera==0)bt_2.setText("PAUSAR");
         switch (estado){
             case 0:
-                automaticoFinalizado();
+                if(recetaManager.estadoBalanza== RecetaManager.ESTABILIZANDO ||recetaManager.estadoBalanza== RecetaManager.PROCESO){
+                    automaticoFinalizado();
+                    recetaManager.estadoBalanza=RecetaManager.DETENIDO;
+                }
                 break;
             case 1:
                 procesoEjecucionManual();
+                recetaManager.estadoBalanza=RecetaManager.PROCESO;
                 break;
             case 2:
-                bt_2.setText("REANUDAR");
+                if(botonera==0)bt_2.setText("REANUDAR");
                 recetaManager.estadoMensajeStr.setValue("Proceso automatico en pausa...");
+                recetaManager.estadoBalanza=RecetaManager.PAUSA;
                 break;
             case 3:
+                procesoEjecucionManual();
+                recetaManager.estadoBalanza=RecetaManager.ESTABILIZANDO;
                 recetaManager.estadoMensajeStr.setValue("Estabilizando...");
                 break;
             default:
@@ -1216,9 +1241,9 @@ public class FormPrincipal extends Fragment  {
     private void automaticoFinalizado() {
         recetaManager.automatico=false;
         preferencesManager.setAutomatico(false);
-        int nuevoIndice=mainClass.BZA.itw410FrmGetUltimoIndice(mainClass.N_BZA);
+        int nuevoIndice=mainClass.BZA.Itw410FrmGetUltimoIndice(mainClass.N_BZA);
         if(nuevoIndice>preferencesManager.getIndice()){
-            String ultimoPeso=mainClass.BZA.itw410FrmGetUltimoPeso(mainClass.N_BZA);
+            String ultimoPeso=mainClass.BZA.Itw410FrmGetUltimoPeso(mainClass.N_BZA);
             preferencesManager.setIndice(nuevoIndice);
             if(ultimoPeso!=null&&isNumeric(ultimoPeso)) btPesar(Float.parseFloat(ultimoPeso),ultimoPeso);
         }
@@ -1255,25 +1280,28 @@ public class FormPrincipal extends Fragment  {
     }
 
     private void actualizarBarraProceso(int num) {
-        if(Utils.isNumeric(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())){
-            if(Float.parseFloat(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())==0){
-                String texto="Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +" en balanza "+ num;
-                if(recetaManager.automatico){
-                    texto="Cargando "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +" en salida "+ preferencesManager.getSalida();
-                }
-                recetaManager.estadoMensajeStr.setValue(texto);
-            }else{
-                String texto="Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
-                        mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA)+ " de "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
-                        " en balanza "+ num;
-                if(recetaManager.automatico){
-                    texto="Cargando "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
+        if(!recetaManager.automatico || recetaManager.estadoBalanza == RecetaManager.PROCESO){
+            if(Utils.isNumeric(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())){
+                if(Float.parseFloat(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())==0){
+                    String texto="Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +" en balanza "+ num;
+                    if(recetaManager.automatico){
+                        texto="Cargando "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +" en salida "+ preferencesManager.getSalida();
+                    }
+                    recetaManager.estadoMensajeStr.setValue(texto);
+                }else{
+                    String texto="Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
                             mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA)+ " de "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
-                            " en salida "+ preferencesManager.getSalida();
+                            " en balanza "+ num;
+                    if(recetaManager.automatico){
+                        texto="Cargando "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
+                                mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA)+ " de "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
+                                " en salida "+ preferencesManager.getSalida();
+                    }
+                    recetaManager.estadoMensajeStr.setValue(texto);
                 }
-                recetaManager.estadoMensajeStr.setValue(texto);
             }
         }
+
     }
 
     private void actualizarDisplayPeso(Float lim_min, Float lim_max) {

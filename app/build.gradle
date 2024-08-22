@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 34
     buildToolsVersion "30.0.3"
     namespace 'com.jws.jwsapi'
     defaultConfig {
         multiDexEnabled true
         applicationId "com.jws.jwsapi"
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -99,7 +99,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation files('libs\\ZSDK_ANDROID_API.jar')
-    implementation files('libs\\jwsapi.jar')
+    api files('../service_module/libs/jwsapi.jar')
     implementation files('libs\\commons-net-2.2-ftp.jar')
     implementation files('libs\\ftplet-api-1.1.1.jar')
     implementation files('libs\\ftpserver-core-1.1.1.jar')

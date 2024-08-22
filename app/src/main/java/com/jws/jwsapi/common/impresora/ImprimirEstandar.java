@@ -13,8 +13,8 @@ import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.Utils;
-import com.service.PuertosSerie.PuertosSerie;
 import com.jws.jwsapi.R;
+import com.service.PuertosSerie.PuertosSerie2;
 
 import org.apache.ftpserver.ftplet.User;
 
@@ -44,7 +44,7 @@ public class ImprimirEstandar {
         this.usersManager=usersManager;
     }
 
-    public void EnviarEtiqueta(PuertosSerie serialPort,int numetiqueta){
+    public void EnviarEtiqueta(PuertosSerie2 serialPort, int numetiqueta){
         int modo=preferencesPrinterManager.consultaModo();
         if(modo==0){
             ImprimirUSB imprimirUSB= new ImprimirUSB(mainActivity);
@@ -76,7 +76,7 @@ public class ImprimirEstandar {
 
     }
 
-    public void EnviarUltimaEtiqueta(PuertosSerie serialPort){
+    public void EnviarUltimaEtiqueta(PuertosSerie2 serialPort){
         int modo=preferencesPrinterManager.consultaModo();
         if(modo==0){
             ImprimirUSB imprimirUSB= new ImprimirUSB(mainActivity);
@@ -107,7 +107,7 @@ public class ImprimirEstandar {
 
     }
 
-    public void EnviarEtiquetaManual(PuertosSerie serialPort,String etiqueta){
+    public void EnviarEtiquetaManual(PuertosSerie2 serialPort,String etiqueta){
         int modo=preferencesPrinterManager.consultaModo();
 
         if(modo==0){
@@ -267,6 +267,7 @@ public class ImprimirEstandar {
             return "";
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Error etiqueta:"+e.getMessage());
             Utils.Mensaje("Ocurrió un error al procesar la etiqueta:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
             return ""; // O devolver un valor predeterminado en caso de error
         }

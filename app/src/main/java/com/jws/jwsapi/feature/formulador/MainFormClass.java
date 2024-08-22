@@ -34,7 +34,8 @@ public class MainFormClass implements OnFragmentChangeListener {
     private final MainActivity mainActivity;
     public static String DB_NAME = "Frm_DB";
     public static int db_version = 4;
-    public BalanzaService BZA;
+    public BalanzaService Service;
+    public BalanzaService.Balanzas BZA;
     public int N_BZA=1;
     UsersManager usersManager;
     Boolean permitirClic=true;
@@ -48,9 +49,25 @@ public class MainFormClass implements OnFragmentChangeListener {
     }
 
     public void init() {
-        BZA= new BalanzaService(mainActivity,this);
-        BZA.init();
-        openFragmentPrincipal();
+        Service= new BalanzaService(mainActivity,this);
+        Service.init();
+        Runnable myRunnable = () -> {
+            try {
+                Thread.sleep(2000);
+                mainActivity.runOnUiThread(() -> {
+                    BZA=BalanzaService.Balanzas;
+                    BZA.Itw410FrmSetTiempoEstabilizacion(N_BZA,preferencesManager.getEstabilizacion());
+                    openFragmentPrincipal();
+                });
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
+
+        Thread myThread = new Thread(myRunnable);
+        myThread.start();
+
     }
 
     public void openFragmentPrincipal() {

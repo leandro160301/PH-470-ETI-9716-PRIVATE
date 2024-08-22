@@ -24,7 +24,12 @@ public class RecetaManager {
     public MutableLiveData<Integer> progreso = new MutableLiveData<>(0);
     public String porcentajeReceta= "0";
     public int estado = 0;
+    public int estadoBalanza = 0;
     public Float setPoint=0f;
+    public static int DETENIDO=0;
+    public static int PROCESO=1;
+    public static int PAUSA=2;
+    public static int ESTABILIZANDO=3;
     //estado 1=que pida recipiente en los pasos
     //estado 2=que pese el paso
 }

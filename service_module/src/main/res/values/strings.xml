@@ -121,6 +121,7 @@
     </string-array>
 
     <string-array name="tipoBalanzas">
+        <item>ITW410</item>
         <item>OPTIMA</item>
         <item>MINIMA</item>
         <item>OHAUS R31P30</item>
@@ -311,6 +312,12 @@
         <item>BUETOOTH</item>
     </string-array>
 
+    <string-array name="Modbus">
+        <item>PUERTO SERIE 1</item>
+        <item>PUERTO SERIE 2</item>
+        <item>PUERTO SERIE 3</item>
+        <item>TCP/IP</item>
+    </string-array>
     <string-array name="CamposEtiqueta">
         <item>USB</item>
     </string-array>

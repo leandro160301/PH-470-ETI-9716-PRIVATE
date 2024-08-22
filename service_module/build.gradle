@@ -4,8 +4,10 @@ group = 'com.github.shrikanth7698'
 android {
     compileSdkVersion 32
     namespace 'com.service'
+
+
     defaultConfig {
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
@@ -14,6 +16,7 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
     }
 
     buildTypes {
@@ -29,11 +32,16 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'tp.xmaihh:serialport:2.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation files('libs\\modbus4Android-1.2.jar')
+    implementation files('libs\\modbus4j-2.0.2.jar')
+    api files('libs/jwsapi.jar')
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation files('libs\\modbus4Android-1.2.jar')
     testImplementation 'junit:junit:4.12'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
 }

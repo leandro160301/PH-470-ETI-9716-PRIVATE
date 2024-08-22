@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 
+import com.service.Balanzas.Interfaz.Balanza;
 import com.service.Utils;
 import com.service.PuertosSerie.PuertosSerie;
 
@@ -12,7 +13,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
-public class ANDGF3000 {
+public class ANDGF3000 implements Balanza, Balanza.Struct{
 
 
     /** si ponemos tara digital, entonces toma la tara como tara digital,
@@ -20,6 +21,7 @@ public class ANDGF3000 {
      *
      *
      */
+    public int numeroid=0;
     private final Context context;
     private final PuertosSerie serialPort;
     Handler mHandler= new Handler();
@@ -40,13 +42,13 @@ public class ANDGF3000 {
     public String ultimaCalibracion="";
     public String brutoStr="0",netoStr="0",taraStr="0",taraDigitalStr="0",picoStr="0";
     public int acumulador=0;
-    public int numero=1;
+    public int numeroBZA=1;
     public String unidad="gr";
 
-    public ANDGF3000(Context context, PuertosSerie serialPort, int numero) {
+    public ANDGF3000(Context context, PuertosSerie serialPort, int numeroBZA) {
         this.context = context;
         this.serialPort = serialPort;
-        this.numero= numero;
+        this.numeroBZA= numeroBZA;
     }
 
     public void init(){
@@ -75,13 +77,13 @@ public class ANDGF3000 {
         pesoBandaCero=peso;
         SharedPreferences preferencias=context.getSharedPreferences(nombre, Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=preferencias.edit();
-        ObjEditor.putFloat(String.valueOf(numero)+"_"+"pbandacero", peso);
+        ObjEditor.putFloat(String.valueOf(numeroBZA)+"_"+"pbandacero", peso);
         ObjEditor.apply();
     }
 
     public float getPesoBandaCero() {
         SharedPreferences preferences=context.getSharedPreferences(nombre, Context.MODE_PRIVATE);
-        return (preferences.getFloat(String.valueOf(numero)+"_"+"pbandacero",5.0F));
+        return (preferences.getFloat(String.valueOf(numeroBZA)+"_"+"pbandacero",5.0F));
     }
 
     public String Cero(){
@@ -126,6 +128,58 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
         }
         return "\u0005L"+pesoconocido+"\r";
     }
+
+
+    @Override
+    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
+
+    }
+
+    @Override
+    public String Itw410FrmGetSetPoint(int numero) {
+        return null;
+    }
+
+    @Override
+    public int Itw410FrmGetSalida(int numero) {
+        return -1;
+    }
+
+    @Override
+    public void Itw410FrmStart(int numero) {
+
+    }
+
+    @Override
+    public int Itw410FrmGetEstado(int numero) {
+        return -1;
+    }
+
+    @Override
+    public String Itw410FrmGetUltimoPeso(int numero) {
+        return "null";
+    }
+
+    @Override
+    public int Itw410FrmGetUltimoIndice(int numero) {
+        return -1;
+    }
+
+    @Override
+    public void itw410FrmPause(int numero) {
+
+    }
+
+    @Override
+    public void itw410FrmStop(int numero) {
+
+    }
+
+    @Override
+    public void Itw410FrmSetTiempoEstabilizacion(int numero, int Tiempo) {
+
+    }
+
     public String Cero_cal(){
         return "\u0005U\r";
     }
@@ -291,20 +345,20 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
         pesoUnitario=peso;
         SharedPreferences preferencias=context.getSharedPreferences(nombre, Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=preferencias.edit();
-        ObjEditor.putFloat(String.valueOf(numero)+"_"+"punitario", 0.5F);
+        ObjEditor.putFloat(String.valueOf(numeroBZA)+"_"+"punitario", 0.5F);
         ObjEditor.apply();
     }
 
     public float getPesoUnitario() {
         SharedPreferences preferences=context.getSharedPreferences(nombre, Context.MODE_PRIVATE);
-        return (preferences.getFloat(String.valueOf(numero)+"_"+"punitario",0.5F));
+        return (preferences.getFloat(String.valueOf(numeroBZA)+"_"+"punitario",0.5F));
     }
 
 
     public void setUnidad(String Unidad){
         SharedPreferences preferencias=context.getSharedPreferences(nombre, Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=preferencias.edit();
-        ObjEditor.putString(String.valueOf(numero)+"_"+"unidad",Unidad);
+        ObjEditor.putString(String.valueOf(numeroBZA)+"_"+"unidad",Unidad);
         ObjEditor.apply();
     }
 
@@ -317,7 +371,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=Preferencias.edit();
-        ObjEditor.putInt(String.valueOf(numero)+"_"+"div",divmin);
+        ObjEditor.putInt(String.valueOf(numeroBZA)+"_"+"div",divmin);
         ObjEditor.apply();
 
     }
@@ -325,7 +379,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=Preferencias.edit();
-        ObjEditor.putInt(String.valueOf(numero)+"_"+"pdecimal",puntoDecimal);
+        ObjEditor.putInt(String.valueOf(numeroBZA)+"_"+"pdecimal",puntoDecimal);
         ObjEditor.apply();
 
     }
@@ -333,20 +387,20 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=Preferencias.edit();
-        ObjEditor.putString(String.valueOf(numero)+"_"+"ucalibracion",ucalibracion);
+        ObjEditor.putString(String.valueOf(numeroBZA)+"_"+"ucalibracion",ucalibracion);
         ObjEditor.apply();
 
     }
     public String get_UltimaCalibracion(){
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
-        return Preferencias.getString(String.valueOf(numero)+"_"+"ucalibracion","");
+        return Preferencias.getString(String.valueOf(numeroBZA)+"_"+"ucalibracion","");
 
     }
     public void set_CapacidadMax(String capacidad){
 
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=Preferencias.edit();
-        ObjEditor.putString(String.valueOf(numero)+"_"+"capacidad",capacidad);
+        ObjEditor.putString(String.valueOf(numeroBZA)+"_"+"capacidad",capacidad);
         ObjEditor.apply();
 
     }
@@ -354,30 +408,30 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=Preferencias.edit();
-        ObjEditor.putString(String.valueOf(numero)+"_"+"pconocido",pesoConocido);
+        ObjEditor.putString(String.valueOf(numeroBZA)+"_"+"pconocido",pesoConocido);
         ObjEditor.apply();
 
     }
 
     public int get_DivisionMinima(){
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
-        return Preferencias.getInt(String.valueOf(numero)+"_"+"div",0);
+        return Preferencias.getInt(String.valueOf(numeroBZA)+"_"+"div",0);
 
     }
     public int get_PuntoDecimal(){
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
-        int lea=Preferencias.getInt(String.valueOf(numero)+"_"+"pdecimal",1);
+        int lea=Preferencias.getInt(String.valueOf(numeroBZA)+"_"+"pdecimal",1);
         System.out.println("OPTIMA CALIBRACION PUNTO DECIMAL: "+String.valueOf(lea));
         return lea;
 
     }
     public String get_CapacidadMax(){
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
-        return Preferencias.getString(String.valueOf(numero)+"_"+"capacidad","100");
+        return Preferencias.getString(String.valueOf(numeroBZA)+"_"+"capacidad","100");
     }
     public String get_PesoConocido(){
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
-        return Preferencias.getString(String.valueOf(numero)+"_"+"pconocido","100");
+        return Preferencias.getString(String.valueOf(numeroBZA)+"_"+"pconocido","100");
     }
 
     public void stopRuning(){
@@ -583,4 +637,219 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
             }
         }
     };
+
+    @Override
+    public void setID(int numID, int numBza) {
+        numeroid=numID;
+    }
+
+    @Override
+    public int getID( int numBza) {
+        return numeroid;
+    }
+
+    @Override
+    public float getNeto(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public String getNetoStr(int numBza) {
+        return "";
+    }
+
+    @Override
+    public float getBruto(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public String getBrutoStr(int numBza) {
+        return "";
+    }
+
+    @Override
+    public float getTara(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public String getTaraStr(int numBza) {
+        return "";
+    }
+
+    @Override
+    public void setTara(int numBza) {
+
+    }
+
+    @Override
+    public void setCero(int numBza) {
+
+    }
+
+    @Override
+    public void setTaraDigital(int numBza, float TaraDigital) {
+
+    }
+
+    @Override
+    public String getTaraDigital(int numBza) {
+        return "";
+    }
+
+    @Override
+    public Boolean getBandaCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public void setBandaCero(int numBza, Boolean bandaCeroi) {
+
+    }
+
+    @Override
+    public float getBandaCeroValue(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public void setBandaCeroValue(int numBza, float bandaCeroValue) {
+
+    }
+
+    @Override
+    public Boolean getEstable(int numBza) {
+        return null;
+    }
+
+    @Override
+    public String format(int numero, String peso) {
+        return "";
+    }
+
+    @Override
+    public String getUnidad(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getPicoStr(int numBza) {
+        return "";
+    }
+
+    @Override
+    public float getPico(int numBza) {
+        return 0;
+    }
+
+    @Override
+    public void init(int numBza) {
+
+    }
+
+    @Override
+    public void escribir(String msj,int numBza) {
+        serialPort.write(msj);
+    }
+
+    @Override
+    public void stop(int numBza) {
+
+    }
+
+    @Override
+    public void start(int numBza) {
+
+    }
+
+    @Override
+    public Boolean calibracionHabilitada(int numBza) {
+        return null;
+    }
+
+    @Override
+    public void openCalibracion(int numBza) {
+
+    }
+
+    @Override
+    public Boolean getSobrecarga(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoCentroCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoSobrecarga(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoNeto(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoPesoNeg(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoBajoCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoBzaEnCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoBajaBateria(int numBza) {
+        return null;
+    }
+
+    @Override
+    public String getFiltro1(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getFiltro2(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getFiltro3(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getFiltro4(int numBza) {
+        return "";
+    }
+
+    @Override
+    public Boolean getEstadoEstable(int numBza) {
+        return null;
+    }
+
+    @Override
+    public String getEstado(int numBza) {
+        return "";
+    }
+
+    @Override
+    public void setEstado(int numBza, String estado) {
+
+    }
+
+    @Override
+    public void onEvent() {
+
+    }
 }

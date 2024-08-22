@@ -75,9 +75,9 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
     public void onItemClick(View view, int position) {
         menuElegido =position;
         if(position==0){
-            ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.BZA);
+            ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.Service);
             Bundle args = new Bundle();
-            args.putSerializable("instanceService", mainActivity.mainClass.BZA);
+            args.putSerializable("instanceService", mainActivity.mainClass.Service);
             mainActivity.mainClass.openFragmentService(fragment,args);
         }
         if(position==1){

@@ -775,6 +775,18 @@ public class PreferencesManager {
         return Preferencias.getInt("Salida", 0);
     }
 
+    public void setEstabilizacion(int Estabilizacion) {
+        SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
+        ObjEditor2.putInt("Estabilizacion", Estabilizacion);
+        ObjEditor2.apply();
+    }
+
+    public int getEstabilizacion() {
+        SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        return Preferencias.getInt("Estabilizacion", 100);
+    }
+
     public void setSalida(int indice) {
         SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();

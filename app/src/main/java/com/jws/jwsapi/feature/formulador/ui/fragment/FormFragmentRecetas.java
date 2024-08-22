@@ -7,7 +7,6 @@ import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoEnte
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlotante;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTextoConCancelar;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -39,7 +38,6 @@ import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
 import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterEncabezado;
-import com.jws.jwsapi.feature.formulador.ui.dialog.DialogButtonInterface;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.Utils;
@@ -97,13 +95,17 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
 
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
-        archivos=filtrarRecetasEnArchivos(getArchivosExtension(".csv"));
+        initializateData();
         configuracionBotones();
         lista_recetas =view.findViewById(R.id.lista_recetas);
-        recetaelegida=recetaManager.recetaActual;
         cargarRecyclerView();
 
 
+    }
+
+    private void initializateData() {
+        archivos=filtrarRecetasEnArchivos(getArchivosExtension(".csv"));
+        recetaelegida=recetaManager.recetaActual;
     }
 
 
@@ -141,7 +143,6 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             bt_1.setVisibility(View.GONE);
             bt_2.setVisibility(View.GONE);
         }
-
         if (recetaManager.listRecetaActual.size() > 0) {
             String nomb = recetaManager.listRecetaActual.get(0).getNombre();
             if (nomb.length() > 20) {
@@ -456,39 +457,6 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
     }
 
 
-    @Override
-    public void onItemClick(View view, int position) {
-        posicion_recycler=position;
-        cargarRecyclerViewReceta(archivos.get(position));
-        recetaManager.recetaActual =archivos.get(posicion_recycler);
-        preferencesManager.setRecetaactual(archivos.get(posicion_recycler));
-
-        if(!Objects.equals(recetaManager.recetaActual, "")){
-            String[]arr= recetaManager.recetaActual.split("_");
-            if(arr.length==3){
-                recetaManager.codigoReceta =arr[1].replace("_","");
-                recetaManager.nombreReceta =arr[2].replace("_","");
-                labelManager.ocodigoreceta.value=recetaManager.codigoReceta;
-                labelManager.oreceta.value=recetaManager.nombreReceta;
-                preferencesManager.setCodigoRecetaactual(recetaManager.codigoReceta);
-                preferencesManager.setNombreRecetaactual(recetaManager.nombreReceta);
-            }
-        }
-
-    }
-
-    private void dialogoEliminarPaso(List<FormModelReceta> mData, int posicion) {
-        dialogoTexto(getContext(), "¿Quiere eliminar el paso " + (posicion + 1) + "?", "ELIMINAR", () -> {
-            mData.remove(posicion);
-            try {
-                mainActivity.mainClass.setReceta(recetaelegida, mData);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            adapter_recetas.refrescarList(mData);
-        });
-    }
-
     public void BuscadorAdapter(TextView tv_codigoIngrediente, TextView tv_des) {
         filtroAdapter = false;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mainActivity,R.style.AlertDialogCustom);
@@ -557,6 +525,42 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             tv_codigo.setText(filteredListAdapterIngredientes.get(position).getCodigo());
             tv_des.setText(filteredListAdapterIngredientes.get(position).getNombre());
             dialog.cancel();
+        });
+    }
+
+
+
+
+    @Override
+    public void onItemClick(View view, int position) {
+        posicion_recycler=position;
+        cargarRecyclerViewReceta(archivos.get(position));
+        recetaManager.recetaActual =archivos.get(posicion_recycler);
+        preferencesManager.setRecetaactual(archivos.get(posicion_recycler));
+
+        if(!Objects.equals(recetaManager.recetaActual, "")){
+            String[]arr= recetaManager.recetaActual.split("_");
+            if(arr.length==3){
+                recetaManager.codigoReceta =arr[1].replace("_","");
+                recetaManager.nombreReceta =arr[2].replace("_","");
+                labelManager.ocodigoreceta.value=recetaManager.codigoReceta;
+                labelManager.oreceta.value=recetaManager.nombreReceta;
+                preferencesManager.setCodigoRecetaactual(recetaManager.codigoReceta);
+                preferencesManager.setNombreRecetaactual(recetaManager.nombreReceta);
+            }
+        }
+
+    }
+
+    private void dialogoEliminarPaso(List<FormModelReceta> mData, int posicion) {
+        dialogoTexto(getContext(), "¿Quiere eliminar el paso " + (posicion + 1) + "?", "ELIMINAR", () -> {
+            mData.remove(posicion);
+            try {
+                mainActivity.mainClass.setReceta(recetaelegida, mData);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            adapter_recetas.refrescarList(mData);
         });
     }
 

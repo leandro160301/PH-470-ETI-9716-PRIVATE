@@ -6,9 +6,9 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.Balanzas.BalanzaService;
 import com.service.Balanzas.Interfaz.Balanza;
 import com.service.Comunicacion.OnFragmentChangeListener;
+import com.service.PuertosSerie.PuertosSerie2;
 import com.service.Utils;
 import com.service.PuertosSerie.PuertosSerie;
 
@@ -25,7 +25,8 @@ public class R31P30_I implements Balanza, Balanza.Struct{
      *
      */
     //PARA CONTADORA #005P03000102050000#013 TERMINAL
-    private final PuertosSerie serialPort;
+    private final PuertosSerie2 serialPort;
+    public int numeroid=0;
     Handler mHandler= new Handler();
     public static final String NOMBRE="R31P30";
     public String estado="VERIFICANDO_MODO";
@@ -48,17 +49,16 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     public int puntoDecimal=1;
     public String ultimaCalibracion="",calculoPesoUnitario="Error";
     public String brutoStr="0",netoStr="0",taraStr="0",taraDigitalStr="0",picoStr="0";
-    public int acumulador=0,numero=1;
+    public int acumulador=0,numeroBZA=1;
     public String unidad="gr";
     public Boolean estable=false;
     private AppCompatActivity activity;
-    public BalanzaService BZA;
+    private OnFragmentChangeListener fragmentChangeListener;
 
-    public R31P30_I( PuertosSerie serialPort, int numero, AppCompatActivity activity, BalanzaService BZA) {
+    public R31P30_I(PuertosSerie2 serialPort, int numeroBZA, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener) {
         this.serialPort = serialPort;
-        this.numero=numero;
+        this.numeroBZA=numeroBZA;
         this.activity = activity;
-        this.BZA=BZA;
     }
 
     public void setTara(float tara){
@@ -141,6 +141,58 @@ public class R31P30_I implements Balanza, Balanza.Struct{
         }
         return "\u0005L"+pesoconocido+"\r";
     }
+
+
+    @Override
+    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
+
+    }
+
+    @Override
+    public String Itw410FrmGetSetPoint(int numero) {
+        return null;
+    }
+
+    @Override
+    public int Itw410FrmGetSalida(int numero) {
+        return -1;
+    }
+
+    @Override
+    public void Itw410FrmStart(int numero) {
+
+    }
+
+    @Override
+    public int Itw410FrmGetEstado(int numero) {
+        return -1;
+    }
+
+    @Override
+    public String Itw410FrmGetUltimoPeso(int numero) {
+        return "null";
+    }
+
+    @Override
+    public int Itw410FrmGetUltimoIndice(int numero) {
+        return -1;
+    }
+
+    @Override
+    public void itw410FrmPause(int numero) {
+
+    }
+
+    @Override
+    public void itw410FrmStop(int numero) {
+
+    }
+
+    @Override
+    public void Itw410FrmSetTiempoEstabilizacion(int numero, int Tiempo) {
+
+    }
+
     public String Cero_cal(){
         return "\u0005U\r";
     }
@@ -680,45 +732,56 @@ public class R31P30_I implements Balanza, Balanza.Struct{
         }
     };
 
+
     @Override
-    public float getNeto(int numero) {
+    public void setID(int numID, int numBza) {
+        numeroid=numID;
+    }
+
+    @Override
+    public int getID( int numBza) {
+        return numeroid;
+    }
+
+    @Override
+    public float getNeto(int numBza) {
         return Neto;
     }
 
     @Override
-    public String getNetoStr(int numero) {
+    public String getNetoStr(int numBza) {
         return netoStr;
     }
 
     @Override
-    public float getBruto(int numero) {
+    public float getBruto(int numBza) {
         return Bruto;
     }
 
     @Override
-    public String getBrutoStr(int numero) {
+    public String getBrutoStr(int numBza) {
         return brutoStr;
     }
 
     @Override
-    public float getTara(int numero) {
+    public float getTara(int numBza) {
         return 0;
     }
 
     @Override
-    public String getTaraStr(int numero) {
+    public String getTaraStr(int numBza) {
         return "0";
     }
 
     @Override
-    public void setTara(int numero) {
+    public void setTara(int numBza) {
         if(serialPort!=null){
             serialPort.write("T\r\n");
         }
     }
 
     @Override
-    public void setCero(int numero) {
+    public void setCero(int numBza) {
         if(serialPort!=null){
             serialPort.write("Z\r\n");
         }
@@ -727,43 +790,43 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public void setTaraDigital(int numero, float TaraDigital) {
+    public void setTaraDigital(int numBza, float TaraDigital) {
         taraDigital = TaraDigital;
         taraDigitalStr=String.valueOf(TaraDigital);
     }
 
     @Override
-    public String getTaraDigital(int numero) {
+    public String getTaraDigital(int numBza) {
         return taraDigitalStr;
     }
 
     @Override
-    public Boolean getBandaCero(int numero) {
+    public Boolean getBandaCero(int numBza) {
         return bandaCero;
     }
 
     @Override
-    public void setBandaCero(int numero, Boolean bandaCeroi) {
+    public void setBandaCero(int numBza, Boolean bandaCeroi) {
         bandaCero=bandaCeroi;
     }
 
     @Override
-    public float getBandaCeroValue(int numero) {
+    public float getBandaCeroValue(int numBza) {
         SharedPreferences preferences=activity.getSharedPreferences(NOMBRE, Context.MODE_PRIVATE);
-        return (preferences.getFloat(String.valueOf(numero)+"_"+"pbandacero",5.0F));
+        return (preferences.getFloat(String.valueOf(numBza)+"_"+"pbandacero",5.0F));
     }
 
     @Override
-    public void setBandaCeroValue(int numero, float bandaCeroValue) {
+    public void setBandaCeroValue(int numBza, float bandaCeroValue) {
         pesoBandaCero=bandaCeroValue;
         SharedPreferences preferencias=activity.getSharedPreferences(NOMBRE, Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=preferencias.edit();
-        ObjEditor.putFloat(String.valueOf(numero)+"_"+"pbandacero",bandaCeroValue);
+        ObjEditor.putFloat(String.valueOf(numBza)+"_"+"pbandacero",bandaCeroValue);
         ObjEditor.apply();
     }
 
     @Override
-    public Boolean getEstable(int numero) {
+    public Boolean getEstable(int numBza) {
         return estable;
     }
 
@@ -787,23 +850,27 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public String getUnidad(int numero) {
+    public String getUnidad(int numBza) {
         SharedPreferences preferences=activity.getSharedPreferences(NOMBRE, Context.MODE_PRIVATE);
-        return (preferences.getString(String.valueOf(numero)+"_"+"unidad","kg"));
+        return (preferences.getString(String.valueOf(numBza)+"_"+"unidad","kg"));
     }
 
     @Override
-    public String getPicoStr(int numero) {
+    public String getPicoStr(int numBza) {
         return picoStr;
     }
 
     @Override
-    public float getPico(int numero) {
+    public float getPico(int numBza) {
         return pico;
     }
 
     @Override
-    public void init(int numero) {
+    public void escribir(String msj,int numBza) {
+        serialPort.write(msj);
+    }
+    @Override
+    public void init(int numBza) {
         estado=M_MODO_BALANZA;
         pesoUnitario=getPesoUnitario();
         pesoBandaCero=getPesoBandaCero();
@@ -815,79 +882,101 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public void stop(int numero) {
+    public void stop(int numBza) {
 
     }
 
     @Override
-    public void start(int numero) {
+    public void start(int numBza) {
         estado=M_MODO_BALANZA;
     }
 
-
     @Override
-    public void openCalibracion(int numero) {
-
-    }
-
-    @Override
-    public Boolean getSobrecarga(int numero) {
+    public Boolean calibracionHabilitada(int numBza) {
         return false;
     }
 
     @Override
-    public String getEstado(int numero) {
+    public void openCalibracion(int numBza) {
+
+    }
+
+    @Override
+    public Boolean getSobrecarga(int numBza) {
+        return false;
+    }
+
+    @Override
+    public Boolean getEstadoCentroCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoSobrecarga(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoNeto(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoPesoNeg(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoBajoCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoBzaEnCero(int numBza) {
+        return null;
+    }
+
+    @Override
+    public Boolean getEstadoBajaBateria(int numBza) {
+        return null;
+    }
+
+    @Override
+    public String getFiltro1(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getFiltro2(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getFiltro3(int numBza) {
+        return "";
+    }
+
+    @Override
+    public String getFiltro4(int numBza) {
+        return "";
+    }
+
+    @Override
+    public Boolean getEstadoEstable(int numBza) {
+        return null;
+    }
+
+    @Override
+    public String getEstado(int numBza) {
         return estado;
     }
     @Override
-    public void setEstado(int numero, String estado) {
+    public void setEstado(int numBza, String estado) {
         this.estado=estado;
     }
 
     @Override
-    public void itw410FrmSetear(int numero, String setPoint, int Salida) {
+    public void onEvent() {
 
     }
-
-    @Override
-    public String itw410FrmGetSetPoint(int numero) {
-        return null;
-    }
-
-    @Override
-    public int itw410FrmGetSalida(int numero) {
-        return 0;
-    }
-
-    @Override
-    public void itw410FrmStart(int numero) {
-
-    }
-
-    @Override
-    public void itw410FrmPause(int numero) {
-
-    }
-
-    @Override
-    public void itw410FrmStop(int numero) {
-
-    }
-
-    @Override
-    public int itw410FrmGetEstado(int numero) {
-        return 0;
-    }
-
-
-    @Override
-    public String itw410FrmGetUltimoPeso(int numero) {
-        return null;
-    }
-
-    @Override
-    public int itw410FrmGetUltimoIndice(int numero) {
-        return 0;
-    }
-
 }

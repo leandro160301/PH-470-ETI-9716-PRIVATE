@@ -28,15 +28,15 @@ public interface Balanza {
         Boolean getSobrecarga(int numero);
         String getEstado(int numero);
         void setEstado(int numero,String estado);
-        void Itw410FrmSetear(int numero,String setPoint, int Salida);
-        String Itw410FrmGetSetPoint(int numero);
-        int Itw410FrmGetSalida(int numero);
-        void Itw410FrmStart(int numero);
-        void Itw410FrmPause(int numero);
-        void Itw410FrmStop(int numero);
-        int Itw410FrmGetEstado(int numero);
-        String Itw410FrmGetUltimoPeso(int numero);
-        int Itw410FrmGetUltimoIndice(int numero);
+        void itw410FrmSetear(int numero, String setPoint, int Salida);
+        String itw410FrmGetSetPoint(int numero);
+        int itw410FrmGetSalida(int numero);
+        void itw410FrmStart(int numero);
+        void itw410FrmPause(int numero);
+        void itw410FrmStop(int numero);
+        int itw410FrmGetEstado(int numero);
+        String itw410FrmGetUltimoPeso(int numero);
+        int itw410FrmGetUltimoIndice(int numero);
 
 
     }

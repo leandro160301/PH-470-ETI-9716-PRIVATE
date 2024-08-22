@@ -376,47 +376,47 @@ public class BalanzaService implements Balanza, Balanza.Struct, Serializable {
     }
 
     @Override
-    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
+    public void itw410FrmSetear(int numero, String setPoint, int Salida) {
 
     }
 
     @Override
-    public String Itw410FrmGetSetPoint(int numero) {
+    public String itw410FrmGetSetPoint(int numero) {
         return "37.1";
     }
 
     @Override
-    public int Itw410FrmGetSalida(int numero) {
+    public int itw410FrmGetSalida(int numero) {
         return 1;
     }
 
     @Override
-    public void Itw410FrmStart(int numero) {
+    public void itw410FrmStart(int numero) {
         estado=1;
     }
 
     @Override
-    public void Itw410FrmPause(int numero) {
+    public void itw410FrmPause(int numero) {
         estado=2;
     }
 
     @Override
-    public void Itw410FrmStop(int numero) {
+    public void itw410FrmStop(int numero) {
         estado=0;
     }
 
     @Override
-    public int Itw410FrmGetEstado(int numero) {
+    public int itw410FrmGetEstado(int numero) {
         return estado;
     }
 
     @Override
-    public String Itw410FrmGetUltimoPeso(int numero) {
+    public String itw410FrmGetUltimoPeso(int numero) {
         return "10.45";
     }
 
     @Override
-    public int Itw410FrmGetUltimoIndice(int numero) {
+    public int itw410FrmGetUltimoIndice(int numero) {
         return ultimo+1;
     }
 

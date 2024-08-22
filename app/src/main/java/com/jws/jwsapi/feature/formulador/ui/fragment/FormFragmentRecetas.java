@@ -6,6 +6,7 @@ import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.Teclado;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoEntero;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlotante;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTextoConCancelar;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -38,6 +39,7 @@ import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
 import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterEncabezado;
+import com.jws.jwsapi.feature.formulador.ui.dialog.DialogButtonInterface;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.Utils;
@@ -107,49 +109,50 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
 
     public void SeleccionarItem(int numero, boolean recetaActual) {
         lista_recetas.post(() -> {
-            lista_recetas.smoothScrollToPosition(numero);
-
-            RecyclerView.ViewHolder viewHolder = lista_recetas.findViewHolderForAdapterPosition(numero);
-            if (viewHolder != null) {
-                if (recetaActual && buttonProvider != null) {
-                    binding.lnLista.setVisibility(GONE);
-                    bt_1.setVisibility(GONE);
-                    bt_2.setVisibility(GONE);
-                }
-                viewHolder.itemView.performClick();
-            } else {
-                lista_recetas.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE) { // El scroll ha terminado
-                            RecyclerView.ViewHolder viewHolder = lista_recetas.findViewHolderForAdapterPosition(numero);
-                            if (viewHolder != null) {
-                                viewHolder.itemView.performClick();
-                                if (recetaActual && buttonProvider != null) {
-                                    binding.lnLista.setVisibility(GONE);
-                                    bt_1.setVisibility(GONE);
-                                    bt_2.setVisibility(GONE);
+            lista_recetas.scrollToPosition(numero);// Hace scroll rapido al item sin animacion
+            lista_recetas.post(() -> {
+                lista_recetas.smoothScrollToPosition(numero); //hacemos smoothscroll para asegurar que el item esta visible para click
+                RecyclerView.ViewHolder viewHolder = lista_recetas.findViewHolderForAdapterPosition(numero);
+                if (viewHolder != null) {
+                    viewHolder.itemView.performClick();
+                    setupViewsItem(recetaActual);
+                } else {
+                    lista_recetas.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                RecyclerView.ViewHolder viewHolder = lista_recetas.findViewHolderForAdapterPosition(numero);
+                                if (viewHolder != null) {
+                                    viewHolder.itemView.performClick();
+                                    setupViewsItem(recetaActual);
                                 }
-                                if (recetaManager.listRecetaActual.size() > 0) {
-                                    String nomb = recetaManager.listRecetaActual.get(0).getNombre();
-                                    if (nomb.length() > 20) {
-                                        nomb = nomb.substring(0, 20).concat("...");
-                                    }
-                                    if (titulo != null) {
-                                        titulo.setText(recetaManager.listRecetaActual.get(0).getCodigo() + " | " + nomb +
-                                                " | " + recetaManager.listRecetaActual.get(0).getKilos_totales() + mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
-                                    }
-                                }
-
-                                lista_recetas.removeOnScrollListener(this); // Remover el listener después de seleccionar el item
+                                lista_recetas.removeOnScrollListener(this);
                             }
                         }
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
+    }
+
+    private void setupViewsItem(boolean recetaActual) {
+        if (recetaActual && buttonProvider != null) {
+            binding.lnLista.setVisibility(View.GONE);
+            bt_1.setVisibility(View.GONE);
+            bt_2.setVisibility(View.GONE);
+        }
+
+        if (recetaManager.listRecetaActual.size() > 0) {
+            String nomb = recetaManager.listRecetaActual.get(0).getNombre();
+            if (nomb.length() > 20) {
+                nomb = nomb.substring(0, 20).concat("...");
+            }
+            if (titulo != null) {
+                String texto=recetaManager.listRecetaActual.get(0).getCodigo() + " | " + nomb +
+                        " | " + recetaManager.listRecetaActual.get(0).getKilos_totales() + mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
+                titulo.setText(texto);
+            }
+        }
     }
     private void cargarRecyclerView(){
         lista_recetas.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -183,8 +186,9 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
                     nomb=nomb.substring(0,20).concat("...");
                 }
                 if(titulo!=null){
-                    titulo.setText(arr[1].replace("_","")+" | "+nomb+
-                            " | "+ recetaseleccionada.get(0).getKilos_totales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+                    String texto=arr[1].replace("_","")+" | "+nomb+
+                            " | "+ recetaseleccionada.get(0).getKilos_totales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
+                    titulo.setText(texto);
                 }
 
             }
@@ -304,48 +308,34 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         return lista;
     }
 
-    private void ElimarReceta(String receta,int posicion_recycler) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
+    private void elimarRecetaDialog(String receta, int posicion_recycler) {
+        dialogoTextoConCancelar(mainActivity, "¿Esta seguro de eliminar la receta " + receta + " ?", "ELIMINAR", () -> eliminarReceta(receta,posicion_recycler),null);
+    }
 
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dossinet, null);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        textView.setText("¿Esta seguro de eliminar la receta "+receta+" ?");
+    private void eliminarReceta(String receta, int posicion_recycler) {
+        File file= new File("/storage/emulated/0/Memoria/"+receta+".csv");
+        if (file.exists()) {
+            boolean eliminacion=file.delete();
+            if(eliminacion){
+                Utils.Mensaje("Receta eliminada", R.layout.item_customtoastok,mainActivity);
+                recetaManager.recetaActual ="";
+                preferencesManager.setRecetaactual("");
+                preferencesManager.setCodigoRecetaactual("");
+                labelManager.ocodigoreceta.value="";
+                recetaManager.codigoReceta ="";
+                preferencesManager.setNombreRecetaactual("");
+                labelManager.oreceta.value="";
+                recetaManager.nombreReceta ="";
+                archivos.remove(posicion_recycler);
+                adapter.filterList(archivos);
+                adapter.notifyDataSetChanged();
 
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        Guardar.setText("ELIMINAR");
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            File file= new File("/storage/emulated/0/Memoria/"+receta+".csv");
-            if (file.exists()) {
-                boolean eliminacion=file.delete();
-                if(eliminacion){
-                    Utils.Mensaje("Receta eliminada", R.layout.item_customtoastok,mainActivity);
-                    recetaManager.recetaActual ="";
-                    preferencesManager.setRecetaactual("");
-                    preferencesManager.setCodigoRecetaactual("");
-                    labelManager.ocodigoreceta.value="";
-                    recetaManager.codigoReceta ="";
-                    preferencesManager.setNombreRecetaactual("");
-                    labelManager.oreceta.value="";
-                    recetaManager.nombreReceta ="";
-                    archivos.remove(posicion_recycler);
-                    adapter.filterList(archivos);
-                    adapter.notifyDataSetChanged();
-
-                }else{
-                    Utils.Mensaje("La receta no se pudo borrar", R.layout.item_customtoasterror,mainActivity);
-                }
             }else{
-                Utils.Mensaje("La receta no esta disponible", R.layout.item_customtoasterror,mainActivity);
+                Utils.Mensaje("La receta no se pudo borrar", R.layout.item_customtoasterror,mainActivity);
             }
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
+        }else{
+            Utils.Mensaje("La receta no esta disponible", R.layout.item_customtoasterror,mainActivity);
+        }
     }
 
     private void configuracionBotones() {
@@ -366,7 +356,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             bt_6.setVisibility(View.INVISIBLE);
             bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
-            bt_3.setOnClickListener(view -> eliminarReceta());
+            bt_3.setOnClickListener(view -> btEliminarReceta());
             bt_2.setOnClickListener(view -> nuevaReceta());
             bt_1.setOnClickListener(view ->Buscador());
 
@@ -390,10 +380,10 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         }
     }
 
-    private void eliminarReceta() {
+    private void btEliminarReceta() {
         if(usersManager.modificarDatos()){
             if(posicion_recycler!=-1&&posicion_recycler<archivos.size()){
-                ElimarReceta(archivos.get(posicion_recycler),posicion_recycler);
+                elimarRecetaDialog(archivos.get(posicion_recycler),posicion_recycler);
             }
         }else{
             Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);

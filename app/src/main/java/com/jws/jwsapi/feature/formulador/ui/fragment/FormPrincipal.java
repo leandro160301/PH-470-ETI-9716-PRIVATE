@@ -390,9 +390,9 @@ public class FormPrincipal extends Fragment  {
             preferencesManager.setAutomatico(true);
             preferencesManager.setSalida(salida);
             String setPoint=String.valueOf(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing());
-            mainClass.BZA.Itw410FrmSetear(mainClass.N_BZA,setPoint,salida);
-            if(mainClass.BZA.Itw410FrmGetSalida(mainClass.N_BZA)==salida&& Objects.equals(mainClass.BZA.Itw410FrmGetSetPoint(mainClass.N_BZA), setPoint)) {
-                mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
+            mainClass.BZA.itw410FrmSetear(mainClass.N_BZA,setPoint,salida);
+            if(mainClass.BZA.itw410FrmGetSalida(mainClass.N_BZA)==salida&& Objects.equals(mainClass.BZA.itw410FrmGetSetPoint(mainClass.N_BZA), setPoint)) {
+                mainClass.BZA.itw410FrmStart(mainClass.N_BZA);
             }else{
                 Utils.Mensaje("Error de balanza",R.layout.item_customtoasterror,mainActivity);
             }
@@ -577,10 +577,10 @@ public class FormPrincipal extends Fragment  {
             bt_1.setOnClickListener(view -> btCantidad());
             bt_2.setOnClickListener(view -> {
                 if(recetaManager.automatico){
-                    if(mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA)==2){
-                        mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
+                    if(mainClass.BZA.itw410FrmGetEstado(mainClass.N_BZA)==2){
+                        mainClass.BZA.itw410FrmStart(mainClass.N_BZA);
                     }else{
-                        mainClass.BZA.Itw410FrmPause(mainClass.N_BZA);
+                        mainClass.BZA.itw410FrmPause(mainClass.N_BZA);
                     }
                 }else{
                     btPesar(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA));
@@ -605,10 +605,10 @@ public class FormPrincipal extends Fragment  {
                 @Override
                 public void onClick(View view) {
                     if(recetaManager.automatico){
-                        if(mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA)==2){
-                            mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
+                        if(mainClass.BZA.itw410FrmGetEstado(mainClass.N_BZA)==2){
+                            mainClass.BZA.itw410FrmStart(mainClass.N_BZA);
                         }else{
-                            mainClass.BZA.Itw410FrmPause(mainClass.N_BZA);
+                            mainClass.BZA.itw410FrmPause(mainClass.N_BZA);
                         }
                     }else{
                         btPesar(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA));
@@ -1023,7 +1023,7 @@ public class FormPrincipal extends Fragment  {
         recetaManager.ejecutando=false;
         preferencesManager.setEjecutando(false);
         binding.btStart.setBackgroundResource(R.drawable.boton__arranqueparada_selector);
-        if(recetaManager.automatico)mainClass.BZA.Itw410FrmStop(mainClass.N_BZA);
+        if(recetaManager.automatico)mainClass.BZA.itw410FrmStop(mainClass.N_BZA);
         recetaManager.automatico=false;
 
     }
@@ -1192,7 +1192,7 @@ public class FormPrincipal extends Fragment  {
     }
 
     private void procesoEjecucionAutomatico() {
-        int estado=mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA);
+        int estado=mainClass.BZA.itw410FrmGetEstado(mainClass.N_BZA);
         bt_2.setText("PAUSAR");
         switch (estado){
             case 0:
@@ -1216,9 +1216,9 @@ public class FormPrincipal extends Fragment  {
     private void automaticoFinalizado() {
         recetaManager.automatico=false;
         preferencesManager.setAutomatico(false);
-        int nuevoIndice=mainClass.BZA.Itw410FrmGetUltimoIndice(mainClass.N_BZA);
+        int nuevoIndice=mainClass.BZA.itw410FrmGetUltimoIndice(mainClass.N_BZA);
         if(nuevoIndice>preferencesManager.getIndice()){
-            String ultimoPeso=mainClass.BZA.Itw410FrmGetUltimoPeso(mainClass.N_BZA);
+            String ultimoPeso=mainClass.BZA.itw410FrmGetUltimoPeso(mainClass.N_BZA);
             preferencesManager.setIndice(nuevoIndice);
             if(ultimoPeso!=null&&isNumeric(ultimoPeso)) btPesar(Float.parseFloat(ultimoPeso),ultimoPeso);
         }

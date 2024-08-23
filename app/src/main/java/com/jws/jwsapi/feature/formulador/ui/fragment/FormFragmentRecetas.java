@@ -535,6 +535,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
     public void onItemClick(View view, int position) {
         posicion_recycler=position;
         cargarRecyclerViewReceta(archivos.get(position));
+        recetaelegida=archivos.get(posicion_recycler);
         recetaManager.recetaActual =archivos.get(posicion_recycler);
         preferencesManager.setRecetaactual(archivos.get(posicion_recycler));
 
@@ -588,7 +589,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             String codigo=tv_codigoIngrediente.getText().toString();
             String descripcion=tv_descripcionIngrediente.getText().toString();
             String kilos=tv_kilos.getText().toString();
-            if (!codigo.equals("") && !descripcion.equals("") && !kilos.equals("") && Utils.isNumeric(kilos)) {
+            if (!codigo.isEmpty() && !descripcion.isEmpty() && !kilos.isEmpty() && Utils.isNumeric(kilos)) {
                 if (posicion < mData.size() - 1) {
                     mData.add(posicion + 1, new FormModelReceta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilos_totales(),
                             codigo, descripcion, kilos, "NO", ""));

@@ -50,7 +50,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
     LabelManager labelManager;
     @Inject
     PreferencesManager preferencesManager;
-    public static final int CANTIDAD=8;
+    public static final int CANTIDAD=4;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     FormAdapterIngredientes adapter;
@@ -95,10 +95,10 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
         TextView tv_codigo=  mView.findViewById(R.id.tv_codigoingrediente);
         TextView tv_descripcion=  mView.findViewById(R.id.tv_descripcioningrediente);
         TextView tv_salida= mView.findViewById(R.id.tv_salida);
-
+        tv_salida.setText("0");
         tv_codigo.setOnClickListener(view -> TecladoEntero(tv_codigo,"Ingrese el codigo del ingrediente",mainActivity,null));
         tv_descripcion.setOnClickListener(view -> Teclado(tv_descripcion,"Ingrese la descripcion del ingrediente",mainActivity,null));
-        tv_salida.setOnClickListener(view -> TecladoEntero(tv_salida,"Ingrese el numero de salida del 1 al 8 (0 para manual)",mainActivity,null));
+        tv_salida.setOnClickListener(view -> TecladoEntero(tv_salida,"Ingrese el numero de salida del 1 al "+CANTIDAD+" (0 para manual)",mainActivity,null));
 
         Button Guardar =  mView.findViewById(R.id.buttons);
         Button Cancelar =  mView.findViewById(R.id.buttonc);

@@ -280,8 +280,7 @@ public class FormPrincipal extends Fragment  {
             boolean empezarKilos=modoKilos();
             if(empezarKilos)setupValoresParaInicio();
         }else{//ingresa porcentaje
-            boolean empezarPorcentaje=modoPorcentaje();
-            if(empezarPorcentaje)setupValoresParaInicio();
+             modoPorcentaje();
         }
     }
 
@@ -315,43 +314,38 @@ public class FormPrincipal extends Fragment  {
         }
     }
 
-    private boolean modoPorcentaje() {
-        boolean empezar=true;
+    private void modoPorcentaje() {
         if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
             //por batch
             if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0||(recetaManager.cantidad.getValue()!=null)&&recetaManager.realizadas.getValue()-recetaManager.cantidad.getValue()==0){
                 IngresaPorcentaje();
             }else {
                 calculoporcentajeReceta();
-                IngresoRecipiente();
+                setupValoresParaInicio();
             }
         }else{
             //por pedido
             if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0){
                 IngresaPorcentaje();
             }else {
-                empezar=false;
                 Utils.Mensaje("Ingrese una cantidad",R.layout.item_customtoasterror,mainActivity);
             }
         }
-        return empezar;
     }
 
     private boolean modoKilos() {
-        boolean empezar=true;
         if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
             //por batch
-            IngresoRecipiente();
+            return true;
         }else{
             //por pedido
             if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0){
-                IngresoRecipiente();
+                return true;
             }else {
-                empezar=false;
                 Utils.Mensaje("Ingrese una cantidad",R.layout.item_customtoasterror,mainActivity);
+                return false;
             }
         }
-        return empezar;
     }
 
     private void setupValoresParaInicio() {
@@ -381,6 +375,11 @@ public class FormPrincipal extends Fragment  {
             }
         }
         configuracionAutomatico(isAutomatic,salida);
+        if(isAutomatic){
+            setEstadoPesar();
+        }else{
+            IngresoRecipiente();
+        }
         return isAutomatic;
     }
 
@@ -389,22 +388,21 @@ public class FormPrincipal extends Fragment  {
             String setPoint=String.valueOf(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing());
             Runnable myRunnable = () -> {
                 mainClass.BZA.Itw410FrmSetear(mainClass.N_BZA,setPoint,salida);
-                int valorsal1=mainClass.BZA.Itw410FrmGetSalida(mainClass.N_BZA);
-                String valorsp1=mainClass.BZA.Itw410FrmGetSetPoint(mainClass.N_BZA);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
                 int valorsal=mainClass.BZA.Itw410FrmGetSalida(mainClass.N_BZA);
                 String valorsp=mainClass.BZA.Itw410FrmGetSetPoint(mainClass.N_BZA);
-                if(Objects.equals(valorsal,salida)&& Objects.equals(valorsp, setPoint)) {
+                if(Utils.isNumeric(valorsp)&&Utils.isNumeric(setPoint)&&Objects.equals(valorsal,salida)&& Float.parseFloat(valorsp)==Float.parseFloat(setPoint)) {
                     mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
+                    System.out.println("automatico: true");
                     recetaManager.automatico=true;
                     preferencesManager.setAutomatico(true);
                     preferencesManager.setSalida(salida);
                 }else{
-                    mainActivity.runOnUiThread(() -> Utils.Mensaje("Error de balanza",R.layout.item_customtoasterror,mainActivity));
+                    mainActivity.runOnUiThread(() -> Utils.Mensaje("Error de balanza:410= "+valorsp+", Sys="+setPoint,R.layout.item_customtoasterror,mainActivity));
                 }
             };
 
@@ -414,6 +412,7 @@ public class FormPrincipal extends Fragment  {
             //mandar el setpoint y la salida, esperamos y leemos que le llegue bien
             //si le llego bien ponemose el sharedpreferences automatico y recetamanager.automatico en true
         }else{
+            System.out.println("automatico: false 3");
             recetaManager.automatico=false;
             preferencesManager.setAutomatico(false);
         }
@@ -421,7 +420,7 @@ public class FormPrincipal extends Fragment  {
 
     private void IngresaPorcentaje() {
         String text="Ingrese los kilos a realizar totales y presione SIGUIENTE o si quiere continuar con la receta original presione CONTINUAR";
-        TecladoFlotanteConCancelar(null, text, mainActivity, this::calculoporcentajeRecetaDialogo, this::IngresoRecipiente,"CONTINUAR");
+        TecladoFlotanteConCancelar(null, text, mainActivity, this::calculoporcentajeRecetaDialogo, () -> setupValoresParaInicio(), "CONTINUAR");
     }
 
     private void calculoporcentajeRecetaDialogo(String toString) {
@@ -443,7 +442,7 @@ public class FormPrincipal extends Fragment  {
             recetaManager.porcentajeReceta=toString;
             preferencesManager.setPorcentajeReceta(toString);
             preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
-            IngresoRecipiente();
+            setupValoresParaInicio();
         }else{
             Utils.Mensaje("Ocurrio un error con la carga de la receta",R.layout.item_customtoasterror,mainActivity);
             IngresoRecipiente();
@@ -821,13 +820,7 @@ public class FormPrincipal extends Fragment  {
         }
         preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
         boolean isAutomatic=verificarPasoEsAutomatico();
-        if(!isAutomatic){
-            if(preferencesManager.getRecipientexPaso()){
-                IngresoRecipiente();
-            }else{
-                mainActivity.mainClass.BZA.setTaraDigital(mainActivity.mainClass.N_BZA,mainActivity.mainClass.BZA.getBruto(mainActivity.mainClass.N_BZA));
-            }
-        }
+        if(!isAutomatic&&!preferencesManager.getRecipientexPaso())mainActivity.mainClass.BZA.setTaraDigital(mainActivity.mainClass.N_BZA,mainActivity.mainClass.BZA.getBruto(mainActivity.mainClass.N_BZA));
 
 
     }
@@ -1043,6 +1036,9 @@ public class FormPrincipal extends Fragment  {
         binding.btStart.setBackgroundResource(R.drawable.boton__arranqueparada_selector);
         if(recetaManager.automatico)mainClass.BZA.itw410FrmStop(mainClass.N_BZA);
         recetaManager.automatico=false;
+        preferencesManager.setAutomatico(false);
+        recetaManager.estadoBalanza=RecetaManager.DETENIDO;
+        System.out.println("automatico: false 2");
 
     }
 
@@ -1170,9 +1166,7 @@ public class FormPrincipal extends Fragment  {
 
 
     private void procesoDetenido() {
-        if(recetaManager.recetaActual.isEmpty()){
-            binding.tvRecetaActual.setText("Seleccione Receta");
-        }
+        if(recetaManager.recetaActual.isEmpty())binding.tvRecetaActual.setText("Seleccione Receta");
         if(botonera==0){
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza);
         }else{
@@ -1239,6 +1233,7 @@ public class FormPrincipal extends Fragment  {
     }
 
     private void automaticoFinalizado() {
+        System.out.println("automatico: false 1");
         recetaManager.automatico=false;
         preferencesManager.setAutomatico(false);
         int nuevoIndice=mainClass.BZA.Itw410FrmGetUltimoIndice(mainClass.N_BZA);

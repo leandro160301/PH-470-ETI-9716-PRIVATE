@@ -43,7 +43,7 @@ public class FormAdapterIngredientes extends RecyclerView.Adapter<FormAdapterIng
         holder.binding.tvCodigoingrediente.setText(item.getCodigo());
         holder.binding.tvDescripcioningrediente.setText(item.getNombre());
         if(item.getSalida()==0){
-            holder.binding.tvSalida.setVisibility(View.INVISIBLE);
+            holder.binding.tvSalida.setText("MANUAL");
         }else{
             holder.binding.tvSalida.setText("SALIDA "+ item.getSalida());
         }

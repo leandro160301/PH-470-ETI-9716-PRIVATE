@@ -60,7 +60,12 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
         binding.tvBza1.setOnClickListener(view -> TecladoFlotante(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> preferencesManager.setBza1Limite(texto)));
         binding.tvBza2.setOnClickListener(view -> TecladoFlotante(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> preferencesManager.setBza2Limite(texto)));
         binding.tvBza3.setOnClickListener(view -> TecladoFlotante(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> preferencesManager.setBza3Limite(texto)));
-        binding.tvTiempoEstabilizacion.setOnClickListener(v -> TecladoEntero(binding.tvTiempoEstabilizacion, "Ingrese el tiempo de estabilizacion", mainActivity, texto -> preferencesManager.setEstabilizacion(Integer.parseInt(texto))));
+        binding.tvTiempoEstabilizacion.setOnClickListener(v -> TecladoEntero(binding.tvTiempoEstabilizacion, "Ingrese el tiempo de estabilizacion", mainActivity, this::setEstabilizacionAutomatico));
+    }
+
+    private void setEstabilizacionAutomatico(String texto) {
+        preferencesManager.setEstabilizacion(Integer.parseInt(texto));
+        mainActivity.mainClass.BZA.Itw410FrmSetTiempoEstabilizacion(mainActivity.mainClass.N_BZA,Integer.parseInt(texto));
     }
 
     private void initializateViews() {

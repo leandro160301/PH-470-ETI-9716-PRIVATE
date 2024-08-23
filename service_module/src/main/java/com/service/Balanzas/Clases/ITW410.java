@@ -113,13 +113,13 @@ Runnable GET_PESO_cal_bza = new Runnable() {
                         // Maneja el resultado exitoso aquí
                         Bruto = result[0];
                         System.out.println("ITW410 Bruto:"+result[0]);
-                        brutoStr= String.valueOf(Bruto);
+                        brutoStr= format(String.valueOf(Bruto));
                         Neto = result[1];
                         System.out.println("ITW410 Neto:"+result[1]);
-                        netoStr= String.valueOf(Neto);
+                        netoStr= format(String.valueOf(Neto));
                         Tara = result[2];
                         System.out.println("ITW410 Tara:"+result[2]);
-                        taraStr= String.valueOf(Tara);
+                        taraStr= format(String.valueOf(Tara));
                         estado410=result[3];
                         System.out.println("ESTADO 410:"+result[3]);
                     }
@@ -771,7 +771,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
     public int get_PuntoDecimal(){
         SharedPreferences Preferencias=mainActivity.getSharedPreferences("ITW410",Context.MODE_PRIVATE);
-        int lea=Preferencias.getInt(String.valueOf(numeroSlave)+"_"+"pdecimal",1);
+        int lea=Preferencias.getInt(String.valueOf(numeroSlave)+"_"+"pdecimal",0);
         System.out.println("MINIMA CALIBRACION PUNTO DECIMAL: "+String.valueOf(lea));
         return lea;
 
@@ -909,8 +909,26 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
             }
         };
-        ModbusRtuMaster.writeRegister(callback,numeroSlave,29,Integer.parseInt(setPoint));
+        ModbusRtuMaster.writeRegister(callback,numeroSlave,29,Integer.parseInt(pointDecimalFormat(setPoint,0).replace(".","")));
 
+    }
+    public static String pointDecimalFormat(String numero, int decimales) {
+        try {
+            Double.parseDouble(numero);
+        } catch (NumberFormatException e) {
+            return "0000";
+        }
+
+        String formato = "0";
+        if (decimales > 0) {
+            formato += ".";
+            for (int i = 0; i < decimales; i++) {
+                formato += "0";
+            }
+        }
+
+        DecimalFormat decimalFormat = new DecimalFormat(formato);
+        return decimalFormat.format(Double.parseDouble(numero));
     }
 
     @Override
@@ -1233,10 +1251,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
     @Override
     public void setCero(int numBza) {
-        if(ModbusRtuMaster !=null){
-
-
-         }
+        Cero();
         taraDigitalStr="0";
     }
 

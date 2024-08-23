@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class FormPrincipalViewModel extends ViewModel {
     private final RecetaManager recetaManager;
     private final PreferencesManager preferencesManager;
+    public final MutableLiveData<String> mensajeToastError = new MutableLiveData<>();
 
 
     @Inject
@@ -45,5 +46,7 @@ public class FormPrincipalViewModel extends ViewModel {
     public MutableLiveData<Integer> getRealizadas(){return recetaManager.realizadas;}
     public MutableLiveData<Integer> getProgreso(){return recetaManager.progreso;}
     public MutableLiveData<String> getEstadoMensajeStr(){return recetaManager.estadoMensajeStr;}
+    public MutableLiveData<String> getMensajeToastError(){return mensajeToastError;}
+
 
 }

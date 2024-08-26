@@ -1,5 +1,6 @@
 package com.jws.jwsapi.feature.formulador.ui.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
@@ -12,8 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class FormPrincipalViewModel extends ViewModel {
     private final RecetaManager recetaManager;
     private final PreferencesManager preferencesManager;
-    public final MutableLiveData<String> mensajeToastError = new MutableLiveData<>();
-
+    private final MutableLiveData<String> mensajeError = new MutableLiveData<>();
+    public LiveData<String> mensajeToastError = mensajeError;
 
     @Inject
     public FormPrincipalViewModel(RecetaManager recetaManager, PreferencesManager preferencesManager) {
@@ -41,12 +42,15 @@ public class FormPrincipalViewModel extends ViewModel {
             this.recetaManager.listRecetaActual =new ArrayList<>();
         }
     }
+    public void mostrarMensajeDeError(String mensaje) {
+        mensajeError.setValue(mensaje);
+    }
     public MutableLiveData<String> getNetoTotal(){return recetaManager.netoTotal;}
     public MutableLiveData<Integer> getCantidad(){return recetaManager.cantidad;}
     public MutableLiveData<Integer> getRealizadas(){return recetaManager.realizadas;}
     public MutableLiveData<Integer> getProgreso(){return recetaManager.progreso;}
     public MutableLiveData<String> getEstadoMensajeStr(){return recetaManager.estadoMensajeStr;}
-    public MutableLiveData<String> getMensajeToastError(){return mensajeToastError;}
+    public MutableLiveData<String> getMensajeToastError(){return mensajeError;}
 
 
 }

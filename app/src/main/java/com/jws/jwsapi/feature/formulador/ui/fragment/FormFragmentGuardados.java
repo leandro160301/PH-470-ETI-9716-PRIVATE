@@ -70,7 +70,7 @@ public class FormFragmentGuardados extends Fragment {
         viewModel.getPedidos().observe(getViewLifecycleOwner(), pedidos -> {
             adapterRecetas = new FormAdapterGuardadosRecetas(getContext(), pedidos);
             adapterRecetas.setButtonClickListener((v, position) ->
-                    viewModel.cargarPesadasConId(getContext(), String.valueOf(pedidos.get(position).getId()), true));
+                    viewModel.cargarPesadasConId(getContext(), String.valueOf(pedidos.get(position).getId()), false));
             binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.listaacumulados.setAdapter(adapterRecetas);
         });

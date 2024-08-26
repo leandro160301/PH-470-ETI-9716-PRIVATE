@@ -23,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.containers.clases.ButtonProviderSingletonPrincipal;
@@ -64,6 +63,7 @@ public class FormPrincipal extends Fragment  {
     boolean stoped=false;
     public int rango=0; //0=bajo, 1=acepto,2=alto
     int botonera=0;
+    int mensajeError=0;
     Button bt_2;
 
     MainFormClass mainClass;
@@ -93,7 +93,10 @@ public class FormPrincipal extends Fragment  {
         viewModel.getEstadoMensajeStr().observe(getViewLifecycleOwner(),estado -> binding.tvEstado.setText(estado));
         viewModel.getNetoTotal().observe(getViewLifecycleOwner(), netoTotal -> binding.tvNetototal.setText(netoTotal));
         viewModel.getCantidad().observe(getViewLifecycleOwner(),cantidad-> binding.tvCantidad.setText(String.valueOf(cantidad)));
-        viewModel.getMensajeToastError().observe(getViewLifecycleOwner(), mensaje -> viewModel.mensajeToastError.setValue(mensaje));
+        viewModel.mensajeToastError.observe(getViewLifecycleOwner(),mensaje->{
+            if(mensajeError>0) Utils.Mensaje(mensaje,R.layout.item_customtoasterror,mainActivity);
+            mensajeError++;
+        });
         viewModel.getRealizadas().observe(getViewLifecycleOwner(),realizadas->{
             Integer cantidad=recetaManager.cantidad.getValue();
             if(cantidad!=null&&cantidad>0){
@@ -129,16 +132,7 @@ public class FormPrincipal extends Fragment  {
         labelManager.ocodigoreceta.value= recetaManager.codigoReceta;
         labelManager.oreceta.value= recetaManager.nombreReceta;
 
-        binding.lnFondolayout.setOnClickListener(view12 -> {
-            if(botonera==0){
-                botonera=1;
-                configuracionBotonesBalanza();
-            }else {
-                botonera=0;
-                configuracionBotones();
-            }
-
-        });
+        binding.lnFondolayout.setOnClickListener(view12 -> btBalanza());
 
         if(recetaManager.ejecutando){
             binding.btStart.setBackgroundResource(R.drawable.circlebuttonon1);
@@ -146,13 +140,7 @@ public class FormPrincipal extends Fragment  {
             binding.btStart.setBackgroundResource(R.drawable.boton__arranqueparada_selector);
         }
 
-        binding.btStart.setOnClickListener(view1 -> {
-            if(recetaManager.ejecutando){
-                ConsultaFin();
-            }else{
-                iniciarReceta();
-            }
-        });
+        binding.btStart.setOnClickListener(view1 -> btStart());
 
         if(!recetaManager.recetaActual.isEmpty()){
             String[]arr= recetaManager.recetaActual.split("_");
@@ -163,6 +151,24 @@ public class FormPrincipal extends Fragment  {
         setupUnidad();
         binding.imEstable.setVisibility(View.INVISIBLE);
 
+    }
+
+    private void btStart() {
+        if(recetaManager.ejecutando){
+            ConsultaFin();
+        }else{
+            iniciarReceta();
+        }
+    }
+
+    private void btBalanza() {
+        if(botonera==0){
+            botonera=1;
+            configuracionBotonesBalanza();
+        }else {
+            botonera=0;
+            configuracionBotones();
+        }
     }
 
 
@@ -201,11 +207,11 @@ public class FormPrincipal extends Fragment  {
         boolean empezar=true;
         if(labelManager.olote.value==""||
                 labelManager.ovenci.value==""||faltanCampos()){
-            viewModel.mensajeToastError.setValue("Faltan ingresar datos");
+            viewModel.mostrarMensajeDeError("Faltan ingresar datos");
             empezar=false;
         }
         if(recetaManager.recetaActual.isEmpty()){
-            viewModel.mensajeToastError.setValue("Debe seleccionar una receta para comenzar");
+            viewModel.mostrarMensajeDeError("Debe seleccionar una receta para comenzar");
             empezar=false;
         }
         return empezar;
@@ -273,7 +279,7 @@ public class FormPrincipal extends Fragment  {
             configurarRecetaParaPedido();
             iniciaPorModoReceta();
         }else{
-            viewModel.mensajeToastError.setValue("Error en la receta elegida");
+            viewModel.mostrarMensajeDeError("Error en la receta elegida");
         }
     }
 
@@ -318,33 +324,37 @@ public class FormPrincipal extends Fragment  {
 
     private void modoPorcentaje() {
         if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
-            //por batch
-            if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0||(recetaManager.cantidad.getValue()!=null)&&recetaManager.realizadas.getValue()-recetaManager.cantidad.getValue()==0){
-                IngresaPorcentaje();
-            }else {
-                calculoporcentajeReceta();
-                setupValoresParaInicio();
-            }
+            setupRecetaBatch(); //por batch
         }else{
-            //por pedido
-            if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0){
-                IngresaPorcentaje();
-            }else {
-                viewModel.mensajeToastError.setValue("Ingrese una cantidad");
-            }
+            setupRecetaPedido();//por pedido
+        }
+    }
+
+    private void setupRecetaPedido() {
+        if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0){
+            IngresaPorcentaje();
+        }else {
+            viewModel.mostrarMensajeDeError("Ingrese una cantidad");
+        }
+    }
+
+    private void setupRecetaBatch() {
+        if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0||(recetaManager.cantidad.getValue()!=null)&&recetaManager.realizadas.getValue()-recetaManager.cantidad.getValue()==0){
+            IngresaPorcentaje();
+        }else {
+            calculoporcentajeReceta();
+            setupValoresParaInicio();
         }
     }
 
     private boolean modoKilos() {
         if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
-            //por batch
-            return true;
-        }else{
-            //por pedido
+            return true;  //por batch
+        }else{  //por pedido
             if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0){
                 return true;
             }else {
-                viewModel.mensajeToastError.setValue("Ingrese una cantidad");
+                viewModel.mostrarMensajeDeError("Ingrese una cantidad");
                 return false;
             }
         }
@@ -387,8 +397,9 @@ public class FormPrincipal extends Fragment  {
 
     private void configuracionAutomatico(boolean isAutomatic, int salida) {
         if(isAutomatic){
-            String setPoint=String.valueOf(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing());
+            String setPoint=mainClass.BZA.format(mainClass.N_BZA,String.valueOf(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing()) );
             Runnable myRunnable = () -> {
+                System.out.println("setpoint:"+setPoint+" salida:"+salida);
                 mainClass.BZA.Itw410FrmSetear(mainClass.N_BZA,setPoint,salida);
                 try {
                     Thread.sleep(500);
@@ -403,7 +414,7 @@ public class FormPrincipal extends Fragment  {
                     preferencesManager.setAutomatico(true);
                     preferencesManager.setSalida(salida);
                 }else{
-                    mainActivity.runOnUiThread(() ->  viewModel.mensajeToastError.setValue("Error de balanza:410= "+valorsp+", Sys="+setPoint));
+                    mainActivity.runOnUiThread(() ->  viewModel.mostrarMensajeDeError("Error de balanza:410= "+valorsp+", Sys="+setPoint));
                 }
             };
 
@@ -447,7 +458,7 @@ public class FormPrincipal extends Fragment  {
             preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
             setupValoresParaInicio();
         }else{
-            viewModel.mensajeToastError.setValue("Ocurrio un error con la carga de la receta");
+            viewModel.mostrarMensajeDeError("Ocurrio un error con la carga de la receta");
             IngresoRecipiente();
         }
     }
@@ -463,7 +474,7 @@ public class FormPrincipal extends Fragment  {
             }
             preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
         }else{
-            viewModel.mensajeToastError.setValue("Ocurrio un error con la carga de la receta");
+            viewModel.mostrarMensajeDeError("Ocurrio un error con la carga de la receta");
         }
     }
 
@@ -615,7 +626,7 @@ public class FormPrincipal extends Fragment  {
         if(!recetaManager.ejecutando){
             IngresaCantidad();
         }else{
-            viewModel.mensajeToastError.setValue("No puede cambiar la cantidad cuando esta ejecutando una receta");
+            viewModel.mostrarMensajeDeError("No puede cambiar la cantidad cuando esta ejecutando una receta");
         }
     }
 
@@ -626,7 +637,7 @@ public class FormPrincipal extends Fragment  {
                     calculaPorcentajeError(neto,netoStr);
                     manejoBasedeDatoseImpresion(neto);
                 }else{
-                    viewModel.mensajeToastError.setValue("Ingrediente fuera de rango");
+                    viewModel.mostrarMensajeDeError("Ingrediente fuera de rango");
                 }
             }else{
                 recetaFinalizada();
@@ -803,7 +814,7 @@ public class FormPrincipal extends Fragment  {
                         labelManager.oidpesada.value=String.valueOf(id2);
                     }
                 }else{
-                    viewModel.mensajeToastError.setValue("Error en base de datos, debe hacer un reset o actualizar programa");
+                    viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
                 }
             }
         }
@@ -843,11 +854,11 @@ public class FormPrincipal extends Fragment  {
                     if(id2!=-1){
                         labelManager.oidpesada.value=String.valueOf(id2);
                     }else{
-                        viewModel.mensajeToastError.setValue("Error en base de datos pesada, debe hacer un reset o actualizar programa");
+                        viewModel.mostrarMensajeDeError("Error en base de datos pesada, debe hacer un reset o actualizar programa");
                     }
 
                 }else{
-                    viewModel.mensajeToastError.setValue("Error en base de datos pedido, debe hacer un reset o actualizar programa");
+                    viewModel.mostrarMensajeDeError("Error en base de datos pedido, debe hacer un reset o actualizar programa");
                 }
             }
         }
@@ -903,7 +914,7 @@ public class FormPrincipal extends Fragment  {
                     labelManager.onetototal.value = mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos));
                 }
                 if(id==-1){
-                    viewModel.mensajeToastError.setValue("Error en base de datos, debe hacer un reset o actualizar programa");
+                    viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
                 }else{
                     labelManager.oidpesada.value=String.valueOf(id);
                 }
@@ -954,7 +965,7 @@ public class FormPrincipal extends Fragment  {
                     labelManager.onetototal.value = mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos));
                 }
                 if(id==-1){
-                    viewModel.mensajeToastError.setValue("Error en base de datos, debe hacer un reset o actualizar programa");
+                    viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
                 }else{
                     labelManager.oidpesada.value=String.valueOf(id);
                 }
@@ -1228,7 +1239,8 @@ public class FormPrincipal extends Fragment  {
                     actualizarBarraProgreso(lim_max);
                     actualizarDisplayPeso(lim_min,lim_max);
                 }
-                int num=determinarBalanza();
+                //int num=determinarBalanza();
+                int num=1;
                 actualizarBarraProceso(num);
 
                 labelManager.oingredientes.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing();

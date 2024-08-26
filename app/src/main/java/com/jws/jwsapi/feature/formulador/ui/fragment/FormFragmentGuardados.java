@@ -15,6 +15,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaGuardadosBinding;
+import com.jws.jwsapi.feature.formulador.models.FormModelPesadasDB;
+import com.jws.jwsapi.feature.formulador.models.FormModelRecetaDB;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterGuardadosPesadas;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterGuardadosRecetas;
 import com.jws.jwsapi.R;
@@ -22,6 +24,9 @@ import com.jws.jwsapi.feature.formulador.ui.viewmodel.FormFragmentGuardadosViewM
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
+
+import java.util.List;
+
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -38,6 +43,8 @@ public class FormFragmentGuardados extends Fragment {
     private FormAdapterGuardadosPesadas adapterPesadas;
     private FormAdapterGuardadosRecetas adapterRecetas;
     private int menu = 0;
+    private static int maxPesadas = 50;
+    private static int maxRecetas = 10;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,21 +61,24 @@ public class FormFragmentGuardados extends Fragment {
         configuracionBotones();
         tabLayoutListener();
         viewModel.getPesadas().observe(getViewLifecycleOwner(), pesadas -> {
-            adapterPesadas = new FormAdapterGuardadosPesadas(getContext(), pesadas);
+            List<FormModelPesadasDB> limitedPesadas=  pesadas.size() > maxPesadas ? pesadas.subList(0, maxPesadas) : pesadas;
+            adapterPesadas = new FormAdapterGuardadosPesadas(getContext(), limitedPesadas);
             binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.listaacumulados.setAdapter(adapterPesadas);
         });
 
         viewModel.getRecetas().observe(getViewLifecycleOwner(), recetas -> {
-            adapterRecetas = new FormAdapterGuardadosRecetas(getContext(), recetas);
+            List<FormModelRecetaDB> limitedRecetas=  recetas.size() > maxRecetas ? recetas.subList(0, maxRecetas) : recetas;
+            adapterRecetas = new FormAdapterGuardadosRecetas(getContext(), limitedRecetas);
             adapterRecetas.setButtonClickListener((v, position) ->
-                    viewModel.cargarPesadasConId(getContext(), String.valueOf(recetas.get(position).getId()), true));
+                    viewModel.cargarPesadasConId(getContext(), String.valueOf(limitedRecetas.get(position).getId()), true));
             binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.listaacumulados.setAdapter(adapterRecetas);
         });
 
         viewModel.getPedidos().observe(getViewLifecycleOwner(), pedidos -> {
-            adapterRecetas = new FormAdapterGuardadosRecetas(getContext(), pedidos);
+            List<FormModelRecetaDB> limitedRecetas=  pedidos.size() > maxRecetas ? pedidos.subList(0, maxRecetas) : pedidos;
+            adapterRecetas = new FormAdapterGuardadosRecetas(getContext(), limitedRecetas);
             adapterRecetas.setButtonClickListener((v, position) ->
                     viewModel.cargarPesadasConId(getContext(), String.valueOf(pedidos.get(position).getId()), false));
             binding.listaacumulados.setLayoutManager(new LinearLayoutManager(getContext()));

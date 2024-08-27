@@ -963,7 +963,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
         ModbusRtuMaster.writeRegister(callback,numeroSlave,29,Integer.parseInt(valueFormateado));
         try{
-            latch.await(1000,TimeUnit.MILLISECONDS);
+            latch.await(1600,TimeUnit.MILLISECONDS);
         }catch(Exception e){
             Thread.currentThread().interrupt();
             Resulte[0] =false;

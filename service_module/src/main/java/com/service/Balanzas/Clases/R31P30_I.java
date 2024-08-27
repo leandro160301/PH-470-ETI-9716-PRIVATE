@@ -144,8 +144,8 @@ public class R31P30_I implements Balanza, Balanza.Struct{
 
 
     @Override
-    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
-
+    public Boolean Itw410FrmSetear(int numero, String setPoint, int Salida) {
+        return false;
     }
 
     @Override

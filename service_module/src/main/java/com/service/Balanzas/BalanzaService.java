@@ -4,10 +4,7 @@ import static com.service.Utils.Mensaje;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.IpSecManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,24 +12,17 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.service.Balanzas.Clases.ITW410;
 import com.service.Balanzas.Clases.MINIMA_I;
-import com.service.Balanzas.Fragments.CalibracionOptimaFragment;
 import com.service.Balanzas.Fragments.ServiceFragment;
 import com.service.Balanzas.Interfaz.Balanza;
 import com.service.Balanzas.Clases.OPTIMA_I;
-import com.service.Balanzas.Interfaz.conjuntobalanza;
 import com.service.Balanzas.Interfaz.modbus;
 import com.service.Comunicacion.OnFragmentChangeListener;
 import com.service.Balanzas.Clases.R31P30_I;
 import com.service.Impresora.ImprimirEstandar;
 import com.service.Modbus.ModbusMasterRtu;
 import com.service.Modbus.Req.ModbusReqRtuMaster;
-import com.service.PuertosSerie.PuertosSerie;
 import com.service.PuertosSerie.PuertosSerie2;
-
 import com.service.R;
-import com.service.Recyclers.recyclerModbus;
-import com.service.Utils;
-import com.zgkxzx.modbus4And.requset.OnRequestBack;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -42,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import android_serialport_api.SerialPort;
-import com.service.PuertosSerie.PuertosSerie;
+
 public class BalanzaService implements Serializable {
     public ArrayList<ModbusMasterRtu> ModbusList;
     private PuertosSerie2 serialPortA;
@@ -55,12 +45,13 @@ public class BalanzaService implements Serializable {
     public static final String PUERTO_A="/dev/ttyXRUSB0";
     public static final String PUERTO_B="/dev/ttyXRUSB1";
     public static final String PUERTO_C="/dev/ttyXRUSB2";
+    public PuertosSerie2 A,B,C;
     private String NAME="SERVICE";
     BalanzaService Service;
     int baudA=9600,baudB=9600,baudC=9600,stopBitA=1,stopBitB=1,stopBitC=1,dataBitsA=8,dataBitsB=8,dataBitsC=8,parityA=0,parityB=0,parityC=0;
     public AppCompatActivity activity;
     public OnFragmentChangeListener fragmentChangeListener;
-    public PuertosSerie2 B;
+
 
 
     public BalanzaService( AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener) {
@@ -72,11 +63,11 @@ public class BalanzaService implements Serializable {
 
     public Boolean initializateSerialPort(int baudrate_A,int stopbit_A,int databits_A,int parity_A,int flowcon_A,int flags_A,int baudrate_B,int stopbit_B,int databits_B,int parity_B,int flowcon_B,int flags_B,int baudrate_C,int stopbit_C,int databits_C,int parity_C,int flowcon_C,int flags_C){
         //Inicia los puertos de la pantalla
-        PuertosSerie2 A = new PuertosSerie2();
+         A = new PuertosSerie2();
         SerialPort AS=A.open(PUERTO_A,baudrate_A,stopbit_A,databits_A,parity_A,flowcon_A,flags_A);
-        B= new PuertosSerie2();
+         B= new PuertosSerie2();
         SerialPort BS=B.open(PUERTO_B,baudrate_B,stopbit_B,databits_B,parity_B,flowcon_B,flags_B);
-        PuertosSerie2 C= new PuertosSerie2();
+         C= new PuertosSerie2();
         SerialPort CS=C.open(PUERTO_C,baudrate_C,stopbit_C,databits_C,parity_C,flowcon_C,flags_C);
         if (AS!=null&&BS!=null&&CS!=null){
             serialPortA=A;
@@ -84,23 +75,39 @@ public class BalanzaService implements Serializable {
             serialPortC=C;
             return false;
         }else{
-            Mensaje("ERROR_PUERTOS", R.layout.item_customtoasterror,activity);
+            Mensaje("ERROR_PUERTOS",R.layout.item_customtoasterror,activity);
             return true;
         }
     }
 
     public void init() {
-        /*try{
+        try{
             initializateSerialPort(
                     baudA, stopBitA, dataBitsA, parityA, 0, 0,
                     baudB, stopBitB, dataBitsB, parityB, 0, 0,
                     baudC, stopBitC, dataBitsC, parityC, 0, 0);
             Thread.sleep(1000);
         }catch (Exception e){
-        }*/
+        }
          Impresoras  = new Impresoras();
          Balanzas = new Balanzas();
          Balanzas.initializateBalanza();
+    }
+    public void openServiceFragment(){
+        ServiceFragment fragment = ServiceFragment.newInstance(Service);
+        Bundle args = new Bundle();
+        args.putSerializable("instanceService", Service);
+        fragmentChangeListener.openFragmentService(fragment,args);
+        /*37:15.432  9825-14911 AndroidRuntime          com.jws.jwsapi                       E  FATAL EXCEPTION: Thread-17 (Ask Gemini)
+                                                                                                    Process: com.jws.jwsapi, PID: 9825
+                                                                                                    java.lang.RuntimeException: Can't create handler inside thread Thread[Thread-17,5,main] that has not called Looper.prepare()
+                                                                                                    	at android.os.Handler.<init>(Handler.java:205)
+                                                                                                    	at android.os.Handler.<init>(Handler.java:118)
+                                                                                                    	at com.jws.jwsapi.feature.formulador.MainFormClass.openFragmentService(MainFormClass.java:106)
+                                                                                                    	at com.service.Balanzas.BalanzaService.openServiceFragment(BalanzaService.java:100)
+                                                                                                    	at com.service.Balanzas.Clases.ITW410.salir_cal(ITW410.java:1086)
+                                                                                                    	at com.service.Balanzas.Fragments.CalibracionItw410Fragment$3.run(CalibracionItw410Fragment.java:253)
+*/
     }
     public class Impresoras {
         public void setModo(int Modo,Integer num) {
@@ -210,15 +217,16 @@ public class BalanzaService implements Serializable {
 
                 if (balanzasList.get(i) == 1) { // 0
                     System.out.println("OPTIMA");
-                    Struct bza=new OPTIMA_I(serialPort, i+1,activity,fragmentChangeListener);
+                    Struct bza=new OPTIMA_I(serialPort, i+1,activity,Service,fragmentChangeListener);
 
                     bza.init(i+1);
                     balanzas.put(i + 1, bza);
                 }
+
                 if (balanzasList.get(i) == 1) {
 
                     System.out.println("MINIMA");
-                    Struct BZA =new MINIMA_I(serialPort, i+1,activity,fragmentChangeListener);
+                    Struct BZA =new MINIMA_I(serialPort, i+1,activity,Service,fragmentChangeListener);
                     BZA.init(i+1);
                     balanzas.put(i + 1, BZA);
                 }
@@ -232,37 +240,12 @@ public class BalanzaService implements Serializable {
                 if(balanzasList.get(i)==0){ // 3
                     System.out.println("ITW410 STARTY");
                     //hardcodeadisimo
-                    ModbusReqRtuMaster Modbus = null;
-                    ModbusMasterRtu modbusmasterinit= new ModbusMasterRtu();
                     int finalI2 = i;
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ModbusReqRtuMaster Modbus;
-                            try {
-                                // Modbus = modbusmasterinit.init(finalPort,modbus.getBaud(),modbus.getDatabit(),modbus.getStopbit(),modbus.getParity());
-                                Modbus =modbusmasterinit.init(PUERTO_A,115200,8,1,0);
-
-                                System.out.println("INITIALIZATING");
-                                if (Modbus != null) {
-                                activity.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                        ITW410 bza1 = new ITW410(Modbus, balanzas.size(), activity, fragmentChangeListener, 1);
-                                        bza1.init(finalI2+1);
-                                        balanzas.put(finalI2+1,bza1);
-                                        System.out.println("position bza"+finalI2+1);
-                                    }
-                                });
-
-                                }
-
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }).start();
+                   // pasar adentro  el modbusconfig finalPort,modbus.getBaud(),modbus.getDatabit(),modbus.getStopbit(),modbus.getParity()
+                    ITW410 bza1 = new ITW410( balanzas.size(), Service, fragmentChangeListener, 1);
+                    bza1.init(finalI2+1);
+                    balanzas.put(finalI2+1,bza1);
+                    System.out.println("position bza"+finalI2+1);
                     //hardcodeadisimo fin
                     ArrayList<modbus> modbuslistconfig=getConfigModbus();
                     try {
@@ -408,6 +391,11 @@ public class BalanzaService implements Serializable {
                 return true;
             }
         }
+        @Override
+        public void Itw410FrmSetTiempoEstabilizacion(int numero, int Tiempo) {
+            balanzas.get(numero).Itw410FrmSetTiempoEstabilizacion(numero,Tiempo);
+        }
+
         public Struct getBalanza(int numeroBza){
             Struct balanza = balanzas.get(numeroBza);
             if (balanza != null) {
@@ -727,22 +715,22 @@ public class BalanzaService implements Serializable {
         }
 
         @Override
-        public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
+        public Boolean Itw410FrmSetear(int numero, String setPoint, int Salida) {
 
-             balanzas.get(numero).Itw410FrmSetear(numero,setPoint,Salida);
+            System.out.println(numero);
+             return balanzas.get(numero).Itw410FrmSetear(numero,setPoint,Salida);
 
         }
 
         @Override
-        public String Itw410FrmGetSetPoint(int numero) {
+        public String Itw410FrmGetSetPoint(int numero) { // Creas el CountDownLatch con un contador de 1
             String a = balanzas.get(numero).Itw410FrmGetSetPoint(numero);
-
             return a;
         }
 
         @Override
         public int Itw410FrmGetSalida(int numero) {
-            Integer a = balanzas.get(numero).Itw410FrmGetSalida(numero);
+            int a = balanzas.get(numero).Itw410FrmGetSalida(numero);
 
             return a;
         }
@@ -766,6 +754,7 @@ public class BalanzaService implements Serializable {
 
         @Override
         public int Itw410FrmGetUltimoIndice(int numero) {
+
             int a = balanzas.get(numero).Itw410FrmGetUltimoIndice(numero);
             return a;
         }
@@ -780,11 +769,6 @@ public class BalanzaService implements Serializable {
         public void itw410FrmStop(int numero) {
 
             balanzas.get(numero).itw410FrmStop(numero);
-        }
-
-        @Override
-        public void Itw410FrmSetTiempoEstabilizacion(int numero, int Tiempo) {
-            balanzas.get(numero).Itw410FrmSetTiempoEstabilizacion(numero,Tiempo);
         }
 
         public  void setConfigModbus(String Salida,int Slave,int Baud,int Datab,int Stopb,int Parity,int numBza){

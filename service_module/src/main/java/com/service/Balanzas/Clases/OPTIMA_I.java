@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.service.Balanzas.BalanzaService;
 import com.service.Balanzas.Fragments.CalibracionOptimaFragment;
 import com.service.Balanzas.Interfaz.Balanza;
 import com.service.Comunicacion.OnFragmentChangeListener;
@@ -54,6 +55,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
     public float taraDigital=0,Bruto=0,Tara=0,Neto=0,pico=0;
     public String estable="";
     float pesoUnitario=0.5F;
+    BalanzaService Service;
     public PuertosSerie2.SerialPortReader readers=null;
     float pesoBandaCero=0F;
     Boolean estadoCentroCero = false;
@@ -77,10 +79,11 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
     private OPTIMA_I returnthiscontext(){
         return this;
     }
-    public OPTIMA_I(PuertosSerie2 serialPort, int numero, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener) {
+    public OPTIMA_I(PuertosSerie2 serialPort, int numero, AppCompatActivity activity,BalanzaService service, OnFragmentChangeListener fragmentChangeListener) {
         this.serialPort = serialPort;
         this.numero= numero;
         this.mainActivity = activity;
+        this.Service=service;
         this.fragmentChangeListener=fragmentChangeListener;
         context=this;
 
@@ -623,6 +626,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
         return "\u0005D"+capacidad+"0"+DivMin+""+PuntoDecimal+"\r";
     }
     public static String Salir_cal(){
+        //        Service.openServiceFragment();
         return "\u0005E \r";
     }
 
@@ -1004,8 +1008,8 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
 
     @Override
-    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
-
+    public Boolean Itw410FrmSetear(int numero, String setPoint, int Salida) {
+        return false;
     }
 
     @Override
@@ -1389,9 +1393,10 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     @Override
     public void openCalibracion(int numero) {
         if(null!=context) {
-            CalibracionOptimaFragment fragment = CalibracionOptimaFragment.newInstance(context, fragmentChangeListener);
+            CalibracionOptimaFragment fragment = CalibracionOptimaFragment.newInstance(context,Service);
             Bundle args = new Bundle();
             args.putSerializable("instance", context);
+            args.putSerializable("instanceService",Service);
             fragmentChangeListener.openFragmentService(fragment, args);
 
             estado = M_MODO_CALIBRACION;

@@ -6,6 +6,7 @@ import static com.service.Utils.getHora;
 
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
+import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -35,6 +36,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+
+import com.service.Balanzas.BalanzaService;
 import com.service.Balanzas.Clases.MINIMA_I;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -116,17 +119,18 @@ public class CalibracionMinimaFragment extends Fragment {
     int indiceCalibracion=1;
     ConstraintLayout tableParametrosPrincipales;
     Boolean stoped=false;
+    BalanzaService Service;
     private boolean isCollapsed = false;
     private int initialWidth = 258;
 
     private OnFragmentChangeListener fragmentChangeListener;
 
-    public static CalibracionMinimaFragment newInstance(MINIMA_I instance, OnFragmentChangeListener fragmentChangeListener) {
+    public static CalibracionMinimaFragment newInstance(MINIMA_I instance, BalanzaService bza) {
         CalibracionMinimaFragment fragment = new CalibracionMinimaFragment();
         Bundle args = new Bundle();
         args.putSerializable("instance", instance);
+        args.putSerializable("instanceService", bza);
         fragment.setArguments(args);
-        fragment.setFragmentChangeListener(fragmentChangeListener);
         return fragment;
     }
     public void setFragmentChangeListener(OnFragmentChangeListener listener) {
@@ -139,6 +143,8 @@ public class CalibracionMinimaFragment extends Fragment {
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
         if (getArguments() != null) {
             BZA = (MINIMA_I) getArguments().getSerializable("instance");
+
+            Service = (BalanzaService) getArguments().getSerializable("instanceService");
             mainActivity = BZA.mainActivity;
         }
         return view;
@@ -418,7 +424,7 @@ public class CalibracionMinimaFragment extends Fragment {
                                             estado=BZA.M_MODO_BALANZA;
                                            BZA.setPesoUnitario(BZA.getPesoUnitario());
                                            BZA.estado = M_MODO_BALANZA;
-                                          //  mainActivity.MainClass.openFragmentPrincipal();
+                                            Service.openServiceFragment();
                                             boolBtHome =true;
                                             dialog.cancel();
 

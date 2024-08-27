@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.containers.clases.ButtonProviderSingletonPrincipal;
@@ -63,7 +64,6 @@ public class FormPrincipal extends Fragment  {
     boolean stoped=false;
     public int rango=0; //0=bajo, 1=acepto,2=alto
     int botonera=0;
-    int mensajeError=0;
     Button bt_2;
 
     MainFormClass mainClass;
@@ -93,17 +93,16 @@ public class FormPrincipal extends Fragment  {
         viewModel.getEstadoMensajeStr().observe(getViewLifecycleOwner(),estado -> binding.tvEstado.setText(estado));
         viewModel.getNetoTotal().observe(getViewLifecycleOwner(), netoTotal -> binding.tvNetototal.setText(netoTotal));
         viewModel.getCantidad().observe(getViewLifecycleOwner(),cantidad-> binding.tvCantidad.setText(String.valueOf(cantidad)));
-        viewModel.mensajeToastError.observe(getViewLifecycleOwner(),mensaje->{
-            if(mensajeError>0) Utils.Mensaje(mensaje,R.layout.item_customtoasterror,mainActivity);
-            mensajeError++;
+        viewModel.mensajeToastError.observe(getViewLifecycleOwner(), mensaje -> {
+            if(mensaje!=null)Utils.Mensaje(mensaje,R.layout.item_customtoasterror,mainActivity);
         });
-        viewModel.getRealizadas().observe(getViewLifecycleOwner(),realizadas->{
-            Integer cantidad=recetaManager.cantidad.getValue();
-            if(cantidad!=null&&cantidad>0){
+        viewModel.getRealizadas().observe(getViewLifecycleOwner(), realizadas -> {
+            Integer cantidad = recetaManager.cantidad.getValue();
+            if (cantidad != null && cantidad > 0) {
                 binding.tvRestantes.setVisibility(View.VISIBLE);
                 binding.tvRestantesValor.setVisibility(View.VISIBLE);
-                binding.tvRestantesValor.setText(String.valueOf(cantidad-realizadas));
-            }else{
+                binding.tvRestantesValor.setText(String.valueOf(cantidad - realizadas));
+            } else {
                 binding.tvRestantes.setVisibility(View.GONE);
                 binding.tvRestantesValor.setVisibility(View.GONE);
             }
@@ -128,6 +127,7 @@ public class FormPrincipal extends Fragment  {
 
     private void initializeViewModel() {
         viewModel = new ViewModelProvider(requireActivity()).get(FormPrincipalViewModel.class);/*usamos requireActivity para siempre usar la misma instancia (Form_PrincipalViewModel es el programa y debe estar ejecutandose independientemente del programa)*/
+        viewModel.mostrarMensajeDeError(null);
         labelManager.opaso.value=String.valueOf(recetaManager.pasoActual);
         labelManager.ocodigoreceta.value= recetaManager.codigoReceta;
         labelManager.oreceta.value= recetaManager.nombreReceta;
@@ -205,8 +205,7 @@ public class FormPrincipal extends Fragment  {
 
     private boolean verificarComienzo() {
         boolean empezar=true;
-        if(labelManager.olote.value==""||
-                labelManager.ovenci.value==""||faltanCampos()){
+        if(labelManager.olote.value==""||labelManager.ovenci.value==""||faltanCampos()){
             viewModel.mostrarMensajeDeError("Faltan ingresar datos");
             empezar=false;
         }
@@ -227,9 +226,7 @@ public class FormPrincipal extends Fragment  {
                 (String)labelManager.ocampo5.value
         };
         for (int i = 0; i < campos.length; i++) {
-            if (!campos[i].isEmpty() && valores[i].isEmpty()) {
-                return true;
-            }
+            if (!campos[i].isEmpty() && valores[i].isEmpty()) return true;
         }
         return false;
     }
@@ -400,29 +397,18 @@ public class FormPrincipal extends Fragment  {
             String setPoint=mainClass.BZA.format(mainClass.N_BZA,String.valueOf(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing()) );
             Runnable myRunnable = () -> {
                 System.out.println("setpoint:"+setPoint+" salida:"+salida);
-                mainClass.BZA.Itw410FrmSetear(mainClass.N_BZA,setPoint,salida);
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                int valorsal=mainClass.BZA.Itw410FrmGetSalida(mainClass.N_BZA);
-                String valorsp=mainClass.BZA.Itw410FrmGetSetPoint(mainClass.N_BZA);
-                if(Utils.isNumeric(valorsp)&&Utils.isNumeric(setPoint)&&Objects.equals(valorsal,salida)&& Float.parseFloat(valorsp)==Float.parseFloat(setPoint)) {
+                boolean result=mainClass.BZA.Itw410FrmSetear(mainClass.N_BZA,setPoint,salida);
+                if(result){
                     mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
                     recetaManager.automatico=true;
                     preferencesManager.setAutomatico(true);
                     preferencesManager.setSalida(salida);
                 }else{
-                    mainActivity.runOnUiThread(() ->  viewModel.mostrarMensajeDeError("Error de balanza:410= "+valorsp+", Sys="+setPoint));
+                    mainActivity.runOnUiThread(() ->  viewModel.mostrarMensajeDeError("Error de balanza:410 escritura"));
                 }
             };
-
             Thread myThread = new Thread(myRunnable);
             myThread.start();
-
-            //mandar el setpoint y la salida, esperamos y leemos que le llegue bien
-            //si le llego bien ponemose el sharedpreferences automatico y recetamanager.automatico en true
         }else{
             recetaManager.automatico=false;
             preferencesManager.setAutomatico(false);
@@ -1123,7 +1109,8 @@ public class FormPrincipal extends Fragment  {
 
     private void actualizarVistas() {
         binding.tvNeto.setText(mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA));
-        binding.tvBruto.setText(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA));
+        //binding.tvBruto.setText(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA));
+        binding.tvBruto.setText(mainActivity.mainClass.BZA.Itw410FrmGetSetPoint(mainActivity.mainClass.N_BZA));
         if(!recetaManager.automatico&&botonera==0) bt_2.setText("PESAR");
         labelManager.oturno.value=mainActivity.mainClass.devuelveTurnoActual();
         if(!labelManager.olote.value.equals("")&&

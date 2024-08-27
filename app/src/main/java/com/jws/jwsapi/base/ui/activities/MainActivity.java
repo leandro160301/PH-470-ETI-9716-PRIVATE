@@ -31,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
-    public static String VERSION ="PH 470 FRM 1.02";
+    public static String VERSION ="PH 470 FRM 1.03";
     public JwsManager jwsObject;
     public MainFormClass mainClass;
     public Storage storage;

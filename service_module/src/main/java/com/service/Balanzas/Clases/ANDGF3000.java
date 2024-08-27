@@ -131,8 +131,8 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
 
     @Override
-    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
-
+    public Boolean Itw410FrmSetear(int numero, String setPoint, int Salida) {
+        return false;
     }
 
     @Override
@@ -205,6 +205,8 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
         return "\u0005D"+capacidad+"0"+DivMin+""+PuntoDecimal+"\r";
     }
     public String Salir_cal(){
+
+       // Service.openServiceFragment();
         return "\u0005E \r";
     }
     public String Errores(String lectura){

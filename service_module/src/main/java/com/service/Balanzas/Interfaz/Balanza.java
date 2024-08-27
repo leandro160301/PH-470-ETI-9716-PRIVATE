@@ -1,5 +1,7 @@
 package com.service.Balanzas.Interfaz;
 
+import java.util.concurrent.CountDownLatch;
+
 public interface Balanza {
     interface Struct{
         void setID(int numID,int numBza);
@@ -54,7 +56,7 @@ public interface Balanza {
         String getEstado(int numBza);
         void setEstado(int numBza, String estado);
         void onEvent();
-        void Itw410FrmSetear(int numero,String setPoint, int Salida);
+        Boolean Itw410FrmSetear(int numero,String setPoint, int Salida);//void Itw410FrmSetear(int numero,String setPoint, int Salida);
         String Itw410FrmGetSetPoint(int numero);
         int Itw410FrmGetSalida(int numero);
         void Itw410FrmStart(int numero);

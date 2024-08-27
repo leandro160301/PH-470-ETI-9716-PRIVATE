@@ -87,8 +87,8 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
 
 
     @Override
-    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
-
+    public Boolean Itw410FrmSetear(int numero, String setPoint, int Salida) {
+        return false;
     }
 
     @Override
@@ -464,6 +464,9 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
         return "\u0005D"+capacidad+"0"+DivMin+""+PuntoDecimal+"\r";
     }
     public String Salir_cal(){
+
+
+       // Service.openServiceFragment();
         return "\u0005E \r";
     }
     public void setStopcomunicacion() throws IOException {

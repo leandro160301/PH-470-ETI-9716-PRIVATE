@@ -9,6 +9,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.service.Balanzas.BalanzaService;
 import com.service.Balanzas.Fragments.CalibracionMinimaFragment;
 import com.service.Balanzas.Interfaz.Balanza;
 import com.service.PuertosSerie.PuertosSerie;
@@ -124,9 +125,11 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     public void openCalibracion(int numero) {
    //     mainActivity.MainClass.openFragment(new CalibracionOptimaFragment2_minima());
         System.out.println("WOLOOOOOLOOOOOO");
-        CalibracionMinimaFragment fragment = CalibracionMinimaFragment.newInstance(context, fragmentChangeListener);
+        CalibracionMinimaFragment fragment = CalibracionMinimaFragment.newInstance(context, Service);
         Bundle args = new Bundle();
         args.putSerializable("instance", context);
+        args.putSerializable("instanceService",Service);
+
         fragmentChangeListener.openFragmentService(fragment,args);
 
     }
@@ -160,11 +163,13 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     public String ultimaCalibracion="";
     public String brutoStr="0",netoStr="0",taraStr="0",taraDigitalStr="0",picoStr="0";
     public int acumulador=0;
+    BalanzaService Service;
     public int numeroid =0;
 
-    public MINIMA_I(PuertosSerie2 serialPort, int numero, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener) {
+    public MINIMA_I(PuertosSerie2 serialPort, int numero, AppCompatActivity activity, BalanzaService service, OnFragmentChangeListener fragmentChangeListener) {
         this.serialPort = serialPort;
         this.numBza = numero;
+        this.Service=service;
         this.mainActivity = activity;
         this.fragmentChangeListener=fragmentChangeListener;
         context=this;
@@ -1092,10 +1097,9 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     }
 
     @Override
-    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
-
+    public Boolean Itw410FrmSetear(int numero, String setPoint, int Salida) {
+        return false;
     }
-
     @Override
     public String Itw410FrmGetSetPoint(int numero) {
         return null;

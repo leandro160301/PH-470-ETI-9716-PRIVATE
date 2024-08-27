@@ -341,12 +341,6 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
 
 
-    public void setTara(float tara){
-
-
-        Tara=tara;
-        taraStr=String.valueOf(tara);
-    }
 
     public void setTaraDigital(float tara){
         taraDigital=tara;
@@ -963,7 +957,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
         ModbusRtuMaster.writeRegister(callback,numeroSlave,29,Integer.parseInt(valueFormateado));
         try{
-            latch.await(1600,TimeUnit.MILLISECONDS);
+            latch.await(2000,TimeUnit.MILLISECONDS);
         }catch(Exception e){
             Thread.currentThread().interrupt();
             Resulte[0] =false;
@@ -1152,7 +1146,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
         };
         ModbusRtuMaster.readHoldingRegisters(callback,numeroSlave,25,1);
         try {
-            latch.await(1000, TimeUnit.MILLISECONDS); // Espera hasta que el callback se complete
+            latch.await(1600, TimeUnit.MILLISECONDS); // Espera hasta que el callback se complete
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             // Maneja la excepción si es necesario
@@ -1190,7 +1184,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
         ModbusRtuMaster.readHoldingRegisters(callback,numeroSlave,24,1);
         try {
-            latch.await(1000, TimeUnit.MILLISECONDS); // Espera hasta que el callback se complete
+            latch.await(1600, TimeUnit.MILLISECONDS); // Espera hasta que el callback se complete
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             // Maneja la excepción si es necesario
@@ -1556,6 +1550,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
     @Override
     public void setTaraDigital(int numBza, float TaraDigital) {
+        setTara(numBza);
         taraDigital = TaraDigital;
         taraDigitalStr=String.valueOf(TaraDigital);
     }

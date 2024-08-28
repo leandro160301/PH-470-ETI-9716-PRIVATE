@@ -527,6 +527,8 @@ public class CalibracionItw410Fragment extends Fragment {
                 ArrayList<String> listdata=   BZA.Pedirparam();
                // String x = BZA.format(numero,String.valueOf(listdata.get(0)));
               //  tv_pesoConocido.setText(x);
+                try {
+                    tv_pesoConocido.setText(BZA.format(numero,String.valueOf(BZA.formatpuntodec(Integer.parseInt(listdata.get(0))))));
                 tv_filtros1.setText(listdata.get(2));
                 tv_filtros2.setText(listdata.get(3));
                 tv_filtros3.setText(listdata.get(4));
@@ -547,6 +549,12 @@ public class CalibracionItw410Fragment extends Fragment {
                     default:{
                         //none
                     }
+                } }catch(Exception e){
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utils.Mensaje("Error al leer los datos",R.layout.item_customtoasterror,mainActivity);
+                        }});
                 }
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override

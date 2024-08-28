@@ -42,13 +42,6 @@ public class ITW410 implements Balanza.Struct, Serializable {
     public float formatpuntodec(int numero) {
 
         float respuesta =  numero / (float) Math.pow(10, puntoDecimal);
-        /* String restr= String.valueOf(respuesta);
-        int enter=restr.indexOf(".");
-        int end = restr.length() -enter;
-        while(end<puntoDecimal){
-            restr=restr+"0";
-        }
-        System.out.println("y el num "+numero +"    "+respuesta  +"con pd"+ puntoDecimal);*/
         return Float.parseFloat(format(numero,String.valueOf(respuesta)));
     }
     @Override
@@ -119,14 +112,14 @@ Runnable GET_PESO_cal_bza = new Runnable() {
                             // Maneja el resultado exitoso aquí
                             Bruto = formatpuntodec(result[0]);
                             System.out.println("ITW410 Bruto:" + result[0]);
-                            brutoStr = String.valueOf(Bruto);
+                            brutoStr =format(numerobza, String.valueOf(Bruto));
                             Neto = formatpuntodec(result[1]);
                             System.out.println("ITW410 Neto:" + result[1]);
-                            netoStr = String.valueOf(Neto);
+                            netoStr = format(numerobza,String.valueOf(Neto));
                             Tara = formatpuntodec(result[3]);
 
                             System.out.println("ITW410 Tara:" + result[2]);
-                            taraStr = String.valueOf(Tara);
+                            taraStr = format(numerobza,String.valueOf(Tara));
                             taraDigitalStr=taraStr;
                             estado410 = result[3];
                             System.out.println("ESTADO 410:" + result[3]);
@@ -140,50 +133,19 @@ Runnable GET_PESO_cal_bza = new Runnable() {
                         }
                     };
                     ModbusRtuMaster.readHoldingRegisters(callback, numeroSlave, 20, 4);
-
-              /*  callback = new OnRequestBack<short[]>() {
-                    @Override
-                    public void onSuccess(short[] result) {
-                        // Maneja el resultado exitoso aquí
-                        //int peso_cal = result[0];
-                        //int div_min = result[1];
-                        int filter1 = result[0];
-                        int filter2 = result[1];
-                        int filter3 = result[2];
-                        System.out.println("filters"+ filter1+filter2+filter3);
-                    }
-
-                    @Override
-                    public void onFailed(String error) {
-                        // Maneja el error aquí
-
-
-                    }
-                };
-                ModbusRtuMaster.readHoldingRegisters(callback, numeroSlave, 8, 3);*/
-                } catch (Exception e) {
-
-                }
-                ;
-
+                } catch (Exception e) {};
             } else if (subnombre == 2) {
-
                 try {
                     final float[] response = {0.0F};
                     OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
                         @Override
                         public void onSuccess(short[] result) {
-                            // Maneja el resultado exitoso aquí
                             Bruto = result[0];
                             System.out.println("ITW410 Bruto:" + Bruto);
                             brutoStr = String.valueOf(Bruto);
                         }
-
                         @Override
                         public void onFailed(String error) {
-                            // Maneja el error aquí
-
-
                         }
                     };
                     ModbusRtuMaster.readHoldingRegisters(callback, numeroSlave, 3, 2);
@@ -1508,6 +1470,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     public void setTaraDigital(int numBza, float TaraDigital) {
         taraDigital = TaraDigital;
         taraDigitalStr=String.valueOf(TaraDigital);
+        setTara(numBza);
     }
 
     @Override

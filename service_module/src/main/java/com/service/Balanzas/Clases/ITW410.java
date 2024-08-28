@@ -40,8 +40,16 @@ public class ITW410 implements Balanza.Struct, Serializable {
         return this;
     }
     public float formatpuntodec(int numero) {
+
         float respuesta =  numero / (float) Math.pow(10, puntoDecimal);
-       return respuesta;
+        /* String restr= String.valueOf(respuesta);
+        int enter=restr.indexOf(".");
+        int end = restr.length() -enter;
+        while(end<puntoDecimal){
+            restr=restr+"0";
+        }
+        System.out.println("y el num "+numero +"    "+respuesta  +"con pd"+ puntoDecimal);*/
+        return Float.parseFloat(format(numero,String.valueOf(respuesta)));
     }
     @Override
     public String format(int numero,String peso) {
@@ -116,8 +124,10 @@ Runnable GET_PESO_cal_bza = new Runnable() {
                             System.out.println("ITW410 Neto:" + result[1]);
                             netoStr = String.valueOf(Neto);
                             Tara = formatpuntodec(result[3]);
+
                             System.out.println("ITW410 Tara:" + result[2]);
                             taraStr = String.valueOf(Tara);
+                            taraDigitalStr=taraStr;
                             estado410 = result[3];
                             System.out.println("ESTADO 410:" + result[3]);
                         }
@@ -274,7 +284,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
             public void onSuccess(String result) {
                 // Maneja el resultado exitoso aquí
                 res[0] =result;
-                System.out.println("ITW410 setear:"+result);
+                System.out.println("ITW410 tiempoestable:"+result);
             }
 
             @Override
@@ -342,9 +352,11 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
 
 
+
     public void setTaraDigital(float tara){
         taraDigital=tara;
         taraDigitalStr=String.valueOf(tara);
+        setTara(numerobza);
 
     }
 
@@ -572,6 +584,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
                 public void onSuccess(String result) {
                     // Maneja el resultado exitoso aquí
                     String peso_cal = result;
+                    System.out.println("ITW410 Guardado_cal"+result);
 
                 }
 
@@ -586,36 +599,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
         return "\u0005S\r";
     }
-    public String PesoConFormat(String pesoconocido, int puntoDecimalx){
-        try{
-            String valueFormateado="";
-            if(pesoconocido.contains(".")){
-                valueFormateado= formatearNumero(Double.parseDouble(pesoconocido),puntoDecimal);
-                int enter = valueFormateado.length();
-                int end = 0;
-                if (valueFormateado.contains(".")) {
-                    enter = valueFormateado.indexOf('.');
-                    end = valueFormateado.length() - (enter + 1);
-                }
-                while (end<puntoDecimal){
-                    valueFormateado=valueFormateado+"0";
-                    end++;
-                }
-
-            }else{
-                StringBuilder x =new StringBuilder(pesoconocido);
-                for (int i=0;i<puntoDecimal;i++){
-                    x.append(0);
-                }
-                valueFormateado= String.valueOf(x);
-            }
-            return valueFormateado;
-
-        }catch (Exception e){
-            return null;
-        }
-    }
-    public String Peso_conocido(String pesoconocido,String PuntoDecimal){
+     public String Peso_conocido(String pesoconocido,String PuntoDecimal){
         String pesoConocido="";
         if(subnombre==1) {
             OnRequestBack<String> callback = new OnRequestBack<String>() {
@@ -675,6 +659,8 @@ Runnable GET_PESO_cal_bza = new Runnable() {
             OnRequestBack<String> callback = new OnRequestBack<String>() {
                 @Override
                 public void onSuccess(String result) {
+
+                    System.out.println("ITW410 ReAjuste:"+result);
                     latch.countDown();
                 }
                 @Override
@@ -795,8 +781,11 @@ Runnable GET_PESO_cal_bza = new Runnable() {
         return Preferencias.getString(String.valueOf(numeroSlave)+"_"+"capacidad","100");
     }
     public String get_PesoConocido(){
+        puntoDecimal=get_PuntoDecimal();
         SharedPreferences Preferencias=Service.activity.getSharedPreferences("ITW410",Context.MODE_PRIVATE);
-        return Preferencias.getString(String.valueOf(numeroSlave)+"_"+"pconocido","100");
+        String str= Preferencias.getString(String.valueOf(numeroSlave)+"_"+"pconocido","100");
+
+        return format(numerobza,str);
     }
 
     public void stopRuning(){
@@ -869,56 +858,23 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     public void onEvent() {
 
     }
-    public static String pointDecimalFormat(String numero, int decimales) {
-        try {
-            Double.parseDouble(numero);
-        } catch (NumberFormatException e) {
-            return "0000";
-        }
-
-        String formato = "0";
-        if (decimales > 0) {
-            formato += ".";
-            for (int i = 0; i < decimales; i++) {
-                formato += "0";
-            }
-        }
-
-        DecimalFormat decimalFormat = new DecimalFormat(formato);
-        return decimalFormat.format(Double.parseDouble(numero));
-    }
-
-    String formatsp(String num,int dec){
-        StringBuilder x = new StringBuilder(num);
-        for (int i=0;i<dec;i++){
-            if(num.contains(".")) {
-                String[] z = num.split("\\.");
-                if (z[1].length() < dec) {
-                    x.append(0);
-                }
-            }else{
-                x.append(0);
-            }
-        }
-        num=x.toString();
-       return num.replace(".","");
-    }
-
-
-        public static String formatearNumero(double numero, int decimales) {
-            StringBuilder pattern = new StringBuilder("0.");
-            for (int i = 0; i < decimales; i++) {
-                pattern.append("#");
-            }
-            DecimalFormat decimalFormat = new DecimalFormat(pattern.toString());
-            return decimalFormat.format(numero);
-        }
     @Override
     public Boolean Itw410FrmSetear(int numero, String setPoint, int Salida) {
-        String valueFormateado=format(this.numerobza,setPoint).replace(".","");
-        final Boolean[] Resulte = {false};
-        final String[] res = {""};
+        String valueFormateado="";
 
+        final Boolean[] Resulte = {false};
+        valueFormateado = format(puntoDecimal,setPoint);
+      /*  if(setPoint.contains(".")){
+            valueFormateado= formatearNumero(Double.parseDouble(setPoint),puntoDecimal).replace(".","");
+        }else{
+            StringBuilder x =new StringBuilder(setPoint);
+            for (int i=0;i<puntoDecimal;i++){
+                x.append(0);
+            }
+            valueFormateado= String.valueOf(x);
+        }*/
+        final String[] res = {""};
+        System.out.println("antes:"+setPoint+"despues:"+valueFormateado);
         CountDownLatch latch= new CountDownLatch(1);
         OnRequestBack<String> callback2 = new OnRequestBack<String>() {
             @Override
@@ -955,7 +911,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
             }
         };
 
-        ModbusRtuMaster.writeRegister(callback,numeroSlave,29,Integer.parseInt(valueFormateado));
+        ModbusRtuMaster.writeRegister(callback,numeroSlave,29,Integer.parseInt(valueFormateado.replace(".","")));
         try{
             latch.await(2000,TimeUnit.MILLISECONDS);
         }catch(Exception e){
@@ -1035,8 +991,8 @@ Runnable GET_PESO_cal_bza = new Runnable() {
                 int v = result[0];
                 //valueformater[0] =formatearNumero(Double.parseDouble(String.valueOf(v)),puntoDecimal);
                // System.out.println("con formatearnumero antes:"+result[0]+"despues:"+valueformater[0]);
-                valueformater[0]= String.valueOf(formatpuntodec(result[0]));
-                System.out.println("con formatpuntodec antes:"+result[0]+"despues:"+valueformater[0]);
+                valueformater[0]= String.valueOf(format(numero,String.valueOf(result[0])));
+                System.out.println(" antes:"+result[0]+"despues:"+valueformater[0]);
 
                 latch.countDown();
             }
@@ -1124,13 +1080,13 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     public String Itw410FrmGetUltimoPeso(int numero) {
         final short[][] res = {new short[0]};
         final CountDownLatch latch = new CountDownLatch(1);
-        final String[] response = {"null"};
+        final float[] response = {0};
         OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
             @Override
             public void onSuccess(short[] result) {
                 // Maneja el resultado exitoso aquí
                 res[0] =result;
-                response[0] = String.valueOf(formatpuntodec(result[0]));
+                response[0] = formatpuntodec(Integer.parseInt(String.valueOf(result[0])));
                 latch.countDown();
                 System.out.println("ITW410 ultimo peso:"+result);
             }
@@ -1138,7 +1094,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
             @Override
             public void onFailed(String error) {
                 // Maneja el error aquí
-                response[0] ="null";
+                response[0] =0;
                 latch.countDown();
 
 
@@ -1146,13 +1102,13 @@ Runnable GET_PESO_cal_bza = new Runnable() {
         };
         ModbusRtuMaster.readHoldingRegisters(callback,numeroSlave,25,1);
         try {
-            latch.await(1600, TimeUnit.MILLISECONDS); // Espera hasta que el callback se complete
+            latch.await(1000, TimeUnit.MILLISECONDS); // Espera hasta que el callback se complete
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             // Maneja la excepción si es necesario
         }
 
-        return response[0];
+        return String.valueOf(response[0]);
     }
     public void salir_cal(){
         // open principal
@@ -1184,7 +1140,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
         ModbusRtuMaster.readHoldingRegisters(callback,numeroSlave,24,1);
         try {
-            latch.await(1600, TimeUnit.MILLISECONDS); // Espera hasta que el callback se complete
+            latch.await(1000, TimeUnit.MILLISECONDS); // Espera hasta que el callback se complete
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             // Maneja la excepción si es necesario
@@ -1550,7 +1506,6 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
     @Override
     public void setTaraDigital(int numBza, float TaraDigital) {
-        setTara(numBza);
         taraDigital = TaraDigital;
         taraDigitalStr=String.valueOf(TaraDigital);
     }

@@ -391,7 +391,7 @@ public class CalibracionItw410Fragment extends Fragment {
 
    
 
-
+        collapseLinearLayout(table_parametrosPrincipales);
         togglediv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -493,9 +493,17 @@ public class CalibracionItw410Fragment extends Fragment {
                     @Override
                     public void run() {
                         BZA.Recero_cal();
-                        dialog.cancel();
+                        mainActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                btReajusteCerobool = true;
+                                dialog.cancel();
+
+                            }
+                        });
                     }
-                });
+                }).start();
             }
         });
         bt_iniciarCalibracion.setOnClickListener(view12 -> {
@@ -515,9 +523,10 @@ public class CalibracionItw410Fragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                puntoDecimal= BZA.get_PuntoDecimal();
                 ArrayList<String> listdata=   BZA.Pedirparam();
-
-                tv_pesoConocido.setText(String.valueOf(BZA.formatpuntodec(Integer.parseInt(listdata.get(0)))));
+               // String x = BZA.format(numero,String.valueOf(listdata.get(0)));
+              //  tv_pesoConocido.setText(x);
                 tv_filtros1.setText(listdata.get(2));
                 tv_filtros2.setText(listdata.get(3));
                 tv_filtros3.setText(listdata.get(4));
@@ -589,9 +598,11 @@ public class CalibracionItw410Fragment extends Fragment {
     }
     private void enviarpddiv(ArrayList<Integer> CapDivPDecimal) throws InterruptedException {
         BZA.enviarParametros(CapDivPDecimal);
+
+
       }
     private void inicioCalibracion(String CapDivPDecimal) {
-        System.out.println("initcal _> " + indiceCalibracion);
+        indiceCalibracion=1;
         final Boolean[] bt_guardarbool = {true};
         if(CapDivPDecimal!="ERRCONTROL")
         {
@@ -616,7 +627,7 @@ public class CalibracionItw410Fragment extends Fragment {
             try {
                 ArrayList<Integer> Listavals = new ArrayList<>();
                 Listavals.add(Integer.parseInt(sp_divisionMinima.getSelectedItem().toString()));
-                Listavals.add(Integer.parseInt(BZA.PesoConFormat(tv_pesoConocido.getText().toString(),sp_puntoDecimal.getSelectedItemPosition()).replace(".","")));
+                Listavals.add(Integer.parseInt(BZA.format(numero,tv_pesoConocido.getText().toString()).replace(".","")));
                 Listavals.add(Integer.parseInt(tv_filtros1.getText().toString()));
                 Listavals.add(Integer.parseInt(tv_filtros2.getText().toString()));
                 Listavals.add(Integer.parseInt(tv_filtros3.getText().toString()));
@@ -662,7 +673,9 @@ public class CalibracionItw410Fragment extends Fragment {
     }
         private void ejecutarCalibracionRecero(Button Guardar, TextView titulo, ProgressBar loadingPanel, TextView tvCarga,AlertDialog dialog) {
         System.out.println("ITW 410 recero");
+            indiceCalibracion = 1;
         BZA.setRecerocal();
+
         titulo.setText("");
         loadingPanel.setVisibility(View.VISIBLE);
         tvCarga.setVisibility(View.VISIBLE);
@@ -675,11 +688,10 @@ public class CalibracionItw410Fragment extends Fragment {
             });
             if (!stoped) {
                 try {
-                    Thread.sleep(1000);
                     getActivity().runOnUiThread(() -> {
                         BZA.Guardar_cal();
                         bt_iniciarCalibracionbool = true;
-                        indiceCalibracion = 1;
+
                         if (dialog1 != null) {
                             dialog1.setCancelable(true);
                             dialog1.cancel();
@@ -691,8 +703,7 @@ public class CalibracionItw410Fragment extends Fragment {
     }
 
     private void ejecutarCalibracionPesoConocido(Button Guardar,TextView titulo,ProgressBar loadingPanel,TextView tvCarga,AlertDialog dialog) {
-
-        String msj = BZA.PesoConFormat(tv_pesoConocido.getText().toString(),sp_puntoDecimal.getSelectedItemPosition());//,tv_capacidad.getText().toString()
+        String msj = BZA.format(numero,tv_pesoConocido.getText().toString());//,tv_capacidad.getText().toString()
         if(msj!=null){
             BZA.setSpancal();
             titulo.setText("");
@@ -800,7 +811,7 @@ public class CalibracionItw410Fragment extends Fragment {
             public void onClick(View view) {
 
                 if(Texto== "Peso Conocido"){
-                    if(BZA.PesoConFormat(userInput.getText().toString(),sp_puntoDecimal.getSelectedItemPosition())!=null){ // ,tv_capacidad.getText().toString()
+                    if(BZA.format(numero,userInput.getText().toString())!=null){ // ,tv_capacidad.getText().toString()
                         //mainActivity.Puerto_A().write(mainActivity.MainClass.BZA1.Peso_conocido(userInput.getText().toString(),String.valueOf(sp_puntoDecimal.getSelectedItemPosition())));
                        // procesarerror(2,dialog);
                         textView.setText(userInput.getText().toString());

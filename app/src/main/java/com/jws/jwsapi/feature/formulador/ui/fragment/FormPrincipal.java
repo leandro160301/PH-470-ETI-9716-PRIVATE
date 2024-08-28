@@ -387,7 +387,11 @@ public class FormPrincipal extends Fragment  {
         if(isAutomatic){
             setEstadoPesar();
         }else{
-            IngresoRecipiente();
+            if(preferencesManager.getRecipientexPaso()||recetaManager.pasoActual==1){
+                IngresoRecipiente();
+            }else{
+                mainClass.BZA.setTaraDigital(mainClass.N_BZA,mainClass.BZA.getBruto(mainClass.N_BZA));
+            }
         }
         return isAutomatic;
     }
@@ -445,7 +449,6 @@ public class FormPrincipal extends Fragment  {
             setupValoresParaInicio();
         }else{
             viewModel.mostrarMensajeDeError("Ocurrio un error con la carga de la receta");
-            IngresoRecipiente();
         }
     }
 

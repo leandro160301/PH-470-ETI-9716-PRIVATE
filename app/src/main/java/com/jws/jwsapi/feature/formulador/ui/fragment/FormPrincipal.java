@@ -1109,8 +1109,8 @@ public class FormPrincipal extends Fragment  {
 
     private void actualizarVistas() {
         binding.tvNeto.setText(mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA));
-        //binding.tvBruto.setText(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA));
-        binding.tvBruto.setText(mainActivity.mainClass.BZA.Itw410FrmGetSetPoint(mainActivity.mainClass.N_BZA));
+        binding.tvBruto.setText(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA));
+        //binding.tvBruto.setText(mainActivity.mainClass.BZA.Itw410FrmGetSetPoint(mainActivity.mainClass.N_BZA));
         if(!recetaManager.automatico&&botonera==0) bt_2.setText("PESAR");
         labelManager.oturno.value=mainActivity.mainClass.devuelveTurnoActual();
         if(!labelManager.olote.value.equals("")&&

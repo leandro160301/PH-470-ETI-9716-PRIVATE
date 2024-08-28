@@ -240,7 +240,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
                 }
             };
         }
-        mHandler.postDelayed(GET_PESO_cal_bza,300);
+        mHandler.postDelayed(GET_PESO_cal_bza,500);
 
     }
 

@@ -127,7 +127,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
                         @Override
                         public void onFailed(String error) {
-                            // Maneja el error aquí
+                            System.out.println("ERROR DE Bucle");
 
 
                         }
@@ -850,7 +850,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
             @Override
             public void onFailed(String error) {
-                // Maneja el error aquí
+                System.out.println("hola como andas: 2");
                 res[0] =error;
                 latch.countDown();
                 Resulte[0] =false;
@@ -860,6 +860,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
             @Override
             public void onSuccess(String result) {
                 // Maneja el resultado exitoso aquí
+
                 res[0] =result;
                 ModbusRtuMaster.writeRegister(callback2,numeroSlave,30,Salida);
 
@@ -867,7 +868,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
             @Override
             public void onFailed(String error) {
-                // Maneja el error aquí
+                System.out.println("hola como andas: 1");
                 res[0] =error;
                 Resulte[0] =false;
             }
@@ -877,6 +878,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
         try{
             latch.await(2000,TimeUnit.MILLISECONDS);
         }catch(Exception e){
+            System.out.println("hola como andas:"+e.getMessage());
             Thread.currentThread().interrupt();
             Resulte[0] =false;
         }

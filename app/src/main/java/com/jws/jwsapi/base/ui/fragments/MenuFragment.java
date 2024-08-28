@@ -75,10 +75,15 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
     public void onItemClick(View view, int position) {
         menuElegido =position;
         if(position==0){
-            ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.Service);
-            Bundle args = new Bundle();
-            args.putSerializable("instanceService", mainActivity.mainClass.Service);
-            mainActivity.mainClass.openFragmentService(fragment,args);
+            if(usersManager.getNivelUsuario()>1){
+                ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.Service);
+                Bundle args = new Bundle();
+                args.putSerializable("instanceService", mainActivity.mainClass.Service);
+                mainActivity.mainClass.openFragmentService(fragment,args);
+            }else{
+                Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+            }
+
         }
         if(position==1){
             ListElementsArrayListdinamicos1=new ArrayList<>(Arrays.asList(ListElementsdinamicos1));

@@ -21,7 +21,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaDatosBinding;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
-import com.jws.jwsapi.feature.formulador.ui.viewmodel.FormFragmentDatosViewModel;
+import com.jws.jwsapi.feature.formulador.viewmodel.FormFragmentDatosViewModel;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;

@@ -1,4 +1,4 @@
-package com.jws.jwsapi.feature.formulador.ui.viewmodel;
+package com.jws.jwsapi.feature.formulador.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

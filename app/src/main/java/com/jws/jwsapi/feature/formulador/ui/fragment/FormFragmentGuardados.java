@@ -20,7 +20,7 @@ import com.jws.jwsapi.feature.formulador.models.FormModelRecetaDB;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterGuardadosPesadas;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterGuardadosRecetas;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.feature.formulador.ui.viewmodel.FormFragmentGuardadosViewModel;
+import com.jws.jwsapi.feature.formulador.viewmodel.FormFragmentGuardadosViewModel;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;

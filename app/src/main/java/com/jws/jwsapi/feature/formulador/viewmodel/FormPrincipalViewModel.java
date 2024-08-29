@@ -1,4 +1,4 @@
-package com.jws.jwsapi.feature.formulador.ui.viewmodel;
+package com.jws.jwsapi.feature.formulador.viewmodel;
 
 import static com.jws.jwsapi.utils.Utils.format;
 
@@ -9,6 +9,7 @@ import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.data.repository.RecipeRepository;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
+import com.jws.jwsapi.feature.formulador.manager.BalanzaManager;
 import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import com.jws.jwsapi.utils.Utils;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class FormPrincipalViewModel extends ViewModel {
     private final RecipeRepository recipeRepository;
     private final LabelManager labelManager;
     private final MutableLiveData<String> mensajeError = new MutableLiveData<>();
+    private final BalanzaManager balanzaManager;
     public LiveData<String> mensajeToastError = mensajeError;
 
     @Inject
@@ -31,6 +33,7 @@ public class FormPrincipalViewModel extends ViewModel {
         this.preferencesManager = preferencesManager;
         this.recipeRepository = recipeRepository;
         this.labelManager = labelManager;
+        this.balanzaManager = new BalanzaManager(preferencesManager);
         initializeRecetaManager();
     }
 
@@ -113,41 +116,7 @@ public class FormPrincipalViewModel extends ViewModel {
 
     public int determinarBalanza() {
         String kilos = recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing();
-        int modo = preferencesManager.getModoBalanza();
-        int num = 1;
-        if (Utils.isNumeric(kilos)) {
-            float kilosFloat = Float.parseFloat(kilos);
-            float bza1Limite = Float.parseFloat(preferencesManager.getBza1Limite());
-            float bza2Limite = Float.parseFloat(preferencesManager.getBza2Limite());
-            if (kilosFloat > bza2Limite && modo > 1) {
-                num = 3;
-            } else if (kilosFloat < bza2Limite && modo > 0) {
-                num = 2;
-            } else if (kilosFloat < bza1Limite) {
-                num = 1;
-            }
-        }
-        if (num == 1) {
-            num = determinarBalanzaPorModo(modo);
-        }
-
-        return num;
-    }
-
-    private int determinarBalanzaPorModo(int modo) {
-        int num = 0;
-        switch (modo) {
-            case 0:
-                num = 1;
-                break;
-            case 1:
-                num = 2;
-                break;
-            case 2:
-                num = 3;
-                break;
-        }
-        return num;
+        return balanzaManager.determinarBalanza(kilos);
     }
 
 

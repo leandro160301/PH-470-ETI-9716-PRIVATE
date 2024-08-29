@@ -104,7 +104,6 @@ public class FormPrincipalViewModel extends ViewModel {
                 }
             }
         }
-
     }
 
     private boolean isManualOEstadoProceso() {

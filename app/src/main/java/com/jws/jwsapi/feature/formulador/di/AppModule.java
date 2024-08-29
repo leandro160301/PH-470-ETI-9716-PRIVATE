@@ -1,12 +1,18 @@
 package com.jws.jwsapi.feature.formulador.di;
 
 import android.app.Application;
+import android.content.Context;
+
 import com.jws.jwsapi.common.users.UsersManager;
+import com.jws.jwsapi.feature.formulador.MainFormClass;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.data.sql.FormSqlHelper;
+
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 
 @Module
@@ -18,6 +24,13 @@ public class AppModule {
     public RecetaManager provideRecetaManager() {
         return new RecetaManager();
     }
+
+
+    @Provides
+    public FormSqlHelper provideFormSqlHelper(@ApplicationContext Context context) {
+        return new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version);
+    }
+
 
     @Provides
     @Singleton

@@ -26,12 +26,14 @@ import com.jws.jwsapi.common.impresora.ImprimirEstandar;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaIngredientesBinding;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.data.repository.RecipeRepository;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterIngredientes;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterIngredientesInterface;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
+import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -42,7 +44,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class FormFragmentIngredientes extends Fragment implements FormAdapterIngredientes.ItemClickListener, AdapterIngredientesInterface {
+public class FormFragmentIngredientes extends Fragment implements FormAdapterIngredientes.ItemClickListener, AdapterIngredientesInterface , ToastHelper {
 
     @Inject
     RecetaManager recetaManager;
@@ -50,6 +52,8 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
     LabelManager labelManager;
     @Inject
     PreferencesManager preferencesManager;
+    @Inject
+    RecipeRepository recipeRepository;
     public static final int CANTIDAD=4;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
@@ -74,7 +78,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
-        listIngredientes =mainActivity.mainClass.getIngredientes();
+        listIngredientes =recipeRepository.getIngredientes(this);
         configuracionBotones();
         cargarRecyclerView();
 
@@ -113,7 +117,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
             String descripcion=tv_descripcion.getText().toString();
             String salida=tv_salida.getText().toString();
             if(!codigo.isEmpty() && !descripcion.isEmpty()&& Utils.isNumeric(codigo)&& Utils.isNumeric(salida)&&Integer.parseInt(salida)<=CANTIDAD){
-                List<FormModelIngredientes> ing=mainActivity.mainClass.getIngredientes();
+                List<FormModelIngredientes> ing=recipeRepository.getIngredientes(this);
                 boolean existe=false;
                 for(int i=0;i<ing.size();i++){
                     if(codigo.equals(ing.get(i).getCodigo())){
@@ -124,7 +128,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
                     FormModelIngredientes form_model_ingredientes=new FormModelIngredientes(codigo,descripcion,Integer.parseInt(salida));
                     ing.add(form_model_ingredientes);
                     try {
-                        mainActivity.mainClass.setIngredientes(ing);
+                        recipeRepository.setIngredientes(ing);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -181,7 +185,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
-        List<FormModelIngredientes> listIngredientes2 = mainActivity.mainClass.getIngredientes();
+        List<FormModelIngredientes> listIngredientes2 = recipeRepository.getIngredientes(this);
         listview.setLayoutManager(new LinearLayoutManager(mainActivity));
         FormAdapterIngredientes adapter2 = new FormAdapterIngredientes(mainActivity, listIngredientes2, false,this);
         adapter2.setClickListener((view, position) -> {
@@ -239,7 +243,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
         dialogoTexto(mainActivity, "¿Quiere eliminar el ingrediente " + mData.get(posicion).getNombre() + "?","ELIMINAR" ,() -> {
             mData.remove(posicion);
             try {
-                mainActivity.mainClass.setIngredientes(mData);
+                recipeRepository.setIngredientes(mData);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -276,6 +280,16 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
         labelManager.ocodigoingrediente.value=codigo;
         labelManager.oingredientes.value=nombre;
         Imprimir(3);
+    }
+
+    @Override
+    public void mensajeError(String str) {
+        Utils.Mensaje(str,R.layout.item_customtoasterror,mainActivity);
+    }
+
+    @Override
+    public void mensajeCorrecto(String str) {
+        Utils.Mensaje(str,R.layout.item_customtoastok,mainActivity);
     }
 }
 

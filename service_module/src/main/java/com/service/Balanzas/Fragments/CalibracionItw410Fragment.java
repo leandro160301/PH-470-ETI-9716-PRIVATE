@@ -514,7 +514,7 @@ public class CalibracionItw410Fragment extends Fragment {
                     inicioCalibracion(CapDivPDecimal);
                     BZA.set_PuntoDecimal(sp_puntoDecimal.getSelectedItemPosition());
                 }else{
-                    Mensaje("Revisa la capacidad, division minima y  el punto decimal",R.layout.item_customtoasterror, Service.activity);
+                    Mensaje("Revisa la capacidad, division minima y  el punto decimal", R.layout.item_customtoasterror, Service.activity);
                     bt_iniciarCalibracionbool=true;
                 }
             }
@@ -528,11 +528,12 @@ public class CalibracionItw410Fragment extends Fragment {
                // String x = BZA.format(numero,String.valueOf(listdata.get(0)));
               //  tv_pesoConocido.setText(x);
                 try {
+                    listdat[0] =listdata;
                     tv_pesoConocido.setText(BZA.format(numero,String.valueOf(BZA.formatpuntodec(Integer.parseInt(listdata.get(0))))));
                 tv_filtros1.setText(listdata.get(2));
                 tv_filtros2.setText(listdata.get(3));
                 tv_filtros3.setText(listdata.get(4));
-                listdat[0] =listdata;
+
                 switch (listdata.get(1)){
                     case "1":{
                         sp_divisionMinima.setSelection(0);
@@ -550,11 +551,7 @@ public class CalibracionItw410Fragment extends Fragment {
                         //none
                     }
                 } }catch(Exception e){
-                    mainActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Utils.Mensaje("Error al leer los datos",R.layout.item_customtoasterror,mainActivity);
-                        }});
+                    System.out.println("error:"+e.getMessage());
                 }
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
@@ -649,7 +646,7 @@ public class CalibracionItw410Fragment extends Fragment {
                     });
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                Utils.Mensaje("Peso conocido invalido, Vuelva a intentarlo 1",R.layout.item_customtoasterror,mainActivity);
+                Utils.Mensaje("Peso conocido invalido, Vuelva a intentarlo 1", R.layout.item_customtoasterror,mainActivity);
             }
         };
         Thread myThread = new Thread(myRunnable);

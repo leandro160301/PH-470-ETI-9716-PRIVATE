@@ -2,7 +2,6 @@ package com.jws.jwsapi.feature.formulador;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,18 +14,8 @@ import com.service.Balanzas.BalanzaService;
 import com.service.Comunicacion.OnFragmentChangeListener;
 import com.jws.jwsapi.base.containers.ContainerFragment;
 import com.jws.jwsapi.base.containers.ContainerPrincipalFragment;
-import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
-import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.Utils;
-import com.opencsv.CSVReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import au.com.bytecode.opencsv.CSVWriter;
 
 public class MainFormClass implements OnFragmentChangeListener {
 
@@ -53,7 +42,7 @@ public class MainFormClass implements OnFragmentChangeListener {
         Service.init();
         Runnable myRunnable = () -> {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(2000);// para que service inicialice modbus
                 mainActivity.runOnUiThread(() -> {
                     BZA=BalanzaService.Balanzas;
                     BZA.Itw410FrmSetTiempoEstabilizacion(N_BZA,preferencesManager.getEstabilizacion());
@@ -149,149 +138,7 @@ public class MainFormClass implements OnFragmentChangeListener {
         return turno;
     }
 
-    public List<FormModelIngredientes> getIngredientes() {
-        List<FormModelIngredientes> cod = new ArrayList<>();
-        try {
-            String filePath = Environment.getExternalStorageDirectory() + "/Memoria/Ingredientes.csv";
-            File filess = new File(filePath);
-            boolean error = false;
-            if (filess.exists()) {
-                try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
-                    String[] nextLine;
-                    while ((nextLine = reader.readNext()) != null) {
-                        if (nextLine.length > 2) {
-                            String pos0 = nextLine[0].replace("\"", "");
-                            String pos1 = nextLine[1].replace("\"", "");
-                            String pos2 = nextLine[2].replace("\"", "");
-                            int pos2Int=0;
-                            if (Utils.isNumeric(pos2))pos2Int=Integer.parseInt(pos2);
-                            cod.add(new FormModelIngredientes(pos0, pos1,pos2Int));
-                        } else {
-                            error = true;
-                        }
-                    }
-                    if (error) {
-                        Utils.Mensaje("Error en el archivo, verifique que todos los datos son correctos", R.layout.item_customtoasterror,mainActivity);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Utils.Mensaje("Error no se encuentran los ingredientes", R.layout.item_customtoasterror,mainActivity);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return cod;
-    }
 
-    public List<FormModelReceta> getReceta(String receta) {
-        List<FormModelReceta> listreceta = new ArrayList<>();
-        String[] arr = receta.split("_");
-        float total = 0f;
-        try {
-            String filePath = Environment.getExternalStorageDirectory() + "/Memoria/" + receta + ".csv";
-            File filess = new File(filePath);
-            boolean error = false;
-            if (filess.exists()) {
-                try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
-                    String[] nextLine;
-                    while ((nextLine = reader.readNext()) != null) {
-                        if (nextLine.length > 2) {
-                            String codigo =nextLine[0].replace("\"", "");
-                            String ingrediente =nextLine[1].replace("\"", "");
-                            String kilos = nextLine[2].replace("\"", "");
-                            if (codigo != null && ingrediente != null && kilos != null && arr.length == 3 && Utils.isNumeric(kilos)) {
-
-                                listreceta.add(new FormModelReceta(arr[1].replace("_", ""), arr[2].replace("_", ""),
-                                        "0", codigo, ingrediente, kilos, "NO", ""));
-                                if (Utils.isNumeric(kilos))total = total + Float.parseFloat(kilos);
-
-                            } else {
-                                error = true;
-                            }
-                        } else {
-                            error = true;
-                        }
-                    }
-                    for (int i = 0; i < listreceta.size(); i++) {
-                        listreceta.get(i).setKilos_totales(String.valueOf(total));
-                    }
-                    if (error) {
-                        Utils.Mensaje("Error en el archivo, verifique que todos los datos son correctos", R.layout.item_customtoasterror,mainActivity);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Utils.Mensaje("Error no se encuentra el archivo", R.layout.item_customtoasterror,mainActivity);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return listreceta;
-
-    }
-
-    public void setReceta(String receta, List<FormModelReceta> lista) throws IOException {
-        Runnable myRunnable = () -> {
-            File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/" + receta + ".csv");
-            if (!filePath.exists()) {
-                try {
-                    filePath.createNewFile();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            filePath.delete();
-            try {
-                filePath.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            char separador = ',';
-            try {
-                CSVWriter writer = new CSVWriter(new FileWriter(filePath.getAbsolutePath(), true), separador);
-                for (int i = 0; i < lista.size(); i++) {
-                    writer.writeNext(new String[]{lista.get(i).getCodigo_ing(), lista.get(i).getDescrip_ing(), lista.get(i).getKilos_ing()});
-                }
-                writer.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        };
-        Thread myThread = new Thread(myRunnable);
-        myThread.start();
-
-    }
-
-    public void setIngredientes(List<FormModelIngredientes> lista) throws IOException {
-        Runnable myRunnable = () -> {
-            File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Ingredientes.csv");
-            if (filePath.exists()) {
-                filePath.delete();
-            }
-            try {
-                Boolean bool = filePath.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            char separador = ',';
-            try {
-                CSVWriter writer = new CSVWriter(new FileWriter(filePath.getAbsolutePath(), true), separador);
-                for (int i = 0; i < lista.size(); i++) {
-                    writer.writeNext(new String[]{lista.get(i).getCodigo(), lista.get(i).getNombre(),String.valueOf(lista.get(i).getSalida())});
-                }
-                writer.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        };
-
-        Thread myThread = new Thread(myRunnable);
-        myThread.start();
-
-    }
 
 
 }

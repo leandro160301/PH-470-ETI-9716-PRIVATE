@@ -31,6 +31,7 @@ import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaRecetasBinding;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.data.repository.RecipeRepository;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterIngredientes;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterRecetas;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
@@ -40,6 +41,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.adapter.FormAdapterEncabezado;
 import com.jws.jwsapi.feature.formulador.ui.interfaces.AdapterRecetasInterface;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
+import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -54,7 +56,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class FormFragmentRecetas extends Fragment implements FormAdapterEncabezado.ItemClickListener, AdapterRecetasInterface {
+public class FormFragmentRecetas extends Fragment implements FormAdapterEncabezado.ItemClickListener, AdapterRecetasInterface, ToastHelper {
 
     @Inject
     RecetaManager recetaManager;
@@ -64,6 +66,8 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
     PreferencesManager preferencesManager;
     @Inject
     LabelManager labelManager;
+    @Inject
+    RecipeRepository recipeRepository;
     Button bt_1,bt_2;
     TextView titulo;
     MainActivity mainActivity;
@@ -176,7 +180,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             adapter_recetas = new FormAdapterRecetas(getContext(), recetaManager.listRecetaActual,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
             binding.receta.setAdapter(adapter_recetas);
         }else{
-            recetaseleccionada=mainActivity.mainClass.getReceta(archivo);
+            recetaseleccionada=recipeRepository.getReceta(archivo,this);
             binding.receta.setLayoutManager(new LinearLayoutManager(getContext()));
             adapter_recetas = new FormAdapterRecetas(getContext(), recetaseleccionada,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
             binding.receta.setAdapter(adapter_recetas);
@@ -260,7 +264,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Receta_"+codigo+"_"+descripcion+".csv");
         char separador= ',';
         CSVWriter writer;
-        List<FormModelIngredientes> ing=mainActivity.mainClass.getIngredientes();
+        List<FormModelIngredientes> ing=recipeRepository.getIngredientes(this);
         String cod_nueva="001";
         String des_nueva="Ingrediente 1";
         if(ing.size()>0){
@@ -471,7 +475,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
-        List<FormModelIngredientes> ingredien = mainActivity.mainClass.getIngredientes();
+        List<FormModelIngredientes> ingredien =recipeRepository.getIngredientes(this);
         listview.setLayoutManager(new LinearLayoutManager(mainActivity));
         adapterIngredientes = new FormAdapterIngredientes(mainActivity, ingredien, false,null);
         adapterIngredientes.setClickListener((view, position) -> {
@@ -557,7 +561,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         dialogoTexto(getContext(), "¿Quiere eliminar el paso " + (posicion + 1) + "?", "ELIMINAR", () -> {
             mData.remove(posicion);
             try {
-                mainActivity.mainClass.setReceta(recetaelegida, mData);
+                recipeRepository.setReceta(recetaelegida, mData);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -598,7 +602,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
                             codigo, descripcion, kilos, "NO", ""));
                 }
                 try {
-                    mainActivity.mainClass.setReceta(recetaelegida, mData);
+                    recipeRepository.setReceta(recetaelegida, mData);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -645,7 +649,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
                     mData.get(posicion).setCodigo_ing(tv_codigoIngrediente.getText().toString());
                     mData.get(posicion).setKilos_ing(tv_kilos.getText().toString());
                     try {
-                        mainActivity.mainClass.setReceta(recetaelegida, mData);
+                        recipeRepository.setReceta(recetaelegida, mData);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -690,6 +694,16 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             Utils.Mensaje("No esta habilitado para modificar datos",R.layout.item_customtoasterror,mainActivity);
         }
 
+    }
+
+    @Override
+    public void mensajeError(String str) {
+        Utils.Mensaje(str,R.layout.item_customtoasterror,mainActivity);
+    }
+
+    @Override
+    public void mensajeCorrecto(String str) {
+        Utils.Mensaje(str,R.layout.item_customtoastok,mainActivity);
     }
 }
 

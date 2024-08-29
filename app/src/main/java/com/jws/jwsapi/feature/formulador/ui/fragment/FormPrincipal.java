@@ -4,7 +4,6 @@ import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlot
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoCheckboxVisibilidad;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTextoConCancelar;
-import static com.jws.jwsapi.utils.Utils.format;
 import static com.jws.jwsapi.utils.Utils.isNumeric;
 import android.app.AlertDialog;
 import android.graphics.Color;
@@ -23,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.base.containers.clases.ButtonProviderSingletonPrincipal;
@@ -33,22 +31,23 @@ import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPrincipalBinding;
 import com.jws.jwsapi.feature.formulador.MainFormClass;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.feature.formulador.data.repository.RecipeRepository;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
-import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import com.jws.jwsapi.feature.formulador.data.sql.FormSqlHelper;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.ui.viewmodel.FormPrincipalViewModel;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
+import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class FormPrincipal extends Fragment  {
+public class FormPrincipal extends Fragment  implements ToastHelper {
     @Inject
     RecetaManager recetaManager;
     @Inject
@@ -57,6 +56,10 @@ public class FormPrincipal extends Fragment  {
     PreferencesManager preferencesManager;
     @Inject
     LabelManager labelManager;
+    @Inject
+    FormSqlHelper formSqlHelper;
+    @Inject
+    RecipeRepository recipeRepository;
     FormPrincipalViewModel viewModel;
     Handler mHandler= new Handler();
     MainActivity mainActivity;
@@ -190,16 +193,18 @@ public class FormPrincipal extends Fragment  {
         if(labelManager.olote.value==""&&preferencesManager.getModoLote()==2)nuevoLoteNumerico();
         if(preferencesManager.getModoLote()==1){
             if(labelManager.olote.value==""){
-                nuevoLoteFecha();
+                viewModel.nuevoLoteFecha();
             }else{
                 //si no esta vacio ya tiene una fecha con un indice, verificamos que la fecha actual este presente por si cambio de dia (empieza en 1 con el nuevo dia)
-                verificarNuevoLoteFecha();
+                viewModel.verificarNuevoLoteFecha();
             }
         }
         boolean empezar=verificarComienzo();
         if(empezar){
             guardarDatosEnMemoria();
-            ejecutarReceta();
+            if(viewModel.ejecutarReceta(recipeRepository.getReceta(recetaManager.recetaActual,this))){
+                iniciaPorModoReceta();
+            }
         }
     }
 
@@ -246,76 +251,12 @@ public class FormPrincipal extends Fragment  {
         preferencesManager.setLoteAutomatico(preferencesManager.getLoteAutomatico()+1);
     }
 
-    private void nuevoLoteFecha() {
-        String nuevolote=Utils.getFechaDDMMYYYY().replace("/","");
-        labelManager.olote.value=nuevolote;
-        try (FormSqlHelper form_sqlDb = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-            int ultimo= form_sqlDb.getLastLote(nuevolote);
-            labelManager.olote.value=nuevolote+"-"+ (ultimo + 1);
-        }
-    }
-
-    private void verificarNuevoLoteFecha() {
-        String nuevolote=Utils.getFechaDDMMYYYY().replace("/","");
-        try (FormSqlHelper form_sqlDb = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-            int ultimo= form_sqlDb.getLastLote(nuevolote);
-            if(ultimo==0){
-                labelManager.olote.value=nuevolote+"-1";
-            }
-        }
-    }
-
-    private void ejecutarReceta() {
-        recetaManager.listRecetaActual =new ArrayList<>();
-        recetaManager.listRecetaActual = mainActivity.mainClass.getReceta(recetaManager.recetaActual);
-        preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
-        if(recetaManager.listRecetaActual.size()>0){
-            int mododeuso=preferencesManager.getModoUso();
-            if(mododeuso==0)setupModoUso(false);
-            if(mododeuso==1)setupModoUso(true);
-            configurarRecetaParaPedido();
-            iniciaPorModoReceta();
-        }else{
-            viewModel.mostrarMensajeDeError("Error en la receta elegida");
-        }
-    }
-
     private void iniciaPorModoReceta() {
         if(preferencesManager.getModoReceta()==0){//respeta el setpoint de cada paso
-            boolean empezarKilos=modoKilos();
+            boolean empezarKilos=viewModel.modoKilos();
             if(empezarKilos)setupValoresParaInicio();
         }else{//ingresa porcentaje
              modoPorcentaje();
-        }
-    }
-
-    private void configurarRecetaParaPedido() {
-        if((preferencesManager.getRecetacomopedido()||preferencesManager.getRecetacomopedidoCheckbox())&&recetaManager.cantidad.getValue()!=null){
-            float kilostotalesfloat=0;
-            List<FormModelReceta> nuevareceta=new ArrayList<>();
-            for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                for(int k = 0; k<recetaManager.cantidad.getValue(); k++){
-                    FormModelReceta nuevaInstancia = new FormModelReceta(
-                            recetaManager.listRecetaActual.get(i).getCodigo(),
-                            recetaManager.listRecetaActual.get(i).getNombre(),
-                            recetaManager.listRecetaActual.get(i).getKilos_totales(),
-                            recetaManager.listRecetaActual.get(i).getCodigo_ing(),
-                            recetaManager.listRecetaActual.get(i).getDescrip_ing(),
-                            recetaManager.listRecetaActual.get(i).getKilos_ing(),
-                            recetaManager.listRecetaActual.get(i).getKilos_reales_ing(),
-                            recetaManager.listRecetaActual.get(i).getTolerancia_ing()
-                    );
-                    nuevareceta.add(nuevaInstancia); // si en vez de crear la nueva instancia le pasamos mainActivity.mainClass.listRecetaActual.get(i) entonces apuntara a las mismas direcciones de memoria
-                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_ing())){
-                        kilostotalesfloat=kilostotalesfloat+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_ing());
-                    }
-                }
-            }
-            for(int i=0;i<nuevareceta.size();i++){
-                nuevareceta.get(i).setKilos_totales(String.valueOf(kilostotalesfloat));
-            }
-            recetaManager.listRecetaActual =nuevareceta;
-            preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
         }
     }
 
@@ -339,23 +280,12 @@ public class FormPrincipal extends Fragment  {
         if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0||(recetaManager.cantidad.getValue()!=null)&&recetaManager.realizadas.getValue()-recetaManager.cantidad.getValue()==0){
             IngresaPorcentaje();
         }else {
-            calculoporcentajeReceta();
+            updatePorcetajeReceta(recetaManager.porcentajeReceta);
             setupValoresParaInicio();
         }
     }
 
-    private boolean modoKilos() {
-        if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
-            return true;  //por batch
-        }else{  //por pedido
-            if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0){
-                return true;
-            }else {
-                viewModel.mostrarMensajeDeError("Ingrese una cantidad");
-                return false;
-            }
-        }
-    }
+
 
     private void setupValoresParaInicio() {
         recetaManager.ejecutando=true;
@@ -373,7 +303,7 @@ public class FormPrincipal extends Fragment  {
 
     private boolean verificarPasoEsAutomatico() {
         boolean isAutomatic=false;
-        List<FormModelIngredientes> lista= mainClass.getIngredientes();
+        List<FormModelIngredientes> lista= recipeRepository.getIngredientes(this);
         int salida=0;
         for(FormModelIngredientes ing: lista){
             if(Objects.equals(ing.getCodigo(), recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigo_ing())){
@@ -385,7 +315,7 @@ public class FormPrincipal extends Fragment  {
         }
         configuracionAutomatico(isAutomatic,salida);
         if(isAutomatic){
-            setEstadoPesar();
+            viewModel.setEstadoPesar();
         }else{
             if(preferencesManager.getRecipientexPaso()||recetaManager.pasoActual==1){
                 IngresoRecipiente();
@@ -429,32 +359,18 @@ public class FormPrincipal extends Fragment  {
 
     private void calculoporcentajeRecetaDialogo(String toString) {
         if(recetaManager.listRecetaActual.size()>0&&Utils.isNumeric(recetaManager.listRecetaActual.get(0).getKilos_totales())){
-            List<String> kilos_ing_originales = new ArrayList<>();
-            for(int i = 0; i < recetaManager.listRecetaActual.size(); i++) {
-                kilos_ing_originales.add(recetaManager.listRecetaActual.get(i).getKilos_ing());
-            }
-
-            float nuevo = Float.parseFloat(toString);
-            float kilos_totales_original = Float.parseFloat(recetaManager.listRecetaActual.get(0).getKilos_totales());
-            float multiplicador = nuevo / kilos_totales_original;
-
-            for(int i = 0; i < recetaManager.listRecetaActual.size(); i++) {
-                recetaManager.listRecetaActual.get(i).setKilos_totales(String.valueOf(nuevo));
-                String nuevosp = String.valueOf(Float.parseFloat(kilos_ing_originales.get(i)) * multiplicador);
-                recetaManager.listRecetaActual.get(i).setKilos_ing(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA, nuevosp));
-            }
+            updatePorcetajeReceta(toString);
             recetaManager.porcentajeReceta=toString;
             preferencesManager.setPorcentajeReceta(toString);
-            preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
             setupValoresParaInicio();
         }else{
             viewModel.mostrarMensajeDeError("Ocurrio un error con la carga de la receta");
         }
     }
 
-    private void calculoporcentajeReceta() {
+    private void updatePorcetajeReceta(String nuevoPorcentaje) {
         if(recetaManager.listRecetaActual.size()>0&&Utils.isNumeric(recetaManager.listRecetaActual.get(0).getKilos_totales())){
-            float nuevo=Float.parseFloat(recetaManager.porcentajeReceta);
+            float nuevo=Float.parseFloat(nuevoPorcentaje);
             float kilos_totales_original=Float.parseFloat(recetaManager.listRecetaActual.get(0).getKilos_totales());
             float multiplicador=nuevo/kilos_totales_original;
             for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
@@ -479,49 +395,22 @@ public class FormPrincipal extends Fragment  {
             checkboxState=true;
             visible=View.INVISIBLE;
         }
-        dialogoCheckboxVisibilidad(null, text, mainActivity, (texto, checkbox) -> {
-            if(recetaManager.cantidad.getValue()!=null&&Float.parseFloat(texto)>0){
-                recetaManager.cantidad.setValue ((int) Float.parseFloat(texto));
-                preferencesManager.setCantidad(recetaManager.cantidad.getValue());
-                recetaManager.realizadas.setValue(0);
-                preferencesManager.setRealizadas(0);
-                if(mododeuso==1){
-                    setupModoUsoCheckBox(true);
-                }else{
-                    setupModoUsoCheckBox(false);
-                    if(checkbox){
-                        setupModoUsoCheckBox(true);
-                    }
-                }
-            }
-        },true,InputType.TYPE_CLASS_NUMBER,null,"RECETAS COMO PEDIDO (BOLSAS)",visible,checkboxState);
+        dialogoCheckboxVisibilidad(null, text, mainActivity, (texto, checkbox) -> viewModel.setearModoUsoDialogo(texto,checkbox,mododeuso),true,InputType.TYPE_CLASS_NUMBER,null,"RECETAS COMO PEDIDO (BOLSAS)",visible,checkboxState);
     }
 
-    private void setupModoUsoCheckBox(boolean modo) {
-        recetaManager.recetaComoPedido =modo;
-        setupModoUso(modo);
 
-    }
-
-    private void setupModoUso(boolean modo) {
-        preferencesManager.setRecetacomopedido(modo);
-        preferencesManager.setRecetacomopedidoCheckbox(modo);
-    }
 
     private void IngresoRecipiente() {
         //si no poNe siguiente y le pone cancerlar lo manda a tara igual
-        dialogoTextoConCancelar(mainActivity, "Ingrese recipiente y luego presione SIGUIENTE", "SIGUIENTE", this::realizarTaraComienzaPesar, this::setEstadoPesar);
+        dialogoTextoConCancelar(mainActivity, "Ingrese recipiente y luego presione SIGUIENTE", "SIGUIENTE", this::realizarTaraComienzaPesar, () -> viewModel.setEstadoPesar());
     }
 
     private void realizarTaraComienzaPesar() {
         mainActivity.mainClass.BZA.setTaraDigital(mainActivity.mainClass.N_BZA, mainActivity.mainClass.BZA.getBruto(mainActivity.mainClass.N_BZA));
-        setEstadoPesar();
+        viewModel.setEstadoPesar();
     }
 
-    private void setEstadoPesar() {
-        recetaManager.estado = 2;
-        preferencesManager.setEstado(2);
-    }
+
 
 
     private void ConsultaFin() {
@@ -557,16 +446,13 @@ public class FormPrincipal extends Fragment  {
                     ImprimirUltima();
                     view.postDelayed(() -> bt_3.setClickable(true), 2000);
                 }
-
             });
-
         }
     }
 
     public void ImprimirUltima() {
         ImprimirEstandar imprimirEstandar = new ImprimirEstandar(getContext(), mainActivity,usersManager,preferencesManager,labelManager);
         imprimirEstandar.EnviarUltimaEtiqueta(mainClass.Service.B);
-
     }
 
 
@@ -623,7 +509,7 @@ public class FormPrincipal extends Fragment  {
         if(recetaManager.ejecutando&&!recetaManager.automatico){
             if(recetaManager.pasoActual<=recetaManager.listRecetaActual.size()){
                 if(rango==1||preferencesManager.getContinuarFueraRango()){
-                    calculaPorcentajeError(neto,netoStr);
+                    viewModel.calculaPorcentajeError(neto,netoStr,mainClass.BZA.getUnidad(mainClass.N_BZA));
                     manejoBasedeDatoseImpresion(neto);
                 }else{
                     viewModel.mostrarMensajeDeError("Ingrediente fuera de rango");
@@ -634,15 +520,6 @@ public class FormPrincipal extends Fragment  {
         }
     }
 
-    private void calculaPorcentajeError(float neto,String netoStr) {
-        recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).setKilos_reales_ing(netoStr);
-        labelManager.okilosreales.value= netoStr +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
-        float porcentaje=((neto*100)/recetaManager.setPoint)-100;
-        if(porcentaje<0){
-            porcentaje=porcentaje*(-1);
-        }
-        recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).setTolerancia_ing(format(String.valueOf(porcentaje),2) + "%");
-    }
 
     private void manejoBasedeDatoseImpresion(float neto) {
         imprimeyGuardaPrimerPasoRecetaBatch();
@@ -793,18 +670,16 @@ public class FormPrincipal extends Fragment  {
     private void insertarPrimerPasoRecetaBatchSQL() {//guardar en receta una nueva y que devuelva el id
         labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
         if(preferencesManager.getRecetaId()==0){
-            try (FormSqlHelper form_sqlDb = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-                long id= sqlRecetaBatch(form_sqlDb);
-                if(id>-1){
-                    labelManager.oidreceta.value=String.valueOf(id);
-                    preferencesManager.setRecetaId(id);
-                    long id2=sqlPrimerPasoPesadaBatch(form_sqlDb,id);
-                    if(id2!=-1){
-                        labelManager.oidpesada.value=String.valueOf(id2);
-                    }
-                }else{
-                    viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
+            long id= sqlRecetaBatch(formSqlHelper);
+            if(id>-1){
+                labelManager.oidreceta.value=String.valueOf(id);
+                preferencesManager.setRecetaId(id);
+                long id2=sqlPrimerPasoPesadaBatch(formSqlHelper,id);
+                if(id2!=-1){
+                    labelManager.oidpesada.value=String.valueOf(id2);
                 }
+            }else{
+                viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
             }
         }
 
@@ -834,22 +709,21 @@ public class FormPrincipal extends Fragment  {
     private void insertarPrimerPasoPedidoBatchSQL() {//guardar en receta una nueva y que devuelva el id
         labelManager.oidreceta.value=preferencesManager.getPedidoId();
         if(preferencesManager.getPedidoId()==0){
-            try (FormSqlHelper form_sqlDb = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-                long id= sqlRecetaPedido(form_sqlDb);
-                if(id>-1){
-                    labelManager.oidreceta.value=String.valueOf(id);
-                    preferencesManager.setPedidoId(id);
-                    long id2= sqlPrimerPasoPesadaPedido(form_sqlDb,id);
-                    if(id2!=-1){
-                        labelManager.oidpesada.value=String.valueOf(id2);
-                    }else{
-                        viewModel.mostrarMensajeDeError("Error en base de datos pesada, debe hacer un reset o actualizar programa");
-                    }
+             long id= sqlRecetaPedido(formSqlHelper);
+             if(id>-1){
+                 labelManager.oidreceta.value=String.valueOf(id);
+                 preferencesManager.setPedidoId(id);
+                 long id2= sqlPrimerPasoPesadaPedido(formSqlHelper,id);
+                 if(id2!=-1){
+                     labelManager.oidpesada.value=String.valueOf(id2);
+                 }else{
+                     viewModel.mostrarMensajeDeError("Error en base de datos pesada, debe hacer un reset o actualizar programa");
+                 }
 
-                }else{
-                    viewModel.mostrarMensajeDeError("Error en base de datos pedido, debe hacer un reset o actualizar programa");
-                }
-            }
+             }else{
+                 viewModel.mostrarMensajeDeError("Error en base de datos pedido, debe hacer un reset o actualizar programa");
+             }
+
         }
 
     }
@@ -879,36 +753,35 @@ public class FormPrincipal extends Fragment  {
         //agarrar id guardado_pesadas en memoria
         labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
         if(preferencesManager.getRecetaId()>0){
-            try (FormSqlHelper form_sqlDb = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-                labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
-                long id= form_sqlDb.insertarPesada(String.valueOf(preferencesManager.getRecetaId()),"",recetaManager.codigoReceta,recetaManager.nombreReceta,
-                        recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigo_ing(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescrip_ing(),(String) labelManager.olote.value,
-                        (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
-                        mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
-                        Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
-                        (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
-                        preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                        recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing(),"","",String.valueOf(mainActivity.mainClass.N_BZA));
+            labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
+            long id= formSqlHelper.insertarPesada(String.valueOf(preferencesManager.getRecetaId()),"",recetaManager.codigoReceta,recetaManager.nombreReceta,
+                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigo_ing(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescrip_ing(),(String) labelManager.olote.value,
+                    (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
+                    mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
+                    Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
+                    (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
+                    preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
+                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing(),"","",String.valueOf(mainActivity.mainClass.N_BZA));
 
-                if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
-                    float kilos=0;
-                    for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                        if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_reales_ing())){
-                            kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_reales_ing());
-                        }
+            if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
+                float kilos=0;
+                for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
+                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_reales_ing())){
+                        kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_reales_ing());
                     }
-                    labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
-                    form_sqlDb.actualizarNetoTotalReceta(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos))+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),String.valueOf(preferencesManager.getRecetaId()));
-                    preferencesManager.setNetototal(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos)));
-                    labelManager.onetototal.value = mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos));
                 }
-                if(id==-1){
-                    viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
-                }else{
-                    labelManager.oidpesada.value=String.valueOf(id);
-                }
-
+                labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
+                formSqlHelper.actualizarNetoTotalReceta(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos))+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),String.valueOf(preferencesManager.getRecetaId()));
+                preferencesManager.setNetototal(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos)));
+                labelManager.onetototal.value = mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos));
             }
+            if(id==-1){
+                viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
+            }else{
+                labelManager.oidpesada.value=String.valueOf(id);
+            }
+
+
         }
     }
     private void insertarNuevoPasoPedidoBatchSQL() {
@@ -916,50 +789,48 @@ public class FormPrincipal extends Fragment  {
         labelManager.oidreceta.value=preferencesManager.getPedidoId();
         if(preferencesManager.getPedidoId()>0){
             labelManager.oidreceta.value=preferencesManager.getPedidoId();
-            try (FormSqlHelper form_sqlDb = new FormSqlHelper(getContext(), MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
-                long id= form_sqlDb.insertarPesada("",
-                   String.valueOf(preferencesManager.getPedidoId()),
-                   recetaManager.codigoReceta,recetaManager.nombreReceta,
-                        recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigo_ing(),
-                        recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescrip_ing(),
-                   (String) labelManager.olote.value, (String) labelManager.ovenci.value,
-                   (String) labelManager.oturno.value,mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA),
-                   mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA),
-                   mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA),
-                   Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,
-                   (String) labelManager.ocampo2.value,
-                   (String) labelManager.ocampo3.value,
-                   (String) labelManager.ocampo4.value,
-                   (String) labelManager.ocampo5.value,
-                   preferencesManager.getCampo1(),
-                   preferencesManager.getCampo2(),
-                   preferencesManager.getCampo3(),
-                   preferencesManager.getCampo4(),
-                   preferencesManager.getCampo5(),
-                   usersManager.getUsuarioActual(),
-                   recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing(),
-                   recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing(),
-                   "","",String.valueOf(mainActivity.mainClass.N_BZA));
+            long id= formSqlHelper.insertarPesada("",
+               String.valueOf(preferencesManager.getPedidoId()),
+               recetaManager.codigoReceta,recetaManager.nombreReceta,
+                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigo_ing(),
+                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescrip_ing(),
+               (String) labelManager.olote.value, (String) labelManager.ovenci.value,
+               (String) labelManager.oturno.value,mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA),
+               mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA),
+               mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA),
+               Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,
+               (String) labelManager.ocampo2.value,
+               (String) labelManager.ocampo3.value,
+               (String) labelManager.ocampo4.value,
+               (String) labelManager.ocampo5.value,
+               preferencesManager.getCampo1(),
+               preferencesManager.getCampo2(),
+               preferencesManager.getCampo3(),
+               preferencesManager.getCampo4(),
+               preferencesManager.getCampo5(),
+               usersManager.getUsuarioActual(),
+               recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing(),
+               recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing(),
+               "","",String.valueOf(mainActivity.mainClass.N_BZA));
 
-                if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
-                    float kilos=0;
-                    for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                        if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_reales_ing())){
-                            kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_reales_ing());
-                        }
+            if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
+                float kilos=0;
+                for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
+                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_reales_ing())){
+                        kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_reales_ing());
                     }
-                    labelManager.oidreceta.value=preferencesManager.getPedidoId();
-                    form_sqlDb.actualizarNetoTotalPedido(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos))+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),String.valueOf(preferencesManager.getPedidoId()));
-                    preferencesManager.setNetototal(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos)));
-                    labelManager.onetototal.value = mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos));
                 }
-                if(id==-1){
-                    viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
-                }else{
-                    labelManager.oidpesada.value=String.valueOf(id);
-                }
-
+                labelManager.oidreceta.value=preferencesManager.getPedidoId();
+                formSqlHelper.actualizarNetoTotalPedido(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos))+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),String.valueOf(preferencesManager.getPedidoId()));
+                preferencesManager.setNetototal(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos)));
+                labelManager.onetototal.value = mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos));
             }
+            if(id==-1){
+                viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
+            }else{
+                labelManager.oidpesada.value=String.valueOf(id);
+            }
+
         }
     }
 
@@ -968,157 +839,22 @@ public class FormPrincipal extends Fragment  {
             recetaManager.estadoMensajeStr.setValue("FINALIZADO");
             detener();
         });
-        restaurarDatos(aRealizarFinalizados());
-
+        viewModel.restaurarDatos();
     }
 
-    private boolean aRealizarFinalizados() {
-        boolean arealizarfinalizados=false;
-        if(recetaManager.cantidad.getValue()!=null&&recetaManager.cantidad.getValue()>0&&recetaManager.realizadas.getValue()!=null&&(recetaManager.cantidad.getValue()-recetaManager.realizadas.getValue()>0)){
-            recetaManager.realizadas.setValue(recetaManager.realizadas.getValue()+1);
-            preferencesManager.setRealizadas(recetaManager.realizadas.getValue());
-            if(recetaManager.cantidad.getValue()<=recetaManager.realizadas.getValue()){
-                arealizarfinalizados=true;
-            }
-        }
-        if(preferencesManager.getModoUso()==1||
-                preferencesManager.getRecetacomopedidoCheckbox()){//receta como pedido
-            recetaManager.realizadas.setValue(recetaManager.cantidad.getValue());
-            preferencesManager.setRealizadas(recetaManager.cantidad.getValue());
-            arealizarfinalizados=true;
-        }
-        return arealizarfinalizados;
-    }
 
     private void detener() {
-        labelManager.oidreceta.value="0";
-        preferencesManager.setRecetaId(0);
-        preferencesManager.setPedidoId(0);
-        recetaManager.estado=0;
-        preferencesManager.setEstado(0);
-        recetaManager.ejecutando=false;
-        preferencesManager.setEjecutando(false);
+        viewModel.detener();
         binding.btStart.setBackgroundResource(R.drawable.boton__arranqueparada_selector);
         if(recetaManager.automatico)mainClass.BZA.itw410FrmStop(mainClass.N_BZA);
-        recetaManager.automatico=false;
-        preferencesManager.setAutomatico(false);
-        recetaManager.estadoBalanza=RecetaManager.DETENIDO;
-
-
     }
-
-    private void restaurarDatos(boolean arealizarfinalizados) {
-        restaurarLote(arealizarfinalizados);
-        restaurarVencimiento(arealizarfinalizados);
-        restaurarCampo1(arealizarfinalizados);
-        restaurarCampo2(arealizarfinalizados);
-        restaurarCampo3(arealizarfinalizados);
-        restaurarCampo4(arealizarfinalizados);
-        restaurarCampo5(arealizarfinalizados);
-
-    }
-
-    private void restaurarCampo5(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo5()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo5Valor("");
-                labelManager.ocampo5.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo5()==2){
-            preferencesManager.setCampo5Valor("");
-            labelManager.ocampo5.value="";
-        }
-    }
-
-    private void restaurarCampo4(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo4()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo4Valor("");
-                labelManager.ocampo4.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo4()==2){
-            preferencesManager.setCampo4Valor("");
-            labelManager.ocampo4.value="";
-        }
-    }
-
-    private void restaurarCampo3(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo3()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo3Valor("");
-                labelManager.ocampo3.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo3()==2){
-            preferencesManager.setCampo3Valor("");
-            labelManager.ocampo3.value="";
-        }
-    }
-
-    private void restaurarCampo2(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo2()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo2Valor("");
-                labelManager.ocampo2.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo2()==2){
-            preferencesManager.setCampo2Valor("");
-            labelManager.ocampo2.value="";
-        }
-    }
-
-    private void restaurarCampo1(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo1()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo1Valor("");
-                labelManager.ocampo1.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo1()==2){
-            preferencesManager.setCampo1Valor("");
-            labelManager.ocampo1.value="";
-        }
-    }
-
-    private void restaurarVencimiento(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetVencimiento()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setVencimiento("");
-                labelManager.ovenci.value="";
-            }
-        }
-        if(preferencesManager.getResetVencimiento()==2){
-            preferencesManager.setVencimiento("");
-            labelManager.ovenci.value="";
-        }
-    }
-
-    private void restaurarLote(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetLote()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setLote("");
-                labelManager.olote.value="";
-            }
-        }
-        if(preferencesManager.getResetLote()==2){
-            preferencesManager.setLote("");
-            labelManager.olote.value="";
-        }
-    }
-
 
     private void actualizarVistas() {
         binding.tvNeto.setText(mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA));
         binding.tvBruto.setText(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA));
-        //binding.tvBruto.setText(mainActivity.mainClass.BZA.Itw410FrmGetSetPoint(mainActivity.mainClass.N_BZA));
-        if(!recetaManager.automatico&&botonera==0) bt_2.setText("PESAR");
+        if(isManualAndBotoneraNormal()) bt_2.setText("PESAR");
         labelManager.oturno.value=mainActivity.mainClass.devuelveTurnoActual();
-        if(!labelManager.olote.value.equals("")&&
-                !labelManager.oturno.value.equals("")&&
-                !labelManager.ovenci.value.equals("")){
+        if(isDatosDisable()){
             binding.tvDatos.setText(labelManager.olote.value+" | "+labelManager.oturno.value+ " ...");
         }else{
             binding.tvDatos.setText("Toque para ingresar los datos");
@@ -1128,6 +864,16 @@ public class FormPrincipal extends Fragment  {
         }else{
             binding.imEstable.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private boolean isDatosDisable() {
+        return !labelManager.olote.value.equals("") &&
+                !labelManager.oturno.value.equals("") &&
+                !labelManager.ovenci.value.equals("");
+    }
+
+    private boolean isManualAndBotoneraNormal() {
+        return !recetaManager.automatico && botonera == 0;
     }
 
 
@@ -1229,9 +975,8 @@ public class FormPrincipal extends Fragment  {
                     actualizarBarraProgreso(lim_max);
                     actualizarDisplayPeso(lim_min,lim_max);
                 }
-                //int num=determinarBalanza();
-                int num=1;
-                actualizarBarraProceso(num);
+                mainClass.N_BZA=viewModel.determinarBalanza();
+                viewModel.actualizarBarraProceso(mainClass.N_BZA,mainClass.BZA.getUnidad(mainClass.N_BZA));
 
                 labelManager.oingredientes.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing();
                 labelManager.ocodigoingrediente.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigo_ing();
@@ -1240,37 +985,25 @@ public class FormPrincipal extends Fragment  {
         }
     }
 
-    private void actualizarBarraProceso(int num) {
-        if(!recetaManager.automatico || recetaManager.estadoBalanza == RecetaManager.PROCESO){
-            if(Utils.isNumeric(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())){
-                if(Float.parseFloat(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing())==0){
-                    String texto="Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +" en balanza "+ num;
-                    if(recetaManager.automatico){
-                        texto="Cargando "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +" en salida "+ preferencesManager.getSalida();
-                    }
-                    recetaManager.estadoMensajeStr.setValue(texto);
-                }else{
-                    String texto="Ingrese "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
-                            mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA)+ " de "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
-                            " en balanza "+ num;
-                    if(recetaManager.automatico){
-                        texto="Cargando "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing() +
-                                mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA)+ " de "+ recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing() +
-                                " en salida "+ preferencesManager.getSalida();
-                    }
-                    recetaManager.estadoMensajeStr.setValue(texto);
-                }
-            }
-        }
 
+    private void actualizarDisplayPeso(Float limMin, Float limMax) {
+        float pesoNeto = mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA);
+        if(isInRange(limMin, limMax, pesoNeto))setupViewDisplay(R.drawable.boton_selector_balanza_enrango,R.drawable.flecha_abajoblanca,View.INVISIBLE, RecetaManager.BUENO);
+        if(isLowRange(limMin, pesoNeto))setupViewDisplay(R.drawable.boton_selector_balanza_fuerarango,R.drawable.flecha_arribablanca,View.VISIBLE,RecetaManager.BAJO);
+        if(isHighRange(limMax, pesoNeto))setupViewDisplay(R.drawable.boton_selector_balanza_fuerarango,R.drawable.flecha_abajoblanca,View.VISIBLE,RecetaManager.ALTO);
+        setupTaraView(R.drawable.tare_white);
     }
 
-    private void actualizarDisplayPeso(Float lim_min, Float lim_max) {
-        float pesoNeto = mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA);
-        if(pesoNeto>=lim_min&&pesoNeto<=lim_max)setupViewDisplay(R.drawable.boton_selector_balanza_enrango,R.drawable.flecha_abajoblanca,View.INVISIBLE,1);
-        if(pesoNeto<lim_min)setupViewDisplay(R.drawable.boton_selector_balanza_fuerarango,R.drawable.flecha_arribablanca,View.VISIBLE,0);
-        if(pesoNeto>lim_max)setupViewDisplay(R.drawable.boton_selector_balanza_fuerarango,R.drawable.flecha_abajoblanca,View.VISIBLE,2);
-        setupTaraView(R.drawable.tare_white);
+    private static boolean isHighRange(Float lim_max, float pesoNeto) {
+        return pesoNeto > lim_max;
+    }
+
+    private static boolean isLowRange(Float limMin, float pesoNeto) {
+        return pesoNeto < limMin;
+    }
+
+    private static boolean isInRange(Float limMin, Float limMax, float pesoNeto) {
+        return pesoNeto >= limMin && pesoNeto <= limMax;
     }
 
     private void setupViewDisplay(int boton_selector, int flecha, int visibility,int range) {
@@ -1314,7 +1047,7 @@ public class FormPrincipal extends Fragment  {
                 binding.progressBar.setProgress((int) porcentaje);
                 setupProgressBarStyle(progresoRango,Color.BLACK);
             }else{
-                if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)>lim_max){
+                if(isHighRange(lim_max, mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA))){
                     setupProgressBarStyle(progresoFuera,Color.WHITE);
                 }else{
                     setupProgressBarStyle(progresoRango,Color.BLACK);
@@ -1343,49 +1076,6 @@ public class FormPrincipal extends Fragment  {
         binding.lnNumpaso.setBackgroundResource(fondoNumPaso);
     }
 
-    private int determinarBalanza() {
-        String kilos = recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing();
-        int modo = preferencesManager.getModoBalanza();
-        int num = 0;
-        if (Utils.isNumeric(kilos)) {
-            float kilosFloat = Float.parseFloat(kilos);
-            float bza1Limite = Float.parseFloat(preferencesManager.getBza1Limite());
-            float bza2Limite = Float.parseFloat(preferencesManager.getBza2Limite());
-            if (kilosFloat > bza2Limite && modo > 1) {
-                num = 3;
-            } else if (kilosFloat < bza2Limite && modo > 0) {
-                num = 2;
-                mainActivity.mainClass.N_BZA = 2;
-            } else if (kilosFloat < bza1Limite) {
-                num = 1;
-                mainActivity.mainClass.N_BZA = 1;
-            }
-        }
-        if (num == 0) {
-            num = determinarBalanzaPorModo(modo);
-        }
-
-        return num;
-    }
-
-    private int determinarBalanzaPorModo(int modo) {
-        int num = 0;
-        switch (modo) {
-            case 0:
-                num = 1;
-                mainActivity.mainClass.N_BZA = 1;
-                break;
-            case 1:
-                num = 2;
-                mainActivity.mainClass.N_BZA = 2;
-                break;
-            case 2:
-                num = 3;
-                break;
-        }
-        return num;
-    }
-
     @Override
     public void onDestroyView() {
         stoped=true;
@@ -1393,4 +1083,13 @@ public class FormPrincipal extends Fragment  {
     }
 
 
+    @Override
+    public void mensajeError(String str) {
+        viewModel.mostrarMensajeDeError(str);
+    }
+
+    @Override
+    public void mensajeCorrecto(String str) {
+        viewModel.mostrarMensajeDeError(str);
+    }
 }

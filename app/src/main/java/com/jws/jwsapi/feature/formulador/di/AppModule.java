@@ -28,7 +28,7 @@ public class AppModule {
 
     @Provides
     public FormSqlHelper provideFormSqlHelper(@ApplicationContext Context context) {
-        return new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version);
+        return new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.DB_VERSION);
     }
 
 

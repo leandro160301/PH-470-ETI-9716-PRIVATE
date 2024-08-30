@@ -29,31 +29,31 @@ public class FormFragmentGuardadosViewModel extends ViewModel {
     }
 
     public void cargarPesadas(Context context) {
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
+        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.DB_VERSION)) {
             pesadasLiveData.setValue(guardadosSQL.getPesadasSQL(null));
         }
     }
 
     public void cargarPedidos(Context context) {
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
+        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.DB_VERSION)) {
             pedidosLiveData.setValue(guardadosSQL.getPedidosSQL(null));
         }
     }
 
     public void cargarRecetas(Context context) {
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
+        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.DB_VERSION)) {
             recetasLiveData.setValue(guardadosSQL.getRecetasSQL(null));
         }
     }
 
     public void cargarPesadasConId(Context context, String id, Boolean receta) {
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
+        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.DB_VERSION)) {
             pesadasLiveData.setValue(guardadosSQL.getPesadasSQLconId(id, receta));
         }
     }
 
     public void eliminarDatos(Context context, int menu) {
-        try (FormSqlHelper productosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
+        try (FormSqlHelper productosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.DB_VERSION)) {
             switch (menu) {
                 case 0:
                     productosSQL.eliminarPesadas();

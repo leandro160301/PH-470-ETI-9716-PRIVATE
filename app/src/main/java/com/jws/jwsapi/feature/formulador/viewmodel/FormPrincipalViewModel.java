@@ -27,7 +27,7 @@ public class FormPrincipalViewModel extends ViewModel {
     private final BalanzaManager balanzaManager;
     public LiveData<String> mensajeToastError = mensajeError;
     private final int MODO_USO_BATCH=0;
-    private final int MODO_USO_PEDIDO=0;
+    private final int MODO_USO_PEDIDO=1;
 
     @Inject
     public FormPrincipalViewModel(RecetaManager recetaManager, PreferencesManager preferencesManager,RecipeRepository recipeRepository, LabelManager labelManager) {
@@ -78,20 +78,28 @@ public class FormPrincipalViewModel extends ViewModel {
             String kilosDesc=recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescIng();
             if(Utils.isNumeric(kilosIng)){
                 if(Float.parseFloat(kilosIng)==0){
-                    String texto="Ingrese "+ kilosDesc +" en balanza "+ num;
-                    if(recetaManager.automatico){
-                        texto="Cargando "+ kilosDesc +" en salida "+ preferencesManager.getSalida();
-                    }
-                    recetaManager.estadoMensajeStr.setValue(texto);
+                    textoParaSetPointCero(num, kilosDesc);
                 }else{
-                    String texto="Ingrese "+ kilosIng + unidad+ " de "+ kilosDesc + " en balanza "+ num;
-                    if(recetaManager.automatico){
-                        texto="Cargando "+ kilosIng + unidad+ " de "+ kilosDesc + " en salida "+ preferencesManager.getSalida();
-                    }
-                    recetaManager.estadoMensajeStr.setValue(texto);
+                    textoParaSetPoint(num, unidad, kilosIng, kilosDesc);
                 }
             }
         }
+    }
+
+    private void textoParaSetPoint(int num, String unidad, String kilosIng, String kilosDesc) {
+        String texto="Ingrese "+ kilosIng + unidad + " de "+ kilosDesc + " en balanza "+ num;
+        if(recetaManager.automatico){
+            texto="Cargando "+ kilosIng + unidad + " de "+ kilosDesc + " en salida "+ preferencesManager.getSalida();
+        }
+        recetaManager.estadoMensajeStr.setValue(texto);
+    }
+
+    private void textoParaSetPointCero(int num, String kilosDesc) {
+        String texto="Ingrese "+ kilosDesc +" en balanza "+ num;
+        if(recetaManager.automatico){
+            texto="Cargando "+ kilosDesc +" en salida "+ preferencesManager.getSalida();
+        }
+        recetaManager.estadoMensajeStr.setValue(texto);
     }
 
     private boolean isManualOEstadoProceso() {
@@ -168,80 +176,94 @@ public class FormPrincipalViewModel extends ViewModel {
         }
     }
 
+    public float calculaNetoTotal() {
+        float kilos=0;
+        for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
+            if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilosRealesIng())){
+                kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosRealesIng());
+            }
+        }
+        return kilos;
+    }
+
+
 
     public void restaurarDatos() {
         boolean aRealizarFinalizados=aRealizarFinalizados();
         restaurarLote(aRealizarFinalizados);
         restaurarVencimiento(aRealizarFinalizados);
-        restaurarCampo1(aRealizarFinalizados);
-        restaurarCampo2(aRealizarFinalizados);
-        restaurarCampo3(aRealizarFinalizados);
-        restaurarCampo4(aRealizarFinalizados);
-        restaurarCampo5(aRealizarFinalizados);
+        restaurarCampo(1,aRealizarFinalizados);
+        restaurarCampo(2,aRealizarFinalizados);
+        restaurarCampo(3,aRealizarFinalizados);
+        restaurarCampo(4,aRealizarFinalizados);
+        restaurarCampo(5,aRealizarFinalizados);
     }
 
-    private void restaurarCampo5(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo5()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo5Valor("");
-                labelManager.ocampo5.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo5()==2){
-            preferencesManager.setCampo5Valor("");
-            labelManager.ocampo5.value="";
+    private void restaurarCampo(int campo, boolean arealizarfinalizados) {
+        int resetValor = getResetCampo(campo);
+        if (resetValor == 1 && arealizarfinalizados || resetValor == 2) {
+            setCampoValor(campo);
+            setOcampoValue(campo);
         }
     }
-
-    private void restaurarCampo4(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo4()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo4Valor("");
-                labelManager.ocampo4.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo4()==2){
-            preferencesManager.setCampo4Valor("");
-            labelManager.ocampo4.value="";
-        }
-    }
-
-    private void restaurarCampo3(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo3()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo3Valor("");
-                labelManager.ocampo3.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo3()==2){
-            preferencesManager.setCampo3Valor("");
-            labelManager.ocampo3.value="";
+    private int getResetCampo(int campo) {
+        switch (campo) {
+            case 1:
+                return preferencesManager.getResetCampo1();
+            case 2:
+                return preferencesManager.getResetCampo2();
+            case 3:
+                return preferencesManager.getResetCampo3();
+            case 4:
+                return preferencesManager.getResetCampo4();
+            case 5:
+                return preferencesManager.getResetCampo5();
+            default:
+                return 0;
         }
     }
 
-    private void restaurarCampo2(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo2()==1){
-            if(arealizarfinalizados){
-                preferencesManager.setCampo2Valor("");
-                labelManager.ocampo2.value="";
-            }
-        }
-        if(preferencesManager.getResetCampo2()==2){
-            preferencesManager.setCampo2Valor("");
-            labelManager.ocampo2.value="";
-        }
-    }
-
-    private void restaurarCampo1(boolean arealizarfinalizados) {
-        if(preferencesManager.getResetCampo1()==1){
-            if(arealizarfinalizados){
+    private void setCampoValor(int campo) {
+        switch (campo) {
+            case 1:
                 preferencesManager.setCampo1Valor("");
-                labelManager.ocampo1.value="";
-            }
+                break;
+            case 2:
+                preferencesManager.setCampo2Valor("");
+                break;
+            case 3:
+                preferencesManager.setCampo3Valor("");
+                break;
+            case 4:
+                preferencesManager.setCampo4Valor("");
+                break;
+            case 5:
+                preferencesManager.setCampo5Valor("");
+                break;
+            default:
+                break;
         }
-        if(preferencesManager.getResetCampo1()==2){
-            preferencesManager.setCampo1Valor("");
-            labelManager.ocampo1.value="";
+    }
+
+    public void setOcampoValue(int campo) {
+        switch (campo) {
+            case 1:
+                labelManager.ocampo1.value = "";
+                break;
+            case 2:
+                labelManager.ocampo2.value = "";
+                break;
+            case 3:
+                labelManager.ocampo3.value = "";
+                break;
+            case 4:
+                labelManager.ocampo4.value = "";
+                break;
+            case 5:
+                labelManager.ocampo5.value = "";
+                break;
+            default:
+                break;
         }
     }
 

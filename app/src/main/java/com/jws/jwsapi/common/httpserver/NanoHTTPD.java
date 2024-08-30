@@ -1379,7 +1379,7 @@ public abstract class NanoHTTPD {
 
             INTERNAL_ERROR(500, "Internal Server Error"),
             NOT_IMPLEMENTED(501, "Not Implemented"),
-            SERVICE_UNAVAILABLE(503, "Service Unavailable"),
+            SERVICE_UNAVAILABLE(503, "service Unavailable"),
             UNSUPPORTED_HTTP_VERSION(505, "HTTP VERSION Not Supported");
 
             private final int requestStatus;

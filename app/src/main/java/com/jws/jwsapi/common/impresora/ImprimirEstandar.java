@@ -16,13 +16,6 @@ import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.R;
 import com.service.PuertosSerie.PuertosSerie2;
 
-import org.apache.ftpserver.ftplet.User;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -165,13 +158,13 @@ public class ImprimirEstandar {
                                         ListElementsFinales.add("");
                                     }
                                     if(ListElementsInt.get(i)==1){
-                                        ListElementsFinales.add(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+                                        ListElementsFinales.add(mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza));
                                     }
                                     if(ListElementsInt.get(i)==2){
-                                        ListElementsFinales.add(mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+                                        ListElementsFinales.add(mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza));
                                     }
                                     if(ListElementsInt.get(i)==3){
-                                        ListElementsFinales.add(mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+                                        ListElementsFinales.add(mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza));
                                     }
                                     if(ListElementsInt.get(i)==4){
                                         ListElementsFinales.add(usersManager.getUsuarioActual());
@@ -195,13 +188,13 @@ public class ImprimirEstandar {
                                                             concat=concat.concat(""+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==1){
-                                                            concat=concat.concat(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+separador);
+                                                            concat=concat.concat(mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza)+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==2){
-                                                            concat=concat.concat(mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+separador);
+                                                            concat=concat.concat(mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==3){
-                                                            concat=concat.concat(mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+separador);
+                                                            concat=concat.concat(mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==4){
                                                             concat=concat.concat(usersManager.getUsuarioActual()+separador);

@@ -154,7 +154,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             }
             if (titulo != null) {
                 String texto=recetaManager.listRecetaActual.get(0).getCodigo() + " | " + nomb +
-                        " | " + recetaManager.listRecetaActual.get(0).getKilosTotales() + mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
+                        " | " + recetaManager.listRecetaActual.get(0).getKilosTotales() + mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
                 titulo.setText(texto);
             }
         }
@@ -181,12 +181,12 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
     private void cargarRecyclerViewReceta(String archivo){
         if(isEjecutando()){
             binding.receta.setLayoutManager(new LinearLayoutManager(getContext()));
-            adapter_recetas = new FormAdapterRecetas(getContext(), recetaManager.listRecetaActual,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+            adapter_recetas = new FormAdapterRecetas(getContext(), recetaManager.listRecetaActual,archivo,recetaManager,this,mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza));
             binding.receta.setAdapter(adapter_recetas);
         }else{
             recetaseleccionada=recipeRepository.getReceta(archivo,this);
             binding.receta.setLayoutManager(new LinearLayoutManager(getContext()));
-            adapter_recetas = new FormAdapterRecetas(getContext(), recetaseleccionada,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
+            adapter_recetas = new FormAdapterRecetas(getContext(), recetaseleccionada,archivo,recetaManager,this,mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza));
             binding.receta.setAdapter(adapter_recetas);
             String[]arr= archivo.split("_");
             if(arr.length==3&&recetaseleccionada.size()>0){
@@ -196,7 +196,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
                 }
                 if(titulo!=null){
                     String texto=arr[1].replace("_","")+" | "+nomb+
-                            " | "+ recetaseleccionada.get(0).getKilosTotales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
+                            " | "+ recetaseleccionada.get(0).getKilosTotales() +mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
                     titulo.setText(texto);
                 }
 

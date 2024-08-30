@@ -42,7 +42,7 @@ public class FormSqlUtil {
 
     public static String JSONpesadas(Map<String, List<String>> filtros, String columnaEspecifica, Context context) throws JSONException {
         List<FormModelPesadasDB> guardado;
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
+        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.DB_VERSION)) {
             guardado = guardadosSQL.getPesadasSQL(filtros);
         }
 
@@ -100,7 +100,7 @@ public class FormSqlUtil {
     public static String JSONrecetas(Map<String, List<String>> filtros, String columnaEspecifica, Context context) throws JSONException {
         List<FormModelRecetaDB> guardado;
         // Supongamos que tienes un método para obtener los datos desde la base de datos
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
+        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.DB_VERSION)) {
             guardado = guardadosSQL.getRecetasSQL(filtros);
         }
         Set<Object> valoresUnicos = new HashSet<>();
@@ -151,7 +151,7 @@ public class FormSqlUtil {
 
     public static String JSONpedidos(Map<String, List<String>> filtros, String columnaEspecifica, Context context) throws JSONException {
         List<FormModelRecetaDB> guardado;
-        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.db_version)) {
+        try (FormSqlHelper guardadosSQL = new FormSqlHelper(context, MainFormClass.DB_NAME, null, MainFormClass.DB_VERSION)) {
             guardado = guardadosSQL.getPedidosSQL(filtros);
         }
         Set<Object> valoresUnicos = new HashSet<>();

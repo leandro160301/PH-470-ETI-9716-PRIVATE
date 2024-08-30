@@ -22,10 +22,10 @@ public class MainFormClass implements OnFragmentChangeListener {
     private final Context context;
     private final MainActivity mainActivity;
     public static String DB_NAME = "Frm_DB";
-    public static int db_version = 4;
-    public BalanzaService Service;
-    public BalanzaService.Balanzas BZA;
-    public int N_BZA=1;
+    public static int DB_VERSION = 4;
+    public BalanzaService service;
+    public BalanzaService.Balanzas bza;
+    public int nBza =1;
     UsersManager usersManager;
     Boolean permitirClic=true;
     PreferencesManager preferencesManager;
@@ -38,14 +38,14 @@ public class MainFormClass implements OnFragmentChangeListener {
     }
 
     public void init() {
-        Service= new BalanzaService(mainActivity,this);
-        Service.init();
+        service = new BalanzaService(mainActivity,this);
+        service.init();
         Runnable myRunnable = () -> {
             try {
                 Thread.sleep(2000);// para que service inicialice modbus
                 mainActivity.runOnUiThread(() -> {
-                    BZA=BalanzaService.Balanzas;
-                    BZA.Itw410FrmSetTiempoEstabilizacion(N_BZA,preferencesManager.getEstabilizacion());
+                    bza =BalanzaService.Balanzas;
+                    bza.Itw410FrmSetTiempoEstabilizacion(nBza,preferencesManager.getEstabilizacion());
                     openFragmentPrincipal();
                 });
 

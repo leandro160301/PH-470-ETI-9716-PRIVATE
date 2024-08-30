@@ -271,7 +271,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
     }
     public void Imprimir(int etiqueta) {
         ImprimirEstandar imprimirEstandar = new ImprimirEstandar(getContext(), mainActivity,usersManager,preferencesManager,labelManager);
-        imprimirEstandar.EnviarEtiqueta(mainActivity.mainClass.Service.B,etiqueta);
+        imprimirEstandar.EnviarEtiqueta(mainActivity.mainClass.service.B,etiqueta);
 
     }
 

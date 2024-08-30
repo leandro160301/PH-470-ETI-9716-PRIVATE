@@ -18,7 +18,6 @@ import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.ProgFormuladorPantallaConfiguracionbalanzaBinding;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
-import com.jws.jwsapi.feature.formulador.ui.dialog.DialogInputInterface;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -65,7 +64,7 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
 
     private void setEstabilizacionAutomatico(String texto) {
         preferencesManager.setEstabilizacion(Integer.parseInt(texto));
-        mainActivity.mainClass.BZA.Itw410FrmSetTiempoEstabilizacion(mainActivity.mainClass.N_BZA,Integer.parseInt(texto));
+        mainActivity.mainClass.bza.Itw410FrmSetTiempoEstabilizacion(mainActivity.mainClass.nBza,Integer.parseInt(texto));
     }
 
     private void initializateViews() {

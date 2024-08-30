@@ -76,9 +76,9 @@ public class MenuFragment extends Fragment implements AdapterConfig.ItemClickLis
         menuElegido =position;
         if(position==0){
             if(usersManager.getNivelUsuario()>1){
-                ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.Service);
+                ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.service);
                 Bundle args = new Bundle();
-                args.putSerializable("instanceService", mainActivity.mainClass.Service);
+                args.putSerializable("instanceService", mainActivity.mainClass.service);
                 mainActivity.mainClass.openFragmentService(fragment,args);
             }else{
                 Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);

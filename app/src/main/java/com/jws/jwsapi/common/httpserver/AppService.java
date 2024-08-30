@@ -45,14 +45,14 @@ public class AppService extends Service {
     @Override
     public void onCreate() {
         isRunning = true;
-        Log.d(TAG, "Service created");
+        Log.d(TAG, "service created");
     }
 
     @Override
     public void onDestroy() {
         serverStop();
         isRunning = false;
-        Log.d(TAG, "Service destroyed");
+        Log.d(TAG, "service destroyed");
     }
 
     public static boolean isServiceRunning() {
@@ -81,7 +81,7 @@ public class AppService extends Service {
 
         startForeground(SERVICE_ID, notification);
 
-        Log.d(TAG, "Service started");
+        Log.d(TAG, "service started");
         return START_STICKY;
     }
 

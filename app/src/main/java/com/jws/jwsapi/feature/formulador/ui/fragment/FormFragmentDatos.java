@@ -77,7 +77,7 @@ public class FormFragmentDatos extends Fragment{
         binding.spVencimiento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(!recetaManager.ejecutando){
+                if(!isEjecutando()){
                     if(i!=modovenc){
                         preferencesManager.setModoVencimiento(i);
                         preferencesManager.setVencimiento("");
@@ -100,7 +100,7 @@ public class FormFragmentDatos extends Fragment{
         binding.spLote.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(!recetaManager.ejecutando){
+                if(!isEjecutando()){
                     if(i!=modolote){
                         preferencesManager.setLote("");
                         labelManager.olote.value="";
@@ -117,6 +117,10 @@ public class FormFragmentDatos extends Fragment{
 
             }
         });
+    }
+
+    private boolean isEjecutando() {
+        return recetaManager.ejecutando.getValue() != null && recetaManager.ejecutando.getValue();
     }
 
     private void setOnClickListeners() {

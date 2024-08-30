@@ -78,7 +78,7 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
         binding.spBalanzas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(!recetaManager.ejecutando){
+                if(!isEjecutando()){
                     preferencesManager.setModoBalanza(i);
                 }else{
                     Utils.Mensaje("No puede la cambiar la configuracion mientras hay una receta en ejecucion",R.layout.item_customtoasterror,mainActivity);
@@ -93,6 +93,10 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
         binding.tvBza3.setText(preferencesManager.getBza3Limite());
         binding.tvTiempoEstabilizacion.setText(String.valueOf(preferencesManager.getEstabilizacion()));
 
+    }
+
+    private boolean isEjecutando() {
+        return recetaManager.ejecutando.getValue() != null && recetaManager.ejecutando.getValue();
     }
 
 

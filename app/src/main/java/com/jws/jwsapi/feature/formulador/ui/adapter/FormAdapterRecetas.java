@@ -52,7 +52,7 @@ public class FormAdapterRecetas extends RecyclerView.Adapter<FormAdapterRecetas.
         holder.binding.tvPaso.setText(String.valueOf(position + 1));
         holder.binding.tvTolerancia.setText(item.getTolerancia_ing());
 
-        if (recetaManager.ejecutando) {
+        if (isEjecutando()) {
             holder.binding.lnEditar.setVisibility(View.GONE);
             holder.binding.lnBorrar.setVisibility(View.GONE);
             holder.binding.lnAgregar.setVisibility(View.GONE);
@@ -67,10 +67,10 @@ public class FormAdapterRecetas extends RecyclerView.Adapter<FormAdapterRecetas.
         holder.binding.lnAgregar.setOnClickListener(view -> recetasInterface.agregarPaso(mData, position));
 
         if (Objects.equals(item.getKilos_reales_ing(), "NO")) {
-            if (recetaManager.ejecutando) holder.binding.imCampo.setBackgroundResource(R.drawable.unchecked);
+            if (isEjecutando()) holder.binding.imCampo.setBackgroundResource(R.drawable.unchecked);
             holder.binding.tvPesoreal.setVisibility(View.GONE);
         } else {
-            if (recetaManager.ejecutando) holder.binding.imCampo.setBackgroundResource(R.drawable.checked);
+            if (isEjecutando()) holder.binding.imCampo.setBackgroundResource(R.drawable.checked);
             holder.binding.tvPesoreal.setText(item.getKilos_reales_ing() + unidad);
         }
 
@@ -82,6 +82,9 @@ public class FormAdapterRecetas extends RecyclerView.Adapter<FormAdapterRecetas.
 
         lastPositionAdapter = AdapterHelper.setAnimationSlideInLeft(holder.itemView, position, lastPositionAdapter, context);
         holder.itemView.setSelected(selectedPos == position);
+    }
+    private boolean isEjecutando() {
+        return recetaManager.ejecutando.getValue() != null && recetaManager.ejecutando.getValue();
     }
 
     @Override

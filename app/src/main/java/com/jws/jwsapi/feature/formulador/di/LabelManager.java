@@ -155,34 +155,59 @@ public class LabelManager {
         variablesImprimibles.add(new Printer("x0033",opeso5,"Peso 5",variablesImprimibles.size()));
         variablesImprimibles.add(new Printer("x0034",onumeroetiqueta,"N° etiqueta",variablesImprimibles.size()));
 
-        if(!Objects.equals(preferencesManager.getCampo1(), "") ||!Objects.equals(preferencesManager.getCampo1(), " ") ){
+        if(!preferencesManager.getCampo1().isEmpty()){
             variablesImprimibles.add(new Printer("x0035",ocampo1, preferencesManager.getCampo1(), variablesImprimibles.size()));
         }else{
             variablesImprimibles.add(new Printer("x0035",ocampo1, "Campo 1", variablesImprimibles.size()));
         }
 
-        if(!Objects.equals(preferencesManager.getCampo2(), "") ||!Objects.equals(preferencesManager.getCampo2(), " ") ){
+        if(!preferencesManager.getCampo2().isEmpty()){
             variablesImprimibles.add(new Printer("x0036",ocampo2, preferencesManager.getCampo2(), variablesImprimibles.size()));
         }else{
             variablesImprimibles.add(new Printer("x0036",ocampo2, "Campo 2", variablesImprimibles.size()));
         }
 
-        if(!Objects.equals(preferencesManager.getCampo3(), "") ||!Objects.equals(preferencesManager.getCampo3(), " ") ){
+        if(!preferencesManager.getCampo3().isEmpty()){
             variablesImprimibles.add(new Printer("x0037",ocampo3, preferencesManager.getCampo3(), variablesImprimibles.size()));
         }else{
             variablesImprimibles.add(new Printer("x0037",ocampo3, "Campo 3", variablesImprimibles.size()));
         }
 
-        if(!Objects.equals(preferencesManager.getCampo4(), "") ||!Objects.equals(preferencesManager.getCampo4(), " ") ){
+        if(!preferencesManager.getCampo4().isEmpty()){
             variablesImprimibles.add(new Printer("x0038",ocampo4, preferencesManager.getCampo4(), variablesImprimibles.size()));
         }else{
             variablesImprimibles.add(new Printer("x0038",ocampo4, "Campo 4", variablesImprimibles.size()));
         }
 
-        if(!Objects.equals(preferencesManager.getCampo5(), "") ||!Objects.equals(preferencesManager.getCampo5(), " ") ){
+        if(!preferencesManager.getCampo5().isEmpty()){
             variablesImprimibles.add(new Printer("x0039",ocampo5, preferencesManager.getCampo5(), variablesImprimibles.size()));
         }else{
             variablesImprimibles.add(new Printer("x0039",ocampo5, "Campo 5", variablesImprimibles.size()));
         }
+    }
+
+    public void setupVariablesEtiqueta(String[] pasos, String[] ingredientes, String[] codingredientes, String[] kilos, int netiqueta) {
+        opaso1.value = pasos[0];
+        opaso2.value = pasos[1];
+        opaso3.value = pasos[2];
+        opaso4.value = pasos[3];
+        opaso5.value = pasos[4];
+        oingrediente1.value = ingredientes[0];
+        oingrediente2.value = ingredientes[1];
+        oingrediente3.value = ingredientes[2];
+        oingrediente4.value = ingredientes[3];
+        oingrediente5.value = ingredientes[4];
+        ocodigoingrediente1.value = codingredientes[0];
+        ocodigoingrediente2.value = codingredientes[1];
+        ocodigoingrediente3.value = codingredientes[2];
+        ocodigoingrediente4.value = codingredientes[3];
+        ocodigoingrediente5.value = codingredientes[4];
+        opeso1.value = kilos[0];
+        opeso2.value = kilos[1];
+        opeso3.value = kilos[2];
+        opeso4.value = kilos[3];
+        opeso5.value = kilos[4];
+        onumeroetiqueta.value = String.valueOf(netiqueta);
+
     }
 }

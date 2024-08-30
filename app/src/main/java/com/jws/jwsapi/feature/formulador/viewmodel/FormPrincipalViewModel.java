@@ -34,26 +34,9 @@ public class FormPrincipalViewModel extends ViewModel {
         this.recipeRepository = recipeRepository;
         this.labelManager = labelManager;
         this.balanzaManager = new BalanzaManager(preferencesManager);
-        initializeRecetaManager();
+        preferencesManager.setIndice(0);
     }
 
-    private void initializeRecetaManager() {
-        this.recetaManager.pasoActual=preferencesManager.getPasoActual();
-        this.recetaManager.estado = preferencesManager.getEstado();
-        this.recetaManager.cantidad.setValue(preferencesManager.getCantidad());
-        this.recetaManager.realizadas.setValue(preferencesManager.getRealizadas());
-        this.recetaManager.netoTotal.setValue(preferencesManager.getNetototal());
-        this.recetaManager.recetaActual =preferencesManager.getRecetaactual();
-        this.recetaManager.codigoReceta =preferencesManager.getCodigoRecetaactual();
-        this.recetaManager.nombreReceta =preferencesManager.getNombreRecetaactual();
-        this.recetaManager.listRecetaActual = preferencesManager.getPasosRecetaActual();
-        this.recetaManager.ejecutando=preferencesManager.getEjecutando();
-        this.recetaManager.automatico=preferencesManager.getAutomatico();
-        this.recetaManager.recetaComoPedido =preferencesManager.getRecetacomopedido();
-        this.recetaManager.porcentajeReceta=preferencesManager.getPorcentajeReceta();
-        preferencesManager.setIndice(0);
-        if(this.recetaManager.listRecetaActual ==null)this.recetaManager.listRecetaActual =new ArrayList<>();
-    }
 
     public boolean ejecutarReceta(List<FormModelReceta> lista) {
         recetaManager.listRecetaActual = lista;
@@ -347,7 +330,7 @@ public class FormPrincipalViewModel extends ViewModel {
         preferencesManager.setPedidoId(0);
         recetaManager.estado=0;
         preferencesManager.setEstado(0);
-        recetaManager.ejecutando=false;
+        recetaManager.ejecutando.setValue(false);
         preferencesManager.setEjecutando(false);
         recetaManager.automatico=false;
         preferencesManager.setAutomatico(false);
@@ -371,6 +354,46 @@ public class FormPrincipalViewModel extends ViewModel {
         preferencesManager.setEstado(2);
     }
 
+    public void setupValoresParaInicio() {
+        recetaManager.ejecutando.setValue(true);
+        preferencesManager.setEjecutando(true);
+        labelManager.onetototal.value="0";
+        recetaManager.netoTotal.setValue("0");
+        preferencesManager.setNetototal("0");
+        labelManager.onetototal.value = "0";
+        recetaManager.pasoActual=1;
+        labelManager.opaso.value=recetaManager.pasoActual;
+        preferencesManager.setPasoActual(recetaManager.pasoActual);
+    }
+
+    public boolean verificarComienzo() {
+        boolean empezar=true;
+        if(labelManager.olote.value==""||labelManager.ovenci.value==""||faltanCampos()){
+            mostrarMensajeDeError("Faltan ingresar datos");
+            empezar=false;
+        }
+        if(recetaManager.recetaActual.isEmpty()){
+            mostrarMensajeDeError("Debe seleccionar una receta para comenzar");
+            empezar=false;
+        }
+        return empezar;
+    }
+
+    private boolean faltanCampos() {
+        String[] campos = {preferencesManager.getCampo1(), preferencesManager.getCampo2(), preferencesManager.getCampo3(), preferencesManager.getCampo4(), preferencesManager.getCampo5()};
+        String[] valores = {
+                (String)labelManager.ocampo1.value,
+                (String)labelManager.ocampo2.value,
+                (String)labelManager.ocampo3.value,
+                (String)labelManager.ocampo4.value,
+                (String)labelManager.ocampo5.value
+        };
+        for (int i = 0; i < campos.length; i++) {
+            if (!campos[i].isEmpty() && valores[i].isEmpty()) return true;
+        }
+        return false;
+    }
+
 
     public void mostrarMensajeDeError(String mensaje) {
         mensajeError.setValue(mensaje);
@@ -390,6 +413,10 @@ public class FormPrincipalViewModel extends ViewModel {
 
     public LiveData<String> getEstadoMensajeStr() {
         return recetaManager.estadoMensajeStr;
+    }
+
+    public LiveData<Boolean> getEjecutando() {
+        return recetaManager.ejecutando;
     }
 
 }

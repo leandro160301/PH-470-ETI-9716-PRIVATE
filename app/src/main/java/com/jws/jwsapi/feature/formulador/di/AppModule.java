@@ -21,8 +21,8 @@ public class AppModule {
 
     @Provides //se usa siempre en modulo para una nueva instancia
     @Singleton //instancia unica en toda la aplicacion
-    public RecetaManager provideRecetaManager() {
-        return new RecetaManager();
+    public RecetaManager provideRecetaManager(PreferencesManager preferencesManager) {
+        return new RecetaManager(preferencesManager);
     }
 
 

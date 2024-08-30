@@ -60,7 +60,7 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
         binding.spReceta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(!recetaManager.ejecutando){
+                if(!isEjecutando()){
                     preferencesManager.setModoReceta(i);
                     if(i!=modoreceta){
                         resetearValores();
@@ -84,7 +84,7 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
         binding.spMododeuso.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(!recetaManager.ejecutando){
+                if(!isEjecutando()){
                     preferencesManager.setModoUso(i);
                     if(i!=modouso){
                         resetearValores();
@@ -140,6 +140,10 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
         binding.tvBza3.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> preferencesManager.setBza3Limite(texto)));
 
 
+    }
+
+    private boolean isEjecutando() {
+        return recetaManager.ejecutando.getValue() != null && recetaManager.ejecutando.getValue();
     }
 
     private void resetearValores() {

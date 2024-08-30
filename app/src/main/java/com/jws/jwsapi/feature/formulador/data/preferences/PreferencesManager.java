@@ -32,7 +32,6 @@ public class PreferencesManager {
         ObjEditor2.apply();
     }
 
-
     public long getRecetaId() {
         SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return Preferencias.getLong("RecetaID", 0);
@@ -54,7 +53,6 @@ public class PreferencesManager {
         ObjEditor2.putLong("PedidoID", RecetaID);
         ObjEditor2.apply();
     }
-
 
     public void setPasosRecetaActual(List<FormModelReceta> recetaActual) {
         SharedPreferences sharedPreferences = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
@@ -162,36 +160,43 @@ public class PreferencesManager {
         ObjEditor2.putInt("PasoActual", modoLote);
         ObjEditor2.apply();
     }
+
     public int getEstado() {
         SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return (Preferencias.getInt("Estado", 0));
     }
+
     public void setEstado(int modoLote) {
         SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
         ObjEditor2.putInt("Estado", modoLote);
         ObjEditor2.apply();
     }
+
     public int getCantidad() {
         SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return (Preferencias.getInt("Cantidad", 1));
     }
+
     public void setCantidad(int modoLote) {
         SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
         ObjEditor2.putInt("Cantidad", modoLote);
         ObjEditor2.apply();
     }
+
     public int getRealizadas() {
         SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return (Preferencias.getInt("Realizadas", 0));
     }
+
     public void setRealizadas(int modoLote) {
         SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
         ObjEditor2.putInt("Realizadas", modoLote);
         ObjEditor2.apply();
     }
+
     public String getNetototal() {
         SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return Preferencias.getString("Netototal", "0");
@@ -539,54 +544,6 @@ public class PreferencesManager {
         ObjEditor2.apply();
     }
 
-    public Boolean getReset1() {
-        SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        return Preferencias.getBoolean("reset1", false);
-    }
-
-    public void setReset1(Boolean Dato) {
-        SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
-        ObjEditor2.putBoolean("reset1", Dato);
-        ObjEditor2.apply();
-    }
-
-    public Boolean getReset2() {
-        SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        return Preferencias.getBoolean("reset2", false);
-    }
-
-    public void setReset2(Boolean Dato) {
-        SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
-        ObjEditor2.putBoolean("reset2", Dato);
-        ObjEditor2.apply();
-    }
-
-    public Boolean getReset3() {
-        SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        return Preferencias.getBoolean("reset3", false);
-    }
-
-    public Boolean getReset4() {
-        SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        return Preferencias.getBoolean("reset4", false);
-    }
-
-    public void setReset4(Boolean Dato) {
-        SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
-        ObjEditor2.putBoolean("reset4", Dato);
-        ObjEditor2.apply();
-    }
-
-    public void setReset3(Boolean Dato) {
-        SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
-        ObjEditor2.putBoolean("reset3", Dato);
-        ObjEditor2.apply();
-    }
-
     public String getCampo1() {
         SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return (Preferencias.getString("campo1", "Analisis"));
@@ -647,17 +604,6 @@ public class PreferencesManager {
         ObjEditor2.apply();
     }
 
-    public String getUltimapesada() {
-        SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        return (Preferencias.getString("Ultimapesada", ""));
-    }
-
-    public void setUltimapesada(String Dato) {
-        SharedPreferences Preferencias2 = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
-        ObjEditor2.putString("Ultimapesada", Dato);
-        ObjEditor2.apply();
-    }
     public Boolean getRecetacomopedidoCheckbox() {
         SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return Preferencias.getBoolean("RecetacomopedidoCheckbox", false);

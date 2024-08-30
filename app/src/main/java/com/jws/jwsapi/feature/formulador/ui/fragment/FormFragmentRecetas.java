@@ -165,7 +165,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         adapter.setClickListener(this);
         lista_recetas.setAdapter(adapter);
 
-        if(recetaManager.ejecutando){
+        if(isEjecutando()){
             int item=archivos.indexOf(recetaManager.recetaActual);
             if(item>-1&&item<archivos.size()){
                 SeleccionarItem(item,true);
@@ -174,8 +174,12 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
 
     }
 
+    private boolean isEjecutando() {
+        return recetaManager.ejecutando.getValue() != null && recetaManager.ejecutando.getValue();
+    }
+
     private void cargarRecyclerViewReceta(String archivo){
-        if(recetaManager.ejecutando){
+        if(isEjecutando()){
             binding.receta.setLayoutManager(new LinearLayoutManager(getContext()));
             adapter_recetas = new FormAdapterRecetas(getContext(), recetaManager.listRecetaActual,archivo,recetaManager,this,mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA));
             binding.receta.setAdapter(adapter_recetas);
@@ -365,7 +369,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             bt_2.setOnClickListener(view -> nuevaReceta());
             bt_1.setOnClickListener(view ->Buscador());
 
-            if(recetaManager.ejecutando){
+            if(isEjecutando()){
                 int item=archivos.indexOf(recetaManager.recetaActual);
                 if(item>-1&&item<archivos.size()){
                     bt_1.setVisibility(GONE);

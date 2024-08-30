@@ -66,9 +66,11 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     private ButtonProvider_Principal buttonProvider;
     boolean stoped=false;
     public int rango=0; //0=bajo, 1=acepto,2=alto
-    public static int BOTONERANORMAL=0;
-    public static int BOTONERABALANZA=1;
-    int botonera=BOTONERANORMAL;
+    public static int BOTONERA_NORMAL =0;
+    public static int BOTONERA_BALANZA =1;
+    public static int LOTE_FECHA = 1;
+    public static int LOTE_NUMERICO = 2;
+    private int botonera= BOTONERA_NORMAL;
     Button bt_2;
 
     MainFormClass mainClass;
@@ -175,11 +177,11 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void btBalanza() {
-        if(botonera==BOTONERANORMAL){
-            botonera=BOTONERABALANZA;
+        if(botonera== BOTONERA_NORMAL){
+            botonera= BOTONERA_BALANZA;
             configuracionBotonesBalanza();
         }else {
-            botonera=BOTONERANORMAL;
+            botonera= BOTONERA_NORMAL;
             configuracionBotones();
         }
     }
@@ -200,22 +202,34 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void iniciarReceta() {
-        if(labelManager.olote.value==""&&preferencesManager.getModoLote()==2)nuevoLoteNumerico();
-        if(preferencesManager.getModoLote()==1){
-            if(labelManager.olote.value==""){
-                viewModel.nuevoLoteFecha();
-            }else{
-                //si no esta vacio ya tiene una fecha con un indice, verificamos que la fecha actual este presente por si cambio de dia (empieza en 1 con el nuevo dia)
-                viewModel.verificarNuevoLoteFecha();
-            }
+        if(isLoteVacio() &&preferencesManager.getModoLote()== LOTE_NUMERICO){
+            nuevoLoteNumerico();
         }
-        boolean empezar=viewModel.verificarComienzo();
-        if(empezar){
-            guardarDatosEnMemoria();
-            if(viewModel.ejecutarReceta(recipeRepository.getReceta(recetaManager.recetaActual,this))){
-                iniciaPorModoReceta();
-            }
+        if(preferencesManager.getModoLote()== LOTE_FECHA){
+            nuevoLoteFecha();
         }
+        if(viewModel.verificarComienzo()){
+            ejecutarInicioReceta();
+        }
+    }
+
+    private void ejecutarInicioReceta() {
+        guardarDatosEnMemoria();
+        if(viewModel.ejecutarReceta(recipeRepository.getReceta(recetaManager.recetaActual,this))){
+            iniciaPorModoReceta();
+        }
+    }
+
+    private void nuevoLoteFecha() {
+        if(isLoteVacio()){
+            viewModel.nuevoLoteFecha();
+        }else{
+            viewModel.verificarNuevoLoteFecha();
+        }
+    }
+
+    private boolean isLoteVacio() {
+        return labelManager.olote.value == "";
     }
 
     private void guardarDatosEnMemoria() {
@@ -281,7 +295,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         List<FormModelIngredientes> lista= recipeRepository.getIngredientes(this);
         int salida=0;
         for(FormModelIngredientes ing: lista){
-            if(Objects.equals(ing.getCodigo(), recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigo_ing())){
+            if(isCodigoDePaso(ing)){
                 if(ing.getSalida()>0) {
                     isAutomatic=true;
                     salida=ing.getSalida();
@@ -289,6 +303,15 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             }
         }
         configuracionAutomatico(isAutomatic,salida);
+        comienzaReceta(isAutomatic);
+        return isAutomatic;
+    }
+
+    private boolean isCodigoDePaso(FormModelIngredientes ing) {
+        return Objects.equals(ing.getCodigo(), recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigo_ing());
+    }
+
+    private void comienzaReceta(boolean isAutomatic) {
         if(isAutomatic){
             viewModel.setEstadoPesar();
         }else{
@@ -298,28 +321,29 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                 mainClass.BZA.setTaraDigital(mainClass.N_BZA,mainClass.BZA.getBruto(mainClass.N_BZA));
             }
         }
-        return isAutomatic;
     }
 
     private void configuracionAutomatico(boolean isAutomatic, int salida) {
         if(isAutomatic){
             String setPoint=mainClass.BZA.format(mainClass.N_BZA,String.valueOf(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing()) );
-            Runnable myRunnable = () -> {
-                boolean result=mainClass.BZA.Itw410FrmSetear(mainClass.N_BZA,setPoint,salida);
-                if(result){
-                    mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
-                    recetaManager.automatico=true;
-                    preferencesManager.setAutomatico(true);
-                    preferencesManager.setSalida(salida);
-                }else{
-                    mainActivity.runOnUiThread(() ->  viewModel.mostrarMensajeDeError("Error de balanza:410 escritura"));
-                }
-            };
+            Runnable myRunnable = () -> setearArranqueBza(salida, setPoint);
             Thread myThread = new Thread(myRunnable);
             myThread.start();
         }else{
             recetaManager.automatico=false;
             preferencesManager.setAutomatico(false);
+        }
+    }
+
+    private void setearArranqueBza(int salida, String setPoint) {
+        boolean result=mainClass.BZA.Itw410FrmSetear(mainClass.N_BZA, setPoint, salida);
+        if(result){
+            mainClass.BZA.Itw410FrmStart(mainClass.N_BZA);
+            recetaManager.automatico=true;
+            preferencesManager.setAutomatico(true);
+            preferencesManager.setSalida(salida);
+        }else{
+            mainActivity.runOnUiThread(() ->  viewModel.mostrarMensajeDeError("Error de balanza:410 escritura"));
         }
     }
 
@@ -826,13 +850,13 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private boolean isManualAndBotoneraNormal() {
-        return !recetaManager.automatico && botonera == BOTONERANORMAL;
+        return !recetaManager.automatico && botonera == BOTONERA_NORMAL;
     }
 
 
     private void procesoDetenido() {
         if(recetaManager.recetaActual.isEmpty())binding.tvRecetaActual.setText("Seleccione Receta");
-        if(botonera==BOTONERANORMAL){
+        if(botonera== BOTONERA_NORMAL){
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza);
         }else{
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza_seleccionado);
@@ -870,7 +894,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void procesoEjecucionAutomatico() {
         int estado=mainClass.BZA.Itw410FrmGetEstado(mainClass.N_BZA);
-        if(botonera==BOTONERANORMAL)bt_2.setText("PAUSAR");
+        if(botonera== BOTONERA_NORMAL)bt_2.setText("PAUSAR");
         switch (estado){
             case 0:
                 if(recetaManager.estadoBalanza== RecetaManager.ESTABILIZANDO ||recetaManager.estadoBalanza== RecetaManager.PROCESO){
@@ -883,7 +907,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                 recetaManager.estadoBalanza=RecetaManager.PROCESO;
                 break;
             case 2:
-                if(botonera==BOTONERANORMAL)bt_2.setText("REANUDAR");
+                if(botonera== BOTONERA_NORMAL)bt_2.setText("REANUDAR");
                 recetaManager.estadoMensajeStr.setValue("Proceso automatico en pausa...");
                 recetaManager.estadoBalanza=RecetaManager.PAUSA;
                 break;

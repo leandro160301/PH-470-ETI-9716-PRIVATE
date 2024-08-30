@@ -141,7 +141,7 @@ public class RecipeRepository {
             try {
                 CSVWriter writer = new CSVWriter(new FileWriter(filePath.getAbsolutePath(), true), separador);
                 for (int i = 0; i < lista.size(); i++) {
-                    writer.writeNext(new String[]{lista.get(i).getCodigo_ing(), lista.get(i).getDescrip_ing(), lista.get(i).getKilos_ing()});
+                    writer.writeNext(new String[]{lista.get(i).getCodigoIng(), lista.get(i).getDescIng(), lista.get(i).getKilosIng()});
                 }
                 writer.close();
             } catch (IOException e) {

@@ -411,7 +411,7 @@ public class PreferencesManager {
     }
 
 
-    public Boolean getRecetacomopedido() {
+    public Boolean getRecetaComoPedido() {
         SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return Preferencias.getBoolean("Recetacomopedido", false);
     }
@@ -604,7 +604,7 @@ public class PreferencesManager {
         ObjEditor2.apply();
     }
 
-    public Boolean getRecetacomopedidoCheckbox() {
+    public Boolean getRecetaComoPedidoCheckbox() {
         SharedPreferences Preferencias = application.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return Preferencias.getBoolean("RecetacomopedidoCheckbox", false);
     }

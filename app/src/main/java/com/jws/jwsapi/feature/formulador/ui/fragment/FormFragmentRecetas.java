@@ -154,7 +154,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             }
             if (titulo != null) {
                 String texto=recetaManager.listRecetaActual.get(0).getCodigo() + " | " + nomb +
-                        " | " + recetaManager.listRecetaActual.get(0).getKilos_totales() + mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
+                        " | " + recetaManager.listRecetaActual.get(0).getKilosTotales() + mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
                 titulo.setText(texto);
             }
         }
@@ -196,7 +196,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
                 }
                 if(titulo!=null){
                     String texto=arr[1].replace("_","")+" | "+nomb+
-                            " | "+ recetaseleccionada.get(0).getKilos_totales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
+                            " | "+ recetaseleccionada.get(0).getKilosTotales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
                     titulo.setText(texto);
                 }
 
@@ -294,7 +294,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         try {
             writer = new CSVWriter(new FileWriter(filePath.getAbsolutePath(), true), separador);
             for(int i=0;i<recetaseleccionada.size();i++){
-                writer.writeNext(new String[]{recetaseleccionada.get(i).getCodigo_ing(), recetaseleccionada.get(i).getDescrip_ing(), recetaseleccionada.get(i).getKilos_ing()});
+                writer.writeNext(new String[]{recetaseleccionada.get(i).getCodigoIng(), recetaseleccionada.get(i).getDescIng(), recetaseleccionada.get(i).getKilosIng()});
             }
             writer.close();
 
@@ -599,10 +599,10 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
             String kilos=tv_kilos.getText().toString();
             if (!codigo.isEmpty() && !descripcion.isEmpty() && !kilos.isEmpty() && Utils.isNumeric(kilos)) {
                 if (posicion < mData.size() - 1) {
-                    mData.add(posicion + 1, new FormModelReceta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilos_totales(),
+                    mData.add(posicion + 1, new FormModelReceta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilosTotales(),
                             codigo, descripcion, kilos, "NO", ""));
                 } else {
-                    mData.add(new FormModelReceta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilos_totales(),
+                    mData.add(new FormModelReceta(mData.get(posicion).getCodigo(), mData.get(posicion).getNombre(), mData.get(posicion).getKilosTotales(),
                             codigo, descripcion, kilos, "NO", ""));
                 }
                 try {
@@ -635,9 +635,9 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         dialog.show();
 
         if (mData.size() > posicion) {
-            tv_descripcionIngrediente.setText(mData.get(posicion).getDescrip_ing());
-            tv_codigoIngrediente.setText(mData.get(posicion).getCodigo_ing());
-            tv_kilos.setText(mData.get(posicion).getKilos_ing());
+            tv_descripcionIngrediente.setText(mData.get(posicion).getDescIng());
+            tv_codigoIngrediente.setText(mData.get(posicion).getCodigoIng());
+            tv_kilos.setText(mData.get(posicion).getKilosIng());
         }
 
         tv_codigoIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));

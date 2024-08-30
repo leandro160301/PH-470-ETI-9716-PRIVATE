@@ -46,11 +46,11 @@ public class FormAdapterRecetas extends RecyclerView.Adapter<FormAdapterRecetas.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         FormModelReceta item = mData.get(position);
-        holder.binding.tvCodigoingrediente.setText(item.getCodigo_ing());
-        holder.binding.tvDescripcioningrediente.setText(item.getDescrip_ing());
-        holder.binding.tvKilos.setText(item.getKilos_ing() + unidad);
+        holder.binding.tvCodigoingrediente.setText(item.getCodigoIng());
+        holder.binding.tvDescripcioningrediente.setText(item.getDescIng());
+        holder.binding.tvKilos.setText(item.getKilosIng() + unidad);
         holder.binding.tvPaso.setText(String.valueOf(position + 1));
-        holder.binding.tvTolerancia.setText(item.getTolerancia_ing());
+        holder.binding.tvTolerancia.setText(item.getToleranciaIng());
 
         if (isEjecutando()) {
             holder.binding.lnEditar.setVisibility(View.GONE);
@@ -66,12 +66,12 @@ public class FormAdapterRecetas extends RecyclerView.Adapter<FormAdapterRecetas.
         holder.binding.lnBorrar.setOnClickListener(view -> recetasInterface.eliminarPaso(mData, position));
         holder.binding.lnAgregar.setOnClickListener(view -> recetasInterface.agregarPaso(mData, position));
 
-        if (Objects.equals(item.getKilos_reales_ing(), "NO")) {
+        if (Objects.equals(item.getKilosRealesIng(), "NO")) {
             if (isEjecutando()) holder.binding.imCampo.setBackgroundResource(R.drawable.unchecked);
             holder.binding.tvPesoreal.setVisibility(View.GONE);
         } else {
             if (isEjecutando()) holder.binding.imCampo.setBackgroundResource(R.drawable.checked);
-            holder.binding.tvPesoreal.setText(item.getKilos_reales_ing() + unidad);
+            holder.binding.tvPesoreal.setText(item.getKilosRealesIng() + unidad);
         }
 
         if (selectedPos == position) {

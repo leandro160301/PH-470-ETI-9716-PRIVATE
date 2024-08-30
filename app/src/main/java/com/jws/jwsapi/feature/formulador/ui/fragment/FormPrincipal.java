@@ -65,7 +65,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     MainActivity mainActivity;
     private ButtonProvider_Principal buttonProvider;
     boolean stoped=false;
-    public int rango=0; //0=bajo, 1=acepto,2=alto
+    public int rango=RecetaManager.BAJO;
     public static int BOTONERA_NORMAL =0;
     public static int BOTONERA_BALANZA =1;
     public static int LOTE_FECHA = 1;
@@ -166,7 +166,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void btStart() {
         if(isEjecutando()){
-            ConsultaFin();
+            consultaFin();
         }else{
             iniciarReceta();
         }
@@ -177,11 +177,11 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void btBalanza() {
-        if(botonera== BOTONERA_NORMAL){
-            botonera= BOTONERA_BALANZA;
+        if(botonera == BOTONERA_NORMAL){
+            botonera = BOTONERA_BALANZA;
             configuracionBotonesBalanza();
         }else {
-            botonera= BOTONERA_NORMAL;
+            botonera = BOTONERA_NORMAL;
             configuracionBotones();
         }
     }
@@ -260,7 +260,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void modoPorcentaje() {
-        if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
+        if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetaComoPedidoCheckbox()){
             setupRecetaBatch(); //por batch
         }else{
             setupRecetaPedido();//por pedido
@@ -308,7 +308,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private boolean isCodigoDePaso(FormModelIngredientes ing) {
-        return Objects.equals(ing.getCodigo(), recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigo_ing());
+        return Objects.equals(ing.getCodigo(), recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigoIng());
     }
 
     private void comienzaReceta(boolean isAutomatic) {
@@ -325,7 +325,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void configuracionAutomatico(boolean isAutomatic, int salida) {
         if(isAutomatic){
-            String setPoint=mainClass.BZA.format(mainClass.N_BZA,String.valueOf(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing()) );
+            String setPoint=mainClass.BZA.format(mainClass.N_BZA,String.valueOf(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilosIng()) );
             Runnable myRunnable = () -> setearArranqueBza(salida, setPoint);
             Thread myThread = new Thread(myRunnable);
             myThread.start();
@@ -350,7 +350,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     private void IngresaPorcentaje() {
         String text="Ingrese los kilos a realizar totales y presione SIGUIENTE o si quiere continuar con la receta original presione CONTINUAR";
         TecladoFlotanteConCancelar(null, text, mainActivity, this::calculoporcentajeRecetaDialogo, () -> {
-            if(recetaManager.listRecetaActual.size()>0) recetaManager.porcentajeReceta=recetaManager.listRecetaActual.get(0).getKilos_totales();
+            if(recetaManager.listRecetaActual.size()>0) recetaManager.porcentajeReceta=recetaManager.listRecetaActual.get(0).getKilosTotales();
             viewModel.setupValoresParaInicio();
             verificarPasoEsAutomatico();
         }, "CONTINUAR");
@@ -371,11 +371,11 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     private void updatePorcetajeReceta(String nuevoPorcentaje) {
         if(kilosTotalesRecetaCheck()){
             float nuevo=Float.parseFloat(nuevoPorcentaje);
-            float kilos_totales_original=Float.parseFloat(recetaManager.listRecetaActual.get(0).getKilos_totales());
+            float kilos_totales_original=Float.parseFloat(recetaManager.listRecetaActual.get(0).getKilosTotales());
             float multiplicador=nuevo/kilos_totales_original;
             for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
                 recetaManager.listRecetaActual.get(i).setKilos_totales(String.valueOf(nuevo));
-                recetaManager.listRecetaActual.get(i).setKilos_ing(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA, String.valueOf(Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_ing()) * multiplicador)));
+                recetaManager.listRecetaActual.get(i).setKilos_ing(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA, String.valueOf(Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosIng()) * multiplicador)));
             }
             preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
         }else{
@@ -384,7 +384,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private boolean kilosTotalesRecetaCheck() {
-        return recetaManager.listRecetaActual.size() > 0 && Utils.isNumeric(recetaManager.listRecetaActual.get(0).getKilos_totales());
+        return recetaManager.listRecetaActual.size() > 0 && Utils.isNumeric(recetaManager.listRecetaActual.get(0).getKilosTotales());
     }
 
     private void IngresaCantidad() {
@@ -414,7 +414,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         viewModel.setEstadoPesar();
     }
 
-    private void ConsultaFin() {
+    private void consultaFin() {
         dialogoTexto(mainActivity, "¿Quiere detener la receta?", "DETENER", this::detener);
     }
 
@@ -544,28 +544,28 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void imprimeyGuardaNuevoPasoPedidoBatch() {
-        if(preferencesManager.getPasoActual()>1&&preferencesManager.getRecetacomopedido()){
+        if(preferencesManager.getPasoActual()>1&&preferencesManager.getRecetaComoPedido()){
             insertarNuevoPasoPedidoBatchSQL();
             imprimirEtiquetaPaso();
         }
     }
 
     private void imprimeyGuardaPrimerPasoPedidoBatch() {
-        if(preferencesManager.getPasoActual()==1&&preferencesManager.getRecetacomopedido()){
+        if(preferencesManager.getPasoActual()==1&&preferencesManager.getRecetaComoPedido()){
             insertarPrimerPasoPedidoBatchSQL();
             imprimirEtiquetaPaso();
         }
     }
 
     private void imprimeyGuardaNuevoPasoRecetaBatch() {
-        if(preferencesManager.getPasoActual()>1&&!preferencesManager.getRecetacomopedido()){
+        if(preferencesManager.getPasoActual()>1&&!preferencesManager.getRecetaComoPedido()){
             insertarNuevoPasoRecetaBatchSQL();
             imprimirEtiquetaPaso();
         }
     }
 
     private void imprimeyGuardaPrimerPasoRecetaBatch() {
-        if(preferencesManager.getPasoActual()==1&&!preferencesManager.getRecetacomopedido()){
+        if(preferencesManager.getPasoActual()==1&&!preferencesManager.getRecetaComoPedido()){
             insertarPrimerPasoRecetaBatchSQL();
             imprimirEtiquetaPaso();
         }
@@ -608,9 +608,9 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                     for (int j = i; j < end; j++) {
                         int index = j - i; // Esto asegura que los índices sean de 0 a 4
                         pasos[index] = String.valueOf(j + 1);
-                        ingredientes[index] = recetaManager.listRecetaActual.get(j).getDescrip_ing();
-                        codingredientes[index] = recetaManager.listRecetaActual.get(j).getCodigo_ing();
-                        kilos[index] = recetaManager.listRecetaActual.get(j).getKilos_reales_ing() + mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
+                        ingredientes[index] = recetaManager.listRecetaActual.get(j).getDescIng();
+                        codingredientes[index] = recetaManager.listRecetaActual.get(j).getCodigoIng();
+                        kilos[index] = recetaManager.listRecetaActual.get(j).getKilosRealesIng() + mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA);
                     }
 
                     labelManager.setupVariablesEtiqueta(pasos, ingredientes, codingredientes, kilos, netiqueta);
@@ -665,13 +665,13 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private long sqlPrimerPasoPesadaBatch(FormSqlHelper form_sqlDb, long id) {
         return form_sqlDb.insertarPesada(String.valueOf(id),"",recetaManager.codigoReceta,recetaManager.nombreReceta,
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigo_ing(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescrip_ing(),(String) labelManager.olote.value,
+                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigoIng(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescIng(),(String) labelManager.olote.value,
                 (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                 mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                 Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
                 (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
                 preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
+                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
     }
 
     private long sqlRecetaBatch(FormSqlHelper form_sqlDb) {
@@ -681,7 +681,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                 Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
                 (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
                 preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_totales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
+                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosTotales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
     }
 
     private void insertarPrimerPasoPedidoBatchSQL() {//guardar en receta una nueva y que devuelva el id
@@ -708,13 +708,13 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private long sqlPrimerPasoPesadaPedido(FormSqlHelper form_sqlDb, long id) {
         return form_sqlDb.insertarPesada("",String.valueOf(id),recetaManager.codigoReceta,recetaManager.nombreReceta,
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigo_ing(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescrip_ing(),(String) labelManager.olote.value,
+                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigoIng(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescIng(),(String) labelManager.olote.value,
                 (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                 mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                 Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
                 (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String)labelManager.ocampo5.value,preferencesManager.getCampo1(),
                 preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
+                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
     }
 
     private long sqlRecetaPedido(FormSqlHelper form_sqlDb) {
@@ -724,7 +724,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                 Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
                 (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
                 preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_totales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
+                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosTotales() +mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),"","",String.valueOf(mainActivity.mainClass.N_BZA));
     }
 
     private void insertarNuevoPasoRecetaBatchSQL() {
@@ -733,19 +733,19 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         if(preferencesManager.getRecetaId()>0){
             labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
             long id= formSqlHelper.insertarPesada(String.valueOf(preferencesManager.getRecetaId()),"",recetaManager.codigoReceta,recetaManager.nombreReceta,
-                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigo_ing(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescrip_ing(),(String) labelManager.olote.value,
+                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigoIng(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescIng(),(String) labelManager.olote.value,
                     (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                     mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),mainActivity.mainClass.BZA.getTaraDigital(mainActivity.mainClass.N_BZA)+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),
                     Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
                     (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
                     preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing(),"","",String.valueOf(mainActivity.mainClass.N_BZA));
+                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng(),"","",String.valueOf(mainActivity.mainClass.N_BZA));
 
             if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
                 float kilos=0;
                 for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_reales_ing())){
-                        kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_reales_ing());
+                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilosRealesIng())){
+                        kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosRealesIng());
                     }
                 }
                 labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
@@ -770,8 +770,8 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             long id= formSqlHelper.insertarPesada("",
                String.valueOf(preferencesManager.getPedidoId()),
                recetaManager.codigoReceta,recetaManager.nombreReceta,
-                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigo_ing(),
-                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescrip_ing(),
+                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigoIng(),
+                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescIng(),
                (String) labelManager.olote.value, (String) labelManager.ovenci.value,
                (String) labelManager.oturno.value,mainActivity.mainClass.BZA.getNetoStr(mainActivity.mainClass.N_BZA),
                mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA),
@@ -787,15 +787,15 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                preferencesManager.getCampo4(),
                preferencesManager.getCampo5(),
                usersManager.getUsuarioActual(),
-               recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_ing(),
-               recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilos_reales_ing(),
+               recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng(),
+               recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng(),
                "","",String.valueOf(mainActivity.mainClass.N_BZA));
 
             if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
                 float kilos=0;
                 for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_reales_ing())){
-                        kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_reales_ing());
+                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilosRealesIng())){
+                        kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosRealesIng());
                     }
                 }
                 labelManager.oidreceta.value=preferencesManager.getPedidoId();
@@ -933,17 +933,18 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void procesoEjecucionManual() {
-        binding.tvNumpaso.setText(recetaManager.pasoActual +"/"+recetaManager.listRecetaActual.size());
+        String numPaso=recetaManager.pasoActual +"/"+recetaManager.listRecetaActual.size();
+        binding.tvNumpaso.setText(numPaso);
         if(recetaManager.estado==2){
             float kilosTotales=0;
             for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_reales_ing())){
-                    kilosTotales=kilosTotales+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_reales_ing());
+                if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilosRealesIng())){
+                    kilosTotales=kilosTotales+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosRealesIng());
                 }
             }
             recetaManager.netoTotal.setValue(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilosTotales)));
             if(recetaManager.pasoActual<=recetaManager.listRecetaActual.size()){
-                String setPointstr= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing();
+                String setPointstr= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilosIng();
                 if(Utils.isNumeric(setPointstr)){
                     labelManager.okilos.value=setPointstr;
                     recetaManager.setPoint=Float.parseFloat(setPointstr);
@@ -955,8 +956,8 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                 mainClass.N_BZA=viewModel.determinarBalanza();
                 viewModel.actualizarBarraProceso(mainClass.N_BZA,mainClass.BZA.getUnidad(mainClass.N_BZA));
 
-                labelManager.oingredientes.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing();
-                labelManager.ocodigoingrediente.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigo_ing();
+                labelManager.oingredientes.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescIng();
+                labelManager.ocodigoingrediente.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigoIng();
             }
 
         }

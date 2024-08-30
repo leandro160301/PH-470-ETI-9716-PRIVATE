@@ -26,6 +26,8 @@ public class FormPrincipalViewModel extends ViewModel {
     private final MutableLiveData<String> mensajeError = new MutableLiveData<>();
     private final BalanzaManager balanzaManager;
     public LiveData<String> mensajeToastError = mensajeError;
+    private final int MODO_USO_BATCH=0;
+    private final int MODO_USO_PEDIDO=0;
 
     @Inject
     public FormPrincipalViewModel(RecetaManager recetaManager, PreferencesManager preferencesManager,RecipeRepository recipeRepository, LabelManager labelManager) {
@@ -52,14 +54,14 @@ public class FormPrincipalViewModel extends ViewModel {
 
     private void setupModoUso() {
         int mododeuso=preferencesManager.getModoUso();
-        if(mododeuso==0)setupModoUso(false);
-        if(mododeuso==1)setupModoUso(true);
+        if(mododeuso==MODO_USO_BATCH)setupModoUso(false);
+        if(mododeuso==MODO_USO_PEDIDO)setupModoUso(true);
         configurarRecetaParaPedido();
     }
 
     public boolean modoKilos() {
-        if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetacomopedidoCheckbox()){
-            return true;  //por batch
+        if(preferencesManager.getModoUso()==MODO_USO_BATCH||!preferencesManager.getRecetaComoPedidoCheckbox()){
+            return true;
         }else{  //por pedido
             if(recetaManager.realizadas.getValue()!=null&&recetaManager.realizadas.getValue()==0){
                 return true;
@@ -72,8 +74,8 @@ public class FormPrincipalViewModel extends ViewModel {
 
     public void actualizarBarraProceso(int num, String unidad) {
         if(isManualOEstadoProceso()){
-            String kilosIng=recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing();
-            String kilosDesc=recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescrip_ing();
+            String kilosIng=recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilosIng();
+            String kilosDesc=recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescIng();
             if(Utils.isNumeric(kilosIng)){
                 if(Float.parseFloat(kilosIng)==0){
                     String texto="Ingrese "+ kilosDesc +" en balanza "+ num;
@@ -98,13 +100,13 @@ public class FormPrincipalViewModel extends ViewModel {
 
 
     public int determinarBalanza() {
-        String kilos = recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilos_ing();
+        String kilos = recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilosIng();
         return balanzaManager.determinarBalanza(kilos);
     }
 
 
     private void configurarRecetaParaPedido() {
-        if((preferencesManager.getRecetacomopedido()||preferencesManager.getRecetacomopedidoCheckbox())&&recetaManager.cantidad.getValue()!=null){
+        if((preferencesManager.getRecetaComoPedido()||preferencesManager.getRecetaComoPedidoCheckbox())&&recetaManager.cantidad.getValue()!=null){
             float kilosTotalesFloat=0;
             List<FormModelReceta> nuevareceta=new ArrayList<>();
             kilosTotalesFloat = getKilosTotales(kilosTotalesFloat, nuevareceta);
@@ -119,23 +121,23 @@ public class FormPrincipalViewModel extends ViewModel {
         return kilosTotalesFloat;
     }
 
-    private float instanciaPorCantidad(float kilosTotalesFloat, List<FormModelReceta> nuevareceta, int i) {
+    private float instanciaPorCantidad(float kilosTotalesFloat, List<FormModelReceta> nuevaReceta, int i) {
         if(recetaManager.cantidad.getValue()!=null) return 0;
         for(int k = 0; k<recetaManager.cantidad.getValue(); k++){
             FormModelReceta nuevaInstancia = getNuevaInstancia(i);
-            nuevareceta.add(nuevaInstancia); // si en vez de crear la nueva instancia le pasamos mainActivity.mainClass.listRecetaActual.get(i) entonces apuntara a las mismas direcciones de memoria
-            if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilos_ing())){
-                kilosTotalesFloat = kilosTotalesFloat +Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilos_ing());
+            nuevaReceta.add(nuevaInstancia); // si en vez de crear la nueva instancia le pasamos mainActivity.mainClass.listRecetaActual.get(i) entonces apuntara a las mismas direcciones de memoria
+            if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilosIng())){
+                kilosTotalesFloat = kilosTotalesFloat +Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosIng());
             }
         }
         return kilosTotalesFloat;
     }
 
-    private void updateRecetaYTotales(float kilosTotalesFloat, List<FormModelReceta> nuevareceta) {
-        for(int i = 0; i< nuevareceta.size(); i++){
-            nuevareceta.get(i).setKilos_totales(String.valueOf(kilosTotalesFloat));
+    private void updateRecetaYTotales(float kilosTotalesFloat, List<FormModelReceta> nuevaReceta) {
+        for(int i = 0; i< nuevaReceta.size(); i++){
+            nuevaReceta.get(i).setKilos_totales(String.valueOf(kilosTotalesFloat));
         }
-        recetaManager.listRecetaActual = nuevareceta;
+        recetaManager.listRecetaActual = nuevaReceta;
         preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
     }
 
@@ -143,12 +145,12 @@ public class FormPrincipalViewModel extends ViewModel {
         return new FormModelReceta(
                 recetaManager.listRecetaActual.get(i).getCodigo(),
                 recetaManager.listRecetaActual.get(i).getNombre(),
-                recetaManager.listRecetaActual.get(i).getKilos_totales(),
-                recetaManager.listRecetaActual.get(i).getCodigo_ing(),
-                recetaManager.listRecetaActual.get(i).getDescrip_ing(),
-                recetaManager.listRecetaActual.get(i).getKilos_ing(),
-                recetaManager.listRecetaActual.get(i).getKilos_reales_ing(),
-                recetaManager.listRecetaActual.get(i).getTolerancia_ing()
+                recetaManager.listRecetaActual.get(i).getKilosTotales(),
+                recetaManager.listRecetaActual.get(i).getCodigoIng(),
+                recetaManager.listRecetaActual.get(i).getDescIng(),
+                recetaManager.listRecetaActual.get(i).getKilosIng(),
+                recetaManager.listRecetaActual.get(i).getKilosRealesIng(),
+                recetaManager.listRecetaActual.get(i).getToleranciaIng()
         );
     }
 
@@ -168,15 +170,14 @@ public class FormPrincipalViewModel extends ViewModel {
 
 
     public void restaurarDatos() {
-        boolean arealizarfinalizados=aRealizarFinalizados();
-        restaurarLote(arealizarfinalizados);
-        restaurarVencimiento(arealizarfinalizados);
-        restaurarCampo1(arealizarfinalizados);
-        restaurarCampo2(arealizarfinalizados);
-        restaurarCampo3(arealizarfinalizados);
-        restaurarCampo4(arealizarfinalizados);
-        restaurarCampo5(arealizarfinalizados);
-
+        boolean aRealizarFinalizados=aRealizarFinalizados();
+        restaurarLote(aRealizarFinalizados);
+        restaurarVencimiento(aRealizarFinalizados);
+        restaurarCampo1(aRealizarFinalizados);
+        restaurarCampo2(aRealizarFinalizados);
+        restaurarCampo3(aRealizarFinalizados);
+        restaurarCampo4(aRealizarFinalizados);
+        restaurarCampo5(aRealizarFinalizados);
     }
 
     private void restaurarCampo5(boolean arealizarfinalizados) {
@@ -257,9 +258,9 @@ public class FormPrincipalViewModel extends ViewModel {
         }
     }
 
-    private void restaurarVencimiento(boolean arealizarfinalizados) {
+    private void restaurarVencimiento(boolean aRealizarFinalizados) {
         if(preferencesManager.getResetVencimiento()==1){
-            if(arealizarfinalizados){
+            if(aRealizarFinalizados){
                 preferencesManager.setVencimiento("");
                 labelManager.ovenci.value="";
             }
@@ -271,10 +272,10 @@ public class FormPrincipalViewModel extends ViewModel {
     }
 
     private boolean aRealizarFinalizados() {
-        boolean arealizarfinalizados;
-        arealizarfinalizados = isCantidadFinalizada();
-        arealizarfinalizados = isArealizarfinalizados(arealizarfinalizados);
-        return arealizarfinalizados;
+        boolean aRealizarFinalizados;
+        aRealizarFinalizados = isCantidadFinalizada();
+        aRealizarFinalizados = isArealizarfinalizados(aRealizarFinalizados);
+        return aRealizarFinalizados;
     }
 
     private boolean isCantidadFinalizada() {
@@ -286,13 +287,13 @@ public class FormPrincipalViewModel extends ViewModel {
         return false;
     }
 
-    private boolean isArealizarfinalizados(boolean arealizarfinalizados) {
-        if(preferencesManager.getModoUso()==1||preferencesManager.getRecetacomopedidoCheckbox()){//receta como pedido
+    private boolean isArealizarfinalizados(boolean aRealizarFinalizados) {
+        if(preferencesManager.getModoUso()==1||preferencesManager.getRecetaComoPedidoCheckbox()){//receta como pedido
             recetaManager.realizadas.setValue(recetaManager.cantidad.getValue());
             preferencesManager.setRealizadas(recetaManager.cantidad.getValue());
-            arealizarfinalizados =true;
+            aRealizarFinalizados =true;
         }
-        return arealizarfinalizados;
+        return aRealizarFinalizados;
     }
 
 
@@ -307,13 +308,13 @@ public class FormPrincipalViewModel extends ViewModel {
     }
 
 
-    public void setearModoUsoDialogo(String texto, boolean checkbox, int mododeuso) {
+    public void setearModoUsoDialogo(String texto, boolean checkbox, int modoDeUso) {
         if(recetaManager.cantidad.getValue()!=null&&Float.parseFloat(texto)>0){
             recetaManager.cantidad.setValue ((int) Float.parseFloat(texto));
             preferencesManager.setCantidad(recetaManager.cantidad.getValue());
             recetaManager.realizadas.setValue(0);
             preferencesManager.setRealizadas(0);
-            if(mododeuso==1){
+            if(modoDeUso==1){
                 setupModoUsoCheckBox(true);
             }else{
                 setupModoUsoCheckBox(false);
@@ -323,20 +324,6 @@ public class FormPrincipalViewModel extends ViewModel {
             }
         }
     }
-
-    public void detener(){
-        labelManager.oidreceta.value="0";
-        preferencesManager.setRecetaId(0);
-        preferencesManager.setPedidoId(0);
-        recetaManager.estado=0;
-        preferencesManager.setEstado(0);
-        recetaManager.ejecutando.setValue(false);
-        preferencesManager.setEjecutando(false);
-        recetaManager.automatico=false;
-        preferencesManager.setAutomatico(false);
-        recetaManager.estadoBalanza=RecetaManager.DETENIDO;
-    }
-
 
     private void setupModoUsoCheckBox(boolean modo) {
         recetaManager.recetaComoPedido =modo;
@@ -356,14 +343,27 @@ public class FormPrincipalViewModel extends ViewModel {
 
     public void setupValoresParaInicio() {
         recetaManager.ejecutando.setValue(true);
-        preferencesManager.setEjecutando(true);
-        labelManager.onetototal.value="0";
+        recetaManager.pasoActual=1;
         recetaManager.netoTotal.setValue("0");
         preferencesManager.setNetototal("0");
-        labelManager.onetototal.value = "0";
-        recetaManager.pasoActual=1;
-        labelManager.opaso.value=recetaManager.pasoActual;
+        preferencesManager.setEjecutando(true);
         preferencesManager.setPasoActual(recetaManager.pasoActual);
+        labelManager.onetototal.value = "0";
+        labelManager.opaso.value=recetaManager.pasoActual;
+
+    }
+
+    public void detener(){
+        labelManager.oidreceta.value="0";
+        preferencesManager.setRecetaId(0);
+        preferencesManager.setPedidoId(0);
+        preferencesManager.setEstado(0);
+        preferencesManager.setEjecutando(false);
+        preferencesManager.setAutomatico(false);
+        recetaManager.estado=0;
+        recetaManager.ejecutando.setValue(false);
+        recetaManager.estadoBalanza=RecetaManager.DETENIDO;
+        recetaManager.automatico=false;
     }
 
     public boolean verificarComienzo() {

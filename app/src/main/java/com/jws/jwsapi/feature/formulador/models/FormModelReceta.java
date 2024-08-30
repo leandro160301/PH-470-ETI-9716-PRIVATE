@@ -39,27 +39,27 @@ public class FormModelReceta {
         return nombre;
     }
 
-    public String getKilos_totales() {
+    public String getKilosTotales() {
         return kilos_totales;
     }
 
-    public String getCodigo_ing() {
+    public String getCodigoIng() {
         return codigo_ing;
     }
 
-    public String getDescrip_ing() {
+    public String getDescIng() {
         return descrip_ing;
     }
 
-    public String getKilos_ing() {
+    public String getKilosIng() {
         return kilos_ing;
     }
 
-    public String getKilos_reales_ing() {
+    public String getKilosRealesIng() {
         return kilos_reales_ing;
     }
 
-    public String getTolerancia_ing() {
+    public String getToleranciaIng() {
         return tolerancia_ing;
     }
 

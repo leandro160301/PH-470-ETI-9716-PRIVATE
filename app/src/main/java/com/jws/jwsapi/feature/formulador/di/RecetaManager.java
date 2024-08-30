@@ -51,7 +51,7 @@ public class RecetaManager {
         this.listRecetaActual = preferencesManager.getPasosRecetaActual();
         this.ejecutando.setValue(preferencesManager.getEjecutando());
         this.automatico=preferencesManager.getAutomatico();
-        this.recetaComoPedido =preferencesManager.getRecetacomopedido();
+        this.recetaComoPedido =preferencesManager.getRecetaComoPedido();
         this.porcentajeReceta=preferencesManager.getPorcentajeReceta();
         if(this.listRecetaActual ==null)this.listRecetaActual =new ArrayList<>();
     }

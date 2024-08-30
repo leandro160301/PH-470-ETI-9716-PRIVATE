@@ -742,12 +742,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                     recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng(),"","",String.valueOf(mainActivity.mainClass.N_BZA));
 
             if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
-                float kilos=0;
-                for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilosRealesIng())){
-                        kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosRealesIng());
-                    }
-                }
+                float kilos = calculaNetoTotal();
                 labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
                 formSqlHelper.actualizarNetoTotalReceta(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos))+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),String.valueOf(preferencesManager.getRecetaId()));
                 preferencesManager.setNetototal(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos)));
@@ -790,19 +785,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng(),
                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng(),
                "","",String.valueOf(mainActivity.mainClass.N_BZA));
-
-            if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
-                float kilos=0;
-                for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                    if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilosRealesIng())){
-                        kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosRealesIng());
-                    }
-                }
-                labelManager.oidreceta.value=preferencesManager.getPedidoId();
-                formSqlHelper.actualizarNetoTotalPedido(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos))+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),String.valueOf(preferencesManager.getPedidoId()));
-                preferencesManager.setNetototal(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos)));
-                labelManager.onetototal.value = mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos));
-            }
+            updateNetoTotal();
             if(id==-1){
                 viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
             }else{
@@ -810,6 +793,30 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             }
 
         }
+    }
+
+    private void updateNetoTotal() {
+        if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
+            float kilos = calculaNetoTotal();
+            actualizaDatosNetoTotal(kilos);
+        }
+    }
+
+    private void actualizaDatosNetoTotal(float kilos) {
+        labelManager.oidreceta.value=preferencesManager.getPedidoId();
+        formSqlHelper.actualizarNetoTotalPedido(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos))+mainActivity.mainClass.BZA.getUnidad(mainActivity.mainClass.N_BZA),String.valueOf(preferencesManager.getPedidoId()));
+        preferencesManager.setNetototal(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos)));
+        labelManager.onetototal.value = mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilos));
+    }
+
+    private float calculaNetoTotal() {
+        float kilos=0;
+        for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
+            if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilosRealesIng())){
+                kilos=kilos+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosRealesIng());
+            }
+        }
+        return kilos;
     }
 
     private void recetaFinalizada() {
@@ -831,11 +838,19 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         binding.tvBruto.setText(mainActivity.mainClass.BZA.getBrutoStr(mainActivity.mainClass.N_BZA));
         if(isManualAndBotoneraNormal()) bt_2.setText("PESAR");
         labelManager.oturno.value=mainActivity.mainClass.devuelveTurnoActual();
+        updateDatosLabel();
+        updateViewEstable();
+    }
+
+    private void updateDatosLabel() {
         if(isDatosDisable()){
             binding.tvDatos.setText(labelManager.olote.value+" | "+labelManager.oturno.value+ " ...");
         }else{
             binding.tvDatos.setText("Toque para ingresar los datos");
         }
+    }
+
+    private void updateViewEstable() {
         if(mainActivity.mainClass.BZA.getEstable(mainActivity.mainClass.N_BZA)!=null&&mainActivity.mainClass.BZA.getEstable(mainActivity.mainClass.N_BZA)){
             binding.imEstable.setVisibility(View.VISIBLE);
         }else{
@@ -936,30 +951,32 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         String numPaso=recetaManager.pasoActual +"/"+recetaManager.listRecetaActual.size();
         binding.tvNumpaso.setText(numPaso);
         if(recetaManager.estado==2){
-            float kilosTotales=0;
-            for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                if(Utils.isNumeric(recetaManager.listRecetaActual.get(i).getKilosRealesIng())){
-                    kilosTotales=kilosTotales+Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosRealesIng());
-                }
-            }
-            recetaManager.netoTotal.setValue(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilosTotales)));
+            actualizaNetoTotales();
             if(recetaManager.pasoActual<=recetaManager.listRecetaActual.size()){
-                String setPointstr= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilosIng();
-                if(Utils.isNumeric(setPointstr)){
-                    labelManager.okilos.value=setPointstr;
-                    recetaManager.setPoint=Float.parseFloat(setPointstr);
-                    float lim_max=((100+Integer.parseInt(preferencesManager.getTolerancia()))*recetaManager.setPoint)/100;
-                    float lim_min=((100-Integer.parseInt(preferencesManager.getTolerancia()))*recetaManager.setPoint)/100;
-                    actualizarBarraProgreso(lim_max);
-                    actualizarDisplayPeso(lim_min,lim_max);
-                }
+                calculoActualizaLimites();
                 mainClass.N_BZA=viewModel.determinarBalanza();
                 viewModel.actualizarBarraProceso(mainClass.N_BZA,mainClass.BZA.getUnidad(mainClass.N_BZA));
-
                 labelManager.oingredientes.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescIng();
                 labelManager.ocodigoingrediente.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigoIng();
             }
 
+        }
+    }
+
+    private void actualizaNetoTotales() {
+        float kilosTotales = calculaNetoTotal();
+        recetaManager.netoTotal.setValue(mainActivity.mainClass.BZA.format(mainActivity.mainClass.N_BZA,String.valueOf(kilosTotales)));
+    }
+
+    private void calculoActualizaLimites() {
+        String setPointstr= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilosIng();
+        if(Utils.isNumeric(setPointstr)){
+            labelManager.okilos.value=setPointstr;
+            recetaManager.setPoint=Float.parseFloat(setPointstr);
+            float lim_max=((100+Integer.parseInt(preferencesManager.getTolerancia()))*recetaManager.setPoint)/100;
+            float lim_min=((100-Integer.parseInt(preferencesManager.getTolerancia()))*recetaManager.setPoint)/100;
+            actualizarBarraProgreso(lim_max);
+            actualizarDisplayPeso(lim_min,lim_max);
         }
     }
 
@@ -972,8 +989,8 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         setupTaraView(R.drawable.tare_white);
     }
 
-    private static boolean isHighRange(Float lim_max, float pesoNeto) {
-        return pesoNeto > lim_max;
+    private static boolean isHighRange(Float limMax, float pesoNeto) {
+        return pesoNeto > limMax;
     }
 
     private static boolean isLowRange(Float limMin, float pesoNeto) {
@@ -1014,28 +1031,32 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
 
-    private void actualizarBarraProgreso(Float lim_max) {
-        if(mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)>=0){
-            float porcentaje= 100*mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA)/recetaManager.setPoint;
+    private void actualizarBarraProgreso(Float limMax) {
+        float pesoNeto=mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA);
+        if(pesoNeto>=0){
+            float porcentaje= 100*pesoNeto/recetaManager.setPoint;
             int progresoRango=R.drawable.progress;
             int progresoFuera=R.drawable.progress2;
             if(recetaManager.automatico) progresoRango=R.drawable.progressautomatico;
             if(recetaManager.automatico) progresoFuera=R.drawable.progressautomatico2;
-            if(porcentaje<=100){
-                binding.progressBar.setProgress((int) porcentaje);
-                setupProgressBarStyle(progresoRango,Color.BLACK);
-            }else{
-                if(isHighRange(lim_max, mainActivity.mainClass.BZA.getNeto(mainActivity.mainClass.N_BZA))){
-                    setupProgressBarStyle(progresoFuera,Color.WHITE);
-                }else{
-                    setupProgressBarStyle(progresoRango,Color.BLACK);
-                }
-                binding.progressBar.setProgress(100);
-            }
-
+            updateViewProgressBarStyle(limMax, pesoNeto, porcentaje, progresoRango, progresoFuera);
         }else{
             binding.progressBar.setProgress(0);
             setupProgressBarPasoStyle(Color.BLACK);
+        }
+    }
+
+    private void updateViewProgressBarStyle(Float limMax, float pesoNeto, float porcentaje, int progresoRango, int progresoFuera) {
+        if(porcentaje <=100){
+            binding.progressBar.setProgress((int) porcentaje);
+            setupProgressBarStyle(progresoRango,Color.BLACK);
+        }else{
+            if(isHighRange(limMax, pesoNeto)){
+                setupProgressBarStyle(progresoFuera,Color.WHITE);
+            }else{
+                setupProgressBarStyle(progresoRango,Color.BLACK);
+            }
+            binding.progressBar.setProgress(100);
         }
     }
 

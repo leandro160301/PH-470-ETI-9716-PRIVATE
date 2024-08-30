@@ -36,6 +36,7 @@ import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
 import com.jws.jwsapi.feature.formulador.data.sql.FormSqlHelper;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.feature.formulador.viewmodel.FormPreferencesAndLabelViewModel;
 import com.jws.jwsapi.feature.formulador.viewmodel.FormPrincipalViewModel;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.ToastHelper;
@@ -61,6 +62,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     @Inject
     RecipeRepository recipeRepository;
     FormPrincipalViewModel viewModel;
+    FormPreferencesAndLabelViewModel labelAndPreferencesViewModel;
     Handler mHandler= new Handler();
     MainActivity mainActivity;
     private ButtonProvider_Principal buttonProvider;
@@ -147,6 +149,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void initializeViewModel() {
         viewModel = new ViewModelProvider(requireActivity()).get(FormPrincipalViewModel.class);/*usamos requireActivity para siempre usar la misma instancia (Form_PrincipalViewModel es el programa y debe estar ejecutandose independientemente del programa)*/
+        labelAndPreferencesViewModel = new ViewModelProvider(this).get(FormPreferencesAndLabelViewModel.class);
         viewModel.mostrarMensajeDeError(null);
         initializeLabelVariables();
         binding.lnFondolayout.setOnClickListener(view12 -> btBalanza());
@@ -229,7 +232,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void ejecutarInicioReceta() {
-        guardarDatosEnMemoria();
+        labelAndPreferencesViewModel.guardarDatosEnMemoria();
         if(viewModel.ejecutarReceta(recipeRepository.getReceta(recetaManager.recetaActual,this))){
             iniciaPorModoReceta();
         }
@@ -247,15 +250,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         return labelManager.olote.value == "";
     }
 
-    private void guardarDatosEnMemoria() {
-        preferencesManager.setLote((String)labelManager.olote.value);
-        preferencesManager.setVencimiento((String)labelManager.ovenci.value);
-        preferencesManager.setCampo1Valor((String)labelManager.ocampo1.value);
-        preferencesManager.setCampo2Valor((String)labelManager.ocampo2.value);
-        preferencesManager.setCampo3Valor((String)labelManager.ocampo3.value);
-        preferencesManager.setCampo4Valor((String)labelManager.ocampo4.value);
-        preferencesManager.setCampo5Valor((String)labelManager.ocampo5.value);
-    }
+
 
     private void nuevoLoteNumerico() {
         labelManager.olote.value=String.valueOf(preferencesManager.getLoteAutomatico()+1);
@@ -830,7 +825,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             recetaManager.estadoMensajeStr.setValue("FINALIZADO");
             detener();
         });
-        viewModel.restaurarDatos();
+        labelAndPreferencesViewModel.restaurarDatos();
     }
 
 

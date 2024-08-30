@@ -116,15 +116,15 @@ public class FormPrincipalViewModel extends ViewModel {
     private void configurarRecetaParaPedido() {
         if((preferencesManager.getRecetaComoPedido()||preferencesManager.getRecetaComoPedidoCheckbox())&&recetaManager.cantidad.getValue()!=null){
             float kilosTotalesFloat=0;
-            List<FormModelReceta> nuevareceta=new ArrayList<>();
-            kilosTotalesFloat = getKilosTotales(kilosTotalesFloat, nuevareceta);
-            updateRecetaYTotales(kilosTotalesFloat, nuevareceta);
+            List<FormModelReceta> nuevaReceta=new ArrayList<>();
+            kilosTotalesFloat = getKilosTotales(kilosTotalesFloat, nuevaReceta);
+            updateRecetaYTotales(kilosTotalesFloat, nuevaReceta);
         }
     }
 
-    private float getKilosTotales(float kilosTotalesFloat, List<FormModelReceta> nuevareceta) {
+    private float getKilosTotales(float kilosTotalesFloat, List<FormModelReceta> nuevaReceta) {
         for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-            kilosTotalesFloat = instanciaPorCantidad(kilosTotalesFloat, nuevareceta, i);
+            kilosTotalesFloat = instanciaPorCantidad(kilosTotalesFloat, nuevaReceta, i);
         }
         return kilosTotalesFloat;
     }

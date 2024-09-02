@@ -708,11 +708,9 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                  }else{
                      viewModel.mostrarMensajeDeError("Error en base de datos pesada, debe hacer un reset o actualizar programa");
                  }
-
              }else{
                  viewModel.mostrarMensajeDeError("Error en base de datos pedido, debe hacer un reset o actualizar programa");
              }
-
         }
 
     }

@@ -106,20 +106,22 @@ public class FormPrincipalViewModel extends ViewModel {
         return !recetaManager.automatico || recetaManager.estadoBalanza == RecetaManager.PROCESO;
     }
 
-
     public int determinarBalanza() {
         String kilos = recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getKilosIng();
         return balanzaManager.determinarBalanza(kilos);
     }
 
-
     private void configurarRecetaParaPedido() {
-        if((preferencesManager.getRecetaComoPedido()||preferencesManager.getRecetaComoPedidoCheckbox())&&recetaManager.cantidad.getValue()!=null){
+        if(isRecipeOrder()){
             float kilosTotalesFloat=0;
             List<FormModelReceta> nuevaReceta=new ArrayList<>();
             kilosTotalesFloat = getKilosTotales(kilosTotalesFloat, nuevaReceta);
             updateRecetaYTotales(kilosTotalesFloat, nuevaReceta);
         }
+    }
+
+    private boolean isRecipeOrder() {
+        return (preferencesManager.getRecetaComoPedido() || preferencesManager.getRecetaComoPedidoCheckbox()) && recetaManager.cantidad.getValue() != null;
     }
 
     private float getKilosTotales(float kilosTotalesFloat, List<FormModelReceta> nuevaReceta) {
@@ -130,7 +132,7 @@ public class FormPrincipalViewModel extends ViewModel {
     }
 
     private float instanciaPorCantidad(float kilosTotalesFloat, List<FormModelReceta> nuevaReceta, int i) {
-        if(recetaManager.cantidad.getValue()!=null) return 0;
+        if(recetaManager.cantidad.getValue()==null) return 0;
         for(int k = 0; k<recetaManager.cantidad.getValue(); k++){
             FormModelReceta nuevaInstancia = getNuevaInstancia(i);
             nuevaReceta.add(nuevaInstancia); // si en vez de crear la nueva instancia le pasamos mainActivity.mainClass.listRecetaActual.get(i) entonces apuntara a las mismas direcciones de memoria
@@ -186,8 +188,6 @@ public class FormPrincipalViewModel extends ViewModel {
         return kilos;
     }
 
-
-
     public void calculaPorcentajeError(float neto, String netoStr, String unidad) {
         recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).setKilos_reales_ing(netoStr);
         labelManager.okilosreales.value= netoStr +unidad;
@@ -197,7 +197,6 @@ public class FormPrincipalViewModel extends ViewModel {
         }
         recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).setTolerancia_ing(format(String.valueOf(porcentaje),2) + "%");
     }
-
 
     public void setearModoUsoDialogo(String texto, boolean checkbox, int modoDeUso) {
         if(recetaManager.cantidad.getValue()!=null&&Float.parseFloat(texto)>0){
@@ -236,55 +235,22 @@ public class FormPrincipalViewModel extends ViewModel {
         recetaManager.ejecutando.setValue(true);
         recetaManager.pasoActual=1;
         recetaManager.netoTotal.setValue("0");
-        preferencesManager.setNetototal("0");
-        preferencesManager.setEjecutando(true);
-        preferencesManager.setPasoActual(recetaManager.pasoActual);
-        labelManager.onetototal.value = "0";
-        labelManager.opaso.value=recetaManager.pasoActual;
-
     }
 
     public void detener(){
-        labelManager.oidreceta.value="0";
-        preferencesManager.setRecetaId(0);
-        preferencesManager.setPedidoId(0);
-        preferencesManager.setEstado(0);
-        preferencesManager.setEjecutando(false);
-        preferencesManager.setAutomatico(false);
         recetaManager.estado=0;
         recetaManager.ejecutando.setValue(false);
         recetaManager.estadoBalanza=RecetaManager.DETENIDO;
         recetaManager.automatico=false;
     }
 
-    public boolean verificarComienzo() {
-        boolean empezar=true;
-        if(labelManager.olote.value==""||labelManager.ovenci.value==""||faltanCampos()){
-            mostrarMensajeDeError("Faltan ingresar datos");
-            empezar=false;
-        }
+    public boolean isRecipeSelected(boolean empezar) {
         if(recetaManager.recetaActual.isEmpty()){
             mostrarMensajeDeError("Debe seleccionar una receta para comenzar");
-            empezar=false;
+            empezar =false;
         }
         return empezar;
     }
-
-    private boolean faltanCampos() {
-        String[] campos = {preferencesManager.getCampo1(), preferencesManager.getCampo2(), preferencesManager.getCampo3(), preferencesManager.getCampo4(), preferencesManager.getCampo5()};
-        String[] valores = {
-                (String)labelManager.ocampo1.value,
-                (String)labelManager.ocampo2.value,
-                (String)labelManager.ocampo3.value,
-                (String)labelManager.ocampo4.value,
-                (String)labelManager.ocampo5.value
-        };
-        for (int i = 0; i < campos.length; i++) {
-            if (!campos[i].isEmpty() && valores[i].isEmpty()) return true;
-        }
-        return false;
-    }
-
 
     public void mostrarMensajeDeError(String mensaje) {
         mensajeError.setValue(mensaje);

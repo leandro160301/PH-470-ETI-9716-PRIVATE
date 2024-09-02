@@ -36,7 +36,7 @@ import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
 import com.jws.jwsapi.feature.formulador.data.sql.FormSqlHelper;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.feature.formulador.viewmodel.FormPreferencesAndLabelViewModel;
+import com.jws.jwsapi.feature.formulador.viewmodel.FormPreferencesLabelViewModel;
 import com.jws.jwsapi.feature.formulador.viewmodel.FormPrincipalViewModel;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.ToastHelper;
@@ -62,7 +62,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     @Inject
     RecipeRepository recipeRepository;
     FormPrincipalViewModel viewModel;
-    FormPreferencesAndLabelViewModel labelAndPreferencesViewModel;
+    FormPreferencesLabelViewModel labelPreferencesViewModel;
     Handler mHandler= new Handler();
     MainActivity mainActivity;
     private ButtonProvider_Principal buttonProvider;
@@ -149,9 +149,9 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void initializeViewModel() {
         viewModel = new ViewModelProvider(requireActivity()).get(FormPrincipalViewModel.class);/*usamos requireActivity para siempre usar la misma instancia (Form_PrincipalViewModel es el programa y debe estar ejecutandose independientemente del programa)*/
-        labelAndPreferencesViewModel = new ViewModelProvider(this).get(FormPreferencesAndLabelViewModel.class);
+        labelPreferencesViewModel = new ViewModelProvider(this).get(FormPreferencesLabelViewModel.class);
         viewModel.mostrarMensajeDeError(null);
-        initializeLabelVariables();
+        labelPreferencesViewModel.initializeLabelVariables();
         binding.lnFondolayout.setOnClickListener(view12 -> btBalanza());
         binding.btStart.setOnClickListener(view1 -> btStart());
         updateViewRecetaText();
@@ -176,12 +176,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         return recetaActual;
     }
 
-    private void initializeLabelVariables() {
-        labelManager.opaso.value=String.valueOf(recetaManager.pasoActual);
-        labelManager.ocodigoreceta.value= recetaManager.codigoReceta;
-        labelManager.oreceta.value= recetaManager.nombreReceta;
-    }
-
     private void btStart() {
         if(isEjecutando()){
             consultaFin();
@@ -204,7 +198,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         }
     }
 
-
     private void setupUnidad() {
         String unidad=mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
         binding.tvBrutoUnidad.setText(unidad);
@@ -220,48 +213,44 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void iniciarReceta() {
-        if(isLoteVacio() &&preferencesManager.getModoLote()== LOTE_NUMERICO){
-            nuevoLoteNumerico();
+        if(labelPreferencesViewModel.isLoteVacio() &&preferencesManager.getModoLote()== LOTE_NUMERICO){
+            labelPreferencesViewModel.nuevoLoteNumerico();
         }
         if(preferencesManager.getModoLote()== LOTE_FECHA){
             nuevoLoteFecha();
         }
-        if(viewModel.verificarComienzo()){
-            ejecutarInicioReceta();
+        if(verificarComienzo()){
+            runInitRecipe();
         }
     }
 
-    private void ejecutarInicioReceta() {
-        labelAndPreferencesViewModel.guardarDatosEnMemoria();
+    public boolean verificarComienzo() {
+        boolean empezar=true;
+        empezar = labelPreferencesViewModel.isDataCompleted(empezar);
+        empezar = viewModel.isRecipeSelected(empezar);
+        return empezar;
+    }
+
+    private void runInitRecipe() {
+        labelPreferencesViewModel.saveDataInMemory();
         if(viewModel.ejecutarReceta(recipeRepository.getReceta(recetaManager.recetaActual,this))){
-            iniciaPorModoReceta();
+            initRecipe();
         }
     }
 
     private void nuevoLoteFecha() {
-        if(isLoteVacio()){
+        if(labelPreferencesViewModel.isLoteVacio()){
             viewModel.nuevoLoteFecha();
         }else{
             viewModel.verificarNuevoLoteFecha();
         }
     }
 
-    private boolean isLoteVacio() {
-        return labelManager.olote.value == "";
-    }
-
-
-
-    private void nuevoLoteNumerico() {
-        labelManager.olote.value=String.valueOf(preferencesManager.getLoteAutomatico()+1);
-        preferencesManager.setLoteAutomatico(preferencesManager.getLoteAutomatico()+1);
-    }
-
-    private void iniciaPorModoReceta() {
+    private void initRecipe() {
         if(preferencesManager.getModoReceta()==0){//respeta el setpoint de cada paso
             boolean empezarKilos=viewModel.modoKilos();
             if(empezarKilos){
-                viewModel.setupValoresParaInicio();
+                viewModelsInit();
                 verificarPasoEsAutomatico();
             }
         }else{//ingresa porcentaje
@@ -269,8 +258,14 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         }
     }
 
+    private void viewModelsInit() {
+        viewModel.setupValoresParaInicio();
+        labelPreferencesViewModel.preferencesSetupInit();
+        labelPreferencesViewModel.labelSetupInit();
+    }
+
     private void modoPorcentaje() {
-        if(preferencesManager.getModoUso()==0||!preferencesManager.getRecetaComoPedidoCheckbox()){
+        if(labelPreferencesViewModel.isRecipeBatch()){
             setupRecetaBatch(); //por batch
         }else{
             setupRecetaPedido();//por pedido
@@ -294,11 +289,10 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             IngresaPorcentaje();
         }else {
             updatePorcetajeReceta(recetaManager.porcentajeReceta);
-            viewModel.setupValoresParaInicio();
+            viewModelsInit();
             verificarPasoEsAutomatico();
         }
     }
-
 
     private boolean verificarPasoEsAutomatico() {
         boolean isAutomatic=false;
@@ -340,17 +334,20 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             Thread myThread = new Thread(myRunnable);
             myThread.start();
         }else{
-            recetaManager.automatico=false;
-            preferencesManager.setAutomatico(false);
+            setupAutomatic(false);
         }
+    }
+
+    private void setupAutomatic(boolean Boolean) {
+        recetaManager.automatico=Boolean;
+        preferencesManager.setAutomatico(Boolean);
     }
 
     private void setearArranqueBza(int salida, String setPoint) {
         boolean result=mainClass.bza.Itw410FrmSetear(mainClass.nBza, setPoint, salida);
         if(result){
             mainClass.bza.Itw410FrmStart(mainClass.nBza);
-            recetaManager.automatico=true;
-            preferencesManager.setAutomatico(true);
+            setupAutomatic(true);
             preferencesManager.setSalida(salida);
         }else{
             mainActivity.runOnUiThread(() ->  viewModel.mostrarMensajeDeError("Error de balanza:410 escritura"));
@@ -361,7 +358,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         String text="Ingrese los kilos a realizar totales y presione SIGUIENTE o si quiere continuar con la receta original presione CONTINUAR";
         TecladoFlotanteConCancelar(null, text, mainActivity, this::calculoporcentajeRecetaDialogo, () -> {
             if(recetaManager.listRecetaActual.size()>0) recetaManager.porcentajeReceta=recetaManager.listRecetaActual.get(0).getKilosTotales();
-            viewModel.setupValoresParaInicio();
+            viewModelsInit();
             verificarPasoEsAutomatico();
         }, "CONTINUAR");
     }
@@ -371,7 +368,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             updatePorcetajeReceta(nuevosKilosTotales);
             recetaManager.porcentajeReceta=nuevosKilosTotales;
             preferencesManager.setPorcentajeReceta(nuevosKilosTotales);
-            viewModel.setupValoresParaInicio();
+            viewModelsInit();
             verificarPasoEsAutomatico();
         }else{
             viewModel.mostrarMensajeDeError("Ocurrio un error con la carga de la receta");
@@ -380,16 +377,20 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void updatePorcetajeReceta(String nuevoPorcentaje) {
         if(kilosTotalesRecetaCheck()){
-            float nuevo=Float.parseFloat(nuevoPorcentaje);
-            float kilos_totales_original=Float.parseFloat(recetaManager.listRecetaActual.get(0).getKilosTotales());
-            float multiplicador=nuevo/kilos_totales_original;
-            for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
-                recetaManager.listRecetaActual.get(i).setKilos_totales(String.valueOf(nuevo));
-                recetaManager.listRecetaActual.get(i).setKilos_ing(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza, String.valueOf(Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosIng()) * multiplicador)));
-            }
+            updateRecipeStep(nuevoPorcentaje);
             preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
         }else{
             viewModel.mostrarMensajeDeError("Ocurrio un error con la carga de la receta");
+        }
+    }
+
+    private void updateRecipeStep(String nuevoPorcentaje) {
+        float nuevo=Float.parseFloat(nuevoPorcentaje);
+        float kilos_totales_original=Float.parseFloat(recetaManager.listRecetaActual.get(0).getKilosTotales());
+        float multiplicador=nuevo/kilos_totales_original;
+        for(int i = 0; i<recetaManager.listRecetaActual.size(); i++){
+            recetaManager.listRecetaActual.get(i).setKilos_totales(String.valueOf(nuevo));
+            recetaManager.listRecetaActual.get(i).setKilos_ing(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza, String.valueOf(Float.parseFloat(recetaManager.listRecetaActual.get(i).getKilosIng()) * multiplicador)));
         }
     }
 
@@ -411,8 +412,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         }
         dialogoCheckboxVisibilidad(null, text, mainActivity, (texto, checkbox) -> viewModel.setearModoUsoDialogo(texto,checkbox,mododeuso),true,InputType.TYPE_CLASS_NUMBER,null,"RECETAS COMO PEDIDO (BOLSAS)",visible,checkboxState);
     }
-
-
 
     private void IngresoRecipiente() {
         //si no pone siguiente y le pone cancerlar lo manda a tara igual
@@ -541,16 +540,20 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         if(recetaManager.pasoActual<recetaManager.listRecetaActual.size()){
             nuevoPaso(neto);
         }else{
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                requireActivity().runOnUiThread(this::imprimirEtiquetaFinal);
-            }).start();
+            esperaImprimeFinal();
 
         }
+    }
+
+    private void esperaImprimeFinal() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            requireActivity().runOnUiThread(this::imprimirEtiquetaFinal);
+        }).start();
     }
 
     private void imprimeyGuardaNuevoPasoPedidoBatch() {
@@ -651,8 +654,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
         boolean isAutomatic=verificarPasoEsAutomatico();
         if(!isAutomatic&&!preferencesManager.getRecipientexPaso())mainActivity.mainClass.bza.setTaraDigital(mainActivity.mainClass.nBza,mainActivity.mainClass.bza.getBruto(mainActivity.mainClass.nBza));
-
-
     }
 
     private void insertarPrimerPasoRecetaBatchSQL() {//guardar en receta una nueva y que devuelva el id
@@ -753,20 +754,28 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
             if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
                 float kilos = viewModel.calculaNetoTotal();
-                labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
-                formSqlHelper.actualizarNetoTotalReceta(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos))+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),String.valueOf(preferencesManager.getRecetaId()));
-                preferencesManager.setNetototal(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos)));
-                labelManager.onetototal.value = mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos));
+                actualizaDatosNetoTotalReceta(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos)));
             }
             if(id==-1){
                 viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
             }else{
                 labelManager.oidpesada.value=String.valueOf(id);
             }
-
-
+            
         }
     }
+
+    private void actualizaDatosNetoTotalReceta(String kilosStr) {
+        labelPreferencesViewModel.setupIdNetoTotal(kilosStr,preferencesManager.getRecetaId());
+        formSqlHelper.actualizarNetoTotalReceta(kilosStr+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),String.valueOf(preferencesManager.getRecetaId()));
+    }
+
+    private void actualizaDatosNetoTotalPedido(String kilosStr) {
+        labelPreferencesViewModel.setupIdNetoTotal(kilosStr,preferencesManager.getPedidoId());
+        formSqlHelper.actualizarNetoTotalPedido(kilosStr+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),String.valueOf(preferencesManager.getPedidoId()));
+
+    }
+
     private void insertarNuevoPasoPedidoBatchSQL() {
         //agarrar id guardado_pesadas en memoria
         labelManager.oidreceta.value=preferencesManager.getPedidoId();
@@ -808,29 +817,22 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     private void updateNetoTotal() {
         if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
             float kilos = viewModel.calculaNetoTotal();
-            actualizaDatosNetoTotal(kilos);
+            actualizaDatosNetoTotalPedido(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos)));
         }
     }
-
-    private void actualizaDatosNetoTotal(float kilos) {
-        labelManager.oidreceta.value=preferencesManager.getPedidoId();
-        formSqlHelper.actualizarNetoTotalPedido(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos))+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),String.valueOf(preferencesManager.getPedidoId()));
-        preferencesManager.setNetototal(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos)));
-        labelManager.onetototal.value = mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos));
-    }
-
 
     private void recetaFinalizada() {
         requireActivity().runOnUiThread(() -> {
             recetaManager.estadoMensajeStr.setValue("FINALIZADO");
             detener();
         });
-        labelAndPreferencesViewModel.restaurarDatos();
+        labelPreferencesViewModel.restaurarDatos();
     }
-
 
     private void detener() {
         viewModel.detener();
+        labelPreferencesViewModel.labelSetupStop();
+        labelPreferencesViewModel.preferencesSetupStop();
         if(recetaManager.automatico)mainClass.bza.itw410FrmStop(mainClass.nBza);
     }
 
@@ -844,7 +846,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void updateDatosLabel() {
-        if(isDatosDisable()){
+        if(labelPreferencesViewModel.isDatosDisable()){
             binding.tvDatos.setText(labelManager.olote.value+" | "+labelManager.oturno.value+ " ...");
         }else{
             binding.tvDatos.setText("Toque para ingresar los datos");
@@ -857,12 +859,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         }else{
             binding.imEstable.setVisibility(View.INVISIBLE);
         }
-    }
-
-    private boolean isDatosDisable() {
-        return !labelManager.olote.value.equals("") &&
-                !labelManager.oturno.value.equals("") &&
-                !labelManager.ovenci.value.equals("");
     }
 
     private boolean isManualAndBotoneraNormal() {
@@ -885,7 +881,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         setupTaraView(R.drawable.tare_black);
         setupLabelDescripcionPaso();
     }
-
 
     private void setupLabelDescripcionPaso() {
         boolean empezar= (labelManager.olote.value != "" || labelManager.oturno.value != "" ||
@@ -913,33 +908,48 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         if(botonera== BOTONERA_NORMAL)bt_2.setText("PAUSAR");
         switch (estado){
             case 0:
-                if(recetaManager.estadoBalanza== RecetaManager.ESTABILIZANDO ||recetaManager.estadoBalanza== RecetaManager.PROCESO){
-                    automaticoFinalizado();
-                    recetaManager.estadoBalanza=RecetaManager.DETENIDO;
-                }
+                estadoDetenido();
                 break;
             case 1:
-                procesoEjecucionManual();
-                recetaManager.estadoBalanza=RecetaManager.PROCESO;
+                estadoProceso();
                 break;
             case 2:
-                if(botonera== BOTONERA_NORMAL)bt_2.setText("REANUDAR");
-                recetaManager.estadoMensajeStr.setValue("Proceso automatico en pausa...");
-                recetaManager.estadoBalanza=RecetaManager.PAUSA;
+                estadoPausa();
                 break;
             case 3:
-                procesoEjecucionManual();
-                recetaManager.estadoBalanza=RecetaManager.ESTABILIZANDO;
-                recetaManager.estadoMensajeStr.setValue("Estabilizando...");
+                estadoEstabilizando();
                 break;
             default:
                 break;
         }
     }
 
+    private void estadoEstabilizando() {
+        procesoEjecucionManual();
+        recetaManager.estadoBalanza=RecetaManager.ESTABILIZANDO;
+        recetaManager.estadoMensajeStr.setValue("Estabilizando...");
+    }
+
+    private void estadoPausa() {
+        if(botonera== BOTONERA_NORMAL)bt_2.setText("REANUDAR");
+        recetaManager.estadoMensajeStr.setValue("Proceso automatico en pausa...");
+        recetaManager.estadoBalanza=RecetaManager.PAUSA;
+    }
+
+    private void estadoProceso() {
+        procesoEjecucionManual();
+        recetaManager.estadoBalanza=RecetaManager.PROCESO;
+    }
+
+    private void estadoDetenido() {
+        if(recetaManager.estadoBalanza== RecetaManager.ESTABILIZANDO ||recetaManager.estadoBalanza== RecetaManager.PROCESO){
+            automaticoFinalizado();
+            recetaManager.estadoBalanza=RecetaManager.DETENIDO;
+        }
+    }
+
     private void automaticoFinalizado() {
-        recetaManager.automatico=false;
-        preferencesManager.setAutomatico(false);
+        setupAutomatic(false);
         int nuevoIndice=mainClass.bza.Itw410FrmGetUltimoIndice(mainClass.nBza);
         if(nuevoIndice>preferencesManager.getIndice()){
             String ultimoPeso=mainClass.bza.Itw410FrmGetUltimoPeso(mainClass.nBza);
@@ -957,8 +967,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                 calculoActualizaLimites();
                 mainClass.nBza =viewModel.determinarBalanza();
                 viewModel.actualizarBarraProceso(mainClass.nBza,mainClass.bza.getUnidad(mainClass.nBza));
-                labelManager.oingredientes.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescIng();
-                labelManager.ocodigoingrediente.value= recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigoIng();
+                labelPreferencesViewModel.updateCurrentIngredient(recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getDescIng(), recetaManager.listRecetaActual.get(recetaManager.pasoActual - 1).getCodigoIng());
             }
         }
     }
@@ -979,7 +988,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             actualizarDisplayPeso(lim_min,lim_max);
         }
     }
-
 
     private void actualizarDisplayPeso(Float limMin, Float limMax) {
         float pesoNeto = mainActivity.mainClass.bza.getNeto(mainActivity.mainClass.nBza);
@@ -1011,14 +1019,18 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void setupTaraView(int color) {
         if(Utils.isNumeric(mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza))){
-            if(mainActivity.mainClass.bza.getTara(mainActivity.mainClass.nBza)!=0||
-                    Float.parseFloat(mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza))!=0){
+            if(isTareZero()){
                 binding.imTare.setImageDrawable(ContextCompat.getDrawable(requireContext(),color));
                 binding.imTare.setVisibility(View.VISIBLE);
             }else{
                 binding.imTare.setVisibility(View.INVISIBLE);
             }
         }
+    }
+
+    private boolean isTareZero() {
+        return mainActivity.mainClass.bza.getTara(mainActivity.mainClass.nBza) != 0 ||
+                Float.parseFloat(mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)) != 0;
     }
 
     private void setupViewsColor(int Color, int Rcolor, int estable) {
@@ -1029,7 +1041,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         binding.tvBrutoUnidad.setTextColor(Color);
         binding.imEstable.setImageDrawable(ContextCompat.getDrawable(requireContext(),estable));
     }
-
 
     private void actualizarBarraProgreso(Float limMax) {
         float pesoNeto=mainActivity.mainClass.bza.getNeto(mainActivity.mainClass.nBza);

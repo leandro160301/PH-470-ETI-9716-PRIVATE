@@ -112,9 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
     }
-
 
     public void clearCache(){
         Context context=getApplicationContext();
@@ -134,10 +132,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,this);
         }
-
-
     }
-
 
     public void openSettings(){
         Intent launchIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.android.settings");

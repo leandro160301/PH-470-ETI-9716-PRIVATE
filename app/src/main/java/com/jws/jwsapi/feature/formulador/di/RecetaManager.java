@@ -55,4 +55,6 @@ public class RecetaManager {
         this.porcentajeReceta=preferencesManager.getPorcentajeReceta();
         if(this.listRecetaActual ==null)this.listRecetaActual =new ArrayList<>();
     }
+
+
 }

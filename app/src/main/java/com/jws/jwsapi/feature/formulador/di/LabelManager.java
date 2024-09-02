@@ -210,4 +210,5 @@ public class LabelManager {
         onumeroetiqueta.value = String.valueOf(netiqueta);
 
     }
+
 }

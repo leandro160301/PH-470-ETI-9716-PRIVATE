@@ -1,0 +1,29 @@
+
+a	java:S112ƒ"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112Š"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112”"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112¥"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112¯"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+K
+java:S1141/"5Extract this nested try block into a separate method.(ïİÜ€
+K
+java:S1141U"5Extract this nested try block into a separate method.(ïİÜ€
+h
+java:S3776("RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(Àãóï
+h
+java:S3776L"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ññı
+‡
+java:S1130|"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(¸ƒ’­ÿÿÿÿÿ
+X	java:S899"BDo something with the "boolean" value returned by "createNewFile".(Ü’ä—
+V	java:S899†";Do something with the "boolean" value returned by "delete".(æ‘‰üÿÿÿÿ
+j
+java:S4042†"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(æ‘‰üÿÿÿÿ
+X	java:S899ˆ"BDo something with the "boolean" value returned by "createNewFile".(Ü’ä—
+ƒ
+java:S1130œ"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(ñ€Şø
+V	java:S899 ";Do something with the "boolean" value returned by "delete".(æ‘‰üÿÿÿÿ
+j
+java:S4042 "NUse "java.nio.file.Files#delete" here for better messages on error conditions.(æ‘‰üÿÿÿÿ
+X	java:S899£"BDo something with the "boolean" value returned by "createNewFile".(ÁÕêà
+@
+java:S1481£")Remove this unused "bool" local variable.(ÁÕêà

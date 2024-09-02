@@ -287,10 +287,6 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
         Utils.Mensaje(str,R.layout.item_customtoasterror,mainActivity);
     }
 
-    @Override
-    public void mensajeCorrecto(String str) {
-        Utils.Mensaje(str,R.layout.item_customtoastok,mainActivity);
-    }
 }
 
 

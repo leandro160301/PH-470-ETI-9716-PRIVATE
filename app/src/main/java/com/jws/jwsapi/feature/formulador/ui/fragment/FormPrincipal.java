@@ -106,7 +106,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         viewModel.mensajeToastError.observe(getViewLifecycleOwner(), this::mensaje);
         viewModel.getRealizadas().observe(getViewLifecycleOwner(), this::updateViewRealizadas);
         viewModel.getEjecutando().observe(getViewLifecycleOwner(), this::updateViewBtStart);
-
     }
 
     private void mensaje(String mensaje) {
@@ -931,8 +930,4 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         viewModel.mostrarMensajeDeError(str);
     }
 
-    @Override
-    public void mensajeCorrecto(String str) {
-        viewModel.mostrarMensajeDeError(str);
-    }
 }

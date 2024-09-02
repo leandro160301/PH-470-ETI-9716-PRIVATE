@@ -1,9 +1,9 @@
 package com.jws.jwsapi.common.httpserver;
 
-import static com.jws.jwsapi.feature.formulador.data.sql.FormSqlUtil.JSONconsultas;
-import static com.jws.jwsapi.feature.formulador.data.sql.FormSqlUtil.JSONpedidos;
-import static com.jws.jwsapi.feature.formulador.data.sql.FormSqlUtil.JSONpesadas;
-import static com.jws.jwsapi.feature.formulador.data.sql.FormSqlUtil.JSONrecetas;
+import static com.jws.jwsapi.feature.formulador.data.sql.DatabaseUtil.JSONconsultas;
+import static com.jws.jwsapi.feature.formulador.data.sql.DatabaseUtil.JSONpedidos;
+import static com.jws.jwsapi.feature.formulador.data.sql.DatabaseUtil.JSONpesadas;
+import static com.jws.jwsapi.feature.formulador.data.sql.DatabaseUtil.JSONrecetas;
 
 import android.content.Context;
 import android.util.Log;

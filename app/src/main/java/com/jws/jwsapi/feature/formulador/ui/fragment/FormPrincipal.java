@@ -32,9 +32,10 @@ import com.jws.jwsapi.databinding.ProgFormuladorPrincipalBinding;
 import com.jws.jwsapi.feature.formulador.MainFormClass;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.data.repository.RecipeRepository;
+import com.jws.jwsapi.feature.formulador.data.sql.DatabaseHelper;
+import com.jws.jwsapi.feature.formulador.data.sql.DatabaseRepository;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
-import com.jws.jwsapi.feature.formulador.data.sql.FormSqlHelper;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.feature.formulador.viewmodel.FormPreferencesLabelViewModel;
 import com.jws.jwsapi.feature.formulador.viewmodel.FormPrincipalViewModel;
@@ -58,11 +59,12 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     @Inject
     LabelManager labelManager;
     @Inject
-    FormSqlHelper formSqlHelper;
+    DatabaseHelper formSqlHelper;
     @Inject
     RecipeRepository recipeRepository;
     FormPrincipalViewModel viewModel;
     FormPreferencesLabelViewModel labelPreferencesViewModel;
+    DatabaseRepository databaseRepository;
     Handler mHandler= new Handler();
     MainActivity mainActivity;
     private ButtonProvider_Principal buttonProvider;
@@ -157,7 +159,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         updateViewRecetaText();
         setupUnidad();
         binding.imEstable.setVisibility(View.INVISIBLE);
-
+        databaseRepository= new DatabaseRepository(formSqlHelper,preferencesManager,labelManager, mainClass.bza,recetaManager,mainClass.nBza,usersManager,viewModel,labelPreferencesViewModel);
     }
 
     private void updateViewRecetaText() {
@@ -499,13 +501,17 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void btPlus() {
         if(recetaManager.automatico){
-            if(mainClass.bza.Itw410FrmGetEstado(mainClass.nBza)==2){
-                mainClass.bza.Itw410FrmStart(mainClass.nBza);
-            }else{
-                mainClass.bza.itw410FrmPause(mainClass.nBza);
-            }
+            btPausaReanuda();
         }else{
             btPesar(mainActivity.mainClass.bza.getNeto(mainActivity.mainClass.nBza),mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza));
+        }
+    }
+
+    private void btPausaReanuda() {
+        if(mainClass.bza.Itw410FrmGetEstado(mainClass.nBza)==RecetaManager.PAUSA){
+            mainClass.bza.Itw410FrmStart(mainClass.nBza);
+        }else{
+            mainClass.bza.itw410FrmPause(mainClass.nBza);
         }
     }
 
@@ -541,7 +547,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             nuevoPaso(neto);
         }else{
             esperaImprimeFinal();
-
         }
     }
 
@@ -558,28 +563,28 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void imprimeyGuardaNuevoPasoPedidoBatch() {
         if(preferencesManager.getPasoActual()>1&&preferencesManager.getRecetaComoPedido()){
-            insertarNuevoPasoPedidoBatchSQL();
+            databaseRepository.insertarNuevoPasoPedidoBatchSQL(viewModel.calculaNetoTotal());
             imprimirEtiquetaPaso();
         }
     }
 
     private void imprimeyGuardaPrimerPasoPedidoBatch() {
         if(preferencesManager.getPasoActual()==1&&preferencesManager.getRecetaComoPedido()){
-            insertarPrimerPasoPedidoBatchSQL();
+            databaseRepository.insertarPrimerPasoPedidoBatchSQL();
             imprimirEtiquetaPaso();
         }
     }
 
     private void imprimeyGuardaNuevoPasoRecetaBatch() {
         if(preferencesManager.getPasoActual()>1&&!preferencesManager.getRecetaComoPedido()){
-            insertarNuevoPasoRecetaBatchSQL();
+            databaseRepository.insertarNuevoPasoRecetaBatchSQL(viewModel.calculaNetoTotal());
             imprimirEtiquetaPaso();
         }
     }
 
     private void imprimeyGuardaPrimerPasoRecetaBatch() {
         if(preferencesManager.getPasoActual()==1&&!preferencesManager.getRecetaComoPedido()){
-            insertarPrimerPasoRecetaBatchSQL();
+            databaseRepository.insertarPrimerPasoRecetaBatchSQL();
             imprimirEtiquetaPaso();
         }
     }
@@ -654,169 +659,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         preferencesManager.setPasosRecetaActual(recetaManager.listRecetaActual);
         boolean isAutomatic=verificarPasoEsAutomatico();
         if(!isAutomatic&&!preferencesManager.getRecipientexPaso())mainActivity.mainClass.bza.setTaraDigital(mainActivity.mainClass.nBza,mainActivity.mainClass.bza.getBruto(mainActivity.mainClass.nBza));
-    }
-
-    private void insertarPrimerPasoRecetaBatchSQL() {//guardar en receta una nueva y que devuelva el id
-        labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
-        if(preferencesManager.getRecetaId()==0){
-            long id= sqlRecetaBatch(formSqlHelper);
-            if(id>-1){
-                labelManager.oidreceta.value=String.valueOf(id);
-                preferencesManager.setRecetaId(id);
-                long id2=sqlPrimerPasoPesadaBatch(formSqlHelper,id);
-                if(id2!=-1){
-                    labelManager.oidpesada.value=String.valueOf(id2);
-                }
-            }else{
-                viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
-            }
-        }
-
-    }
-
-    private long sqlPrimerPasoPesadaBatch(FormSqlHelper form_sqlDb, long id) {
-        return form_sqlDb.insertarPesada(String.valueOf(id),"",recetaManager.codigoReceta,recetaManager.nombreReceta,
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigoIng(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescIng(),(String) labelManager.olote.value,
-                (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
-                (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
-                preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng() +mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng() +mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),"","",String.valueOf(mainActivity.mainClass.nBza));
-    }
-
-    private long sqlRecetaBatch(FormSqlHelper form_sqlDb) {
-        return form_sqlDb.insertarReceta(recetaManager.codigoReceta,recetaManager.nombreReceta, (String) labelManager.olote.value,
-                (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
-                (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
-                preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosTotales() +mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),"","",String.valueOf(mainActivity.mainClass.nBza));
-    }
-
-    private void insertarPrimerPasoPedidoBatchSQL() {//guardar en receta una nueva y que devuelva el id
-        labelManager.oidreceta.value=preferencesManager.getPedidoId();
-        if(preferencesManager.getPedidoId()==0){
-             long id= sqlRecetaPedido(formSqlHelper);
-             if(id>-1){
-                 labelManager.oidreceta.value=String.valueOf(id);
-                 preferencesManager.setPedidoId(id);
-                 long id2= sqlPrimerPasoPesadaPedido(formSqlHelper,id);
-                 if(id2!=-1){
-                     labelManager.oidpesada.value=String.valueOf(id2);
-                 }else{
-                     viewModel.mostrarMensajeDeError("Error en base de datos pesada, debe hacer un reset o actualizar programa");
-                 }
-             }else{
-                 viewModel.mostrarMensajeDeError("Error en base de datos pedido, debe hacer un reset o actualizar programa");
-             }
-        }
-
-    }
-
-    private long sqlPrimerPasoPesadaPedido(FormSqlHelper form_sqlDb, long id) {
-        return form_sqlDb.insertarPesada("",String.valueOf(id),recetaManager.codigoReceta,recetaManager.nombreReceta,
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigoIng(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescIng(),(String) labelManager.olote.value,
-                (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
-                (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String)labelManager.ocampo5.value,preferencesManager.getCampo1(),
-                preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng() +mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng() +mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),"","",String.valueOf(mainActivity.mainClass.nBza));
-    }
-
-    private long sqlRecetaPedido(FormSqlHelper form_sqlDb) {
-        return form_sqlDb.insertarPedido(recetaManager.codigoReceta,recetaManager.nombreReceta, (String) labelManager.olote.value,
-                (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
-                (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
-                preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosTotales() +mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),"","",String.valueOf(mainActivity.mainClass.nBza));
-    }
-
-    private void insertarNuevoPasoRecetaBatchSQL() {
-        //agarrar id guardado_pesadas en memoria
-        labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
-        if(preferencesManager.getRecetaId()>0){
-            labelManager.oidreceta.value=String.valueOf(preferencesManager.getRecetaId());
-            long id= formSqlHelper.insertarPesada(String.valueOf(preferencesManager.getRecetaId()),"",recetaManager.codigoReceta,recetaManager.nombreReceta,
-                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigoIng(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescIng(),(String) labelManager.olote.value,
-                    (String) labelManager.ovenci.value,(String) labelManager.oturno.value,mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                    mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),
-                    Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,(String) labelManager.ocampo2.value,
-                    (String) labelManager.ocampo3.value,(String) labelManager.ocampo4.value,(String) labelManager.ocampo5.value,preferencesManager.getCampo1(),
-                    preferencesManager.getCampo2(),preferencesManager.getCampo3(),preferencesManager.getCampo4(),preferencesManager.getCampo5(),usersManager.getUsuarioActual(),
-                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng(), recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng(),"","",String.valueOf(mainActivity.mainClass.nBza));
-
-            if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
-                float kilos = viewModel.calculaNetoTotal();
-                actualizaDatosNetoTotalReceta(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos)));
-            }
-            if(id==-1){
-                viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
-            }else{
-                labelManager.oidpesada.value=String.valueOf(id);
-            }
-            
-        }
-    }
-
-    private void actualizaDatosNetoTotalReceta(String kilosStr) {
-        labelPreferencesViewModel.setupIdNetoTotal(kilosStr,preferencesManager.getRecetaId());
-        formSqlHelper.actualizarNetoTotalReceta(kilosStr+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),String.valueOf(preferencesManager.getRecetaId()));
-    }
-
-    private void actualizaDatosNetoTotalPedido(String kilosStr) {
-        labelPreferencesViewModel.setupIdNetoTotal(kilosStr,preferencesManager.getPedidoId());
-        formSqlHelper.actualizarNetoTotalPedido(kilosStr+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza),String.valueOf(preferencesManager.getPedidoId()));
-
-    }
-
-    private void insertarNuevoPasoPedidoBatchSQL() {
-        //agarrar id guardado_pesadas en memoria
-        labelManager.oidreceta.value=preferencesManager.getPedidoId();
-        if(preferencesManager.getPedidoId()>0){
-            labelManager.oidreceta.value=preferencesManager.getPedidoId();
-            long id= formSqlHelper.insertarPesada("",
-               String.valueOf(preferencesManager.getPedidoId()),
-               recetaManager.codigoReceta,recetaManager.nombreReceta,
-                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getCodigoIng(),
-                    recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getDescIng(),
-               (String) labelManager.olote.value, (String) labelManager.ovenci.value,
-               (String) labelManager.oturno.value,mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza),
-               mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza),
-               mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza),
-               Utils.getFecha(),Utils.getHora(),(String) labelManager.ocampo1.value,
-               (String) labelManager.ocampo2.value,
-               (String) labelManager.ocampo3.value,
-               (String) labelManager.ocampo4.value,
-               (String) labelManager.ocampo5.value,
-               preferencesManager.getCampo1(),
-               preferencesManager.getCampo2(),
-               preferencesManager.getCampo3(),
-               preferencesManager.getCampo4(),
-               preferencesManager.getCampo5(),
-               usersManager.getUsuarioActual(),
-               recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosIng(),
-               recetaManager.listRecetaActual.get(preferencesManager.getPasoActual() - 1).getKilosRealesIng(),
-               "","",String.valueOf(mainActivity.mainClass.nBza));
-            updateNetoTotal();
-            if(id==-1){
-                viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
-            }else{
-                labelManager.oidpesada.value=String.valueOf(id);
-            }
-
-        }
-    }
-
-    private void updateNetoTotal() {
-        if(recetaManager.pasoActual==recetaManager.listRecetaActual.size()){
-            float kilos = viewModel.calculaNetoTotal();
-            actualizaDatosNetoTotalPedido(mainActivity.mainClass.bza.format(mainActivity.mainClass.nBza,String.valueOf(kilos)));
-        }
     }
 
     private void recetaFinalizada() {

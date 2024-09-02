@@ -103,6 +103,7 @@ public class Storage {
     public Boolean DevuelveEstadoUSB(){
         return updateUsbState == 1;
     }
+
     public void installApk(AppCompatActivity activity){
         if(isPackageExisted("com.android.documentsui")){
             Intent launchIntent = activity.getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.android.documentsui");

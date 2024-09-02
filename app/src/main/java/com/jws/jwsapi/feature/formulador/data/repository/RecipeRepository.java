@@ -1,7 +1,8 @@
 package com.jws.jwsapi.feature.formulador.data.repository;
 
 import android.os.Environment;
-import com.jws.jwsapi.feature.formulador.data.sql.FormSqlHelper;
+
+import com.jws.jwsapi.feature.formulador.data.sql.DatabaseHelper;
 import com.jws.jwsapi.feature.formulador.models.FormModelIngredientes;
 import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
 import com.jws.jwsapi.utils.ToastHelper;
@@ -19,10 +20,10 @@ import javax.inject.Inject;
 import au.com.bytecode.opencsv.CSVWriter;
 
 public class RecipeRepository {
-    private final FormSqlHelper formSqlHelper;
+    private final DatabaseHelper formSqlHelper;
 
     @Inject
-    public RecipeRepository(FormSqlHelper formSqlHelper) {
+    public RecipeRepository(DatabaseHelper formSqlHelper) {
         this.formSqlHelper = formSqlHelper;
     }
     public String getNuevoLoteFecha() {

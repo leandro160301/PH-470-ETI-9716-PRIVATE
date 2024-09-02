@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class FormSqlHelper extends  SQLiteOpenHelper {
+public class DatabaseHelper extends  SQLiteOpenHelper {
 
     private static final String[] COLUMN_PESADAS = {
             "Id", "idreceta","idpedido", "codigoreceta", "descripcionreceta", "codigoingrediente", "descripcioningrediente",
@@ -40,7 +40,7 @@ public class FormSqlHelper extends  SQLiteOpenHelper {
             "Operador", "Kilos a producir", "Campo extra 1", "Campo extra 2", "Balanza"
     };
 
-    public FormSqlHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public DatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

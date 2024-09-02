@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -43,7 +42,6 @@ import com.jws.jwsapi.feature.formulador.viewmodel.FormPrincipalViewModel;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
-
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;

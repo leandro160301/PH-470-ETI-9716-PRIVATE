@@ -7,6 +7,9 @@ import static com.jws.jwsapi.feature.formulador.data.sql.DatabaseUtil.JSONreceta
 
 import android.content.Context;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.storage.Storage;
 import com.jws.jwsapi.common.users.UsersManager;
@@ -22,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
@@ -206,7 +210,6 @@ public class HttpServer extends NanoWSD {
         }
 
         if(uri.endsWith("getArchivos")){
-
             try {
                 Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,Storage.JSONarchivos());
                 response.addHeader("Access-Control-Allow-Origin", "*");
@@ -215,7 +218,6 @@ public class HttpServer extends NanoWSD {
                 throw new RuntimeException(e);
             }
         }
-
 
         if (uri.endsWith("getConsultas")){
 
@@ -254,12 +256,7 @@ public class HttpServer extends NanoWSD {
             return response;
 
         }
-        if (uri.endsWith("GetUltimasPesadas")){
-           /* Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,mainActivity.JSONultimaspesadas());
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            return response;*/
 
-        }
         if (uri.endsWith("getVersion")){
             Response response = newFixedLengthResponse(Response.Status.OK,MIME_TEXT_PLAIN_JS,mainActivity.VERSION);
             response.addHeader("Access-Control-Allow-Origin", "*");
@@ -275,7 +272,6 @@ public class HttpServer extends NanoWSD {
 
         if (uri.endsWith("inicio")){
             try {
-               //mainActivity.installApk();
                 mainActivity.runOnUiThread(() -> mainActivity.mainClass.openFragmentPrincipal());
 
             } catch (Exception e) {
@@ -283,7 +279,6 @@ public class HttpServer extends NanoWSD {
                 response.addHeader("Access-Control-Allow-Origin", "*");
                 return response;
             }
-
             Response response = newFixedLengthResponse("ok");
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
@@ -306,8 +301,6 @@ public class HttpServer extends NanoWSD {
             return newFixedLengthResponse("Hecho");
         }
 
-
-
         else if (uri.contains("private")) {
             return notFoundResponse();
         }
@@ -316,155 +309,140 @@ public class HttpServer extends NanoWSD {
     }
     private Response handlePost(IHTTPSession session, String uri) throws IOException, ResponseException {
         if (uri.endsWith("sendFiles")) {
-            InputStream inputStream=null ;
-            inputStream = session.getInputStream();
-
-            String nuev="/storage/emulated/0/Memoria/"+URLDecoder.decode(session.getHeaders().get("nombre"),"UTF-8");
-            File fil= new File(nuev);
-            if(fil.exists()){
-                fil.delete();
-            }
-            try(OutputStream outputStream = new FileOutputStream(fil,false)){
-                IOUtils.copy(inputStream, outputStream);
-                inputStream.close();
-                outputStream.close();
-                outputStream.flush();
-
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                // handle exception here
-            }
-
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,"Archivo guardado");
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            return response;
-
+            return bajarArchivos(session);
         }
+
         if(uri.endsWith("/descargarArchivo")){
-             Map<String, String> files = new HashMap<String, String>();
-             String nombre=null;
-             try {
-                 session.parseBody(files);
-                 nombre =files.get("postData");
-                 nombre = URLDecoder.decode(nombre,"UTF-8");
-
-             } catch (IOException e) {
-                 e.printStackTrace();
-             }
-            if(nombre!=null){
-                String filePath = "/storage/emulated/0/Memoria/" + nombre;
-                System.out.println("Nombre del archivo codificado: " + nombre);
-                InputStream fileStream;
-                try {
-                    fileStream = new FileInputStream(new File(filePath));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Response response = newFixedLengthResponse("Error al buscar el archivo:"+nombre);
-                    response.addHeader("Access-Control-Allow-Origin", "*");
-                    return response;
-                }
-
-                String mime=MIME_TEXT_PLAIN_JS;
-                if (uri.contains(".xls"))
-                    mime = MIME_EXCEL;
-                else if (uri.contains(".pdf")){
-                    mime = MIME_PDF;}
-                else if (uri.contains(".png"))
-                    mime = MIME_PNG;
-                else if (uri.contains(".jpg"))
-                    mime = MIME_JPG;
-                else if (uri.contains(".csv"))
-                    mime = "text/csv";
-                Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
-                response.addHeader("Access-Control-Allow-Origin", "*");
-                return response;
-            }else{
-                Response response = newFixedLengthResponse("Error al buscar el archivo");
-                response.addHeader("Access-Control-Allow-Origin", "*");
-                return response;
-            }
-
+            return downloadFile(session, uri);
         }
 
         if(uri.endsWith("/descargarDB")){
-                String filePath = context.getDatabasePath(MainFormClass.DB_NAME).getAbsolutePath();
-                InputStream fileStream;
-                try {
-                    fileStream = new FileInputStream(new File(filePath));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Response response = newFixedLengthResponse("Error al buscar la base de datos: "+e.getMessage());
-                    response.addHeader("Access-Control-Allow-Origin", "*");
-                    return response;
-                }
-
-                String mime="application/octet-stream";
-                Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
-                response.addHeader("Access-Control-Allow-Origin", "*");
-                return response;
-
-
+            return downloadDb();
         }
 
-
         if (uri.endsWith("updateApk")) {
-            InputStream inputStream=null ;
-            inputStream = session.getInputStream();
-            String nuev="/storage/emulated/0/Download/jwsapi.apk";
-            File fil= new File(nuev);
-            if(fil.exists()){
-                fil.delete();
-            }
-            try(OutputStream outputStream = new FileOutputStream(fil,false)){
-                IOUtils.copy(inputStream, outputStream);
-                inputStream.close();
-                outputStream.close();
-                outputStream.flush();
-
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                // handle exception here
-            }
-            /*Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri apkUri = FileProvider.getUriForFile(mainActivity, mainActivity.getPackageName() + ".provider", new File(nuev));
-            //Uri apkUri =Uri.fromFile( new File(nuev));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-
-            PackageManager pm = mainActivity.getPackageManager();
-            if (intent.resolveActivity(pm) != null) {
-                // Otorgar permisos a la actividad que va a manejar el intent
-                List<ResolveInfo> resInfoList = mainActivity.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    mainActivity.grantUriPermission(packageName, apkUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-
-                // Iniciar la actividad para instalar la APK
-                mainActivity.startActivity(intent);
-            } else {
-                mainActivity.Mensaje("No se puede instalar la apk", R.layout.item_customtoasterror);
-            }*/
-           // mainActivity.installApk();
-
-            mainActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //funciona
-                    mainActivity.jwsObject.jwsSilentInstall(fil.getAbsolutePath(),context);
-                }
-            });
-
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,"Archivo guardado");
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            return response;
+            return updateApk(session);
 
         } else if (uri.contains("private")) {
             return notFoundResponse();
         }
 
         return handleFileRequest(session, uri);
+    }
+
+    @NonNull
+    private static Response bajarArchivos(IHTTPSession session) throws UnsupportedEncodingException {
+        InputStream inputStream=null ;
+        inputStream = session.getInputStream();
+
+        String nuev="/storage/emulated/0/Memoria/"+URLDecoder.decode(session.getHeaders().get("nombre"),"UTF-8");
+        File fil= new File(nuev);
+        if(fil.exists()){
+            fil.delete();
+        }
+        try(OutputStream outputStream = new FileOutputStream(fil,false)){
+            IOUtils.copy(inputStream, outputStream);
+            inputStream.close();
+            outputStream.close();
+            outputStream.flush();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            // handle exception here
+        }
+
+        Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,"Archivo guardado");
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        return response;
+    }
+
+    @NonNull
+    private static Response downloadFile(IHTTPSession session, String uri) throws ResponseException {
+        Map<String, String> files = new HashMap<String, String>();
+        String nombre=null;
+        try {
+            session.parseBody(files);
+            nombre =files.get("postData");
+            nombre = URLDecoder.decode(nombre,"UTF-8");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(nombre!=null){
+            String filePath = "/storage/emulated/0/Memoria/" + nombre;
+            System.out.println("Nombre del archivo codificado: " + nombre);
+            InputStream fileStream;
+            try {
+                fileStream = new FileInputStream(new File(filePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+                Response response = newFixedLengthResponse("Error al buscar el archivo:"+nombre);
+                response.addHeader("Access-Control-Allow-Origin", "*");
+                return response;
+            }
+
+            String mime=MIME_TEXT_PLAIN_JS;
+            if (uri.contains(".xls"))
+                mime = MIME_EXCEL;
+            else if (uri.contains(".pdf")){
+                mime = MIME_PDF;}
+            else if (uri.contains(".png"))
+                mime = MIME_PNG;
+            else if (uri.contains(".jpg"))
+                mime = MIME_JPG;
+            else if (uri.contains(".csv"))
+                mime = "text/csv";
+            Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            return response;
+        }else{
+            Response response = newFixedLengthResponse("Error al buscar el archivo");
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            return response;
+        }
+    }
+
+    @NonNull
+    private Response downloadDb() {
+        String filePath = context.getDatabasePath(MainFormClass.DB_NAME).getAbsolutePath();
+        InputStream fileStream;
+        try {
+            fileStream = new FileInputStream(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+            Response response = newFixedLengthResponse("Error al buscar la base de datos: "+e.getMessage());
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            return response;
+        }
+
+        String mime="application/octet-stream";
+        Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        return response;
+    }
+
+    @NonNull
+    private Response updateApk(IHTTPSession session) {
+        InputStream inputStream = session.getInputStream();
+        String nuev="/storage/emulated/0/Download/jwsapi.apk";
+        File fil= new File(nuev);
+        if(fil.exists()){
+            fil.delete();
+        }
+        try(OutputStream outputStream = new FileOutputStream(fil,false)){
+            IOUtils.copy(inputStream, outputStream);
+            inputStream.close();
+            outputStream.close();
+            outputStream.flush();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        mainActivity.runOnUiThread(() -> mainActivity.jwsObject.jwsSilentInstall(fil.getAbsolutePath(),context));
+
+        Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,"Archivo guardado");
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        return response;
     }
 
 

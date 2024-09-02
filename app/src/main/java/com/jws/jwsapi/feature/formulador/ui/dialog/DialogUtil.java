@@ -7,6 +7,7 @@ import android.text.method.DigitsKeyListener;
 import android.text.method.KeyListener;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.jws.jwsapi.R;
@@ -91,6 +92,17 @@ public class DialogUtil {
         });
         dialogBinding.buttonc.setOnClickListener(view1 -> dialog.cancel());
         dialogBinding.lndeleteText.setOnClickListener(v -> userInput.setText(""));
+    }
+
+    public static AlertDialog dialogoCargando(Context context, String texto){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(context,R.style.AlertDialogCustom);
+        View mView = LayoutInflater.from(context).inflate(R.layout.dialogo_transferenciaarchivo, null);
+        TextView textView = mView.findViewById(R.id.textView);
+        textView.setText(texto);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        return dialog;
     }
 
     private static void mostrarDialogoTexto(Context context, String texto, String textoBoton, DialogButtonInterface botonDerechoInterface, DialogButtonInterface botonIzquierdoInterface){

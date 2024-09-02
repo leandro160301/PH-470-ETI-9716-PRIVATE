@@ -109,6 +109,8 @@ public class Storage {
             Intent launchIntent = activity.getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.android.documentsui");
             if (launchIntent != null) {
                 activity.startActivity(launchIntent);
+                activity.finish();
+                System.exit(0);
             }
         }
     }

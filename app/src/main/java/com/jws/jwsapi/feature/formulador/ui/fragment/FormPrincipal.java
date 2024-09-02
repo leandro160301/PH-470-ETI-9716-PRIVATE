@@ -1,6 +1,7 @@
 package com.jws.jwsapi.feature.formulador.ui.fragment;
 
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoFlotanteConCancelar;
+import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoCargando;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoCheckboxVisibilidad;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
 import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTextoConCancelar;
@@ -16,7 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -159,7 +160,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
         updateViewRecetaText();
         setupUnidad();
         binding.imEstable.setVisibility(View.INVISIBLE);
-        databaseRepository= new DatabaseRepository(formSqlHelper,preferencesManager,labelManager, mainClass.bza,recetaManager,mainClass.nBza,usersManager,viewModel,labelPreferencesViewModel);
+        databaseRepository= new DatabaseRepository(formSqlHelper,preferencesManager,labelManager, mainClass.bza,recetaManager,mainClass.nBza,usersManager,this,labelPreferencesViewModel);
     }
 
     private void updateViewRecetaText() {
@@ -557,7 +558,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            requireActivity().runOnUiThread(this::imprimirEtiquetaFinal);
+            requireActivity().runOnUiThread(this::imprimirEtiquetaFinalDialog);
         }).start();
     }
 
@@ -591,26 +592,23 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void imprimirEtiquetaPaso() {
         if(preferencesManager.getEtiquetaxPaso()){
-            Imprimir(0);
+            imprimir(0);
         }
     }
-    public void Imprimir(int etiqueta) {
+    public void imprimir(int etiqueta) {
         ImprimirEstandar imprimirEstandar = new ImprimirEstandar(getContext(), mainActivity,usersManager,preferencesManager,labelManager);
         imprimirEstandar.EnviarEtiqueta(mainClass.service.B, etiqueta);
-
     }
 
-    private void imprimirEtiquetaFinal() {
+    private void imprimirEtiquetaFinalDialog() {
         labelManager.onetototal.value=recetaManager.netoTotal.getValue();
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_transferenciaarchivo, null);
-        TextView textView = mView.findViewById(R.id.textView);
-        textView.setText("Imprimiendo etiqueta final");
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
+        AlertDialog dialog=dialogoCargando(mainActivity,"Imprimiento etiqueta final");
+        imprimirEtiquetaFinal(dialog);
+    }
+
+    private void imprimirEtiquetaFinal(AlertDialog dialog) {
         Handler handler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = new Runnable() {
+        Runnable runnable = new Runnable() {
             int i = 0;
             int netiqueta = 0;
             @Override
@@ -622,7 +620,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                     String[] ingredientes = {"", "", "", "", ""};
                     String[] codingredientes = {"", "", "", "", ""};
                     String[] kilos = {"", "", "", "", ""};
-
                     for (int j = i; j < end; j++) {
                         int index = j - i; // Esto asegura que los índices sean de 0 a 4
                         pasos[index] = String.valueOf(j + 1);
@@ -630,9 +627,8 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                         codingredientes[index] = recetaManager.listRecetaActual.get(j).getCodigoIng();
                         kilos[index] = recetaManager.listRecetaActual.get(j).getKilosRealesIng() + mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
                     }
-
                     labelManager.setupVariablesEtiqueta(pasos, ingredientes, codingredientes, kilos, netiqueta);
-                    Imprimir(1);
+                    imprimir(1);
 
                     i += 5;
                     handler.postDelayed(this, 1000);
@@ -642,7 +638,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
                 }
             }
         };
-        handler.post(myRunnable);
+        handler.post(runnable);
     }
 
 

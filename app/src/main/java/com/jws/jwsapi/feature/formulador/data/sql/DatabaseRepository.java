@@ -1,11 +1,14 @@
 package com.jws.jwsapi.feature.formulador.data.sql;
 
+import android.widget.Toast;
+
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.feature.formulador.di.LabelManager;
 import com.jws.jwsapi.feature.formulador.di.RecetaManager;
 import com.jws.jwsapi.feature.formulador.viewmodel.FormPreferencesLabelViewModel;
 import com.jws.jwsapi.feature.formulador.viewmodel.FormPrincipalViewModel;
+import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Balanzas.BalanzaService;
 
@@ -16,11 +19,11 @@ public class DatabaseRepository {
     BalanzaService.Balanzas bza;
     RecetaManager recetaManager;
     UsersManager usersManager;
-    FormPrincipalViewModel viewModel;
+    ToastHelper toastHelper;
     FormPreferencesLabelViewModel labelPreferencesViewModel;
     int nBza;
 
-    public DatabaseRepository(DatabaseHelper formSqlHelper, PreferencesManager preferencesManager, LabelManager labelManager, BalanzaService.Balanzas bza, RecetaManager recetaManager, int nBza,UsersManager usersManager,FormPrincipalViewModel viewModel,FormPreferencesLabelViewModel labelPreferencesViewModel){
+    public DatabaseRepository(DatabaseHelper formSqlHelper, PreferencesManager preferencesManager, LabelManager labelManager, BalanzaService.Balanzas bza, RecetaManager recetaManager, int nBza, UsersManager usersManager, ToastHelper toastHelper, FormPreferencesLabelViewModel labelPreferencesViewModel){
         this.nBza = nBza;
         this.formSqlHelper = formSqlHelper;
         this.preferencesManager = preferencesManager;
@@ -28,7 +31,7 @@ public class DatabaseRepository {
         this.recetaManager = recetaManager;
         this.bza = bza;
         this.usersManager = usersManager;
-        this.viewModel = viewModel;
+        this.toastHelper = toastHelper;
         this.labelPreferencesViewModel = labelPreferencesViewModel;
     }
     public void insertarPrimerPasoRecetaBatchSQL() {//guardar en receta una nueva y que devuelva el id
@@ -43,7 +46,7 @@ public class DatabaseRepository {
                     labelManager.oidpesada.value=String.valueOf(id2);
                 }
             }else{
-                viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
+                toastHelper.mensajeError("Error en base de datos, debe hacer un reset o actualizar programa");
             }
         }
     }
@@ -80,10 +83,10 @@ public class DatabaseRepository {
                 if(id2!=-1){
                     labelManager.oidpesada.value=String.valueOf(id2);
                 }else{
-                    viewModel.mostrarMensajeDeError("Error en base de datos pesada, debe hacer un reset o actualizar programa");
+                    toastHelper.mensajeError("Error en base de datos pesada, debe hacer un reset o actualizar programa");
                 }
             }else{
-                viewModel.mostrarMensajeDeError("Error en base de datos pedido, debe hacer un reset o actualizar programa");
+                toastHelper.mensajeError("Error en base de datos pedido, debe hacer un reset o actualizar programa");
             }
         }
 
@@ -128,7 +131,7 @@ public class DatabaseRepository {
                 actualizaDatosNetoTotalReceta(bza.format(nBza,String.valueOf(kilos)));
             }
             if(id==-1){
-                viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
+                toastHelper.mensajeError("Error en base de datos, debe hacer un reset o actualizar programa");
             }else{
                 labelManager.oidpesada.value=String.valueOf(id);
             }
@@ -177,7 +180,7 @@ public class DatabaseRepository {
                     "","",String.valueOf(nBza));
             updateNetoTotal(kilos);
             if(id==-1){
-                viewModel.mostrarMensajeDeError("Error en base de datos, debe hacer un reset o actualizar programa");
+                toastHelper.mensajeError("Error en base de datos, debe hacer un reset o actualizar programa");
             }else{
                 labelManager.oidpesada.value=String.valueOf(id);
             }

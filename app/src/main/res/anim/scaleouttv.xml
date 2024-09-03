@@ -1,4 +1,4 @@
-<scale xmlns:android="http://schemas.android.com/apk/res/android"
+<scaleNumber xmlns:android="http://schemas.android.com/apk/res/android"
     android:duration="100"
     android:fromXScale="110%"
     android:fromYScale="110%"
@@ -6,4 +6,4 @@
     android:toYScale="100%"
     android:pivotX="50%"
     android:pivotY="50%">
-</scale>
+</scaleNumber>

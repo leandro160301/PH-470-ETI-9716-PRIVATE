@@ -1,6 +1,6 @@
 package com.jws.jwsapi.common.users;
 
-import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.TecladoPassword;
+import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoPassword;
 import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.app.AlertDialog;
 import android.app.Application;

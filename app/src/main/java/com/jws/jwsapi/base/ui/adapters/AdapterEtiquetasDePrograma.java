@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.models.EtiquetasDeProgramaModel;
-import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.general.formulador.data.preferences.PreferencesManager;
 import java.util.ArrayList;
 import java.util.List;
 

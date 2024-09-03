@@ -1,9 +1,9 @@
 package com.jws.jwsapi.common.httpserver;
 
-import static com.jws.jwsapi.feature.formulador.data.sql.DatabaseUtil.JSONconsultas;
-import static com.jws.jwsapi.feature.formulador.data.sql.DatabaseUtil.JSONpedidos;
-import static com.jws.jwsapi.feature.formulador.data.sql.DatabaseUtil.JSONpesadas;
-import static com.jws.jwsapi.feature.formulador.data.sql.DatabaseUtil.JSONrecetas;
+import static com.jws.jwsapi.general.formulador.data.sql.DatabaseUtil.JSONconsultas;
+import static com.jws.jwsapi.general.formulador.data.sql.DatabaseUtil.JSONpedidos;
+import static com.jws.jwsapi.general.formulador.data.sql.DatabaseUtil.JSONpesadas;
+import static com.jws.jwsapi.general.formulador.data.sql.DatabaseUtil.JSONrecetas;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.storage.Storage;
 import com.jws.jwsapi.common.users.UsersManager;
-import com.jws.jwsapi.feature.formulador.MainFormClass;
+import com.jws.jwsapi.general.formulador.MainFormClass;
 import org.apache.poi.util.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;

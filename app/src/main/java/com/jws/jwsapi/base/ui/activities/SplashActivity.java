@@ -14,7 +14,7 @@ import com.jws.jwsapi.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    public String Version="FRM 1.04";
+    public String Version="BZA 1.00";
     Intent hidenav;
     ImageView imageView;
     TextView tvVersion;

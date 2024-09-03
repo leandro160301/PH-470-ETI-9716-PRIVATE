@@ -1,6 +1,6 @@
 package com.jws.jwsapi.base.ui.adapters;
 
-import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.Teclado;
+import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.Teclado;
 import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.models.EtiquetasModel;
-import com.jws.jwsapi.feature.formulador.data.preferences.PreferencesManager;
-import com.jws.jwsapi.feature.formulador.di.LabelManager;
+import com.jws.jwsapi.general.formulador.data.preferences.PreferencesManager;
+import com.jws.jwsapi.general.formulador.di.LabelManager;
 import com.jws.jwsapi.helpers.AdapterHelper;
 import com.jws.jwsapi.utils.Utils;
 import java.util.ArrayList;

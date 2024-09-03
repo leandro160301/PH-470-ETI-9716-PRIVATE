@@ -1,6 +1,6 @@
 package com.jws.jwsapi.base.ui.fragments;
 
-import static com.jws.jwsapi.feature.formulador.ui.dialog.DialogUtil.dialogoTexto;
+import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoTexto;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.InputType;

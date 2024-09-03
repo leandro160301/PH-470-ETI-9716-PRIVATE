@@ -1,6 +1,6 @@
 package com.jws.jwsapi.base.ui.interfaces;
 
-import com.jws.jwsapi.feature.formulador.models.FormModelReceta;
+import com.jws.jwsapi.general.formulador.models.FormModelReceta;
 
 import java.util.List;
 

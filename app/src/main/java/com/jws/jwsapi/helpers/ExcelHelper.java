@@ -8,7 +8,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.feature.formulador.models.FormModelGuardados;
+import com.jws.jwsapi.general.formulador.models.FormModelGuardados;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

@@ -1,5 +1,7 @@
 package com.jws.jwsapi.general.formulador.di;
 
+import static net.sourceforge.jtds.jdbc.DefaultProperties.DATABASE_NAME;
+
 import android.app.Application;
 import android.content.Context;
 
@@ -13,7 +15,7 @@ import com.jws.jwsapi.general.formulador.data.sql.DatabaseHelper;
 import com.jws.jwsapi.general.pallet.PalletApi;
 import com.jws.jwsapi.general.pallet.PalletDao;
 import com.jws.jwsapi.general.pallet.PalletService;
-
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
@@ -65,9 +67,9 @@ public class AppModule {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
     }
-
     @Provides
     public PalletApi providePalletApi(Retrofit retrofit) {
         return retrofit.create(PalletApi.class);
@@ -76,6 +78,11 @@ public class AppModule {
     @Provides
     public PalletDao providePalletDao(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, "database-name").build().palletDao();
+    }
+
+    @Provides
+    public AppDatabase provideAppDatabase(@ApplicationContext Context context) {
+        return Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
     }
 
     @Provides

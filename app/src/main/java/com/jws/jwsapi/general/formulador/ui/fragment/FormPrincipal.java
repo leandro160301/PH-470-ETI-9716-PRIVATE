@@ -40,7 +40,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.formulador.viewmodel.FormPreferencesLabelViewModel;
 import com.jws.jwsapi.general.formulador.viewmodel.FormPrincipalViewModel;
 import com.jws.jwsapi.general.formulador.di.LabelManager;
-import com.jws.jwsapi.general.pallet.PalletRequest;
+import com.jws.jwsapi.general.pallet.PalletFragment;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import java.util.List;
@@ -514,7 +514,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void btCantidad() {
-
+        mainClass.openFragment(new PalletFragment());
         if(!isEjecutando()){
             IngresaCantidad();
         }else{

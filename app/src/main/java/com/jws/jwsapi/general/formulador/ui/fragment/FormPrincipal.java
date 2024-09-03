@@ -514,6 +514,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void btCantidad() {
+
         if(!isEjecutando()){
             IngresaCantidad();
         }else{

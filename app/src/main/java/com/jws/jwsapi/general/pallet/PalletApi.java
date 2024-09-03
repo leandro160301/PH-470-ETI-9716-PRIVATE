@@ -1,11 +1,11 @@
 package com.jws.jwsapi.general.pallet;
 
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface PalletApi {
 
     @POST("/NuevoPallet")
-    Call<Void> postNewPallet(@Body Pallet pallet);
+    Single<PalletResponse> postNewPallet(@Body PalletRequest palletRequest);
 }

@@ -34,7 +34,6 @@ public class Pallet {
     @ColumnInfo(name = "is_closed")
     private boolean isClosed;
 
-    // Getters y setters
     public int getId() {
         return id;
     }

@@ -30,4 +30,5 @@ public interface PalletDao {
 
     @Query("UPDATE pallet SET is_closed = :isClosed WHERE id = :id")
     void updatePalletClosedStatus(int id, boolean isClosed);
+
 }

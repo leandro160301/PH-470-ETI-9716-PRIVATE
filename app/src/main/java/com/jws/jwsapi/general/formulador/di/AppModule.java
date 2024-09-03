@@ -4,9 +4,7 @@ import static net.sourceforge.jtds.jdbc.DefaultProperties.DATABASE_NAME;
 
 import android.app.Application;
 import android.content.Context;
-
 import androidx.room.Room;
-
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.general.AppDatabase;
 import com.jws.jwsapi.general.formulador.MainFormClass;
@@ -15,7 +13,7 @@ import com.jws.jwsapi.general.formulador.data.sql.DatabaseHelper;
 import com.jws.jwsapi.general.pallet.PalletApi;
 import com.jws.jwsapi.general.pallet.PalletDao;
 import com.jws.jwsapi.general.pallet.PalletService;
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
@@ -67,7 +65,7 @@ public class AppModule {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
     @Provides

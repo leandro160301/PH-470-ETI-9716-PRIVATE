@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -16,7 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 public class PalletViewModel extends ViewModel {
     private final PalletService palletService;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
+    private final LiveData<List<Pallet>> pallets;
     private final MutableLiveData<PalletResponse> palletResponse = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
@@ -27,6 +29,11 @@ public class PalletViewModel extends ViewModel {
     @Inject
     public PalletViewModel(PalletService palletService) {
         this.palletService = palletService;
+        this.pallets = palletService.getAllPallets();
+    }
+
+    public LiveData<List<Pallet>> getPallets() {
+        return pallets;
     }
 
     public LiveData<PalletResponse> getPalletResponse() {

@@ -57,6 +57,13 @@ public class PalletFragment extends Fragment {
                 Utils.message(error,R.layout.item_customtoasterror,getContext());
             }
         });
+        palletViewModel.getPallets().observe(getViewLifecycleOwner(), pallets -> {
+            if (pallets != null) {
+                Utils.message(String.valueOf(pallets.size()),R.layout.item_customtoasterror,getContext());
+            } else {
+                Utils.message("No hay pallets",R.layout.item_customtoasterror,getContext());
+            }
+        });
     }
 
     private void setOnClickListeners() {

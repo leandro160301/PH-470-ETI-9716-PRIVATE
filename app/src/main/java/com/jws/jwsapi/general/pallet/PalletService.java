@@ -1,5 +1,9 @@
 package com.jws.jwsapi.general.pallet;
 
+import androidx.lifecycle.LiveData;
+
+import java.util.List;
+
 import io.reactivex.Single;
 
 public class PalletService {
@@ -15,6 +19,7 @@ public class PalletService {
     public Single<PalletResponse> createPallet(PalletRequest palletRequest) {
         return palletApi.postNewPallet(palletRequest)
                 .doOnSuccess(palletResponse -> {
+
                     Pallet pallet = new Pallet();
                     pallet.setOriginPallet(palletRequest.getOriginPallet());
                     pallet.setDestinationPallet(palletRequest.getDestinationPallet());
@@ -28,4 +33,7 @@ public class PalletService {
                 });
     }
 
+    public LiveData<List<Pallet>> getAllPallets() {
+        return palletDao.getAllPallets();
+    }
 }

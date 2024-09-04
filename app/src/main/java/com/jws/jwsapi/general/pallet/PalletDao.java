@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 import java.util.List;
 
 @Dao
@@ -24,9 +23,6 @@ public interface PalletDao {
 
     @Insert
     void insertPallet(Pallet pallet);
-
-    @Update
-    void updatePallet(Pallet pallet);
 
     @Query("UPDATE pallet SET is_closed = :isClosed WHERE id = :id")
     void updatePalletClosedStatus(int id, boolean isClosed);

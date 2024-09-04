@@ -15,9 +15,16 @@ public class PalletService {
     public Single<PalletResponse> createPallet(PalletRequest palletRequest) {
         return palletApi.postNewPallet(palletRequest)
                 .doOnSuccess(palletResponse -> {
-                    System.out.println("palletResponse"+palletResponse);
-                    // Opcionalmente, guarda en la base de datos local si es necesario
-                    // palletDao.insertPallet(palletResponse.toPallet());
+                    Pallet pallet = new Pallet();
+                    pallet.setOriginPallet(palletRequest.getOriginPallet());
+                    pallet.setDestinationPallet(palletRequest.getDestinationPallet());
+                    pallet.setScaleNumber(palletRequest.getScaleNumber());
+                    pallet.setCode(palletResponse.getCode());
+                    pallet.setName(palletResponse.getName());
+                    pallet.setQuantity(palletResponse.getQuantity());
+                    pallet.setSerialNumber(palletResponse.getSerialNumber());
+                    pallet.setClosed(false);
+                    palletDao.insertPallet(pallet);
                 });
     }
 

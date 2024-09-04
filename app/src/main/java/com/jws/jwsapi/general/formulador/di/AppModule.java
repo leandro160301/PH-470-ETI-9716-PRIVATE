@@ -27,8 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @InstallIn(SingletonComponent.class)
 public class AppModule {
 
-    @Provides //se usa siempre en modulo para una nueva instancia
-    @Singleton //instancia unica en toda la aplicacion
+    @Provides
+    @Singleton
     public RecetaManager provideRecetaManager(PreferencesManager preferencesManager) {
         return new RecetaManager(preferencesManager);
     }

@@ -1,7 +1,7 @@
 package com.jws.jwsapi.general.formulador.ui.fragment;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.Teclado;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoEntero;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboard;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardInt;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,13 +59,13 @@ public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDia
     }
 
     private void setOnClickListeners() {
-        binding.tvLote.setOnClickListener(view -> Teclado(binding.tvLote, "Ingrese Lote", mainActivity, this::setearLote));
+        binding.tvLote.setOnClickListener(view -> keyboard(binding.tvLote, "Ingrese Lote", mainActivity, this::setearLote));
         binding.tvVencimiento.setOnClickListener(view12 -> setVencimiento());
-        binding.tvCampo1.setOnClickListener(view -> Teclado(binding.tvCampo1, "Ingrese "+campo1, mainActivity, this::setearCampo1));
-        binding.tvCampo2.setOnClickListener(view -> Teclado(binding.tvCampo2, "Ingrese "+campo2, mainActivity, this::setearCampo2));
-        binding.tvCampo3.setOnClickListener(view -> Teclado(binding.tvCampo3, "Ingrese "+campo3, mainActivity, this::setearCampo3));
-        binding.tvCampo4.setOnClickListener(view -> Teclado(binding.tvCampo4, "Ingrese "+campo4, mainActivity, this::setearCampo4));
-        binding.tvCampo5.setOnClickListener(view -> Teclado(binding.tvCampo5, "Ingrese "+campo5, mainActivity, this::setearCampo5));
+        binding.tvCampo1.setOnClickListener(view -> keyboard(binding.tvCampo1, "Ingrese "+campo1, mainActivity, this::setearCampo1));
+        binding.tvCampo2.setOnClickListener(view -> keyboard(binding.tvCampo2, "Ingrese "+campo2, mainActivity, this::setearCampo2));
+        binding.tvCampo3.setOnClickListener(view -> keyboard(binding.tvCampo3, "Ingrese "+campo3, mainActivity, this::setearCampo3));
+        binding.tvCampo4.setOnClickListener(view -> keyboard(binding.tvCampo4, "Ingrese "+campo4, mainActivity, this::setearCampo4));
+        binding.tvCampo5.setOnClickListener(view -> keyboard(binding.tvCampo5, "Ingrese "+campo5, mainActivity, this::setearCampo5));
 
     }
 
@@ -105,7 +105,7 @@ public class FormFragmentIngresoDatos extends Fragment implements  DatePickerDia
             showDatePicker();
         }
         if(modo==1){
-            TecladoEntero(binding.tvVencimiento, "Ingrese Vencimiento en dias", mainActivity, this::setearVencimientoDias);
+            keyboardInt(binding.tvVencimiento, "Ingrese Vencimiento en dias", mainActivity, this::setearVencimientoDias);
         }
     }
 

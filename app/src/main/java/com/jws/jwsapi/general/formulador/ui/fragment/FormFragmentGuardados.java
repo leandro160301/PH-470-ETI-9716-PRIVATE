@@ -1,6 +1,6 @@
 package com.jws.jwsapi.general.formulador.ui.fragment;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoTexto;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -159,7 +159,7 @@ public class FormFragmentGuardados extends Fragment {
         if (usersManager.getNivelUsuario() > 1) {
             String texto = obtenerMensajeConfirmacion(menu);
             if (texto != null) {
-                dialogoTexto(getContext(), texto,"ELIMINAR",() -> viewModel.eliminarDatos(getContext(), menu));
+                dialogText(getContext(), texto,"ELIMINAR",() -> viewModel.eliminarDatos(getContext(), menu));
             }
         } else {
             Utils.Mensaje("Debe ingresar la clave para acceder a esta configuración", R.layout.item_customtoasterror, mainActivity);

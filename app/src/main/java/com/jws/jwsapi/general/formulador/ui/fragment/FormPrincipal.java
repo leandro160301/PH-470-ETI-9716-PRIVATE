@@ -1,10 +1,10 @@
 package com.jws.jwsapi.general.formulador.ui.fragment;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoFlotanteConCancelar;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoCargando;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoCheckboxVisibilidad;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoTexto;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoTextoConCancelar;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardFloatCancel;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogLoading;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogCheckboxVisibility;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogTextCancel;
 import static com.jws.jwsapi.utils.Utils.isNumeric;
 import android.app.AlertDialog;
 import android.graphics.Color;
@@ -357,7 +357,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void IngresaPorcentaje() {
         String text="Ingrese los kilos a realizar totales y presione SIGUIENTE o si quiere continuar con la receta original presione CONTINUAR";
-        TecladoFlotanteConCancelar(null, text, mainActivity, this::calculoporcentajeRecetaDialogo, () -> {
+        keyboardFloatCancel(null, text, mainActivity, this::calculoporcentajeRecetaDialogo, () -> {
             if(recetaManager.listRecetaActual.size()>0) recetaManager.porcentajeReceta=recetaManager.listRecetaActual.get(0).getKilosTotales();
             viewModelsInit();
             verificarPasoEsAutomatico();
@@ -411,12 +411,12 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             checkboxState=true;
             visible=View.INVISIBLE;
         }
-        dialogoCheckboxVisibilidad(null, text, mainActivity, (texto, checkbox) -> viewModel.setearModoUsoDialogo(texto,checkbox,mododeuso),true,InputType.TYPE_CLASS_NUMBER,null,"RECETAS COMO PEDIDO (BOLSAS)",visible,checkboxState);
+        dialogCheckboxVisibility(null, text, mainActivity, (texto, checkbox) -> viewModel.setearModoUsoDialogo(texto,checkbox,mododeuso),true,InputType.TYPE_CLASS_NUMBER,null,"RECETAS COMO PEDIDO (BOLSAS)",visible,checkboxState);
     }
 
     private void IngresoRecipiente() {
         //si no pone siguiente y le pone cancerlar lo manda a tara igual
-        dialogoTextoConCancelar(mainActivity, "Ingrese recipiente y luego presione SIGUIENTE", "SIGUIENTE", this::realizarTaraComienzaPesar, () -> viewModel.setEstadoPesar());
+        dialogTextCancel(mainActivity, "Ingrese recipiente y luego presione SIGUIENTE", "SIGUIENTE", this::realizarTaraComienzaPesar, () -> viewModel.setEstadoPesar());
     }
 
     private void realizarTaraComienzaPesar() {
@@ -425,7 +425,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void consultaFin() {
-        dialogoTexto(mainActivity, "¿Quiere detener la receta?", "DETENER", this::detener);
+        dialogText(mainActivity, "¿Quiere detener la receta?", "DETENER", this::detener);
     }
 
     private void configuracionBotonesBalanza() {
@@ -480,7 +480,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             bt_2.setText("PESAR");
             bt_3.setText("GUARDADO");
             bt_4.setText("RECETAS");
-            bt_5.setText("INGREDIENTES");
+            bt_5.setText("NUEVO PALLET");
             bt_1.setVisibility(View.VISIBLE);
             bt_2.setVisibility(View.VISIBLE);
             bt_3.setVisibility(View.VISIBLE);
@@ -492,7 +492,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             bt_2.setOnClickListener(view -> btPlus());
             bt_3.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentGuardados()));
             bt_4.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentRecetas()));
-            bt_5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentIngredientes()));
+            bt_5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletFragment()));
 
         }
     }
@@ -514,7 +514,6 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void btCantidad() {
-        mainClass.openFragment(new PalletFragment());
         if(!isEjecutando()){
             IngresaCantidad();
         }else{
@@ -600,7 +599,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void imprimirEtiquetaFinalDialog() {
         labelManager.onetototal.value=recetaManager.netoTotal.getValue();
-        AlertDialog dialog=dialogoCargando(mainActivity,"Imprimiento etiqueta final");
+        AlertDialog dialog= dialogLoading(mainActivity,"Imprimiento etiqueta final");
         imprimirEtiquetaFinal(dialog);
     }
 

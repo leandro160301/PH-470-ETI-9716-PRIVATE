@@ -1,6 +1,6 @@
 package com.jws.jwsapi.general.formulador.ui.fragment;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.Teclado;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboard;
 import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -124,35 +124,35 @@ public class FormFragmentDatos extends Fragment{
     }
 
     private void setOnClickListeners() {
-        binding.tvCampo1.setOnClickListener(view -> Teclado(binding.tvCampo1, "Ingrese el campo", mainActivity, texto -> {
+        binding.tvCampo1.setOnClickListener(view -> keyboard(binding.tvCampo1, "Ingrese el campo", mainActivity, texto -> {
             if (!texto.isEmpty()) {
                 viewModel.setCampo1(texto);
             } else {
                 viewModel.disableCampo1();
             }
         }));
-        binding.tvCampo2.setOnClickListener(view -> Teclado(binding.tvCampo2, "Ingrese el campo", mainActivity, texto -> {
+        binding.tvCampo2.setOnClickListener(view -> keyboard(binding.tvCampo2, "Ingrese el campo", mainActivity, texto -> {
             if (!texto.isEmpty()) {
                 viewModel.setCampo2(texto);
             } else {
                 viewModel.disableCampo2();
             }
         }));
-        binding.tvCampo3.setOnClickListener(view -> Teclado(binding.tvCampo3, "Ingrese el campo", mainActivity, texto -> {
+        binding.tvCampo3.setOnClickListener(view -> keyboard(binding.tvCampo3, "Ingrese el campo", mainActivity, texto -> {
             if (!texto.isEmpty()) {
                 viewModel.setCampo3(texto);
             } else {
                 viewModel.disableCampo3();
             }
         }));
-        binding.tvCampo4.setOnClickListener(view -> Teclado(binding.tvCampo4, "Ingrese el campo", mainActivity, texto -> {
+        binding.tvCampo4.setOnClickListener(view -> keyboard(binding.tvCampo4, "Ingrese el campo", mainActivity, texto -> {
             if (!texto.isEmpty()) {
                 viewModel.setCampo4(texto);
             } else {
                 viewModel.disableCampo4();
             }
         }));
-        binding.tvCampo5.setOnClickListener(view -> Teclado(binding.tvCampo5, "Ingrese el campo", mainActivity, texto -> {
+        binding.tvCampo5.setOnClickListener(view -> keyboard(binding.tvCampo5, "Ingrese el campo", mainActivity, texto -> {
             if (!texto.isEmpty()) {
                 viewModel.setCampo5(texto);
             } else {

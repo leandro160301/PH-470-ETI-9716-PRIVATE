@@ -2,7 +2,7 @@ package com.jws.jwsapi.base.ui.activities;
 
 import static com.jws.jwsapi.common.storage.Storage.createMemoryDirectory;
 import static com.jws.jwsapi.common.storage.Storage.deleteCache;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoTexto;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +23,7 @@ import com.jws.jwsapi.common.storage.Storage;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.general.formulador.MainFormClass;
 import com.jws.jwsapi.general.formulador.data.preferences.PreferencesManager;
-import com.jws.jwsapi.general.formulador.ui.dialog.DialogButtonInterface;
+import com.jws.jwsapi.general.dialog.DialogButtonInterface;
 import com.jws.jwsapi.utils.Utils;
 import java.io.IOException;
 import javax.inject.Inject;
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     public void clearCache(){
         Context context=getApplicationContext();
         if(usersManager.getNivelUsuario()>2){
-            dialogoTexto(this, "¿Esta seguro de volver a los valores de fabrica del equipo?", "RESER", new DialogButtonInterface() {
+            dialogText(this, "¿Esta seguro de volver a los valores de fabrica del equipo?", "RESER", new DialogButtonInterface() {
                 @Override
                 public void buttonClick() {
                     SharedPreferences preferences = getSharedPreferences(PreferencesManager.SP_NAME, Context.MODE_PRIVATE);

@@ -20,6 +20,9 @@ public class PalletViewModel extends ViewModel {
     private final MutableLiveData<PalletResponse> palletResponse = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final MutableLiveData<Integer> scale = new MutableLiveData<>();
+    private final MutableLiveData<String> palletOrigin = new MutableLiveData<>();
+    private final MutableLiveData<String> palletDestination = new MutableLiveData<>();
 
     @Inject
     public PalletViewModel(PalletService palletService) {
@@ -38,15 +41,37 @@ public class PalletViewModel extends ViewModel {
         return error;
     }
 
-    public void createPallet(PalletRequest palletRequest) {
+    public void setScale(Integer scale) {
+        this.scale.setValue(scale);
+    }
+
+    public void setPalletOrigin(String palletOrigin) {
+        this.palletOrigin.setValue(palletOrigin);
+    }
+
+    public void setPalletDestination(String palletDestination) {
+        this.palletDestination.setValue(palletDestination);
+    }
+
+    public void createPallet() {
+        if(scale.getValue()!=null&&palletOrigin.getValue()!=null&&palletDestination.getValue()!=null){
+            PalletRequest palletRequest = new PalletRequest(scale.getValue(), palletOrigin.getValue(), palletDestination.getValue());
+            createPalletRequest(palletRequest);
+        }else {
+            error.setValue("Complete los datos");
+        }
+
+    }
+
+    public void createPalletRequest(PalletRequest palletRequest) {
         loading.setValue(true);
 
         Disposable disposable = palletService.createPallet(palletRequest)
-                .subscribeOn(Schedulers.io())  // Ejecución en el hilo de I/O para la red
-                .observeOn(AndroidSchedulers.mainThread())  // Observa en el hilo principal para actualizar la UI
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> loading.setValue(false))
                 .subscribe(
-                        response -> palletResponse.setValue(response),
+                        palletResponse::setValue,
                         throwable -> error.setValue(throwable.getMessage())
                 );
 

@@ -1,6 +1,6 @@
 package com.jws.jwsapi.base.ui.adapters;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.Teclado;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboard;
 import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -169,7 +169,7 @@ public class AdapterEtiquetas extends RecyclerView.Adapter<AdapterEtiquetas.View
                 DialogoConcatenar(etiqueta, posi, holder.tv_textoconcatenado);
             }
             if(ListElementsPosicionesTipo.get(posi)==1){
-                Teclado(holder.tv_textofijo, "Ingrese el texto fijo", mainActivity, texto -> {
+                keyboard(holder.tv_textofijo, "Ingrese el texto fijo", mainActivity, texto -> {
                     if(ListElementsInternaFijo!=null&&ListElementsInternaFijo.size()>posi){
                         ListElementsInternaFijo.set(posi,texto);
                     }

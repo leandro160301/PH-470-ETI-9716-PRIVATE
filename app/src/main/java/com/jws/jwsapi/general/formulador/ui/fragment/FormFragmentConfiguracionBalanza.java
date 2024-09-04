@@ -1,7 +1,7 @@
 package com.jws.jwsapi.general.formulador.ui.fragment;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoEntero;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoFlotante;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardInt;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardFloat;
 import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -56,10 +56,10 @@ public class FormFragmentConfiguracionBalanza extends Fragment  {
     }
 
     private void setOnClickListeners() {
-        binding.tvBza1.setOnClickListener(view -> TecladoFlotante(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> preferencesManager.setBza1Limite(texto)));
-        binding.tvBza2.setOnClickListener(view -> TecladoFlotante(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> preferencesManager.setBza2Limite(texto)));
-        binding.tvBza3.setOnClickListener(view -> TecladoFlotante(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> preferencesManager.setBza3Limite(texto)));
-        binding.tvTiempoEstabilizacion.setOnClickListener(v -> TecladoEntero(binding.tvTiempoEstabilizacion, "Ingrese el tiempo de estabilizacion", mainActivity, this::setEstabilizacionAutomatico));
+        binding.tvBza1.setOnClickListener(view -> keyboardFloat(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> preferencesManager.setBza1Limite(texto)));
+        binding.tvBza2.setOnClickListener(view -> keyboardFloat(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> preferencesManager.setBza2Limite(texto)));
+        binding.tvBza3.setOnClickListener(view -> keyboardFloat(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> preferencesManager.setBza3Limite(texto)));
+        binding.tvTiempoEstabilizacion.setOnClickListener(v -> keyboardInt(binding.tvTiempoEstabilizacion, "Ingrese el tiempo de estabilizacion", mainActivity, this::setEstabilizacionAutomatico));
     }
 
     private void setEstabilizacionAutomatico(String texto) {

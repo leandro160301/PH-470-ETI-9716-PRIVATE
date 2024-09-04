@@ -1,6 +1,6 @@
 package com.jws.jwsapi.general.formulador.ui.fragment;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoEntero;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardInt;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,10 +47,10 @@ public class FormFragmentConfiguracionTurnos extends Fragment  {
         binding.tvTurno2.setText(String.valueOf(preferencesManager.getTurno2()));
         binding.tvTurno3.setText(String.valueOf(preferencesManager.getTurno3()));
         binding.tvTurno4.setText(String.valueOf(preferencesManager.getTurno4()));
-        binding.tvTurno1.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno1, "Ingrese la hora cuando comienza el turno 1", mainActivity, texto -> preferencesManager.setTurno1(Integer.parseInt(texto))));
-        binding.tvTurno2.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno2, "Ingrese la hora cuando comienza el turno 2", mainActivity, texto -> preferencesManager.setTurno2(Integer.parseInt(texto))));
-        binding.tvTurno3.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno3, "Ingrese la hora cuando comienza el turno 3", mainActivity, texto -> preferencesManager.setTurno3(Integer.parseInt(texto))));
-        binding.tvTurno4.setOnClickListener(view1 -> TecladoEntero(binding.tvTurno4, "Ingrese la hora cuando comienza el turno 4", mainActivity, texto -> preferencesManager.setTurno4(Integer.parseInt(texto))));
+        binding.tvTurno1.setOnClickListener(view1 -> keyboardInt(binding.tvTurno1, "Ingrese la hora cuando comienza el turno 1", mainActivity, texto -> preferencesManager.setTurno1(Integer.parseInt(texto))));
+        binding.tvTurno2.setOnClickListener(view1 -> keyboardInt(binding.tvTurno2, "Ingrese la hora cuando comienza el turno 2", mainActivity, texto -> preferencesManager.setTurno2(Integer.parseInt(texto))));
+        binding.tvTurno3.setOnClickListener(view1 -> keyboardInt(binding.tvTurno3, "Ingrese la hora cuando comienza el turno 3", mainActivity, texto -> preferencesManager.setTurno3(Integer.parseInt(texto))));
+        binding.tvTurno4.setOnClickListener(view1 -> keyboardInt(binding.tvTurno4, "Ingrese la hora cuando comienza el turno 4", mainActivity, texto -> preferencesManager.setTurno4(Integer.parseInt(texto))));
 
     }
 

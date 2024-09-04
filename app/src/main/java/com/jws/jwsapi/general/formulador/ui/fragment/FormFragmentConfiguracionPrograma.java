@@ -1,7 +1,7 @@
 package com.jws.jwsapi.general.formulador.ui.fragment;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoEntero;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoFlotante;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardInt;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardFloat;
 import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -134,10 +134,10 @@ public class FormFragmentConfiguracionPrograma extends Fragment  {
         binding.tvBza1.setText(preferencesManager.getBza1Limite());
         binding.tvBza2.setText(preferencesManager.getBza2Limite());
         binding.tvBza3.setText(preferencesManager.getBza3Limite());
-        binding.tvTolerancia.setOnClickListener(view12 -> TecladoEntero(binding.tvTolerancia, "Ingrese la tolerancia", mainActivity, texto -> preferencesManager.setTolerancia(texto)));
-        binding.tvBza1.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> preferencesManager.setBza1Limite(texto)));
-        binding.tvBza2.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> preferencesManager.setBza2Limite(texto)));
-        binding.tvBza3.setOnClickListener(view13 -> TecladoFlotante(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> preferencesManager.setBza3Limite(texto)));
+        binding.tvTolerancia.setOnClickListener(view12 -> keyboardInt(binding.tvTolerancia, "Ingrese la tolerancia", mainActivity, texto -> preferencesManager.setTolerancia(texto)));
+        binding.tvBza1.setOnClickListener(view13 -> keyboardFloat(binding.tvBza1, "Ingrese el limite de la balanza 1", mainActivity, texto -> preferencesManager.setBza1Limite(texto)));
+        binding.tvBza2.setOnClickListener(view13 -> keyboardFloat(binding.tvBza2, "Ingrese el limite de la balanza 2", mainActivity, texto -> preferencesManager.setBza2Limite(texto)));
+        binding.tvBza3.setOnClickListener(view13 -> keyboardFloat(binding.tvBza3, "Ingrese el limite de la balanza 3", mainActivity, texto -> preferencesManager.setBza3Limite(texto)));
 
 
     }

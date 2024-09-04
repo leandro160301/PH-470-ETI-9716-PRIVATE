@@ -1,4 +1,4 @@
-package com.jws.jwsapi.general.formulador.ui.dialog;
+package com.jws.jwsapi.general.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,7 +18,7 @@ import com.jws.jwsapi.utils.Utils;
 
 public class DialogUtil {
 
-    private static void mostrarDialogo(TextView view, String texto, Context context, DialogInputInterface dialogInterface, boolean numeric, Integer inputType, KeyListener key, DialogButtonInterface dialogButtonInterface, String textoCancelar , PasswordTransformationMethod passwordTransformationMethod){
+    private static void showDialog(TextView view, String texto, Context context, DialogInputInterface dialogInterface, boolean numeric, Integer inputType, KeyListener key, DialogButtonInterface dialogButtonInterface, String textoCancelar , PasswordTransformationMethod passwordTransformationMethod){
         LayoutInflater inflater = LayoutInflater.from(context);
         DialogoDosopcionesBinding dialogBinding = DialogoDosopcionesBinding.inflate(inflater);
         final EditText userInput = dialogBinding.etDatos;
@@ -57,7 +57,7 @@ public class DialogUtil {
         dialogBinding.lndeleteText.setOnClickListener(v -> userInput.setText(""));
     }
 
-    private static void mostrarDialogoCheckbox(TextView view, String texto, Context context, DialogCheckboxInterface dialogInterface, boolean numeric, Integer inputType, KeyListener key, String textoCheckbox, Integer visible, boolean checkboxState){
+    private static void showDialogCheckbox(TextView view, String texto, Context context, DialogCheckboxInterface dialogInterface, boolean numeric, Integer inputType, KeyListener key, String textoCheckbox, Integer visible, boolean checkboxState){
         LayoutInflater inflater = LayoutInflater.from(context);
         DialogoDosopcionescheckboxBinding dialogBinding = DialogoDosopcionescheckboxBinding.inflate(inflater);
         final EditText userInput = dialogBinding.etDatos;
@@ -94,7 +94,7 @@ public class DialogUtil {
         dialogBinding.lndeleteText.setOnClickListener(v -> userInput.setText(""));
     }
 
-    public static AlertDialog dialogoCargando(Context context, String texto){
+    public static AlertDialog dialogLoading(Context context, String texto){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context,R.style.AlertDialogCustom);
         View mView = LayoutInflater.from(context).inflate(R.layout.dialogo_transferenciaarchivo, null);
         TextView textView = mView.findViewById(R.id.textView);
@@ -105,7 +105,7 @@ public class DialogUtil {
         return dialog;
     }
 
-    private static void mostrarDialogoTexto(Context context, String texto, String textoBoton, DialogButtonInterface botonDerechoInterface, DialogButtonInterface botonIzquierdoInterface){
+    private static void showDialogText(Context context, String texto, String textoBoton, DialogButtonInterface botonDerechoInterface, DialogButtonInterface botonIzquierdoInterface){
         LayoutInflater inflater = LayoutInflater.from(context);
         DialogoDossinetBinding dialogBinding = DialogoDossinetBinding.inflate(inflater);
         dialogBinding.textViewt.setText(texto);
@@ -125,36 +125,36 @@ public class DialogUtil {
     }
 
 
-    public static void Teclado(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
-        mostrarDialogo(view,texto,context,dialogInterface,false,null,null,null, null,null);
+    public static void keyboard(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
+        showDialog(view,texto,context,dialogInterface,false,null,null,null, null,null);
     }
 
-    public static void TecladoPassword(TextView view, String texto, Context context, DialogInputInterface dialogInterface, PasswordTransformationMethod passwordTransformationMethod) {
-        mostrarDialogo(view,texto,context,dialogInterface,false,InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS| InputType.TYPE_CLASS_NUMBER| InputType.TYPE_TEXT_VARIATION_PASSWORD,null,null, null,passwordTransformationMethod);
+    public static void keyboardPassword(TextView view, String texto, Context context, DialogInputInterface dialogInterface, PasswordTransformationMethod passwordTransformationMethod) {
+        showDialog(view,texto,context,dialogInterface,false,InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS| InputType.TYPE_CLASS_NUMBER| InputType.TYPE_TEXT_VARIATION_PASSWORD,null,null, null,passwordTransformationMethod);
     }
 
-    public static void TecladoFlotante(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
-        mostrarDialogo(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),null, null,null);
+    public static void keyboardFloat(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
+        showDialog(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),null, null,null);
     }
 
-    public static void TecladoEntero(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
-        mostrarDialogo(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER,null,null, null,null);
+    public static void keyboardInt(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
+        showDialog(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER,null,null, null,null);
     }
 
-    public static void TecladoFlotanteConCancelar(TextView view, String texto, Context context, DialogInputInterface dialogInterface,DialogButtonInterface buttonInterface,String textoCancelar) {
-        mostrarDialogo(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),buttonInterface,textoCancelar,null);
+    public static void keyboardFloatCancel(TextView view, String texto, Context context, DialogInputInterface dialogInterface, DialogButtonInterface buttonInterface, String textoCancelar) {
+        showDialog(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),buttonInterface,textoCancelar,null);
     }
 
-    public static void dialogoTexto(Context context, String texto, String textoBoton, DialogButtonInterface dialogInterface) {
-        mostrarDialogoTexto(context,texto,textoBoton,dialogInterface,null);
+    public static void dialogText(Context context, String texto, String textoBoton, DialogButtonInterface dialogInterface) {
+        showDialogText(context,texto,textoBoton,dialogInterface,null);
     }
 
-    public static void dialogoTextoConCancelar(Context context, String texto, String textoBoton, DialogButtonInterface botonDerechoInterface, DialogButtonInterface botonIzquierdoInterface) {
-        mostrarDialogoTexto(context,texto,textoBoton,botonDerechoInterface,botonIzquierdoInterface);
+    public static void dialogTextCancel(Context context, String texto, String textoBoton, DialogButtonInterface botonDerechoInterface, DialogButtonInterface botonIzquierdoInterface) {
+        showDialogText(context,texto,textoBoton,botonDerechoInterface,botonIzquierdoInterface);
     }
 
-    public static void dialogoCheckboxVisibilidad(TextView view, String texto, Context context, DialogCheckboxInterface dialogInterface, boolean isKeyboardNumeric, Integer inputType, KeyListener key, String textoCheckbox, Integer visible, boolean checkboxState){
-        mostrarDialogoCheckbox(view,texto,context,dialogInterface,isKeyboardNumeric,inputType,key,textoCheckbox,visible,checkboxState);
+    public static void dialogCheckboxVisibility(TextView view, String texto, Context context, DialogCheckboxInterface dialogInterface, boolean isKeyboardNumeric, Integer inputType, KeyListener key, String textoCheckbox, Integer visible, boolean checkboxState){
+        showDialogCheckbox(view,texto,context,dialogInterface,isKeyboardNumeric,inputType,key,textoCheckbox,visible,checkboxState);
     }
 
 

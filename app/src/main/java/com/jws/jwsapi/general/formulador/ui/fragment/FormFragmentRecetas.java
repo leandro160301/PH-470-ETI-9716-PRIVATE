@@ -2,11 +2,11 @@ package com.jws.jwsapi.general.formulador.ui.fragment;
 
 import static android.view.View.GONE;
 import static com.jws.jwsapi.common.storage.Storage.getArchivosExtension;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.Teclado;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoEntero;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoFlotante;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoTexto;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoTextoConCancelar;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboard;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardInt;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardFloat;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogTextCancel;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -217,8 +217,8 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
         }else{
             checkBox.setVisibility(View.GONE);
         }
-        tv_codigo.setOnClickListener(view -> TecladoEntero(tv_codigo, "Ingrese el codigo de la receta", getContext(),null));
-        tv_descripcion.setOnClickListener(view -> Teclado(tv_descripcion, "Ingrese la descripcion de la receta", getContext(), null));
+        tv_codigo.setOnClickListener(view -> keyboardInt(tv_codigo, "Ingrese el codigo de la receta", getContext(),null));
+        tv_descripcion.setOnClickListener(view -> keyboard(tv_descripcion, "Ingrese la descripcion de la receta", getContext(), null));
 
         Button Guardar =  mView.findViewById(R.id.buttons);
         Button Cancelar =  mView.findViewById(R.id.buttonc);
@@ -318,7 +318,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
     }
 
     private void elimarRecetaDialog(String receta, int posicion_recycler) {
-        dialogoTextoConCancelar(mainActivity, "¿Esta seguro de eliminar la receta " + receta + " ?", "ELIMINAR", () -> eliminarReceta(receta,posicion_recycler),null);
+        dialogTextCancel(mainActivity, "¿Esta seguro de eliminar la receta " + receta + " ?", "ELIMINAR", () -> eliminarReceta(receta,posicion_recycler),null);
     }
 
     private void eliminarReceta(String receta, int posicion_recycler) {
@@ -562,7 +562,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
     }
 
     private void dialogoEliminarPaso(List<FormModelReceta> mData, int posicion) {
-        dialogoTexto(getContext(), "¿Quiere eliminar el paso " + (posicion + 1) + "?", "ELIMINAR", () -> {
+        dialogText(getContext(), "¿Quiere eliminar el paso " + (posicion + 1) + "?", "ELIMINAR", () -> {
             mData.remove(posicion);
             try {
                 recipeRepository.setReceta(recetaelegida, mData);
@@ -591,7 +591,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
 
         tv_codigoIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
         tv_descripcionIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
-        tv_kilos.setOnClickListener(view -> TecladoFlotante(tv_kilos, "Ingrese los kilos a realizar del nuevo paso",mainActivity,null));
+        tv_kilos.setOnClickListener(view -> keyboardFloat(tv_kilos, "Ingrese los kilos a realizar del nuevo paso",mainActivity,null));
 
         Guardar.setOnClickListener(view -> {
             String codigo=tv_codigoIngrediente.getText().toString();
@@ -642,7 +642,7 @@ public class FormFragmentRecetas extends Fragment implements FormAdapterEncabeza
 
         tv_codigoIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
         tv_descripcionIngrediente.setOnClickListener(view -> BuscadorAdapter(tv_codigoIngrediente, tv_descripcionIngrediente));
-        tv_kilos.setOnClickListener(view -> TecladoFlotante(tv_kilos, "Ingrese los kilos del paso",mainActivity,null));
+        tv_kilos.setOnClickListener(view -> keyboardFloat(tv_kilos, "Ingrese los kilos del paso",mainActivity,null));
         Guardar.setOnClickListener(view -> {
             if (!tv_codigoIngrediente.getText().toString().equals("") &&
                 !tv_descripcionIngrediente.getText().toString().equals("") &&

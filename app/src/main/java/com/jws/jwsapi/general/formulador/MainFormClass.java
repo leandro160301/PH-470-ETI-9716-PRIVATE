@@ -59,6 +59,7 @@ public class MainFormClass implements OnFragmentChangeListener {
 
     }
 
+    @Override
     public void openFragmentPrincipal() {
         Fragment fragment = new FormPrincipal();
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
@@ -81,6 +82,7 @@ public class MainFormClass implements OnFragmentChangeListener {
                 .commit();
     }
 
+    @Override
     public void openFragmentService(Fragment fragment, Bundle arg) {
         if(permitirClic){
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();

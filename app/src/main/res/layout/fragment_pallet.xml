@@ -7,7 +7,6 @@
     android:translationY="4dp">
 
     <LinearLayout
-        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/fondo_prod"
@@ -38,14 +37,12 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
-                        android:id="@+id/loadingPanel2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         tools:layout_editor_absoluteY="59dp" >
 
                         <LinearLayout
-                            android:id="@+id/tableLayoutwifi"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@color/blanco"
@@ -69,7 +66,6 @@
 
 
                                     <LinearLayout
-                                        android:id="@+id/ln12"
                                         android:layout_width="match_parent"
                                         android:layout_height="70dp"
                                         android:layout_marginTop="20dp"
@@ -77,45 +73,31 @@
                                         android:orientation="horizontal">
 
                                         <TextView
-                                            android:id="@+id/tvtituaslo2"
                                             android:layout_width="653dp"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="1"
                                             android:fontFamily="sans-serif-black"
-                                            android:text="Turno 1"
+                                            android:text="Balanza"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="30sp" />
 
                                         <TextView
-                                            android:id="@+id/tv_turno1"
+                                            android:id="@+id/tv_scale"
                                             android:layout_width="180dp"
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
                                             android:background="@drawable/stylekeycor6ceropaddin"
                                             android:gravity="center"
-                                            android:text="5"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="24sp" />
-
-                                        <TextView
-                                            android:id="@+id/tvtitulo7"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:fontFamily="sans-serif-black"
-                                            android:text="hs"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="30sp" />
 
 
                                     </LinearLayout>
 
 
                                     <LinearLayout
-                                        android:id="@+id/ln13"
                                         android:layout_width="match_parent"
                                         android:layout_height="70dp"
                                         android:layout_marginTop="20dp"
@@ -123,46 +105,31 @@
                                         android:orientation="horizontal">
 
                                         <TextView
-                                            android:id="@+id/tvtitulo2"
                                             android:layout_width="653dp"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="1"
                                             android:fontFamily="sans-serif-black"
-                                            android:text="Turno 2"
+                                            android:text="Pallet origen"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="30sp" />
 
                                         <TextView
-                                            android:id="@+id/tv_turno2"
+                                            android:id="@+id/tv_pallet_origin"
                                             android:layout_width="180dp"
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
                                             android:background="@drawable/stylekeycor6ceropaddin"
                                             android:gravity="center"
-                                            android:text="5"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="24sp" />
 
-                                        <TextView
-                                            android:id="@+id/tvtitulo8"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:fontFamily="sans-serif-black"
-                                            android:text="hs"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="30sp" />
-
 
                                     </LinearLayout>
-
 
 
                                     <LinearLayout
-                                        android:id="@+id/ln14"
                                         android:layout_width="match_parent"
                                         android:layout_height="70dp"
                                         android:layout_marginTop="20dp"
@@ -170,96 +137,55 @@
                                         android:orientation="horizontal">
 
                                         <TextView
-                                            android:id="@+id/tvtitssulo2"
                                             android:layout_width="653dp"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="1"
                                             android:fontFamily="sans-serif-black"
-                                            android:text="Turno 3"
+                                            android:text="Pallet destino"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="30sp" />
 
                                         <TextView
-                                            android:id="@+id/tv_turno3"
+                                            android:id="@+id/tv_pallet_destination"
                                             android:layout_width="180dp"
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
                                             android:background="@drawable/stylekeycor6ceropaddin"
                                             android:gravity="center"
-                                            android:text="5"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="24sp" />
 
-                                        <TextView
-                                            android:id="@+id/tvtitulo9"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:fontFamily="sans-serif-black"
-                                            android:text="hs"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="30sp" />
-
 
                                     </LinearLayout>
-
-
-
-                                    <LinearLayout
-                                        android:id="@+id/ln15"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="70dp"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_marginBottom="20dp"
-                                        android:layout_weight="1"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:id="@+id/tvtitssssssulo2"
-                                            android:layout_width="653dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:fontFamily="sans-serif-black"
-                                            android:text="Turno 4"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="30sp" />
-
-                                        <TextView
-                                            android:id="@+id/tv_turno4"
-                                            android:layout_width="180dp"
-                                            android:layout_height="match_parent"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/stylekeycor6ceropaddin"
-                                            android:gravity="center"
-                                            android:text="5"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="24sp" />
-
-                                        <TextView
-                                            android:id="@+id/tvtitulo10"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:fontFamily="sans-serif-black"
-                                            android:text="hs"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="30sp" />
-
-
-                                    </LinearLayout>
-
 
 
                                 </LinearLayout>
                             </com.jws.jwsapi.base.customviews.ScrollViewScroll>
 
                         </LinearLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/loading_panel"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grisoscuro"
+                            android:visibility="invisible">
+
+
+                            <ProgressBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentBottom="true"
+                                android:indeterminate="true"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </RelativeLayout>
 

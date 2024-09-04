@@ -1,6 +1,6 @@
 package com.jws.jwsapi.base.ui.fragments;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoTexto;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.InputType;
@@ -279,7 +279,7 @@ public class UsuariosFragment extends Fragment implements AdapterUsuarios.ItemCl
         if(usersManager.getNivelUsuario()>2){
             if (mData.size() > 0) {
                 if(!mData.get(posicion).nombre.equals(usersManager.getUsuarioActual())){
-                    dialogoTexto(getContext(), "Quiere eliminar el usuario " + mData.get(posicion).nombre + "?", "ELIMINAR", () -> {
+                    dialogText(getContext(), "Quiere eliminar el usuario " + mData.get(posicion).nombre + "?", "ELIMINAR", () -> {
                         try (Usuarios_SQL_db dbHelper = new Usuarios_SQL_db(mainActivity, UsersManager.DB_USERS_NAME, null, UsersManager.DB_USERS_VERSION)) {
                             dbHelper.eliminarUsuario(mData.get(posicion).usuario);
                         }

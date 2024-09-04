@@ -1,8 +1,8 @@
 package com.jws.jwsapi.general.formulador.ui.fragment;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.Teclado;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoEntero;
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.dialogoTexto;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboard;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardInt;
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -100,9 +100,9 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
         TextView tv_descripcion=  mView.findViewById(R.id.tv_descripcioningrediente);
         TextView tv_salida= mView.findViewById(R.id.tv_salida);
         tv_salida.setText("0");
-        tv_codigo.setOnClickListener(view -> TecladoEntero(tv_codigo,"Ingrese el codigo del ingrediente",mainActivity,null));
-        tv_descripcion.setOnClickListener(view -> Teclado(tv_descripcion,"Ingrese la descripcion del ingrediente",mainActivity,null));
-        tv_salida.setOnClickListener(view -> TecladoEntero(tv_salida,"Ingrese el numero de salida del 1 al "+CANTIDAD+" (0 para manual)",mainActivity,null));
+        tv_codigo.setOnClickListener(view -> keyboardInt(tv_codigo,"Ingrese el codigo del ingrediente",mainActivity,null));
+        tv_descripcion.setOnClickListener(view -> keyboard(tv_descripcion,"Ingrese la descripcion del ingrediente",mainActivity,null));
+        tv_salida.setOnClickListener(view -> keyboardInt(tv_salida,"Ingrese el numero de salida del 1 al "+CANTIDAD+" (0 para manual)",mainActivity,null));
 
         Button Guardar =  mView.findViewById(R.id.buttons);
         Button Cancelar =  mView.findViewById(R.id.buttonc);
@@ -240,7 +240,7 @@ public class FormFragmentIngredientes extends Fragment implements FormAdapterIng
     }
 
     private void dialogoEliminarIngrediente(int posicion, List<FormModelIngredientes> mData) {
-        dialogoTexto(mainActivity, "¿Quiere eliminar el ingrediente " + mData.get(posicion).getNombre() + "?","ELIMINAR" ,() -> {
+        dialogText(mainActivity, "¿Quiere eliminar el ingrediente " + mData.get(posicion).getNombre() + "?","ELIMINAR" ,() -> {
             mData.remove(posicion);
             try {
                 recipeRepository.setIngredientes(mData);

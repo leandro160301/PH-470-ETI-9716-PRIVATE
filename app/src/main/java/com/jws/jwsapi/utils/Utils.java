@@ -1,5 +1,6 @@
 package com.jws.jwsapi.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,6 +16,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.jws.jwsapi.R;
+
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
@@ -27,6 +30,8 @@ import java.util.regex.Pattern;
 public class Utils {
 
     private static Toast toast;
+    private static Toast currentToast;
+
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
@@ -90,6 +95,23 @@ public class Utils {
 
     }
 
+
+    public static void message(String texto, int layoutResId, Context context) {
+        if (currentToast != null) {
+            currentToast.cancel();
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View layout = inflater.inflate(layoutResId, null);
+
+        TextView text = layout.findViewById(R.id.text);
+        text.setText(texto);
+        currentToast = new Toast(context);
+        currentToast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        currentToast.setDuration(Toast.LENGTH_LONG);
+        currentToast.setView(layout);
+        currentToast.show();
+    }
     /**
      * Convert byte array to hex string
      * @param bytes toConvert

@@ -1,6 +1,6 @@
 package com.jws.jwsapi.common.users;
 
-import static com.jws.jwsapi.general.formulador.ui.dialog.DialogUtil.TecladoPassword;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardPassword;
 import static com.jws.jwsapi.helpers.SpinnerHelper.configurarSpinner;
 import android.app.AlertDialog;
 import android.app.Application;
@@ -143,7 +143,7 @@ public class UsersManager {
 
 
     public void Logeo(TextView textView,Context context){
-        TecladoPassword(null, "", context, texto -> {
+        keyboardPassword(null, "", context, texto -> {
             password =texto;
             String copia = password;
             copia=copia.replaceAll("(?s).", "*");

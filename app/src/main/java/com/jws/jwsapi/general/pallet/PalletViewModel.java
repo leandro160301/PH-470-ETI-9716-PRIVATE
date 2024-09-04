@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 @HiltViewModel
 public class PalletViewModel extends ViewModel {
@@ -40,6 +42,8 @@ public class PalletViewModel extends ViewModel {
         loading.setValue(true);
 
         Disposable disposable = palletService.createPallet(palletRequest)
+                .subscribeOn(Schedulers.io())  // Ejecución en el hilo de I/O para la red
+                .observeOn(AndroidSchedulers.mainThread())  // Observa en el hilo principal para actualizar la UI
                 .doFinally(() -> loading.setValue(false))
                 .subscribe(
                         response -> palletResponse.setValue(response),

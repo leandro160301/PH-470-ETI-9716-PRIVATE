@@ -1,15 +1,23 @@
 package com.jws.jwsapi.general.pallet;
 
 
+import com.google.gson.annotations.SerializedName;
+
 /**
- * Si los nombres del cuerpo de la api coinciden con las columnas del entity usar el entity y no esta response
- *
- * <p> Usamos esta request porque los nombres del body no coinciden con las columnas de la entity</p>
+ * Se puede usar la entity, solo debajo de @ColumnInfo debemos poner el @SerializedName del body
+ * En este caso usamos una aparte porque el servidor devuelve menos datos que la entity</p>
  */
 public class PalletResponse {
+    @SerializedName("codigo")
     private String code;
+
+    @SerializedName("nombre")
     private String name;
+
+    @SerializedName("cantidad")
     private int quantity;
+
+    @SerializedName("numeroSerie")
     private String serialNumber;
 
     public String getCode() { return code; }

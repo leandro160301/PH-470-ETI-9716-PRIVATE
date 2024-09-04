@@ -2,12 +2,6 @@ package com.jws.jwsapi.general.pallet;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Si los nombres del cuerpo de la api coinciden con las columnas del entity usar el entity y no esta request
- *
- * <p> Usamos esta request porque las nombres del body no coinciden con las columnas de la entity</p>
- */
-
 public class PalletRequest {
     @SerializedName("balanza")
     private int scaleNumber;

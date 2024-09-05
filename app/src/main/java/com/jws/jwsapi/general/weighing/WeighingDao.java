@@ -4,19 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
-
-import com.jws.jwsapi.general.pallet.Pallet;
-
 import java.util.List;
 
 @Dao
 public interface WeighingDao {
 
     @Query("SELECT * FROM weighing")
-    LiveData<List<Pallet>> getAllWeighing();
+    LiveData<List<Weighing>> getAllWeighing();
 
     @Query("SELECT * FROM weighing WHERE id = :id")
-    LiveData<Pallet> getWeighingById(int id);
+    LiveData<Weighing> getWeighingById(int id);
 
     @Query("DELETE FROM weighing")
     void deleteAllWeighings();

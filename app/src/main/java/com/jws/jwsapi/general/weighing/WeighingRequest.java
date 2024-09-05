@@ -77,4 +77,5 @@ public class WeighingRequest {
     public void setTare(String tare) {
         this.tare = tare;
     }
+
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.databinding.FragmentPalletBinding;
+import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
@@ -46,6 +47,19 @@ public class PalletFragment extends Fragment implements PalletDeleteClick {
         binding.recycler.setAdapter(palletAdapter);
 
         palletViewModel.getPallets().observe(getViewLifecycleOwner(), pallets -> palletAdapter.updateData(pallets));
+
+        palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> {
+            if (palletResponse != null) {
+                Utils.message(requireContext().getString(R.string.toast_message_pallet_closed),R.layout.item_customtoastok,getContext());
+            }
+        });
+        palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+
+        palletViewModel.getError().observe(getViewLifecycleOwner(), error -> {
+            if (error != null) {
+                Utils.message(error,R.layout.item_customtoasterror,getContext());
+            }
+        });
     }
 
     private void setupButtons() {

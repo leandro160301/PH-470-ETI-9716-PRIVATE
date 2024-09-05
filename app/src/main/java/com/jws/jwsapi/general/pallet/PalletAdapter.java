@@ -17,7 +17,7 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
 
     public PalletAdapter(List<Pallet> palletList, PalletDeleteClick palletDeleteClick) {
         this.palletList = palletList;
-        this.palletDeleteClick = palletDeleteClick;
+        PalletAdapter.palletDeleteClick = palletDeleteClick;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -54,8 +54,9 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
         }
 
         public void bind(Pallet pallet) {
-            binding.tvPalletName.setText(pallet.getName());
-            binding.tvPalletCode.setText(pallet.getCode());
+            binding.tvPalletSerialNumber.setText(pallet.getSerialNumber());
+            binding.tvPalletDestination.setText(pallet.getDestinationPallet());
+            binding.tvPalletQuantity.setText(String.valueOf(pallet.getQuantity()));
             binding.lnDelete.setOnClickListener(v -> palletDeleteClick.deletePallet(pallet));
         }
     }

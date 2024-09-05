@@ -3,6 +3,8 @@
 
     <string name="toast_message_pallet_created">Pallet creado</string>
 
+    <string name="toast_message_pallet_closed">Pallet cerrado</string>
+
     <string name="dialog_scale_input">Ingrese numero de balanza</string>
 
     <string name="dialog_palleto_input">Ingrese pallet origen</string>

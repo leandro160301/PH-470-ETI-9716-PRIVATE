@@ -2,9 +2,12 @@ package com.jws.jwsapi.general.pallet;
 
 import androidx.lifecycle.LiveData;
 
+import com.jws.jwsapi.general.weighing.WeighingResponse;
+
 import java.util.List;
 
 import io.reactivex.Single;
+import io.reactivex.functions.Consumer;
 
 public class PalletService {
 
@@ -31,6 +34,11 @@ public class PalletService {
                     pallet.setClosed(false);
                     palletDao.insertPallet(pallet);
                 });
+    }
+
+    public Single<PalletCloseResponse> closePallet(PalletCloseRequest palletCloseRequest){
+        return palletApi.closePallet(palletCloseRequest)
+                .doOnSuccess(palletCloseResponse -> palletDao.deletePalletBySerialNumber(palletCloseRequest.getSerialNumber()));
     }
 
     public LiveData<List<Pallet>> getAllPallets() {

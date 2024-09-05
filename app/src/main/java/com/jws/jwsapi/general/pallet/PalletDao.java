@@ -21,6 +21,9 @@ public interface PalletDao {
     @Query("DELETE FROM pallet WHERE id = :id")
     void deletePalletById(int id);
 
+    @Query("DELETE FROM pallet WHERE serial_number = :serialNumber")
+    void deletePalletBySerialNumber(String serialNumber);
+
     @Insert
     void insertPallet(Pallet pallet);
 

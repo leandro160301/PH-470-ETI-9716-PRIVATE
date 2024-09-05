@@ -13,10 +13,12 @@ import io.reactivex.schedulers.Schedulers;
 
 @HiltViewModel
 public class PalletViewModel extends ViewModel {
+
     private final PalletService palletService;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final LiveData<List<Pallet>> pallets;
     private final MutableLiveData<PalletResponse> palletResponse = new MutableLiveData<>();
+    private final MutableLiveData<PalletCloseResponse> palletCloseResponse = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<Integer> scale = new MutableLiveData<>();
@@ -58,7 +60,8 @@ public class PalletViewModel extends ViewModel {
     }
 
     public void createPallet() {
-        if(scale.getValue()!=null&&palletOrigin.getValue()!=null&&palletDestination.getValue()!=null&&!palletOrigin.getValue().isEmpty()&&!palletDestination.getValue().isEmpty()){
+        if(scale.getValue()!=null&&palletOrigin.getValue()!=null&&palletDestination.getValue()!=null
+                &&!palletOrigin.getValue().isEmpty()&&!palletDestination.getValue().isEmpty()){
             PalletRequest palletRequest = new PalletRequest(scale.getValue(), palletOrigin.getValue(), palletDestination.getValue());
             createPalletRequest(palletRequest);
         }else {
@@ -76,6 +79,25 @@ public class PalletViewModel extends ViewModel {
                 .doFinally(() -> loading.setValue(false))
                 .subscribe(
                         palletResponse::setValue,
+                        throwable -> error.setValue(throwable.getMessage())
+                );
+
+        compositeDisposable.add(disposable);
+    }
+
+    public void closePallet(String serialNumber){
+        closePalletRequest(new PalletCloseRequest(serialNumber));
+    }
+
+    private void closePalletRequest(PalletCloseRequest palletCloseRequest){
+        loading.setValue(true);
+
+        Disposable disposable = palletService.closePallet(palletCloseRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> loading.setValue(false))
+                .subscribe(
+                        palletCloseResponse::setValue,
                         throwable -> error.setValue(throwable.getMessage())
                 );
 

@@ -8,4 +8,7 @@ public interface PalletApi {
 
     @POST("/NuevoPallet")
     Single<PalletResponse> postNewPallet(@Body PalletRequest palletRequest);
+
+    @POST("/CerrarPallet")
+    Single<PalletCloseResponse> closePallet(@Body PalletCloseRequest palletCloseRequest);
 }

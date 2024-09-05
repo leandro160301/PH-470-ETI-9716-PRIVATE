@@ -18,10 +18,11 @@ import java.util.ArrayList;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class PalletFragment extends Fragment {
+public class PalletFragment extends Fragment implements PalletDeleteClick {
 
     private PalletAdapter palletAdapter;
     private FragmentPalletBinding binding;
+    private PalletViewModel palletViewModel;
     private ButtonProvider buttonProvider;
     MainActivity mainActivity;
 
@@ -37,11 +38,11 @@ public class PalletFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mainActivity=(MainActivity)getActivity();
-        PalletViewModel palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
+        palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
         setupButtons();
 
         binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        palletAdapter = new PalletAdapter(new ArrayList<>());
+        palletAdapter = new PalletAdapter(new ArrayList<>(),this);
         binding.recycler.setAdapter(palletAdapter);
 
         palletViewModel.getPallets().observe(getViewLifecycleOwner(), pallets -> palletAdapter.updateData(pallets));
@@ -64,5 +65,10 @@ public class PalletFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void deletePallet(Pallet pallet) {
+        palletViewModel.closePallet(pallet.getSerialNumber());
     }
 }

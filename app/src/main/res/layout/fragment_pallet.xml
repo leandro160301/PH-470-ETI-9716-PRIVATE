@@ -9,187 +9,81 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/fondo_prod"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/gris"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="17dp"
-                android:layout_marginEnd="17dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        tools:layout_editor_absoluteY="59dp" >
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/blanco"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
                             <LinearLayout
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"></LinearLayout>
-
-                            <com.jws.jwsapi.base.customviews.ScrollViewScroll
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
 
                                 <LinearLayout
-
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="20dp"
+                                    android:layout_height="match_parent"
                                     android:orientation="vertical">
 
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="70dp"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_weight="1"
+                                        android:layout_height="match_parent"
                                         android:orientation="horizontal">
 
-                                        <TextView
-                                            android:layout_width="653dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:fontFamily="sans-serif-black"
-                                            android:text="Balanza"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="30sp" />
-
-                                        <TextView
-                                            android:id="@+id/tv_scale"
-                                            android:layout_width="180dp"
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/stylekeycor6ceropaddin"
-                                            android:gravity="center"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="24sp" />
+                                            android:background="@drawable/banner_menu_"
+                                            android:orientation="vertical">
 
+                                            <com.jws.jwsapi.base.customviews.RecyclerViewScroll
+                                                android:id="@+id/recycler"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_weight="1"
+                                                android:fadeScrollbars="false"
+                                                android:layoutAnimation="@anim/recycler1_layout"
+                                                android:scrollbars="vertical" />
+
+                                        </LinearLayout>
 
                                     </LinearLayout>
-
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="70dp"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_weight="1"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:layout_width="653dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:fontFamily="sans-serif-black"
-                                            android:text="Pallet origen"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="30sp" />
-
-                                        <TextView
-                                            android:id="@+id/tv_pallet_origin"
-                                            android:layout_width="180dp"
-                                            android:layout_height="match_parent"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/stylekeycor6ceropaddin"
-                                            android:gravity="center"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="24sp" />
-
-
-                                    </LinearLayout>
-
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="70dp"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_weight="1"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:layout_width="653dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:fontFamily="sans-serif-black"
-                                            android:text="Pallet destino"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="30sp" />
-
-                                        <TextView
-                                            android:id="@+id/tv_pallet_destination"
-                                            android:layout_width="180dp"
-                                            android:layout_height="match_parent"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/stylekeycor6ceropaddin"
-                                            android:gravity="center"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                            android:textColor="#000000"
-                                            android:textSize="24sp" />
-
-
-                                    </LinearLayout>
-
 
                                 </LinearLayout>
-                            </com.jws.jwsapi.base.customviews.ScrollViewScroll>
+
+                            </LinearLayout>
 
                         </LinearLayout>
+                    </LinearLayout>
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/loading_panel"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/grisoscuro"
-                            android:visibility="invisible">
+                </RelativeLayout>
 
-
-                            <ProgressBar
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentBottom="true"
-                                android:indeterminate="true"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </RelativeLayout>
-
-                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

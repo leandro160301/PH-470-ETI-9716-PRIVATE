@@ -11,6 +11,8 @@
 
     <string name="title_new_pallet">NUEVO PALLET</string>
 
+    <string name="title_pallets">PALLETS ACTIVOS</string>
+
     <string name="toast_message_data_imcopleted">NUEVO PALLET</string>
 
     <string name="open">open</string>

@@ -48,12 +48,12 @@ public class Weighing {
         this.id = id;
     }
 
-    public int getOriginPallet() {
+    public int getIdPallet() {
         return idPallet;
     }
 
-    public void setOriginPallet(int originPallet) {
-        this.idPallet = originPallet;
+    public void setIdPallet(int idPallet) {
+        this.idPallet = idPallet;
     }
 
     public int getScaleNumber() {

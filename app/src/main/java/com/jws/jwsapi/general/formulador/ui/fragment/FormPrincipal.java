@@ -40,6 +40,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.formulador.viewmodel.FormPreferencesLabelViewModel;
 import com.jws.jwsapi.general.formulador.viewmodel.FormPrincipalViewModel;
 import com.jws.jwsapi.general.formulador.di.LabelManager;
+import com.jws.jwsapi.general.pallet.PalletCreateFragment;
 import com.jws.jwsapi.general.pallet.PalletFragment;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
@@ -478,8 +479,8 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
             bt_1.setText("CANTIDAD");
             bt_2.setText("PESAR");
-            bt_3.setText("GUARDADO");
-            bt_4.setText("RECETAS");
+            bt_3.setText("ACTIVOS");
+            bt_4.setText("CERRAR PALLET");
             bt_5.setText("NUEVO PALLET");
             bt_1.setVisibility(View.VISIBLE);
             bt_2.setVisibility(View.VISIBLE);
@@ -490,9 +491,9 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza);
             bt_1.setOnClickListener(view -> btCantidad());
             bt_2.setOnClickListener(view -> btPlus());
-            bt_3.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentGuardados()));
+            bt_3.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletFragment()));
             bt_4.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentRecetas()));
-            bt_5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletFragment()));
+            bt_5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
 
         }
     }

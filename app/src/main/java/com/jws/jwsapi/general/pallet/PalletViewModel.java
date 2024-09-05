@@ -29,7 +29,7 @@ public class PalletViewModel extends ViewModel {
         this.pallets = palletService.getAllPallets();
     }
 
-    public LiveData<List<Pallet>> getPallets() {
+    public LiveData<List<Pallet>> getPallets(){
         return pallets;
     }
 
@@ -58,7 +58,7 @@ public class PalletViewModel extends ViewModel {
     }
 
     public void createPallet() {
-        if(scale.getValue()!=null&&palletOrigin.getValue()!=null&&palletDestination.getValue()!=null){
+        if(scale.getValue()!=null&&palletOrigin.getValue()!=null&&palletDestination.getValue()!=null&&!palletOrigin.getValue().isEmpty()&&!palletDestination.getValue().isEmpty()){
             PalletRequest palletRequest = new PalletRequest(scale.getValue(), palletOrigin.getValue(), palletDestination.getValue());
             createPalletRequest(palletRequest);
         }else {

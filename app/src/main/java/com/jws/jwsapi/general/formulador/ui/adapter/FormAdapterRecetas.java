@@ -1,9 +1,11 @@
 package com.jws.jwsapi.general.formulador.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.databinding.ProgFormuladorAdapterRecetaBinding;
 import com.jws.jwsapi.general.formulador.di.RecetaManager;
@@ -22,7 +24,7 @@ public class FormAdapterRecetas extends RecyclerView.Adapter<FormAdapterRecetas.
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     Context context;
-    public String recetaelegida = "";
+    public String recetaelegida;
     private int lastPositionAdapter = -1;
     AdapterRecetasInterface recetasInterface;
     String unidad;
@@ -37,8 +39,9 @@ public class FormAdapterRecetas extends RecyclerView.Adapter<FormAdapterRecetas.
         this.unidad = unidad;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ProgFormuladorAdapterRecetaBinding binding = ProgFormuladorAdapterRecetaBinding.inflate(mInflater, parent, false);
         return new ViewHolder(binding);
     }
@@ -131,11 +134,7 @@ public class FormAdapterRecetas extends RecyclerView.Adapter<FormAdapterRecetas.
         notifyItemRangeChanged(position, mData.size());
     }
 
-    public void filterList(List<FormModelReceta> filteredList) {
-        mData = filteredList;
-        notifyDataSetChanged();
-    }
-
+    @SuppressLint("NotifyDataSetChanged")
     public void refrescarList(List<FormModelReceta> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();

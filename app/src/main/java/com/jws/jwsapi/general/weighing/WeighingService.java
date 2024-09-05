@@ -14,10 +14,10 @@ public class WeighingService {
         this.weighingDao = weighingDao;
     }
 
-    public Single<WeighingResponse> sendWeighing(WeighingRequest weighingRequest){
+    public Single<WeighingResponse> newWeighing(WeighingRequest weighingRequest, Weighing weighing){
         return weighingApi.postNewWeighing(weighingRequest)
                 .doOnSuccess(palletResponse -> {
-
+                    weighingDao.insertWeighing(weighing);
                 });
     }
 

@@ -5,8 +5,11 @@ import androidx.room.RoomDatabase;
 
 import com.jws.jwsapi.general.pallet.Pallet;
 import com.jws.jwsapi.general.pallet.PalletDao;
+import com.jws.jwsapi.general.weighing.Weighing;
+import com.jws.jwsapi.general.weighing.WeighingDao;
 
-@Database(entities = {Pallet.class}, version = 1)
+@Database(entities = {Pallet.class, Weighing.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract PalletDao palletDao();
+    public abstract WeighingDao weighingDao();
 }

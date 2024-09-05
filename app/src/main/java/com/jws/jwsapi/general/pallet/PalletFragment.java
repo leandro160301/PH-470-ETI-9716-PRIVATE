@@ -67,21 +67,15 @@ public class PalletFragment extends Fragment {
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            Button bt_home = buttonProvider.getButtonHome();
-            Button bt_1 = buttonProvider.getButton1();
-            Button bt_2 = buttonProvider.getButton2();
-            Button bt_3 = buttonProvider.getButton3();
-            Button bt_4 = buttonProvider.getButton4();
-            Button bt_5 = buttonProvider.getButton5();
-            Button bt_6 = buttonProvider.getButton6();
+            buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            buttonProvider.getButton2().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton3().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton4().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton5().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton6().setVisibility(View.INVISIBLE);
             buttonProvider.getTitulo().setText(requireContext().getString(R.string.title_new_pallet));
+            Button bt_1 = buttonProvider.getButton1();
             bt_1.setBackgroundResource(R.drawable.i_boton_add);
-            bt_2.setVisibility(View.INVISIBLE);
-            bt_3.setVisibility(View.INVISIBLE);
-            bt_4.setVisibility(View.INVISIBLE);
-            bt_5.setVisibility(View.INVISIBLE);
-            bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
             bt_1.setOnClickListener(view ->  palletViewModel.createPallet());
         }
     }

@@ -13,6 +13,10 @@ import com.jws.jwsapi.general.formulador.data.sql.DatabaseHelper;
 import com.jws.jwsapi.general.pallet.PalletApi;
 import com.jws.jwsapi.general.pallet.PalletDao;
 import com.jws.jwsapi.general.pallet.PalletService;
+import com.jws.jwsapi.general.weighing.WeighingApi;
+import com.jws.jwsapi.general.weighing.WeighingDao;
+import com.jws.jwsapi.general.weighing.WeighingService;
+
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import javax.inject.Singleton;
 import dagger.Module;
@@ -68,9 +72,20 @@ public class AppModule {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
+
+    @Provides
+    public WeighingApi provideWeighingApi(Retrofit retrofit) {
+        return retrofit.create(WeighingApi.class);
+    }
+
     @Provides
     public PalletApi providePalletApi(Retrofit retrofit) {
         return retrofit.create(PalletApi.class);
+    }
+
+    @Provides
+    public WeighingDao provideWeighingDao(@ApplicationContext Context context) {
+        return Room.databaseBuilder(context, AppDatabase.class, "database-name").build().weighingDao();
     }
 
     @Provides
@@ -86,6 +101,11 @@ public class AppModule {
     @Provides
     public PalletService providePalletService(PalletApi palletApi, PalletDao palletDao) {
         return new PalletService(palletApi, palletDao);
+    }
+
+    @Provides
+    public WeighingService provideWeighingService(WeighingApi weighingApi, WeighingDao weighingDao) {
+        return new WeighingService(weighingApi, weighingDao);
     }
 
 }

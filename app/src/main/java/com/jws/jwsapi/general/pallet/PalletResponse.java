@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * En este caso usamos una aparte porque el servidor devuelve menos datos que la entity</p>
  */
 public class PalletResponse {
+
     @SerializedName("codigo")
     private String code;
 
@@ -20,15 +21,36 @@ public class PalletResponse {
     @SerializedName("numeroSerie")
     private String serialNumber;
 
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
+    public String getCode(){
+        return code;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setCode(String code){
+        this.code = code;
+    }
 
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public String getName(){
+        return name;
+    }
 
-    public String getSerialNumber() { return serialNumber; }
-    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public int getQuantity(){
+        return quantity;
+    }
+
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
+    }
+
+    public String getSerialNumber(){
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber){
+        this.serialNumber = serialNumber;
+    }
+
 }

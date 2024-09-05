@@ -30,7 +30,7 @@ public class PalletRequest {
         return destinationPallet;
     }
 
-    public void setDestinationPallet(String destinationPallet) {
+    public void setDestinationPallet(String destinationPallet){
         this.destinationPallet = destinationPallet;
     }
 

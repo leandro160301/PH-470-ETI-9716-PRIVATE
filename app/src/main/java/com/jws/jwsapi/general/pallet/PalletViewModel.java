@@ -53,7 +53,7 @@ public class PalletViewModel extends ViewModel {
         this.palletOrigin.setValue(palletOrigin);
     }
 
-    public void setPalletDestination(String palletDestination) {
+    public void setPalletDestination(String palletDestination){
         this.palletDestination.setValue(palletDestination);
     }
 

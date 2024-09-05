@@ -1,9 +1,7 @@
 package com.jws.jwsapi.general.weighing;
 
 import androidx.lifecycle.LiveData;
-
 import java.util.List;
-
 import io.reactivex.Single;
 
 public class WeighingService {

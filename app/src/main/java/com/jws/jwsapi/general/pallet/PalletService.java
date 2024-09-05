@@ -1,13 +1,8 @@
 package com.jws.jwsapi.general.pallet;
 
 import androidx.lifecycle.LiveData;
-
-import com.jws.jwsapi.general.weighing.WeighingResponse;
-
 import java.util.List;
-
 import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
 
 public class PalletService {
 

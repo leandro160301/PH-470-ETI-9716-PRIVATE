@@ -94,12 +94,12 @@ public class AppModule {
 
     @Provides
     public WeighingDao provideWeighingDao(@ApplicationContext Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, "database-name").build().weighingDao();
+        return Room.databaseBuilder(context, AppDatabase.class, "bza-database").build().weighingDao();
     }
 
     @Provides
     public PalletDao providePalletDao(@ApplicationContext Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, "database-name").build().palletDao();
+        return Room.databaseBuilder(context, AppDatabase.class, "bza-database").build().palletDao();
     }
 
     @Provides

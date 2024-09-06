@@ -1,24 +1,25 @@
 <resources>
     <string name="app_name">Gregorutti</string>
 
+    <!--pallet feature-->
     <string name="toast_message_pallet_created">Pallet creado</string>
-
     <string name="toast_message_pallet_closed">Pallet cerrado</string>
-
     <string name="dialog_scale_input">Ingrese numero de balanza</string>
-
     <string name="dialog_palleto_input">Ingrese pallet origen</string>
-
     <string name="dialog_palletd_input">Ingrese pallet destino</string>
-
     <string name="title_new_pallet">NUEVO PALLET</string>
-
     <string name="title_pallets">PALLETS ACTIVOS</string>
-
     <string name="toast_message_data_imcopleted">NUEVO PALLET</string>
 
-    <string name="open">open</string>
+    <!--home feature-->
+    <string name="button_text_1">CANTIDAD</string>
+    <string name="button_text_2">PESAR</string>
+    <string name="button_text_3">PALLETS</string>
+    <string name="button_text_4">CERRAR PALLET</string>
+    <string name="button_text_5">NUEVO PALLET</string>
 
+
+    <string name="open">open</string>
     <string name="close">close</string>
 
     <string-array name="uart_baudrate">

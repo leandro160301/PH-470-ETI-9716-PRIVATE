@@ -11,4 +11,5 @@ public interface PalletApi {
 
     @POST("/CerrarPallet")
     Single<PalletCloseResponse> closePallet(@Body PalletCloseRequest palletCloseRequest);
+
 }

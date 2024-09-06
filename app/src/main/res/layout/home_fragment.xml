@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:gauge="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ln_fondolayout"
+                    android:layout_width="1069dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="55dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_selector_balanza"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="7dp"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="70dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/im_tare"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="55dp"
+                                        android:layout_marginTop="5dp"
+                                        gauge:srcCompat="@drawable/tare_black" />
+
+                                    <ImageView
+                                        android:id="@+id/im_estable"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="31dp"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_weight="1"
+                                        gauge:srcCompat="@drawable/estable" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_neto"
+                                android:layout_width="564dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="center"
+                                android:text="00000"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#000000"
+                                android:textSize="62sp"
+                                android:textStyle="normal" />
+
+                            <TextView
+                                android:id="@+id/tv_neto_unidad"
+                                android:layout_width="65dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center|left"
+                                android:text="gr"
+                                android:textColor="#000000"
+                                android:textSize="40sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ln_linea"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginLeft="80dp"
+                            android:layout_marginRight="80dp"
+                            android:background="@color/negro"
+                            android:orientation="vertical"></LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_bruto"
+                                android:layout_width="300dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="0.0000"
+                                android:textAlignment="viewEnd"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textSize="28sp" />
+
+                            <TextView
+                                android:id="@+id/tv_bruto_unidad"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="kg"
+                                android:textAlignment="center"
+                                android:textColor="#000002"
+                                android:textSize="28sp" />
+
+                            <ImageView
+                                android:id="@+id/im_rango"
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/flecha_arriba" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fondolayout2"
+                    android:layout_width="1069dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_selector_balanza"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView26"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Acumulado total"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="#000000"
+                            android:textSize="30sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="132dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:id="@+id/tv_netototal"
+                                android:layout_width="382dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-black"
+                                android:gravity="center|end"
+                                android:text="00000"
+                                android:textAlignment="viewEnd"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#000000"
+                                android:textSize="65sp"
+                                android:textStyle="normal" />
+
+                            <TextView
+                                android:id="@+id/tv_netototal_unidad"
+                                android:layout_width="95dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center|left"
+                                android:text="gr"
+                                android:textColor="#000000"
+                                android:textSize="52sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_cantidad"
+                    android:layout_width="904dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="55dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_selector"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView25"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CANTIDAD"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="#FFFFFF"
+                        android:textSize="21sp" />
+
+                    <TextView
+                        android:id="@+id/tv_cantidad"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="18"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="#FFFFFF"
+                        android:textSize="37sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="REALIZADOS"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="#FFFFFF"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/tv_done"
+                            android:layout_width="167dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="3"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="#FFFFFF"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_marginStart="55dp"
+                android:layout_marginTop="7dp"
+
+                android:layout_marginEnd="55dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="87dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="538dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="Producto"
+                                            android:textAlignment="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="47sp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_product"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/campollenarclickeableceropadding_selector"
+                                            android:gravity="center"
+                                            android:textAlignment="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="47sp" />
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="87dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="538dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="Balanza"
+                                            android:textAlignment="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="47sp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_scale"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/campollenarclickeableceropadding_selector"
+                                            android:gravity="center"
+                                            android:textAlignment="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="47sp" />
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="84dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/textView6"
+                                            android:layout_width="300dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="Origen"
+                                            android:textAlignment="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="34sp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_pallet_origin"
+                                            android:layout_width="500dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/campollenarclickeableceropadding_selector"
+                                            android:gravity="center"
+                                            android:textAlignment="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="47sp" />
+
+                                        <TextView
+                                            android:id="@+id/textView8"
+                                            android:layout_width="300dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="Destino"
+                                            android:textAlignment="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="34sp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_pallet_destination"
+                                            android:layout_width="500dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/campollenarclickeableceropadding_selector"
+                                            android:gravity="center"
+                                            android:textAlignment="center"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#000000"
+                                            android:textSize="47sp" />
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

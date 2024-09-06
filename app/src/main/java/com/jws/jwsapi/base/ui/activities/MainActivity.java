@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     deleteCache(context);
                     // Puedes agregar más código para eliminar otros datos específicos de tu aplicación si es necesario
                     deleteDatabase(MainFormClass.DB_NAME);
+                    deleteDatabase("bza-database");
                     jwsObject.jwsReboot("");
                 }
             });

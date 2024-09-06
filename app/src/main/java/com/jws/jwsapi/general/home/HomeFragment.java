@@ -4,34 +4,37 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.base.containers.clases.ButtonProviderSingletonPrincipal;
+import com.jws.jwsapi.base.containers.interfaces.ButtonProvider_Principal;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
-import com.jws.jwsapi.databinding.FragmentPalletBinding;
+import com.jws.jwsapi.databinding.HomeFragmentBinding;
+import com.jws.jwsapi.general.formulador.ui.fragment.FormFragmentRecetas;
+import com.jws.jwsapi.general.pallet.Pallet;
+import com.jws.jwsapi.general.pallet.PalletCreateFragment;
+import com.jws.jwsapi.general.pallet.PalletFragment;
 import com.jws.jwsapi.general.pallet.PalletViewModel;
-import com.jws.jwsapi.utils.Utils;
-import com.service.Comunicacion.ButtonProvider;
-import com.service.Comunicacion.ButtonProviderSingleton;
+import com.jws.jwsapi.general.weighing.WeighingViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class HomeFragment extends Fragment{
 
-    private FragmentPalletBinding binding;
-    private PalletViewModel palletViewModel;
-    private ButtonProvider buttonProvider;
+    private HomeFragmentBinding binding;
+    private ButtonProvider_Principal buttonProvider;
     MainActivity mainActivity;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
-        binding = FragmentPalletBinding.inflate(inflater, container, false);
+        buttonProvider = ButtonProviderSingletonPrincipal.getInstance().getButtonProvider();
+        binding = HomeFragmentBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -40,33 +43,37 @@ public class HomeFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         mainActivity=(MainActivity)getActivity();
-        palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
+        WeighingViewModel weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
         setupButtons();
 
-        palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> {
-            if (palletResponse != null) {
-                Utils.message(requireContext().getString(R.string.toast_message_pallet_closed),R.layout.item_customtoastok,getContext());
+        weighingViewModel.getCurrentPallet().observe(getViewLifecycleOwner(), pallet -> {
+            if (pallet!=null) {
+                binding.tvCantidad.setText(String.valueOf(pallet.getQuantity()));
+                binding.tvDone.setText(String.valueOf(pallet.getDone()));
+                binding.tvProduct.setText(pallet.getName());
+                binding.tvPalletOrigin.setText(pallet.getOriginPallet());
+                binding.tvPalletDestination.setText(pallet.getDestinationPallet());
+                binding.tvScale.setText(String.valueOf(pallet.getScaleNumber()));
             }
         });
-        palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
-        palletViewModel.getError().observe(getViewLifecycleOwner(), error -> {
-            if (error != null) {
-                Utils.message(error,R.layout.item_customtoasterror,getContext());
-            }
-        });
     }
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
-            buttonProvider.getButton1().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton2().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton3().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton4().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton5().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton6().setVisibility(View.INVISIBLE);
-            buttonProvider.getTitulo().setText(requireContext().getString(R.string.title_pallets));
+            Button bt1 = buttonProvider.getButton1();
+            Button bt2 = buttonProvider.getButton2();
+            Button bt3 = buttonProvider.getButton3();
+            Button bt4 = buttonProvider.getButton4();
+            Button bt5 = buttonProvider.getButton5();
+            bt1.setText(requireContext().getString(R.string.button_text_1));
+            bt2.setText(requireContext().getString(R.string.button_text_2));
+            bt3.setText(requireContext().getString(R.string.button_text_3));
+            bt4.setText(requireContext().getString(R.string.button_text_4));
+            bt5.setText(requireContext().getString(R.string.button_text_5));
+            bt3.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletFragment()));
+            bt4.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentRecetas()));
+            bt5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
         }
     }
 

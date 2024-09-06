@@ -28,6 +28,9 @@ public class Pallet {
     @ColumnInfo(name = "quantity")
     private int quantity;
 
+    @ColumnInfo(name = "done")
+    private int done;
+
     @ColumnInfo(name = "serial_number")
     private String serialNumber;
 
@@ -104,5 +107,13 @@ public class Pallet {
 
     public void setClosed(boolean closed) {
         isClosed = closed;
+    }
+
+    public int getDone() {
+        return done;
+    }
+
+    public void setDone(int done) {
+        this.done = done;
     }
 }

@@ -10,6 +10,7 @@ import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.general.formulador.data.preferences.PreferencesManager;
 import com.jws.jwsapi.general.formulador.ui.fragment.FormPrincipal;
+import com.jws.jwsapi.general.home.HomeFragment;
 import com.service.Balanzas.BalanzaService;
 import com.service.Comunicacion.OnFragmentChangeListener;
 import com.jws.jwsapi.base.containers.ContainerFragment;
@@ -61,7 +62,7 @@ public class MainFormClass implements OnFragmentChangeListener {
 
     @Override
     public void openFragmentPrincipal() {
-        Fragment fragment = new FormPrincipal();
+        Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
         Fragment fragmentoActual = new ContainerPrincipalFragment();
         ContainerPrincipalFragment containerFragment = ContainerPrincipalFragment.newInstance(fragment.getClass());

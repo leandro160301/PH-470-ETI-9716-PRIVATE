@@ -46,14 +46,22 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
         palletAdapter = new PalletAdapter(new ArrayList<>(),this);
         binding.recycler.setAdapter(palletAdapter);
 
-        palletViewModel.getPallets().observe(getViewLifecycleOwner(), pallets -> palletAdapter.updateData(pallets));
+        palletViewModel.getPallets().observe(getViewLifecycleOwner(), pallets -> {
+            if (pallets!=null) {
+                palletAdapter.updateData(pallets);
+            }
+        });
 
         palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> {
             if (palletResponse != null) {
                 Utils.message(requireContext().getString(R.string.toast_message_pallet_closed),R.layout.item_customtoastok,getContext());
             }
         });
-        palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading!=null){
+                binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            }
+        });
 
         palletViewModel.getError().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {

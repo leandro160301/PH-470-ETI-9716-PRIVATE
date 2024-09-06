@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class PalletFragment extends Fragment implements PalletDeleteClick {
+public class PalletFragment extends Fragment implements PalletButtonClickListener {
 
     private PalletAdapter palletAdapter;
     private FragmentPalletBinding binding;
@@ -64,7 +64,7 @@ public class PalletFragment extends Fragment implements PalletDeleteClick {
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            buttonProvider.getButtonHome().setOnClickListener(view -> openHome());
             buttonProvider.getButton1().setVisibility(View.INVISIBLE);
             buttonProvider.getButton2().setVisibility(View.INVISIBLE);
             buttonProvider.getButton3().setVisibility(View.INVISIBLE);
@@ -73,6 +73,10 @@ public class PalletFragment extends Fragment implements PalletDeleteClick {
             buttonProvider.getButton6().setVisibility(View.INVISIBLE);
             buttonProvider.getTitulo().setText(requireContext().getString(R.string.title_pallets));
         }
+    }
+
+    private void openHome() {
+        mainActivity.mainClass.openFragmentPrincipal();
     }
 
     @Override
@@ -84,5 +88,11 @@ public class PalletFragment extends Fragment implements PalletDeleteClick {
     @Override
     public void deletePallet(Pallet pallet) {
         palletViewModel.closePallet(pallet.getSerialNumber());
+    }
+
+    @Override
+    public void selectPallet(Pallet pallet) {
+        palletViewModel.setCurrentPallet(pallet);
+        openHome();
     }
 }

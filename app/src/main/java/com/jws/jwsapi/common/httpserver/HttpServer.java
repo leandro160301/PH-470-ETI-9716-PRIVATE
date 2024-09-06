@@ -66,7 +66,7 @@ public class HttpServer extends NanoWSD {
     private static final String TYPE_VALUE_SDP = "sdp";
     private static final String TYPE_VALUE_ICE = "ice";
     private static final String TYPE_VALUE_BYE = "bye";
-    private MainActivity mainActivity;
+    private static MainActivity mainActivity;
     private Context context;
     Ws webSocket = null;
     UsersManager usersManager;
@@ -316,6 +316,10 @@ public class HttpServer extends NanoWSD {
             return downloadFile(session, uri);
         }
 
+        if(uri.endsWith("/descargarPreferences")){
+            return downloadPreferences(session, uri);
+        }
+
         if(uri.endsWith("/descargarDB")){
             return downloadDb();
         }
@@ -354,6 +358,48 @@ public class HttpServer extends NanoWSD {
         Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,"Archivo guardado");
         response.addHeader("Access-Control-Allow-Origin", "*");
         return response;
+    }
+
+    @NonNull
+    private static Response downloadPreferences(IHTTPSession session, String uri) throws ResponseException {
+        Map<String, String> files = new HashMap<>();
+        String nombre = null;
+        try {
+            session.parseBody(files);
+            nombre = files.get("postData");
+            nombre = URLDecoder.decode(nombre, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (nombre != null) {
+            File sharedPrefsFile = new File(mainActivity.getFilesDir().getParent() + "/shared_prefs/" + nombre + ".xml");
+
+            if (sharedPrefsFile.exists()) {
+                try {
+                    InputStream fileStream = new FileInputStream(sharedPrefsFile);
+
+                    String mime = "text/xml"; // Tipo MIME para un archivo XML
+
+                    Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
+                    response.addHeader("Access-Control-Allow-Origin", "*");
+                    return response;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Response response = newFixedLengthResponse("Error al buscar el archivo: " + nombre);
+                    response.addHeader("Access-Control-Allow-Origin", "*");
+                    return response;
+                }
+            } else {
+                Response response = newFixedLengthResponse("Error: No se encontró el archivo XML de SharedPreferences.");
+                response.addHeader("Access-Control-Allow-Origin", "*");
+                return response;
+            }
+        } else {
+            Response response = newFixedLengthResponse("Error al buscar el archivo");
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            return response;
+        }
     }
 
     @NonNull

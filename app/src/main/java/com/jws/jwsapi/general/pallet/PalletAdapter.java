@@ -13,11 +13,11 @@ import java.util.List;
 public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletViewHolder> {
 
     private List<Pallet> palletList;
-    private static PalletDeleteClick palletDeleteClick;
+    private static PalletButtonClickListener listener;
 
-    public PalletAdapter(List<Pallet> palletList, PalletDeleteClick palletDeleteClick) {
+    public PalletAdapter(List<Pallet> palletList, PalletButtonClickListener listener) {
         this.palletList = palletList;
-        PalletAdapter.palletDeleteClick = palletDeleteClick;
+        PalletAdapter.listener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -57,7 +57,7 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
             binding.tvPalletSerialNumber.setText(pallet.getSerialNumber());
             binding.tvPalletDestination.setText(pallet.getDestinationPallet());
             binding.tvPalletQuantity.setText(String.valueOf(pallet.getQuantity()));
-            binding.lnDelete.setOnClickListener(v -> palletDeleteClick.deletePallet(pallet));
+            binding.lnDelete.setOnClickListener(v -> listener.deletePallet(pallet));
         }
     }
 }

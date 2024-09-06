@@ -15,6 +15,7 @@ import com.jws.jwsapi.general.formulador.di.RecetaManager;
 import com.jws.jwsapi.general.pallet.PalletApi;
 import com.jws.jwsapi.general.pallet.PalletDao;
 import com.jws.jwsapi.general.pallet.PalletService;
+import com.jws.jwsapi.general.shared.PalletRepository;
 import com.jws.jwsapi.general.weighing.WeighingApi;
 import com.jws.jwsapi.general.weighing.WeighingDao;
 import com.jws.jwsapi.general.weighing.WeighingService;
@@ -62,6 +63,12 @@ public class AppModule {
     @Singleton
     public LabelManager provideLabelManager(PreferencesManager preferencesManager){
         return new LabelManager(preferencesManager);
+    }
+
+    @Provides
+    @Singleton
+    public PalletRepository providePalletRepository(){
+        return new PalletRepository();
     }
 
     private static final String BASE_URL = "http://10.41.0.78:8080/";

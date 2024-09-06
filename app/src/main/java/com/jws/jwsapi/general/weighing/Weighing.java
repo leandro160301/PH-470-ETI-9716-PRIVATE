@@ -40,6 +40,12 @@ public class Weighing {
     @ColumnInfo(name = "total_net")
     private String totalNet;
 
+    @ColumnInfo(name = "quantity")
+    private int quantity;
+
+    @ColumnInfo(name = "done")
+    private int done;
+
     public int getId() {
         return id;
     }
@@ -127,4 +133,21 @@ public class Weighing {
     public void setTotalNet(String totalNet) {
         this.totalNet = totalNet;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getDone() {
+        return done;
+    }
+
+    public void setDone(int done) {
+        this.done = done;
+    }
+
 }

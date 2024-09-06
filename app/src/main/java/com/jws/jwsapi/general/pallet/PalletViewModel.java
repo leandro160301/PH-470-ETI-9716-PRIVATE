@@ -3,6 +3,9 @@ package com.jws.jwsapi.general.pallet;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.jws.jwsapi.general.shared.PalletRepository;
+
 import java.util.List;
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -14,6 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 @HiltViewModel
 public class PalletViewModel extends ViewModel {
 
+    private final PalletRepository palletRepository;
     private final PalletService palletService;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final LiveData<List<Pallet>> pallets;
@@ -26,8 +30,9 @@ public class PalletViewModel extends ViewModel {
     private final MutableLiveData<String> palletDestination = new MutableLiveData<>();
 
     @Inject
-    public PalletViewModel(PalletService palletService) {
+    public PalletViewModel(PalletService palletService, PalletRepository palletRepository) {
         this.palletService = palletService;
+        this.palletRepository = palletRepository;
         this.pallets = palletService.getAllPallets();
     }
 
@@ -108,5 +113,9 @@ public class PalletViewModel extends ViewModel {
     protected void onCleared() {
         super.onCleared();
         compositeDisposable.clear();
+    }
+
+    public void setCurrentPallet(Pallet pallet) {
+        palletRepository.setCurrentPallet(pallet);
     }
 }

@@ -55,8 +55,8 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
         }
 
         public void bind(Pallet pallet) {
-            binding.tvPalletSerialNumber.setText(pallet.getSerialNumber());
-            binding.tvPalletDestination.setText(pallet.getDestinationPallet());
+            binding.tvPalletSerialNumber.setText(pallet.getCode());
+            binding.tvPalletDestination.setText(pallet.getName());
             String text = String.format(Locale.US, "%d/%d", pallet.getDone(), pallet.getQuantity());
             binding.tvPalletQuantity.setText(text);
             binding.lnDelete.setOnClickListener(v -> listener.deletePallet(pallet));

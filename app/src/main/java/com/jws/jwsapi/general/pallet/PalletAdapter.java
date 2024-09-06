@@ -2,7 +2,6 @@ package com.jws.jwsapi.general.pallet;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.databinding.ItemPalletBinding;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletViewHolder> {
 
@@ -57,7 +57,8 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
         public void bind(Pallet pallet) {
             binding.tvPalletSerialNumber.setText(pallet.getSerialNumber());
             binding.tvPalletDestination.setText(pallet.getDestinationPallet());
-            binding.tvPalletQuantity.setText(String.valueOf(pallet.getQuantity()));
+            String text = String.format(Locale.US, "%d/%d", pallet.getDone(), pallet.getQuantity());
+            binding.tvPalletQuantity.setText(text);
             binding.lnDelete.setOnClickListener(v -> listener.deletePallet(pallet));
             binding.lnSelect.setOnClickListener(v -> listener.selectPallet(pallet));
         }

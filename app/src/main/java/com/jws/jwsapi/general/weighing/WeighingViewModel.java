@@ -8,6 +8,8 @@ import com.jws.jwsapi.general.pallet.Pallet;
 import com.jws.jwsapi.general.shared.PalletRepository;
 
 import java.util.List;
+import java.util.Objects;
+
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,19 +22,23 @@ public class WeighingViewModel extends ViewModel {
 
     private final PalletRepository repository;
     private final WeighingService weighingService;
+    private final LiveData<Pallet> currentPallet;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final LiveData<List<Weighing>> weighings;
     private final MutableLiveData<WeighingResponse> WeighingResponse = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final WeighingDao weighingDao;
 
 
     @Inject
-    public WeighingViewModel(PalletRepository repository, WeighingService weighingService) {
+    public WeighingViewModel(PalletRepository repository, WeighingService weighingService, WeighingDao weighingDao) {
         this.repository = repository;
         this.weighingService = weighingService;
         this.weighings = weighingService.getAllWeighings();
+        this.currentPallet = repository.getCurrentPallet();
+        this.weighingDao = weighingDao;
     }
 
     public LiveData<List<Weighing>> getWeighings() {
@@ -52,7 +58,7 @@ public class WeighingViewModel extends ViewModel {
     }
 
     public LiveData<Pallet> getCurrentPallet() {
-        return repository.getCurrentPallet();
+        return currentPallet;
     }
 
     public void createWeighing(Weighing weighing) {
@@ -62,16 +68,18 @@ public class WeighingViewModel extends ViewModel {
 
     public void createWeighingRequest(WeighingRequest weighingRequest, Weighing weighing) {
         loading.setValue(true);
-
-        Disposable disposable = weighingService.newWeighing(weighingRequest,weighing)
+        int id= Objects.requireNonNull(repository.getCurrentPallet().getValue()).getId();
+        Disposable disposable = weighingService.newWeighing(weighingRequest,weighing, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> loading.setValue(false))
                 .subscribe(
-                        WeighingResponse::setValue,
+                        weighingResponse -> {
+                            WeighingResponse.setValue(weighingResponse);
+                            repository.setCurrentPallet(id);
+                        },
                         throwable -> error.setValue(throwable.getMessage())
                 );
-
         compositeDisposable.add(disposable);
     }
 

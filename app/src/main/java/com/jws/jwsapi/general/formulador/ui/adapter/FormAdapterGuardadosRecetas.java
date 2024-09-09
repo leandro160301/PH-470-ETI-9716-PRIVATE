@@ -42,11 +42,11 @@ public class FormAdapterGuardadosRecetas extends RecyclerView.Adapter<FormAdapte
         holder.binding.tvDescripcioningrediente.setText(receta.getDescripcionReceta());
         holder.binding.tvCodigoingrediente.setText(receta.getCodigoReceta());
         holder.binding.tvLote.setText(receta.getLote());
-        holder.binding.tvNeto.setText(receta.getNeto());
+        holder.binding.tvNet.setText(receta.getNeto());
         holder.binding.tvFecha.setText(receta.getFecha());
         holder.binding.tvHora.setText(receta.getHora());
         holder.binding.tvVencimiento.setText(receta.getVencimiento());
-        holder.binding.tvBruto.setText(receta.getBruto());
+        holder.binding.tvGross.setText(receta.getBruto());
         holder.binding.tvId.setText(String.valueOf(receta.getId()));
         holder.binding.tvTara.setText(receta.getTara());
         holder.binding.tvSetpoint.setText(receta.getKilosAProducir());

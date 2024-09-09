@@ -2,6 +2,7 @@ package com.jws.jwsapi.general.pallet;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,6 +62,10 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
             binding.tvPalletQuantity.setText(text);
             binding.lnDelete.setOnClickListener(v -> listener.deletePallet(pallet));
             binding.lnSelect.setOnClickListener(v -> listener.selectPallet(pallet));
+            if(pallet.isClosed()){
+                binding.lnDelete.setVisibility(View.GONE);
+                binding.lnSelect.setVisibility(View.GONE);
+            }
         }
     }
 }

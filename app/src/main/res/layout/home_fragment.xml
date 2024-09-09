@@ -80,7 +80,7 @@
                             </LinearLayout>
 
                             <TextView
-                                android:id="@+id/tv_neto"
+                                android:id="@+id/tv_net"
                                 android:layout_width="564dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -94,7 +94,7 @@
                                 android:textStyle="normal" />
 
                             <TextView
-                                android:id="@+id/tv_neto_unidad"
+                                android:id="@+id/tv_net_unit"
                                 android:layout_width="65dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center|left"
@@ -119,7 +119,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_bruto"
+                                android:id="@+id/tv_gross"
                                 android:layout_width="300dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -130,7 +130,7 @@
                                 android:textSize="28sp" />
 
                             <TextView
-                                android:id="@+id/tv_bruto_unidad"
+                                android:id="@+id/tv_gross_unit"
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -190,7 +190,7 @@
 
 
                             <TextView
-                                android:id="@+id/tv_netototal"
+                                android:id="@+id/tv_total_net"
                                 android:layout_width="382dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -204,7 +204,7 @@
                                 android:textStyle="normal" />
 
                             <TextView
-                                android:id="@+id/tv_netototal_unidad"
+                                android:id="@+id/tv_total_net_unit"
                                 android:layout_width="95dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center|left"
@@ -340,7 +340,7 @@
                                             android:layout_weight="1"
                                             android:gravity="center"
                                             android:text="Producto"
-                                            android:textAlignment="center"
+                                            android:textAlignment="textStart"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="47sp" />
@@ -388,7 +388,7 @@
                                             android:layout_weight="1"
                                             android:gravity="center"
                                             android:text="Balanza"
-                                            android:textAlignment="center"
+                                            android:textAlignment="textStart"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="47sp" />
@@ -437,7 +437,7 @@
                                             android:layout_weight="1"
                                             android:gravity="center"
                                             android:text="Origen"
-                                            android:textAlignment="center"
+                                            android:textAlignment="textStart"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="34sp" />

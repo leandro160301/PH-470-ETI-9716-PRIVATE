@@ -19,6 +19,7 @@ import com.jws.jwsapi.general.shared.PalletRepository;
 import com.jws.jwsapi.general.weighing.WeighingApi;
 import com.jws.jwsapi.general.weighing.WeighingDao;
 import com.jws.jwsapi.general.weighing.WeighingService;
+import com.service.Comunicacion.OnFragmentChangeListener;
 
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import javax.inject.Singleton;
@@ -67,8 +68,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public PalletRepository providePalletRepository(){
-        return new PalletRepository();
+    public PalletRepository providePalletRepository(PalletDao palletDao){
+        return new PalletRepository(palletDao);
     }
 
     private static final String BASE_URL = "http://10.41.0.78:8080/";
@@ -113,8 +114,8 @@ public class AppModule {
     }
 
     @Provides
-    public WeighingService provideWeighingService(WeighingApi weighingApi, WeighingDao weighingDao) {
-        return new WeighingService(weighingApi, weighingDao);
+    public WeighingService provideWeighingService(WeighingApi weighingApi, WeighingDao weighingDao,PalletDao palletDao) {
+        return new WeighingService(weighingApi, weighingDao,palletDao);
     }
 
 }

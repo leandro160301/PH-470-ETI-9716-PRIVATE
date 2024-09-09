@@ -116,6 +116,6 @@ public class PalletViewModel extends ViewModel {
     }
 
     public void setCurrentPallet(Pallet pallet) {
-        palletRepository.setCurrentPallet(pallet);
+        palletRepository.setCurrentPallet(pallet.getId());
     }
 }

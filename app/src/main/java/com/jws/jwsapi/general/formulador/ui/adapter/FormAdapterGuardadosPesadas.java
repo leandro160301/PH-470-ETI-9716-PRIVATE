@@ -112,8 +112,8 @@ public class FormAdapterGuardadosPesadas extends RecyclerView.Adapter<FormAdapte
             tv_idpesada= itemView.findViewById(R.id.tv_id);
             tv_idreceta= itemView.findViewById(R.id.tv_idreceta);
             tv_idpedido= itemView.findViewById(R.id.tv_idpedido);
-            tv_neto= itemView.findViewById(R.id.tv_neto);
-            tv_bruto= itemView.findViewById(R.id.tv_bruto);
+            tv_neto= itemView.findViewById(R.id.tv_net);
+            tv_bruto= itemView.findViewById(R.id.tv_gross);
             tv_tara= itemView.findViewById(R.id.tv_tara);
             tv_fecha= itemView.findViewById(R.id.tv_fecha);
             tv_hora= itemView.findViewById(R.id.tv_hora);

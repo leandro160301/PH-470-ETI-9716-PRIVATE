@@ -4,7 +4,7 @@
     <!--pallet feature-->
     <string name="toast_message_pallet_created">Pallet creado</string>
     <string name="toast_message_pallet_closed">Pallet cerrado</string>
-    <string name="dialog_scale_input">Ingrese numero de balanza</string>
+    <string name="dialog_scale_input">Ingrese numero de scale</string>
     <string name="dialog_palleto_input">Ingrese pallet origen</string>
     <string name="dialog_palletd_input">Ingrese pallet destino</string>
     <string name="title_new_pallet">NUEVO PALLET</string>

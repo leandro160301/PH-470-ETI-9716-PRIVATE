@@ -27,7 +27,13 @@ public interface PalletDao {
     @Insert
     void insertPallet(Pallet pallet);
 
-    @Query("UPDATE pallet SET is_closed = :isClosed WHERE id = :id")
-    void updatePalletClosedStatus(int id, boolean isClosed);
+    @Query("UPDATE pallet SET is_closed = :isClosed WHERE serial_number = :serialNumber")
+    void updatePalletClosedStatus(String serialNumber, boolean isClosed);
+
+    @Query("UPDATE pallet SET done = done + 1 WHERE id = :id")
+    void incrementDoneById(int id);
+
+    @Query("UPDATE pallet SET total_net = :totalNet WHERE serial_number = :serialNumber")
+    void updatePalletTotalNet(String serialNumber, String totalNet);
 
 }

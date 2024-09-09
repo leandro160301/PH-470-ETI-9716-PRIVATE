@@ -103,7 +103,7 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void observeViewModel() {
         viewModel.getEstadoMensajeStr().observe(getViewLifecycleOwner(),estado -> binding.tvEstado.setText(estado));
-        viewModel.getNetoTotal().observe(getViewLifecycleOwner(), netoTotal -> binding.tvNetototal.setText(netoTotal));
+        viewModel.getNetoTotal().observe(getViewLifecycleOwner(), netoTotal -> binding.tvTotalNet.setText(netoTotal));
         viewModel.getCantidad().observe(getViewLifecycleOwner(),cantidad-> binding.tvCantidad.setText(String.valueOf(cantidad)));
         viewModel.mensajeToastError.observe(getViewLifecycleOwner(), this::mensaje);
         viewModel.getRealizadas().observe(getViewLifecycleOwner(), this::updateViewRealizadas);
@@ -202,9 +202,9 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
 
     private void setupUnidad() {
         String unidad=mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
-        binding.tvBrutoUnidad.setText(unidad);
-        binding.tvNetoUnidad.setText(unidad);
-        binding.tvNetototalUnidad.setText(unidad);
+        binding.tvGrossUnit.setText(unidad);
+        binding.tvNetUnit.setText(unidad);
+        binding.tvTotalNetUnit.setText(unidad);
     }
 
     private void setOnClickListeners() {
@@ -671,8 +671,8 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void actualizarVistas() {
-        binding.tvNeto.setText(mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza));
-        binding.tvBruto.setText(mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza));
+        binding.tvNet.setText(mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza));
+        binding.tvGross.setText(mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza));
         if(isManualAndBotoneraNormal()) bt_2.setText("PESAR");
         labelManager.oturno.value=mainActivity.mainClass.devuelveTurnoActual();
         updateDatosLabel();
@@ -868,11 +868,11 @@ public class FormPrincipal extends Fragment  implements ToastHelper {
     }
 
     private void setupViewsColor(int Color, int Rcolor, int estable) {
-        binding.tvNeto.setTextColor(Color);
-        binding.tvBruto.setTextColor(Color);
+        binding.tvNet.setTextColor(Color);
+        binding.tvGross.setTextColor(Color);
         binding.lnLinea.setBackgroundResource(Rcolor);
-        binding.tvNetoUnidad.setTextColor(Color);
-        binding.tvBrutoUnidad.setTextColor(Color);
+        binding.tvNetUnit.setTextColor(Color);
+        binding.tvGrossUnit.setTextColor(Color);
         binding.imEstable.setImageDrawable(ContextCompat.getDrawable(requireContext(),estable));
     }
 

@@ -590,7 +590,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_neto"
+                            android:id="@+id/tv_net"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="22dp"
@@ -646,7 +646,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_bruto"
+                            android:id="@+id/tv_gross"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="22dp"

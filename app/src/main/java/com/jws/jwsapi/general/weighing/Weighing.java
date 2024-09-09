@@ -37,8 +37,7 @@ public class Weighing {
     @ColumnInfo(name = "tare")
     private String tare;
 
-    @ColumnInfo(name = "total_net")
-    private String totalNet;
+
 
     @ColumnInfo(name = "quantity")
     private int quantity;
@@ -121,14 +120,6 @@ public class Weighing {
 
     public void setTare(String tare) {
         this.tare = tare;
-    }
-
-    public String getTotalNet() {
-        return totalNet;
-    }
-
-    public void setTotalNet(String totalNet) {
-        this.totalNet = totalNet;
     }
 
     public int getQuantity() {

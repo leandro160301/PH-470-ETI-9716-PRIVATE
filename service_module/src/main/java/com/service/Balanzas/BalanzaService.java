@@ -215,7 +215,7 @@ public class BalanzaService implements Serializable {
                     serialPort=serialPortC;
                 }
 
-                if (balanzasList.get(i) == 1) { // 0
+                if (balanzasList.get(i) == 0) { // 1
                     System.out.println("OPTIMA");
                     Struct bza=new OPTIMA_I(serialPort, i+1,activity,Service,fragmentChangeListener);
 
@@ -237,7 +237,7 @@ public class BalanzaService implements Serializable {
                     BZA.init(i+1);
                     balanzas.put(i + 1, BZA);
                 }
-                if(balanzasList.get(i)==0){ // 3
+                if(balanzasList.get(i)==3){ // 0
                     System.out.println("ITW410 STARTY");
                     //hardcodeadisimo
                     int finalI2 = i;

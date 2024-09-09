@@ -37,6 +37,9 @@ public class Pallet {
     @ColumnInfo(name = "is_closed")
     private boolean isClosed;
 
+    @ColumnInfo(name = "total_net")
+    private String totalNet;
+
     public int getId() {
         return id;
     }
@@ -116,4 +119,13 @@ public class Pallet {
     public void setDone(int done) {
         this.done = done;
     }
+
+    public String getTotalNet() {
+        return totalNet;
+    }
+
+    public void setTotalNet(String totalNet) {
+        this.totalNet = totalNet;
+    }
+
 }

@@ -24,6 +24,4 @@ public interface WeighingDao {
     @Insert
     void insertWeighing(Weighing weighing);
 
-    @Query("UPDATE weighing SET total_net = :totalNet WHERE id = :id")
-    void updateWeighingTotalNet(int id, String totalNet);
 }

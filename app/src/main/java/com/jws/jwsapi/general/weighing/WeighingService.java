@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.jws.jwsapi.general.pallet.PalletDao;
 
 import java.util.List;
+
 import io.reactivex.Single;
 
 public class WeighingService {

@@ -4,7 +4,9 @@ import static net.sourceforge.jtds.jdbc.DefaultProperties.DATABASE_NAME;
 
 import android.app.Application;
 import android.content.Context;
+
 import androidx.room.Room;
+
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.general.AppDatabase;
 import com.jws.jwsapi.general.formulador.MainFormClass;
@@ -19,16 +21,16 @@ import com.jws.jwsapi.general.shared.PalletRepository;
 import com.jws.jwsapi.general.weighing.WeighingApi;
 import com.jws.jwsapi.general.weighing.WeighingDao;
 import com.jws.jwsapi.general.weighing.WeighingService;
-import com.service.Comunicacion.OnFragmentChangeListener;
 
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module

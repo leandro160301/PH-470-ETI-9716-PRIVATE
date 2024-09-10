@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel;
 import com.jws.jwsapi.general.shared.PalletRepository;
 
 import java.util.List;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

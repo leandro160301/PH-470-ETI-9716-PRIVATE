@@ -1,7 +1,9 @@
 package com.jws.jwsapi.general.pallet;
 
 import androidx.lifecycle.LiveData;
+
 import java.util.List;
+
 import io.reactivex.Single;
 
 public class PalletService {

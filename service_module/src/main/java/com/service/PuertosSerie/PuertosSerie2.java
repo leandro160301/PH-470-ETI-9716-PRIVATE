@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import android_serialport_api.SerialPort;
 
@@ -42,7 +44,9 @@ public class PuertosSerie2 {
                             int size = mInputStream.read(buffer);
                             if (size > 0) {
                                 String str = new String(buffer, 0, size,StandardCharsets.ISO_8859_1);
+                                //System.out.println("MENSAJE INTERNO "+str);
                                 if(str!=null ) {
+
                                     PuertosSerie2Listener.onMsjPort(str);
                                 }
                             }
@@ -64,7 +68,7 @@ public class PuertosSerie2 {
         }
     }
     public SerialPort open(String puerto, int baudrate, int stopBits, int dataBits, int parity, int flowCon, int flags){
-
+        CountDownLatch latch = new CountDownLatch(1); // Inicializa el latch
         Puerto=puerto;
         Baudrate=baudrate;
         StopBits=stopBits;
@@ -72,27 +76,31 @@ public class PuertosSerie2 {
         Parity=parity;
         FlowCon=flowCon;
         Flags=flags;
-        File archivo=new File(puerto);
-
-        if(archivo.exists()){
+        File archivo = new File(puerto);
+        if (archivo.exists()) {
+          //  new Thread(() -> {
+                try {
+                    serialPort = new SerialPort(archivo, baudrate, stopBits, dataBits, parity, flowCon, flags);
+                    mOutputStream = serialPort.getOutputStream();
+                    mInputStream = serialPort.getInputStream();
+                    System.out.println("SERIALPORT LAUNCH"+ archivo);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    latch.countDown(); // Libera el latch
+                }
+            //}).start();
             try {
-                serialPort=new SerialPort(archivo, baudrate,stopBits,dataBits,parity,flowCon,flags);
-                mOutputStream = serialPort.getOutputStream();
-                mInputStream = serialPort.getInputStream();
-            } catch (
-                    IOException e) {
+                latch.await(333, TimeUnit.MILLISECONDS); // Espera a que se complete la inicialización
+            } catch (InterruptedException e) {
                 e.printStackTrace();
+                System.out.println("SERIALPORT  NO LAUNCH"+ archivo);
             }
-
-
-
-            // Iniciar la lectura
             return serialPort;
-        }else{
+        } else {
+            System.out.println("NO EXISTE "+archivo);
             return null;
         }
-
-
     }
 
     public InputStream getInputStream() {
@@ -104,13 +112,11 @@ public class PuertosSerie2 {
         }else{
             return 0;
         }
-
     }
 
     public OutputStream getOutputStream() {
         return mOutputStream;
     }
-
     public String PUERTO(){
         return Puerto;
     }
@@ -135,12 +141,11 @@ public class PuertosSerie2 {
 
     public boolean HabilitadoLectura() throws IOException {
         if(serialPort!=null){
+            System.out.println("HABILITADO ¿? "+ serialPort.getInputStream().available());
             return serialPort.getInputStream().available() > 0;
         }else {
             return false;
         }
-
-
     }
     public String read_2()
     {
@@ -152,8 +157,10 @@ public class PuertosSerie2 {
                     return null;
                 byte[] buffer = new byte[1024];
                 size = mInputStream.read(buffer);
+                //System.out.println("read2 problem"+size);
                 if (size > 0) {
                     str=new String(buffer,0,size);
+                    //System.out.println("read2 problem"+str);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -163,7 +170,6 @@ public class PuertosSerie2 {
         }else{
             return "";
         }
-
     }
     public void flush() throws IOException {
         if(HabilitadoLectura()){
@@ -180,8 +186,10 @@ public class PuertosSerie2 {
                     return null;
                 byte[] buffer = new byte[1024];
                 size = mInputStream.read(buffer);
+                //System.out.println("read13 problem"+size);
                 if (size > 0 && size < 13) {
                     str=new String(buffer,0,size);
+                  //  System.out.println("read13 problem"+str);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

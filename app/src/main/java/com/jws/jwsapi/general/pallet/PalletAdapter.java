@@ -63,9 +63,11 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
             binding.tvPalletQuantity.setText(text);
             binding.lnDelete.setOnClickListener(v -> listener.deletePallet(pallet));
             binding.lnSelect.setOnClickListener(v -> listener.selectPallet(pallet));
+            binding.lnClose.setOnClickListener(v -> listener.closePallet(pallet));
             if(pallet.isClosed()){
                 binding.lnDelete.setVisibility(View.GONE);
                 binding.lnSelect.setVisibility(View.GONE);
+                binding.lnClose.setVisibility(View.GONE);
             }
         }
     }

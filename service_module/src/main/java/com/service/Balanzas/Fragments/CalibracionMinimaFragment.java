@@ -424,7 +424,7 @@ public class CalibracionMinimaFragment extends Fragment {
                                             estado=BZA.M_MODO_BALANZA;
                                            BZA.setPesoUnitario(BZA.getPesoUnitario());
                                            BZA.estado = M_MODO_BALANZA;
-                                            Service.openServiceFragment();
+                                            Service.openServiceFragment2();
                                             boolBtHome =true;
                                             dialog.cancel();
 
@@ -1579,7 +1579,7 @@ public class CalibracionMinimaFragment extends Fragment {
                             param1 += leertoggles(toggle2, R.id.btON2);// "0";
                             param1 += leertoggles(toggle3, R.id.btON3);
                             param1 += leertoggles(toggle4, R.id.btON4); //"0";
-                            lastTanque = (leertoggles(toggle3, R.id.btON3)=="1");
+                            lastTanque = (leertoggles(toggle3, R.id.btON3).equals("1"));
                             param1 += "0";// leertoggles(toggle5,R.id.btON5);
                             param1 += "1";// leertoggles(toggle6,R.id.btON6); // ESTE NECESITA ESTAR EN 0
                             param1 += "1";// leertoggles(toggle7,R.id.btON7);
@@ -1873,7 +1873,7 @@ public class CalibracionMinimaFragment extends Fragment {
                         }*/
                 //Thread.sleep(2000);
                 mainActivity.runOnUiThread(() -> {
-                    if(CapDivPDecimal=="ERRCONTROL"){
+                    if(CapDivPDecimal.equals("ERRCONTROL")){
 
                         System.out.println("ERRCALIB");
                         switch (indiceCalibracion){
@@ -2172,7 +2172,7 @@ public class CalibracionMinimaFragment extends Fragment {
                 param1 += leertoggles(toggle2,R.id.btON2);// "0";
                 param1 += leertoggles(toggle3,R.id.btON3);
                 param1 +=leertoggles(toggle4,R.id.btON4); //"0";
-                lastTanque = (leertoggles(toggle3, R.id.btON3)=="1");
+                lastTanque = (leertoggles(toggle3, R.id.btON3).equals("1"));
                 param1 +="0";// leertoggles(toggle5,R.id.btON5);
                 param1 +=  "1";// leertoggles(toggle6,R.id.btON6); // ESTE NECESITA ESTAR EN 0
                 param1 +="1";// leertoggles(toggle7,R.id.btON7);
@@ -2313,7 +2313,7 @@ public class CalibracionMinimaFragment extends Fragment {
         else{
             userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
             userInput.requestFocus();
-            if(Texto=="Peso Conocido"){ // Peso conocido con coma
+            if(Texto.equals("Peso Conocido")){ // Peso conocido con coma
                 userInput.setInputType(InputType.TYPE_CLASS_NUMBER |InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 userInput.requestFocus();
             }
@@ -2335,7 +2335,7 @@ public class CalibracionMinimaFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(Texto== "Peso Conocido"){
+                if(Texto.equals("Peso Conocido")){
                     if(BZA.Peso_conocido(userInput.getText().toString(),String.valueOf(spPuntoDecimal.getSelectedItemPosition()))!=null){ // ,tv_capacidad.getText().toString()
                         //BZA.serialPort.write(BZA.Peso_conocido(userInput.getText().toString(),String.valueOf(sp_puntoDecimal.getSelectedItemPosition())));
                         // procesarerror(2,dialog);

@@ -7,5 +7,4 @@ import androidx.fragment.app.Fragment;
 public interface OnFragmentChangeListener {
     void openFragmentService(Fragment fragment, Bundle arg);
     void openFragmentPrincipal();
-    void openFragment(Fragment fragment);
 }

@@ -11,6 +11,7 @@
     <string name="title_pallets">PALLETS ACTIVOS</string>
     <string name="toast_message_data_imcopleted">NUEVO PALLET</string>
     <string name="dialog_close_pallet">¿quiere cerrar el pallet?</string>
+    <string name="dialog_button_close_pallet">CERRAR</string>
 
     <!--home feature-->
     <string name="button_text_1">CANTIDAD</string>
@@ -337,6 +338,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dialog_delete_pallet">¿quiere eliminar el pallet?</string>
+    <string name="dialog_button_delete_pallet">ELIMINAR</string>
 
 
 </resources>

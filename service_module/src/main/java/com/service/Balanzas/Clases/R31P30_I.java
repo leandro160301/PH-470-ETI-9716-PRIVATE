@@ -39,6 +39,11 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     public static final String M_MODO_CALIBRACION="MODO_CALIBRACION";
     public static final String M_ERROR_COMUNICACION="M_ERROR_COMUNICACION";
     public float taraDigital=0,Bruto=0,Tara=0,Neto=0,pico=0;
+
+    public static final  String Bauddef="9600";
+    public static final String StopBdef="1";
+    public static final String DataBdef="8";
+    public static final String Paritydef="0";
     float pesoUnitario=0.5F;
     float pesoBandaCero=0F;
     public int piezas=0;

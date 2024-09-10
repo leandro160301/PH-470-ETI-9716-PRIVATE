@@ -120,13 +120,27 @@
         <item>PARIDAD PAR</item>
     </string-array>
 
-    <string-array name="tipoBalanzas">
+    <string-array name="tipoBalanzasxx">
+        <item>Optima</item>
+        <item>Minima</item>
+        <item>R31P30</item>
         <item>ITW410</item>
-        <item>OPTIMA</item>
-        <item>MINIMA</item>
-        <item>OHAUS R31P30</item>
+    </string-array>
+    <string-array name="tipoSalida">
+        <item>Puerto Serie 1</item>
+        <item>Puerto Serie 2</item>
+        <item>Puerto Serie 3</item>
+        <item>RED</item>
+        <item>BLT</item>
     </string-array>
 
+    <string-array name="Modelobza">
+        <item>Optima</item>
+        <item>Minima</item>
+        <item>R31P30</item>
+        <item>ITW410</item>
+
+    </string-array>
     <string-array name="tipoUsuarios">
         <item>Supervisor</item>
         <item>Operador</item>
@@ -311,12 +325,17 @@
         <item>PUERTO SERIE</item>
         <item>BUETOOTH</item>
     </string-array>
-
-    <string-array name="Modbus">
-        <item>PUERTO SERIE 1</item>
-        <item>PUERTO SERIE 2</item>
-        <item>PUERTO SERIE 3</item>
+    <string-array name="modbus">
+        <item>PuertoSerie 1</item>
+        <item>PuertoSerie 2</item>
+        <item>PuertoSerie 3</item>
         <item>TCP/IP</item>
+    </string-array>
+    <string-array name="PuertosSeries">
+        <item>PuertoSerie 1</item>
+        <item>PuertoSerie 2</item>
+        <item>PuertoSerie 3</item>
+
     </string-array>
     <string-array name="CamposEtiqueta">
         <item>USB</item>

@@ -39,6 +39,10 @@ public class ITW410 implements Balanza.Struct, Serializable {
     private ITW410 returnthiscontext(){
         return this;
     }
+    public static final  String Bauddef="115200";
+    public static final String StopBdef="1";
+    public static final String DataBdef="8";
+    public static final String Paritydef="0";
     public float formatpuntodec(int numero) {
 
         float respuesta =  numero / (float) Math.pow(10, puntoDecimal);
@@ -80,7 +84,8 @@ public class ITW410 implements Balanza.Struct, Serializable {
                     ModbusMasterRtu modbusmasterinit= new ModbusMasterRtu();
 
                     // Modbus = modbusmasterinit.init(finalPort,modbus.getBaud(),modbus.getDatabit(),modbus.getStopbit(),modbus.getParity());
-                    Modbus =modbusmasterinit.init(Service.PUERTO_A,115200,8,1,0);
+
+                    Modbus =modbusmasterinit.init(Service.PUERTO_A, Integer.parseInt(configuracionModbus.get(1)),Integer.parseInt(configuracionModbus.get(2)),Integer.parseInt(configuracionModbus.get(1)),Integer.parseInt(configuracionModbus.get(4))); //<configuracionModbus>
                     System.out.println("INITIALIZATING");
                     if (Modbus != null) {
                         ModbusRtuMaster = Modbus;
@@ -102,9 +107,10 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     @Override
     public void run() {
         if(estado==M_MODO_BALANZA) {
+            try {
             if (subnombre == 1) {
                 System.out.println("bucle works");
-                try {
+
                     final float[] response = {0.0F};
                     OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
                         @Override
@@ -127,15 +133,15 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
                         @Override
                         public void onFailed(String error) {
-                            System.out.println("ERROR DE Bucle");
+                            // Maneja el error aquí
 
 
                         }
                     };
                     ModbusRtuMaster.readHoldingRegisters(callback, numeroSlave, 20, 4);
-                } catch (Exception e) {};
+
             } else if (subnombre == 2) {
-                try {
+
                     final float[] response = {0.0F};
                     OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
                         @Override
@@ -207,10 +213,9 @@ Runnable GET_PESO_cal_bza = new Runnable() {
                     ModbusRtuMaster.readHoldingRegisters(callback, numeroSlave, 12, 5);
                     Thread.sleep(500);
 
-                } catch (Exception e) {
 
-                }
             };
+            } catch (Exception e) {}
         }
         mHandler.postDelayed(GET_PESO_cal_bza,500);
 
@@ -299,15 +304,16 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     public String ultimaCalibracion="";
     public String brutoStr="0",netoStr="0",taraStr="0",taraDigitalStr="0",picoStr="0";
     public int acumulador=0;
-
+    private ArrayList<String> configuracionModbus;
     public  int subnombre;
     private int numerobza= 0;
 
-    public ITW410( int numBza, BalanzaService activity, OnFragmentChangeListener fragmentChangeListener, int numbza410) {
+    public ITW410( int numBza, BalanzaService activity, OnFragmentChangeListener fragmentChangeListener, int numbza410,ArrayList<String> configuracionModbus) {
         this.numerobza = numBza;
         this.Service = activity;
         this.fragmentChangeListener=fragmentChangeListener;
         context=this;
+        this.configuracionModbus = configuracionModbus;
         this.subnombre =numbza410;
 
     }
@@ -315,12 +321,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
 
 
-    public void setTaraDigital(float tara){
-        taraDigital=tara;
-        taraDigitalStr=String.valueOf(tara);
-        setTara(numerobza);
 
-    }
 
     public void setPesoBandaCero(float peso){
         pesoBandaCero=peso;
@@ -826,17 +827,9 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
         final Boolean[] Resulte = {false};
         valueFormateado = format(puntoDecimal,setPoint);
-      /*  if(setPoint.contains(".")){
-            valueFormateado= formatearNumero(Double.parseDouble(setPoint),puntoDecimal).replace(".","");
-        }else{
-            StringBuilder x =new StringBuilder(setPoint);
-            for (int i=0;i<puntoDecimal;i++){
-                x.append(0);
-            }
-            valueFormateado= String.valueOf(x);
-        }*/
+
         final String[] res = {""};
-        System.out.println("antes:"+setPoint+"despues:"+valueFormateado);
+        System.out.println("ZZ antes:"+setPoint+"despues:"+valueFormateado);
         CountDownLatch latch= new CountDownLatch(1);
         OnRequestBack<String> callback2 = new OnRequestBack<String>() {
             @Override
@@ -850,7 +843,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
             @Override
             public void onFailed(String error) {
-                System.out.println("hola como andas: 2");
+                // Maneja el error aquí
                 res[0] =error;
                 latch.countDown();
                 Resulte[0] =false;
@@ -860,7 +853,6 @@ Runnable GET_PESO_cal_bza = new Runnable() {
             @Override
             public void onSuccess(String result) {
                 // Maneja el resultado exitoso aquí
-
                 res[0] =result;
                 ModbusRtuMaster.writeRegister(callback2,numeroSlave,30,Salida);
 
@@ -868,7 +860,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
             @Override
             public void onFailed(String error) {
-                System.out.println("hola como andas: 1");
+                // Maneja el error aquí
                 res[0] =error;
                 Resulte[0] =false;
             }
@@ -878,70 +870,12 @@ Runnable GET_PESO_cal_bza = new Runnable() {
         try{
             latch.await(2000,TimeUnit.MILLISECONDS);
         }catch(Exception e){
-            System.out.println("hola como andas:"+e.getMessage());
             Thread.currentThread().interrupt();
             Resulte[0] =false;
         }
         return Resulte[0];
     }
 
-    /* @Override
-    public void Itw410FrmSetear(int numero, String setPoint, int Salida) {
-        String valueFormateado="";
-        if(setPoint.contains(".")){
-             valueFormateado= formatearNumero(Double.parseDouble(setPoint),puntoDecimal).replace(".","");
-        }else{
-            StringBuilder x =new StringBuilder(setPoint);
-            for (int i=0;i<puntoDecimal;i++){
-                x.append(0);
-            }
-            valueFormateado= String.valueOf(x);
-        }
-        final String[] res = {""};
-        System.out.println("antes:"+setPoint+"despues:"+valueFormateado);
-        CountDownLatch latch= new CountDownLatch(1);
-        OnRequestBack<String> callback2 = new OnRequestBack<String>() {
-            @Override
-            public void onSuccess(String result) {
-                // Maneja el resultado exitoso aquí
-                res[0] =result;
-                System.out.println("ITW410 setear:"+result);
-                latch.countDown();
-            }
-
-            @Override
-            public void onFailed(String error) {
-                // Maneja el error aquí
-                res[0] =error;
-                latch.countDown();
-
-            }
-        };
-        OnRequestBack<String> callback = new OnRequestBack<String>() {
-            @Override
-            public void onSuccess(String result) {
-                // Maneja el resultado exitoso aquí
-                res[0] =result;
-                ModbusRtuMaster.writeRegister(callback2,numeroSlave,30,Salida);
-
-            }
-
-            @Override
-            public void onFailed(String error) {
-                // Maneja el error aquí
-                res[0] =error;
-
-            }
-        };
-
-        ModbusRtuMaster.writeRegister(callback,numeroSlave,29,Integer.parseInt(valueFormateado));
-        try{
-            latch.await(1000,TimeUnit.MILLISECONDS);
-        }catch(Exception e){
-            Thread.currentThread().interrupt();
-        }
-    }
-    */
     @Override
     public String Itw410FrmGetSetPoint(int numero) {
         final short[][] res = {new short[0]};
@@ -953,10 +887,8 @@ Runnable GET_PESO_cal_bza = new Runnable() {
             public void onSuccess(short[] result) {
                 // Maneja el resultado exitoso aquí
                 int v = result[0];
-                //valueformater[0] =formatearNumero(Double.parseDouble(String.valueOf(v)),puntoDecimal);
-               // System.out.println("con formatearnumero antes:"+result[0]+"despues:"+valueformater[0]);
-                valueformater[0]= String.valueOf(format(numero,String.valueOf(result[0])));
-                System.out.println(" antes:"+result[0]+"despues:"+valueformater[0]);
+                 valueformater[0]= String.valueOf(format(numero,String.valueOf(result[0])));
+                System.out.println("XX antes:"+result[0]+"despues:"+valueformater[0]);
 
                 latch.countDown();
             }
@@ -1076,7 +1008,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
     public void salir_cal(){
         // open principal
-        Service.openServiceFragment();
+        Service.openServiceFragment2();
     }
     @Override
     public int Itw410FrmGetUltimoIndice(int numero) {
@@ -1258,7 +1190,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
         if(ModbusRtuMaster !=null){
             CountDownLatch latch = new CountDownLatch(1);
             Tara=0;
-            setTaraDigital(0);
+            setTaraDigital(numerobza,taraDigital);
             if(subnombre==1) {
                 OnRequestBack<String> callback = new OnRequestBack<String>() {
                     @Override
@@ -1314,7 +1246,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
             CountDownLatch latch = new CountDownLatch(1);
             Tara=0;
-            setTaraDigital(0);
+            setTaraDigital(numerobza,taraDigital);
             if(subnombre==1) {
                 OnRequestBack<String> callback = new OnRequestBack<String>() {
                     @Override
@@ -1370,7 +1302,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
 
             CountDownLatch latch = new CountDownLatch(1);
             Tara=0;
-            setTaraDigital(0);
+            setTaraDigital(numerobza,taraDigital);
             if(subnombre==1) {
                 OnRequestBack<String> callback = new OnRequestBack<String>() {
                     @Override
@@ -1426,7 +1358,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
         if(ModbusRtuMaster !=null){
 
             Tara=0;
-            setTaraDigital(0);
+            setTaraDigital(numerobza,taraDigital);
             if(subnombre==1) {
                 OnRequestBack<String> callback = new OnRequestBack<String>() {
                     @Override
@@ -1472,7 +1404,8 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     public void setTaraDigital(int numBza, float TaraDigital) {
         taraDigital = TaraDigital;
         taraDigitalStr=String.valueOf(TaraDigital);
-        setTara(numBza);
+        setTara(numerobza);
+
     }
 
     @Override

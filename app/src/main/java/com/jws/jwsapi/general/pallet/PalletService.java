@@ -39,6 +39,11 @@ public class PalletService {
                 .doOnSuccess(palletCloseResponse -> palletDao.updatePalletClosedStatus(palletCloseRequest.getSerialNumber(),true));
     }
 
+    public Single<PalletCloseResponse> deletePallet(PalletCloseRequest palletCloseRequest){
+        return palletApi.closePallet(palletCloseRequest)
+                .doOnSuccess(palletCloseResponse -> palletDao.deletePalletBySerialNumber(palletCloseRequest.getSerialNumber()));
+    }
+
     public LiveData<List<Pallet>> getAllPallets() {
         return palletDao.getAllPallets();
     }

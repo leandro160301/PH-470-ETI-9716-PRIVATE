@@ -117,8 +117,22 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ln_close"
+                        android:layout_width="400dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/boton_close_i"
+                        android:orientation="horizontal">
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
                         android:id="@+id/ln_delete"
-                        android:layout_width="300dp"
+                        android:layout_width="400dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="5dp"
@@ -131,7 +145,7 @@
 
                     <LinearLayout
                         android:id="@+id/ln_select"
-                        android:layout_width="300dp"
+                        android:layout_width="400dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="5dp"

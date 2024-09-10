@@ -42,11 +42,13 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
 
     public OnFragmentChangeListener fragmentChangeListener;
     public AppCompatActivity mainActivity;
+
+
     Boolean PorDemandaBool=false;
     public PuertosSerie2 serialPort=null;
     Handler mHandler= new Handler();
     String NOMBRE="OPTIMA";
-    boolean imgbool=true;
+    boolean imgbool=false;
     public String estado="VERIFICANDO_MODO";
     public static final String M_VERIFICANDO_MODO="VERIFICANDO_MODO";
     public static final String M_MODO_BALANZA="MODO_BALANZA";
@@ -88,6 +90,10 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
         context=this;
 
     }
+    public static final  String Bauddef="9600";
+    public static final String StopBdef="1";
+    public static final String DataBdef="8";
+    public static final String Paritydef="0";
     public void receiverinit(){
 
        int contador = 0;
@@ -141,7 +147,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
                             data = data2.replace(".", "");
                             if (Utils.isNumeric(data2)) {
 
-                                System.out.println("ESTAMO EN OPTIMA num" + data2);
+                              //  System.out.println("ESTAMO EN OPTIMA num" + data2);
 
                                 int index = data2.indexOf('.'); // Busca el índice del primer punto en la cadena
                                 puntoDecimal = data.length() - index;
@@ -149,7 +155,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
                                 brutoStr = data2;
                                 BigDecimal number = new BigDecimal(brutoStr);
                                 brutoStr = removeLeadingZeros(number);
-                                System.out.println("ESTAMO EN OPTIMA brutostr" + brutoStr);
+                              //  System.out.println("ESTAMO EN OPTIMA brutostr" + brutoStr);
                                 Bruto = Float.parseFloat(data2);
 
                             }
@@ -174,7 +180,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
                                 //brutoStr = data2;
                                 BigDecimal number = new BigDecimal(data2);
                                 netoStr = removeLeadingZeros(number);
-                                System.out.println("ESTAMO EN OPTIMA brutostr" + data2);
+                               // System.out.println("ESTAMO EN OPTIMA brutostr" + data2);
                                 Neto = Float.parseFloat(data2);
 
                             }
@@ -217,7 +223,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
                         }
                         array = data.split(filtro);
 
-                        System.out.println("ESTAMO EN OPTIMA arrlenght"+array.length);
+                       // System.out.println("ESTAMO EN OPTIMA arrlenght"+array.length);
                         if (array.length > 0) {
                             data2 = array[0];
                             data2 = data2.replace(" ", "");
@@ -230,7 +236,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
                             data2 = data2.replace("kg", "");
                             data = data2.replace(".", "");
 
-                            System.out.println("ESTAMO EN OPTIMA data"+ data);
+                         //   System.out.println("ESTAMO EN OPTIMA data"+ data);
 
 
                             if (Utils.isNumeric(data2)) {
@@ -521,7 +527,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
         int end = 0;
         if (pesoconocido.contains(".")) {
             enter = pesoconocido.indexOf('.');
-            end = pesoconocido.length() - (enter + 1);
+            end = pesoconocido.length() - (enter);
         }
 
         if (end != 0) {
@@ -1176,10 +1182,10 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
                 }
 
                 if(serialPort.HabilitadoLectura()  && Objects.equals(estado, M_VERIFICANDO_MODO)) {
-                    System.out.println("OPTIMA HABILITADO LECTURA");
                     String read = serialPort.read_2();
+                    System.out.println("OPTIMA HABILITADO LECTURA"+ read.toString());
                     String filtro = "\r\n";
-
+                    //read = read.replace("\r\n", "");
 
                     if (read != null) {
                         if (read.contains("\u0006C \r")) {
@@ -1195,6 +1201,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
 
                     if (read.toLowerCase().contains(filtro.toLowerCase())) {
+                        System.out.println("MODO BZA active");
                         estado = M_MODO_BALANZA;
                         readers.startReading();
                         if (read.toLowerCase().contains("E".toLowerCase())) {
@@ -1214,6 +1221,13 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
                             contador++;
                         }
 
+                    }else{
+                        if(contador<50) {
+                            System.out.println("buscando no activamente"+ contador);
+                            mHandler.postDelayed(GET_PESO_cal_bza, 1000);
+                        }else{
+                            contador++;
+                        }
                     }
 
 

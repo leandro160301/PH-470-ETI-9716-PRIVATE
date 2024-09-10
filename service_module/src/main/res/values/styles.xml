@@ -2,7 +2,8 @@
 
     <!-- Base application theme. -->
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">35sp</item> <!-- Tamaño del texto en sp -->
+        <item name="android:textSize">20sp</item> <!-- Tamaño del texto en sp -->
+
         <!-- Otros atributos de texto según sea necesario -->
     </style>
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar"

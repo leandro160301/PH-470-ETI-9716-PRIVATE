@@ -10,17 +10,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.Balanzas.BalanzaService;
-import com.service.R;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.NetworkInterface;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -34,6 +29,7 @@ import java.util.Locale;
 
 public class Utils {
     private static Toast toast;
+
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
@@ -45,6 +41,21 @@ public class Utils {
         }
         return true;
     }
+
+    public static void deleteCache(Context context) {
+        try {
+            context.getCacheDir().deleteOnExit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void clearCache(Context context){
+                    SharedPreferences preferences = context.getSharedPreferences("devicesService", Context.MODE_PRIVATE);
+                    preferences.edit().clear().apply();
+                    // Elimina la caché de la aplicación
+                    deleteCache(context);
+    }
+
     public static boolean isLong(String strNum) {
         if (strNum == null) {
             return false;

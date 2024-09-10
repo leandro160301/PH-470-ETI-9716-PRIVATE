@@ -6,43 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:translationY="4dp">
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="start"
-        android:layout_marginLeft="25dp"
-        android:background="@drawable/stylekeycor7"
-        app:tabIndicatorColor="@color/transparente"
-        app:tabSelectedTextColor="@color/blanco"
-        app:tabTextAppearance="@style/TabTextAppearance"
-        app:tabTextColor="@color/grisbarrasuperior"
-        app:tabMode="scrollable">
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BALANZAS" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="IMPRESORAS" />
-
-
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="ESCANERES" />
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:text="I/O" />
-    </com.google.android.material.tabs.TabLayout>
 
     <LinearLayout
         android:id="@+id/impresoralinear"
@@ -69,12 +32,13 @@
     <LinearLayout
        android:id="@+id/balanzalinear"
        android:layout_width="match_parent"
+        android:visibility="visible"
        android:layout_height="match_parent"
         android:orientation="horizontal">
        <LinearLayout
            android:id="@+id/linearañadir"
            android:layout_width="match_parent"
-           android:visibility="gone"
+           android:visibility="visible"
            android:layout_height="match_parent"
            android:background="@color/gris"
            android:orientation="vertical"
@@ -135,7 +99,7 @@
                            android:layout_width="match_parent"
                            android:layout_height="match_parent"
                            android:background="@drawable/spinnerbackground"
-                           android:entries="@array/tipoBalanzas"
+                           android:entries="@array/tipoBalanzasxx"
                            android:textAlignment="center" />
 
                        <ImageView
@@ -155,6 +119,45 @@
                </LinearLayout>
            </LinearLayout>
            </LinearLayout>
+           <com.google.android.material.tabs.TabLayout
+               android:id="@+id/tablayout"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+
+               android:layout_gravity="start"
+               android:layout_marginLeft="25dp"
+               android:background="@drawable/stylekeycor7"
+               app:tabIndicatorColor="@color/transparente"
+               app:tabSelectedTextColor="@color/blanco"
+               app:tabTextAppearance="@style/TabTextAppearance"
+               app:tabTextColor="@color/grisbarrasuperior"
+               app:tabMode="scrollable">
+               <!--
+               <com.google.android.material.tabs.TabItem
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="BALANZAS" />
+
+               <com.google.android.material.tabs.TabItem
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:visibility="gone"
+                   android:text="IMPRESORAS" />
+
+
+
+               <com.google.android.material.tabs.TabItem
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:visibility="gone"
+                   android:text="ESCANERES" />
+               <com.google.android.material.tabs.TabItem
+                   android:layout_width="wrap_content"
+                   android:visibility="gone"
+                   android:layout_height="wrap_content"
+                   android:text="I/O" /> -->
+           </com.google.android.material.tabs.TabLayout>
+
            <androidx.recyclerview.widget.RecyclerView
                android:id="@+id/recyclerview"
                android:layout_width="match_parent"
@@ -165,7 +168,7 @@
            </LinearLayout>
        <LinearLayout
            android:id="@+id/linearCalib"
-           android:visibility="visible"
+           android:visibility="gone"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:background="@color/gris"
@@ -209,7 +212,6 @@
     android:gravity="right"><Button
     android:id="@+id/btadd"
     android:gravity="bottom"
-    android:visibility="gone"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/add_icon"

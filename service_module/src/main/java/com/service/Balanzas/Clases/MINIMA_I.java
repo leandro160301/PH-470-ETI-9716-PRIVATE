@@ -29,7 +29,10 @@ import com.service.Comunicacion.OnFragmentChangeListener;
 public class MINIMA_I implements Balanza.Struct, Serializable {
 
 
-
+    public static final  String Bauddef="9600";
+    public static final String StopBdef="1";
+    public static final String DataBdef="8";
+    public static final String Paritydef="0";
     Boolean PorDemandaBool=false;
     boolean imgbool=true;
     Boolean estadoCentroCero = false;
@@ -455,7 +458,7 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
             int end = 0;
             if (pesoconocido.contains(".")) {
                 enter = pesoconocido.indexOf('.');
-                end = pesoconocido.length() - (enter + 1);
+                end = pesoconocido.length() - (enter);
             }
 
             if (end != 0) {

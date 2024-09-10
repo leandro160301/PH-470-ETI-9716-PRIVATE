@@ -111,6 +111,25 @@ public class PalletViewModel extends ViewModel {
         compositeDisposable.add(disposable);
     }
 
+    public void deletePallet(String serialNumber){
+        deletePalletRequest(new PalletCloseRequest(serialNumber));
+    }
+
+    private void deletePalletRequest(PalletCloseRequest palletCloseRequest){
+        loading.setValue(true);
+
+        Disposable disposable = palletService.deletePallet(palletCloseRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> loading.setValue(false))
+                .subscribe(
+                        palletCloseResponse::setValue,
+                        throwable -> error.setValue(throwable.getMessage())
+                );
+
+        compositeDisposable.add(disposable);
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();

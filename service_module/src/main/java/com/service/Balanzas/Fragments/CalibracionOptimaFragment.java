@@ -1367,7 +1367,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                             param1 += leertoggles(toggle1, R.id.btON1);
                             param1 += leertoggles(toggle2, R.id.btON2);// "0";
                             param1 += leertoggles(toggle3, R.id.btON3);
-                            lasttanque= (leertoggles(toggle3, R.id.btON3)=="1");
+                            lasttanque= (leertoggles(toggle3, R.id.btON3).equals("1"));
                             param1 += leertoggles(toggle4, R.id.btON4); //"0";
                             param1 += "0";// leertoggles(toggle5,R.id.btON5);
                             param1 += "1";// leertoggles(toggle6,R.id.btON6); // ESTE NECESITA ESTAR EN 0
@@ -1657,7 +1657,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                         }*/
                         //Thread.sleep(2000);
                 mainActivity.runOnUiThread(() -> {
-                    if(CapDivPDecimal=="ERRCONTROL"){
+                    if(CapDivPDecimal.equals("ERRCONTROL")){
 
                         System.out.println("ERRCALIB");
                         switch (indiceCalibracion){
@@ -1959,7 +1959,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                 param1 += leertoggles(toggle2,R.id.btON2);// "0";
                 param1 += leertoggles(toggle3,R.id.btON3);
                 param1 +=leertoggles(toggle4,R.id.btON4); //"0";
-                lasttanque= (leertoggles(toggle3, R.id.btON3)=="1");
+                lasttanque= (leertoggles(toggle3, R.id.btON3).equals("1"));
                 param1 +="0";// leertoggles(toggle5,R.id.btON5);
                 param1 +=  "1";// leertoggles(toggle6,R.id.btON6); // ESTE NECESITA ESTAR EN 0
                 param1 +="1";// leertoggles(toggle7,R.id.btON7);
@@ -2100,7 +2100,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
         else{
             userInput.setInputType(InputType.TYPE_CLASS_NUMBER );
             userInput.requestFocus();
-            if(Texto=="Peso Conocido"){ // Peso conocido con coma
+            if(Texto.equals("Peso Conocido")){ // Peso conocido con coma
                 userInput.setInputType(InputType.TYPE_CLASS_NUMBER |InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 userInput.requestFocus();
             }
@@ -2122,7 +2122,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
             @Override
             public void onClick(View view) {
 
-                if(Texto== "Peso Conocido"){
+                if(Texto.equals("Peso Conocido")){
                     if(BZA.Peso_conocido(userInput.getText().toString(),String.valueOf(sp_puntoDecimal.getSelectedItemPosition()))!=null){ // ,tv_capacidad.getText().toString()
                         //mainActivity.Puerto_A().write(mainActivity.MainClass.BZA1.Peso_conocido(userInput.getText().toString(),String.valueOf(sp_puntoDecimal.getSelectedItemPosition())));
                        // procesarerror(2,dialog);

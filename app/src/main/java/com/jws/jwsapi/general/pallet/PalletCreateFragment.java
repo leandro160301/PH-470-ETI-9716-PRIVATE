@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.databinding.FragmentPalletCreateBinding;
-import com.jws.jwsapi.utils.Utils;
+import com.jws.jwsapi.general.toast.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -48,14 +48,14 @@ public class PalletCreateFragment extends Fragment {
 
         palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> {
             if (palletResponse != null) {
-                Utils.message(requireContext().getString(R.string.toast_message_pallet_created),R.layout.item_customtoastok,getContext());
+                ToastHelper.message(requireContext().getString(R.string.toast_message_pallet_created),R.layout.item_customtoastok,getContext());
             }
         });
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         palletViewModel.getError().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
-                Utils.message(error,R.layout.item_customtoasterror,getContext());
+                ToastHelper.message(error,R.layout.item_customtoasterror,getContext());
             }
         });
     }

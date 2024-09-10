@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 public class Utils {
 
     private static Toast toast;
-    private static Toast currentToast;
 
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
@@ -95,23 +94,6 @@ public class Utils {
 
     }
 
-
-    public static void message(String texto, int layoutResId, Context context) {
-        if (currentToast != null) {
-            currentToast.cancel();
-        }
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View layout = inflater.inflate(layoutResId, null);
-
-        TextView text = layout.findViewById(R.id.text);
-        text.setText(texto);
-        currentToast = new Toast(context);
-        currentToast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        currentToast.setDuration(Toast.LENGTH_LONG);
-        currentToast.setView(layout);
-        currentToast.show();
-    }
     /**
      * Convert byte array to hex string
      * @param bytes toConvert

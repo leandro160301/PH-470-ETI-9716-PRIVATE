@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.containers.clases.ButtonProviderSingletonPrincipal;
 import com.jws.jwsapi.base.containers.interfaces.ButtonProvider_Principal;
@@ -19,8 +21,8 @@ import com.jws.jwsapi.general.formulador.ui.fragment.FormFragmentRecetas;
 import com.jws.jwsapi.general.pallet.Pallet;
 import com.jws.jwsapi.general.pallet.PalletCreateFragment;
 import com.jws.jwsapi.general.pallet.PalletFragment;
+import com.jws.jwsapi.general.toast.ToastHelper;
 import com.jws.jwsapi.general.weighing.WeighingViewModel;
-import com.jws.jwsapi.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -73,9 +75,9 @@ public class HomeFragment extends Fragment{
         weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), weighingResponse -> {
             if(weighingResponse!=null){
                 if(weighingResponse.getStatus()){
-                    Utils.message(requireContext().getString(R.string.toast_message_weighing_created),R.layout.item_customtoastok,getContext());
+                    ToastHelper.message(requireContext().getString(R.string.toast_message_weighing_created),R.layout.item_customtoastok,getContext());
                 }else{
-                    Utils.message(weighingResponse.getError(),R.layout.item_customtoasterror,getContext());
+                    ToastHelper.message(weighingResponse.getError(),R.layout.item_customtoasterror,getContext());
                 }
             }
         });
@@ -101,7 +103,7 @@ public class HomeFragment extends Fragment{
 
     private void messageError(String error) {
         if(error !=null){
-            Utils.message(error,R.layout.item_customtoasterror,getContext());
+            ToastHelper.message(error,R.layout.item_customtoasterror,getContext());
         }
     }
 

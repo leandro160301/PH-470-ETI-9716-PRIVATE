@@ -6,18 +6,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.databinding.FragmentPalletBinding;
-import com.jws.jwsapi.utils.Utils;
+import com.jws.jwsapi.general.toast.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
+
 import java.util.ArrayList;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -56,7 +60,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
 
         palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> {
             if (palletResponse != null) {
-                Utils.message(requireContext().getString(R.string.toast_message_pallet_closed),R.layout.item_customtoastok,getContext());
+                ToastHelper.message(requireContext().getString(R.string.toast_message_pallet_closed),R.layout.item_customtoastok,getContext());
             }
         });
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
@@ -67,7 +71,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
 
         palletViewModel.getError().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
-                Utils.message(error,R.layout.item_customtoasterror,getContext());
+                ToastHelper.message(error,R.layout.item_customtoasterror,getContext());
             }
         });
     }

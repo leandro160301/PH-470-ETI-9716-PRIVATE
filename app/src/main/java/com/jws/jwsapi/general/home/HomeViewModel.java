@@ -13,7 +13,6 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class HomeViewModel extends ViewModel {
 
-    private final PalletService palletService;
     private final BalanzaService.Balanzas scaleService;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MutableLiveData<String> netLiveData = new MutableLiveData<>();
@@ -22,8 +21,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<String> tareLiveData = new MutableLiveData<>();
     private Timer timer;
 
-    public HomeViewModel(PalletService palletService, BalanzaService.Balanzas scale) {
-        this.palletService = palletService;
+    public HomeViewModel(BalanzaService.Balanzas scale) {
         this.scaleService = scale;
         startUpdatingScale();
     }

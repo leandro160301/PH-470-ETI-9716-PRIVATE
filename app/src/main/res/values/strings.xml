@@ -17,6 +17,7 @@
     <string name="button_text_3">PALLETS</string>
     <string name="button_text_4">CERRAR PALLET</string>
     <string name="button_text_5">NUEVO PALLET</string>
+    <string name="toast_message_weighing_created">Pesada enviada al sistema</string>
 
 
     <string name="open">open</string>

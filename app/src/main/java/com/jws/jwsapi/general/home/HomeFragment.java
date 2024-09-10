@@ -8,7 +8,6 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.containers.clases.ButtonProviderSingletonPrincipal;
@@ -20,9 +19,8 @@ import com.jws.jwsapi.general.formulador.ui.fragment.FormFragmentRecetas;
 import com.jws.jwsapi.general.pallet.Pallet;
 import com.jws.jwsapi.general.pallet.PalletCreateFragment;
 import com.jws.jwsapi.general.pallet.PalletFragment;
-import com.jws.jwsapi.general.pallet.PalletService;
-import com.jws.jwsapi.general.weighing.Weighing;
 import com.jws.jwsapi.general.weighing.WeighingViewModel;
+import com.jws.jwsapi.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -36,9 +34,6 @@ public class HomeFragment extends Fragment{
     MainActivity mainActivity;
     WeighingViewModel weighingViewModel;
     HomeViewModel homeViewModel;
-
-    @Inject
-    PalletService palletService;
 
     @Inject
     UsersManager usersManager;
@@ -55,7 +50,7 @@ public class HomeFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
-        HomeViewModelFactory factory = new HomeViewModelFactory(palletService, mainActivity.mainClass.bza);
+        HomeViewModelFactory factory = new HomeViewModelFactory(mainActivity.mainClass.bza);
         homeViewModel = new ViewModelProvider(this, factory).get(HomeViewModel.class);
 
         setupButtons();
@@ -68,6 +63,20 @@ public class HomeFragment extends Fragment{
         weighingViewModel.getCurrentPallet().observe(getViewLifecycleOwner(), pallet -> {
             if (pallet!=null) {
                 updateUI(pallet);
+            }
+        });
+
+        weighingViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
+
+        weighingViewModel.getErrorRequest().observe(getViewLifecycleOwner(), this::messageError);
+
+        weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), weighingResponse -> {
+            if(weighingResponse!=null){
+                if(weighingResponse.getStatus()){
+                    Utils.message(requireContext().getString(R.string.toast_message_weighing_created),R.layout.item_customtoastok,getContext());
+                }else{
+                    Utils.message(weighingResponse.getError(),R.layout.item_customtoasterror,getContext());
+                }
             }
         });
 
@@ -88,6 +97,12 @@ public class HomeFragment extends Fragment{
             binding.tvGrossUnit.setText(unit);
             binding.tvNetUnit.setText(unit);
         });
+    }
+
+    private void messageError(String error) {
+        if(error !=null){
+            Utils.message(error,R.layout.item_customtoasterror,getContext());
+        }
     }
 
     private void updateUI(Pallet pallet) {
@@ -112,31 +127,10 @@ public class HomeFragment extends Fragment{
             bt3.setText(requireContext().getString(R.string.button_text_3));
             bt4.setText(requireContext().getString(R.string.button_text_4));
             bt5.setText(requireContext().getString(R.string.button_text_5));
-            bt2.setOnClickListener(v -> newWeighing());
+            bt2.setOnClickListener(v -> weighingViewModel.createWeighing());
             bt3.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletFragment()));
             bt4.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentRecetas()));
             bt5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
-        }
-    }
-
-    private void newWeighing() {
-        Weighing weighing= new Weighing();
-        Pallet pallet= weighingViewModel.getCurrentPallet().getValue();
-        if(pallet!=null) {
-            weighing.setCode(pallet.getCode());
-            /*weighing.setGross(homeViewModel.getGross().getValue());
-            weighing.setTare(homeViewModel.getTare().getValue());
-            weighing.setNet(homeViewModel.getNet().getValue());*/
-            weighing.setGross("10.00");
-            weighing.setTare("8.00");
-            weighing.setNet("2.00");
-            weighing.setName(pallet.getName());
-            weighing.setOperator(usersManager.getUsuarioActual());
-            weighing.setIdPallet(pallet.getId());
-            weighing.setScaleNumber(pallet.getScaleNumber());
-            weighing.setQuantity(pallet.getQuantity());
-            weighing.setSerialNumber(pallet.getSerialNumber());
-            weighingViewModel.createWeighing(weighing);
         }
     }
 

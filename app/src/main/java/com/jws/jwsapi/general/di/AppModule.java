@@ -94,16 +94,19 @@ public class AppModule {
     }
 
     @Provides
+    @Singleton
     public WeighingDao provideWeighingDao(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, "bza-database").build().weighingDao();
     }
 
     @Provides
+    @Singleton
     public PalletDao providePalletDao(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, "bza-database").build().palletDao();
     }
 
     @Provides
+    @Singleton
     public AppDatabase provideAppDatabase(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
     }

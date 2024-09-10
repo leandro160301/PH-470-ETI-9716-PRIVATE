@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.general.pallet.Pallet;
+import com.jws.jwsapi.general.pallet.PalletDao;
 import com.jws.jwsapi.general.shared.PalletRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -22,23 +23,28 @@ public class WeighingViewModel extends ViewModel {
 
     private final PalletRepository repository;
     private final WeighingService weighingService;
-    private final LiveData<Pallet> currentPallet;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final LiveData<List<Weighing>> weighings;
-    private final MutableLiveData<WeighingResponse> WeighingResponse = new MutableLiveData<>();
+    private final MutableLiveData<WeighingResponse> weighingResponse = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
+    private final MutableLiveData<String> errorRequest = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
-    private final WeighingDao weighingDao;
-
+    private final LiveData<Pallet> currentPallet;
+    private final UsersManager usersManager;
 
     @Inject
-    public WeighingViewModel(PalletRepository repository, WeighingService weighingService, WeighingDao weighingDao) {
+    public WeighingViewModel(PalletRepository repository, WeighingService weighingService, UsersManager usersManager) {
         this.repository = repository;
         this.weighingService = weighingService;
+        this.usersManager = usersManager;
         this.weighings = weighingService.getAllWeighings();
         this.currentPallet = repository.getCurrentPallet();
-        this.weighingDao = weighingDao;
+
+    }
+
+    public LiveData<Pallet> getCurrentPallet() {
+        return currentPallet;
     }
 
     public LiveData<List<Weighing>> getWeighings() {
@@ -46,41 +52,61 @@ public class WeighingViewModel extends ViewModel {
     }
 
     public LiveData<WeighingResponse> getWeighingResponse() {
-        return WeighingResponse;
+        return weighingResponse;
     }
 
     public LiveData<Boolean> getLoading() {
         return loading;
     }
 
+    public LiveData<String> getErrorRequest() {
+        return errorRequest;
+    }
+
     public LiveData<String> getError() {
         return error;
     }
 
-    public LiveData<Pallet> getCurrentPallet() {
-        return currentPallet;
-    }
-
-    public void createWeighing(Weighing weighing) {
-        WeighingRequest WeighingRequest = new WeighingRequest(weighing.getSerialNumber(),weighing.getCode(), weighing.getName(), weighing.getNet(), weighing.getGross(), weighing.getTare());
-        createWeighingRequest(WeighingRequest,weighing);
+    public void createWeighing() {
+        Weighing weighing= new Weighing();
+        Pallet pallet= getCurrentPallet().getValue();
+        if(pallet!=null) {
+            weighing.setCode(pallet.getCode());
+            /*weighing.setGross(homeViewModel.getGross().getValue());
+            weighing.setTare(homeViewModel.getTare().getValue());
+            weighing.setNet(homeViewModel.getNet().getValue());*/
+            weighing.setGross("10.00");
+            weighing.setTare("8.00");
+            weighing.setNet("2.00");
+            weighing.setName(pallet.getName());
+            weighing.setOperator(usersManager.getUsuarioActual());
+            weighing.setIdPallet(pallet.getId());
+            weighing.setScaleNumber(pallet.getScaleNumber());
+            weighing.setQuantity(pallet.getQuantity());
+            weighing.setSerialNumber(pallet.getSerialNumber());
+            WeighingRequest WeighingRequest = new WeighingRequest(weighing.getSerialNumber(),weighing.getCode(), weighing.getName(), weighing.getNet(), weighing.getGross(), weighing.getTare());
+            createWeighingRequest(WeighingRequest,weighing);
+        }else{
+            error.setValue("pallet null");
+        }
     }
 
     public void createWeighingRequest(WeighingRequest weighingRequest, Weighing weighing) {
         loading.setValue(true);
-        int id= Objects.requireNonNull(repository.getCurrentPallet().getValue()).getId();
-        Disposable disposable = weighingService.newWeighing(weighingRequest,weighing, id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(() -> loading.setValue(false))
-                .subscribe(
-                        weighingResponse -> {
-                            WeighingResponse.setValue(weighingResponse);
-                            repository.setCurrentPallet(id);
-                        },
-                        throwable -> error.setValue(throwable.getMessage())
-                );
-        compositeDisposable.add(disposable);
+        Integer id= repository.getCurrentPalletId();
+        if(id!=null&&id>-1) {
+            Disposable disposable = weighingService.newWeighing(weighingRequest,weighing, id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doFinally(() -> loading.setValue(false))
+                    .subscribe(
+                            weighingResponse::setValue,
+                            throwable -> errorRequest.setValue(throwable.getMessage())
+                    );
+            compositeDisposable.add(disposable);
+        }else{
+            error.setValue("id null");
+        }
     }
 
     @Override

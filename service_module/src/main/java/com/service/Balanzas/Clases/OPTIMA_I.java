@@ -1179,7 +1179,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
                     System.out.println("OPTIMA HABILITADO LECTURA");
                     String read = serialPort.read_2();
                     String filtro = "\r\n";
-                    read = read.replace("\r\n", "");
+
 
                     if (read != null) {
                         if (read.contains("\u0006C \r")) {

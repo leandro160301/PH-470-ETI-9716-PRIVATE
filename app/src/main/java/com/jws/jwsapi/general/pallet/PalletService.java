@@ -27,6 +27,7 @@ public class PalletService {
                     pallet.setQuantity(palletResponse.getQuantity());
                     pallet.setSerialNumber(palletResponse.getSerialNumber());
                     pallet.setClosed(false);
+                    pallet.setTotalNet("0");
                     palletDao.insertPallet(pallet);
                 });
     }

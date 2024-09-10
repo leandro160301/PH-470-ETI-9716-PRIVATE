@@ -6,24 +6,33 @@ import androidx.lifecycle.MutableLiveData;
 import com.jws.jwsapi.general.pallet.Pallet;
 import com.jws.jwsapi.general.pallet.PalletDao;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class PalletRepository {
 
     private final PalletDao palletDao;
-    private LiveData<Pallet> currentPallet = new MutableLiveData<>();
+    private LiveData<Pallet> currentPallet;
+    private Integer currentPalletId;
 
+    @Inject
     public PalletRepository(PalletDao palletDao) {
         this.palletDao = palletDao;
+        currentPallet = new MutableLiveData<>();
+        currentPalletId = null;
     }
 
-    /**
-     * Si hacemos un leve update del elemento room no lo actualizara porque crees que no es necesario
-     */
     public LiveData<Pallet> getCurrentPallet() {
         return currentPallet;
     }
 
     public void setCurrentPallet(int palletId) {
         currentPallet = palletDao.getPalletById(palletId);
+        currentPalletId = palletId;
     }
 
+    public Integer getCurrentPalletId() {
+        return currentPalletId;
+    }
 }

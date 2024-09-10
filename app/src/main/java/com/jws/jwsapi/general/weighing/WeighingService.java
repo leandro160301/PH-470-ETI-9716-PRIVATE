@@ -24,8 +24,10 @@ public class WeighingService {
                 .doOnSuccess(palletResponse -> {
                     weighingDao.insertWeighing(weighing);
                     palletDao.incrementDoneById(id);
+                    palletDao.updatePalletTotalNet(id,weighing.getNet());
                 });
     }
+
 
     public LiveData<List<Weighing>> getAllWeighings(){
         return weighingDao.getAllWeighing();

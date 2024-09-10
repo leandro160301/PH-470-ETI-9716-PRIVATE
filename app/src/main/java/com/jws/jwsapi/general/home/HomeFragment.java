@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment{
             bt3.setText(requireContext().getString(R.string.button_text_3));
             bt4.setText(requireContext().getString(R.string.button_text_4));
             bt5.setText(requireContext().getString(R.string.button_text_5));
-            bt2.setOnClickListener(v -> weighingViewModel.createWeighing());
+            bt2.setOnClickListener(v -> weighingViewModel.createWeighing("10","5","5"));
             bt3.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletFragment()));
             bt4.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentRecetas()));
             bt5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));

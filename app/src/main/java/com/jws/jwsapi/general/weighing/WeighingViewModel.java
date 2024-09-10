@@ -24,7 +24,6 @@ public class WeighingViewModel extends ViewModel {
     private final PalletRepository repository;
     private final WeighingService weighingService;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
     private final LiveData<List<Weighing>> weighings;
     private final MutableLiveData<WeighingResponse> weighingResponse = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
@@ -67,25 +66,22 @@ public class WeighingViewModel extends ViewModel {
         return error;
     }
 
-    public void createWeighing() {
+    public void createWeighing(String gross, String net, String tare) {
         Weighing weighing= new Weighing();
         Pallet pallet= getCurrentPallet().getValue();
         if(pallet!=null) {
             weighing.setCode(pallet.getCode());
-            /*weighing.setGross(homeViewModel.getGross().getValue());
-            weighing.setTare(homeViewModel.getTare().getValue());
-            weighing.setNet(homeViewModel.getNet().getValue());*/
-            weighing.setGross("10.00");
-            weighing.setTare("8.00");
-            weighing.setNet("2.00");
+            weighing.setGross(gross);
+            weighing.setTare(net);
+            weighing.setNet(tare);
             weighing.setName(pallet.getName());
             weighing.setOperator(usersManager.getUsuarioActual());
             weighing.setIdPallet(pallet.getId());
             weighing.setScaleNumber(pallet.getScaleNumber());
             weighing.setQuantity(pallet.getQuantity());
             weighing.setSerialNumber(pallet.getSerialNumber());
-            WeighingRequest WeighingRequest = new WeighingRequest(weighing.getSerialNumber(),weighing.getCode(), weighing.getName(), weighing.getNet(), weighing.getGross(), weighing.getTare());
-            createWeighingRequest(WeighingRequest,weighing);
+            WeighingRequest weighingRequest = new WeighingRequest(weighing.getSerialNumber(),weighing.getCode(), weighing.getName(), weighing.getNet(), weighing.getGross(), weighing.getTare());
+            createWeighingRequest(weighingRequest,weighing);
         }else{
             error.setValue("pallet null");
         }

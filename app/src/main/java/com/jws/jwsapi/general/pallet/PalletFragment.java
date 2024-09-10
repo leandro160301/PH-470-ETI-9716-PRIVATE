@@ -1,5 +1,7 @@
 package com.jws.jwsapi.general.pallet;
 
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.databinding.FragmentPalletBinding;
+import com.jws.jwsapi.general.dialog.DialogButtonInterface;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -99,7 +102,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
 
     @Override
     public void deletePallet(Pallet pallet) {
-        palletViewModel.closePallet(pallet.getSerialNumber());
+        dialogText(getContext(), requireContext().getString(R.string.dialog_close_pallet), requireContext().getString(R.string.button_text_4), () -> palletViewModel.closePallet(pallet.getSerialNumber()));
     }
 
     @Override

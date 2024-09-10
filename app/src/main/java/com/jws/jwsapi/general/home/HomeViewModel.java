@@ -11,14 +11,15 @@ import java.util.TimerTask;
 
 import io.reactivex.disposables.CompositeDisposable;
 
+
 public class HomeViewModel extends ViewModel {
 
     private final BalanzaService.Balanzas scaleService;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private MutableLiveData<String> netLiveData = new MutableLiveData<>();
-    private MutableLiveData<String> grossLiveData = new MutableLiveData<>();
-    private MutableLiveData<String> unitLiveData = new MutableLiveData<>();
-    private MutableLiveData<String> tareLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> netLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> grossLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> unitLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> tareLiveData = new MutableLiveData<>();
     private Timer timer;
 
     public HomeViewModel(BalanzaService.Balanzas scale) {

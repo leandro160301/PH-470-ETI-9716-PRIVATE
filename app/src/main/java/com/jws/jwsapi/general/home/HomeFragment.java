@@ -22,6 +22,7 @@ import com.jws.jwsapi.general.pallet.Pallet;
 import com.jws.jwsapi.general.pallet.PalletCreateFragment;
 import com.jws.jwsapi.general.pallet.PalletFragment;
 import com.jws.jwsapi.general.toast.ToastHelper;
+import com.jws.jwsapi.general.weighing.WeighingFragment;
 import com.jws.jwsapi.general.weighing.WeighingViewModel;
 
 import javax.inject.Inject;
@@ -131,7 +132,7 @@ public class HomeFragment extends Fragment{
             bt5.setText(requireContext().getString(R.string.button_text_5));
             bt2.setOnClickListener(v -> weighingViewModel.createWeighing("10","5","5"));
             bt3.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletFragment()));
-            bt4.setOnClickListener(view -> mainActivity.mainClass.openFragment(new FormFragmentRecetas()));
+            bt4.setOnClickListener(view -> mainActivity.mainClass.openFragment(new WeighingFragment()));
             bt5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
         }
     }

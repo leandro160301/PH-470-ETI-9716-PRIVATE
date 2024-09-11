@@ -8,12 +8,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jws.jwsapi.databinding.ItemPalletBinding;
-import com.jws.jwsapi.general.pallet.Pallet;
-import com.jws.jwsapi.general.pallet.PalletButtonClickListener;
+import com.jws.jwsapi.R;
+import com.jws.jwsapi.databinding.ItemWeighingBinding;
 
 import java.util.List;
-import java.util.Locale;
 
 public class WeighingAdapter extends RecyclerView.Adapter<WeighingAdapter.WeighingViewHolder> {
 
@@ -33,7 +31,7 @@ public class WeighingAdapter extends RecyclerView.Adapter<WeighingAdapter.Weighi
     @Override
     public WeighingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ItemPalletBinding binding = ItemPalletBinding.inflate(inflater, parent, false);
+        ItemWeighingBinding binding = ItemWeighingBinding.inflate(inflater, parent, false);
         return new WeighingViewHolder(binding);
     }
 
@@ -49,15 +47,27 @@ public class WeighingAdapter extends RecyclerView.Adapter<WeighingAdapter.Weighi
     }
 
     class WeighingViewHolder extends RecyclerView.ViewHolder {
-        private final ItemPalletBinding binding;
+        private final ItemWeighingBinding binding;
 
-        public WeighingViewHolder(ItemPalletBinding binding) {
+        public WeighingViewHolder(ItemWeighingBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
         public void bind(Weighing weighing) {
-
+            binding.tvWeighingCode.setText(weighing.getCode());
+            binding.tvWeighingName.setText(weighing.getName());
+            binding.tvWeighingNet.setText(weighing.getNet());
+            binding.tvWeighingGross.setText(weighing.getGross());
+            binding.tvWeighingTare.setText(weighing.getTare());
+            binding.tvWeighingOperator.setText(weighing.getOperator());
+            binding.tvWeighingSerialNumber.setText(weighing.getSerialNumber());
+            binding.tvWeighingScale.setText(String.valueOf(weighing.getScaleNumber()));
+            binding.btExpand.setOnClickListener(v -> {
+                boolean isGone = (binding.lnExpand.getVisibility() == View.GONE);
+                binding.lnExpand.setVisibility(isGone ? View.VISIBLE : View.GONE);
+                binding.btExpand.setBackgroundResource(isGone ? R.drawable.boton_menos_i : R.drawable.boton_mas_i);
+            });
         }
     }
 }

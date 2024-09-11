@@ -54,8 +54,8 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
         }
 
         public void bind(Pallet pallet) {
-            binding.tvPalletSerialNumber.setText(pallet.getCode());
-            binding.tvPalletDestination.setText(pallet.getName());
+            binding.tvPalletCode.setText(pallet.getCode());
+            binding.tvPalletName.setText(pallet.getName());
             binding.tvPalletTotal.setText(pallet.getTotalNet());
             String text = String.format(Locale.US, "%d/%d", pallet.getDone(), pallet.getQuantity());
             binding.tvPalletQuantity.setText(text);

@@ -67,7 +67,7 @@ public class WeighingFragment extends Fragment {
             buttonProvider.getTitulo().setText(requireContext().getString(R.string.title_weighings));
         }
     }
-
+    
     private void openHome() {
         mainActivity.mainClass.openFragmentPrincipal();
     }

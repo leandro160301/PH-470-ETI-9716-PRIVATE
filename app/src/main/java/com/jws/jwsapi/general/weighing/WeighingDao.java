@@ -10,7 +10,7 @@ import java.util.List;
 @Dao
 public interface WeighingDao {
 
-    @Query("SELECT * FROM weighing")
+    @Query("SELECT * FROM weighing ORDER BY id DESC")
     LiveData<List<Weighing>> getAllWeighing();
 
     @Query("SELECT * FROM weighing WHERE id = :id")

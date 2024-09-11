@@ -47,6 +47,10 @@ public class PalletViewModel extends ViewModel {
         return palletResponse;
     }
 
+    public LiveData<PalletCloseResponse> getPalletCloseResponse() {
+        return palletCloseResponse;
+    }
+
     public LiveData<Boolean> getLoading() {
         return loading;
     }

@@ -36,12 +36,21 @@ public class PalletService {
 
     public Single<PalletCloseResponse> closePallet(PalletCloseRequest palletCloseRequest){
         return palletApi.closePallet(palletCloseRequest)
-                .doOnSuccess(palletCloseResponse -> palletDao.updatePalletClosedStatus(palletCloseRequest.getSerialNumber(),true));
+                .doOnSuccess(palletCloseResponse -> {
+                    if(palletCloseResponse.getStatus()) {
+                        palletDao.updatePalletClosedStatus(palletCloseRequest.getSerialNumber(),true);
+                    }
+
+                });
     }
 
     public Single<PalletCloseResponse> deletePallet(PalletCloseRequest palletCloseRequest){
         return palletApi.closePallet(palletCloseRequest)
-                .doOnSuccess(palletCloseResponse -> palletDao.deletePalletBySerialNumber(palletCloseRequest.getSerialNumber()));
+                .doOnSuccess(palletCloseResponse -> {
+                    if(palletCloseResponse.getStatus()) {
+                        palletDao.deletePalletBySerialNumber(palletCloseRequest.getSerialNumber());
+                    }
+                });
     }
 
     public LiveData<List<Pallet>> getAllPallets() {

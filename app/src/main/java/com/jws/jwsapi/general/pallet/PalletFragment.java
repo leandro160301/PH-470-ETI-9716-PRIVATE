@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -57,8 +58,12 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
     private void observeViewModel() {
         palletViewModel.getPallets().observe(getViewLifecycleOwner(), this::handlePalletsUpdate);
 
-        palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse
-                -> showMessage(palletResponse != null, requireContext().getString(R.string.toast_message_pallet_closed), R.layout.item_customtoastok));
+        palletViewModel.getPalletCloseResponse().observe(getViewLifecycleOwner(), palletCloseResponse -> {
+            if (palletCloseResponse == null) return;
+            int toastLayout = palletCloseResponse.getStatus() ? R.layout.item_customtoastok : R.layout.item_customtoasterror;
+            String message = palletCloseResponse.getStatus() ? requireContext().getString(R.string.toast_message_pallet_closed) : palletCloseResponse.getError();
+            ToastHelper.message(message, toastLayout, getContext());
+        });
 
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading!=null){

@@ -57,7 +57,8 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
     private void observeViewModel() {
         palletViewModel.getPallets().observe(getViewLifecycleOwner(), this::handlePalletsUpdate);
 
-        palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> showMessage(palletResponse != null, requireContext().getString(R.string.toast_message_pallet_closed), R.layout.item_customtoastok));
+        palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse
+                -> showMessage(palletResponse != null, requireContext().getString(R.string.toast_message_pallet_closed), R.layout.item_customtoastok));
 
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading!=null){
@@ -65,7 +66,8 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
             }
         });
 
-        palletViewModel.getError().observe(getViewLifecycleOwner(), error -> showMessage(error != null, error, R.layout.item_customtoasterror));
+        palletViewModel.getError().observe(getViewLifecycleOwner(), error
+                -> showMessage(error != null, error, R.layout.item_customtoasterror));
     }
 
     private void setupRecycler() {
@@ -111,7 +113,8 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
 
     @Override
     public void deletePallet(Pallet pallet) {
-        dialogText(getContext(), requireContext().getString(R.string.dialog_delete_pallet), requireContext().getString(R.string.dialog_button_delete_pallet), () -> palletViewModel.deletePallet(pallet.getSerialNumber()));
+        dialogText(getContext(), requireContext().getString(R.string.dialog_delete_pallet), requireContext().getString(R.string.dialog_button_delete_pallet), ()
+                -> palletViewModel.deletePallet(pallet.getSerialNumber()));
     }
 
     @Override
@@ -122,6 +125,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
 
     @Override
     public void closePallet(Pallet pallet) {
-        dialogText(getContext(), requireContext().getString(R.string.dialog_close_pallet), requireContext().getString(R.string.dialog_button_close_pallet), () -> palletViewModel.closePallet(pallet.getSerialNumber()));
+        dialogText(getContext(), requireContext().getString(R.string.dialog_close_pallet), requireContext().getString(R.string.dialog_button_close_pallet), ()
+                -> palletViewModel.closePallet(pallet.getSerialNumber()));
     }
 }

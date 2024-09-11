@@ -28,172 +28,181 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
+
                 <LinearLayout
-                    android:layout_width="1139dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="55dp"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="PRODUCTO"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/negro"
+                        android:textSize="24sp" />
 
-                        <TextView
-                            android:id="@+id/textView10"
-                            android:layout_width="48dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="0dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="13dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="PRODUCTO"
-                            android:textAlignment="viewEnd"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
-
-                        <TextView
-                            android:id="@+id/tv_pallet_code"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="13dp"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="0001"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_pallet_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="ACIDO TARTARICO POLVO X 25KG"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="56dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="13dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="CANTIDAD"
-                            android:textAlignment="viewEnd"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
-
-                        <TextView
-                            android:id="@+id/tv_pallet_quantity"
-                            android:layout_width="25dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="10"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_pallet_total_header"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="22dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="13dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="ACUMULADO"
-                            android:textAlignment="viewEnd"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/tv_pallet_total"
-                            android:layout_width="25dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="22dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="10"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            android:visibility="gone" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ln_close"
-                        android:layout_width="400dp"
+                    <TextView
+                        android:id="@+id/tv_pallet_code"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/boton_close_i"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="0001"
+                        android:textColor="@color/negro"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/ln_delete"
-                        android:layout_width="400dp"
+                    <TextView
+                        android:id="@+id/tv_pallet_name"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/boton_eliminar_i"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="ACIDO TARTARICO POLVO X 25KG"
+                        android:textColor="@color/negro"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ln_select"
-                        android:layout_width="400dp"
+                    <TextView
+                        android:layout_width="56dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/boton_delante_i"
-                        android:orientation="horizontal">
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="CANTIDAD"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/negro"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/tv_pallet_quantity"
+                        android:layout_width="25dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="10"
+                        android:textColor="@color/negro"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_pallet_total_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="ACUMULADO"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/negro"
+                        android:textSize="24sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_pallet_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="10"
+                        android:textColor="@color/negro"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_close"
+                    android:layout_width="400dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_close_i"
+                    android:orientation="horizontal">
 
 
-                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ln_delete"
+                    android:layout_width="400dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_eliminar_i"
+                    android:orientation="horizontal">
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_select"
+                    android:layout_width="400dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_delante_i"
+                    android:orientation="horizontal">
+
 
                 </LinearLayout>
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvState"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:padding="5dp"
+                    android:text="CANTIDAD"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/negro"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <!--Text View to display Course Name-->
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

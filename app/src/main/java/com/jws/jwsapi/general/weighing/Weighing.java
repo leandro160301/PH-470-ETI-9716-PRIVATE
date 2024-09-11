@@ -37,8 +37,6 @@ public class Weighing {
     @ColumnInfo(name = "tare")
     private String tare;
 
-
-
     @ColumnInfo(name = "quantity")
     private int quantity;
 

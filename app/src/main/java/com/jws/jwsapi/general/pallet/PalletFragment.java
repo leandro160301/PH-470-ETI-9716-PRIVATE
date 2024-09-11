@@ -63,6 +63,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
                 ToastHelper.message(requireContext().getString(R.string.toast_message_pallet_closed),R.layout.item_customtoastok,getContext());
             }
         });
+
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading!=null){
                 binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);

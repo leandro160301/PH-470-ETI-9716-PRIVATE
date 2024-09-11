@@ -340,6 +340,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dialog_delete_pallet">¿quiere eliminar el pallet?</string>
     <string name="dialog_button_delete_pallet">ELIMINAR</string>
+    <string name="title_weighings">PESADAS</string>
 
 
 </resources>

@@ -114,6 +114,37 @@
                             android:textSize="24sp"
                             android:textStyle="bold" />
 
+                        <TextView
+                            android:id="@+id/tv_pallet_total_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="13dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="ACUMULADO"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tv_pallet_total"
+                            android:layout_width="25dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="10"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
                     </LinearLayout>
 
                     <LinearLayout

@@ -4,23 +4,20 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.jws.jwsapi.databinding.ItemPalletBinding;
-
 import java.util.List;
 import java.util.Locale;
 
 public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletViewHolder> {
 
     private List<Pallet> palletList;
-    private static PalletButtonClickListener listener;
+    private final PalletButtonClickListener listener;
 
     public PalletAdapter(List<Pallet> palletList, PalletButtonClickListener listener) {
         this.palletList = palletList;
-        PalletAdapter.listener = listener;
+        this.listener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -48,7 +45,7 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
         return palletList.size();
     }
 
-    static class PalletViewHolder extends RecyclerView.ViewHolder {
+    class PalletViewHolder extends RecyclerView.ViewHolder {
         private final ItemPalletBinding binding;
 
         public PalletViewHolder(ItemPalletBinding binding) {
@@ -59,6 +56,7 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
         public void bind(Pallet pallet) {
             binding.tvPalletSerialNumber.setText(pallet.getCode());
             binding.tvPalletDestination.setText(pallet.getName());
+            binding.tvPalletTotal.setText(pallet.getTotalNet());
             String text = String.format(Locale.US, "%d/%d", pallet.getDone(), pallet.getQuantity());
             binding.tvPalletQuantity.setText(text);
             binding.lnDelete.setOnClickListener(v -> listener.deletePallet(pallet));
@@ -68,6 +66,8 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletAdapter.PalletView
                 binding.lnDelete.setVisibility(View.GONE);
                 binding.lnSelect.setVisibility(View.GONE);
                 binding.lnClose.setVisibility(View.GONE);
+                binding.tvPalletTotal.setVisibility(View.VISIBLE);
+                binding.tvPalletTotalHeader.setVisibility(View.VISIBLE);
             }
         }
     }

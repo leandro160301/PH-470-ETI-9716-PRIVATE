@@ -11,6 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -92,33 +93,17 @@ public class PalletViewModel extends ViewModel {
         compositeDisposable.add(disposable);
     }
 
-    public void closePallet(String serialNumber){
-        closePalletRequest(new PalletCloseRequest(serialNumber));
+    public void closePallet(String serialNumber) {
+        handlePalletRequest(palletService.closePallet(new PalletCloseRequest(serialNumber)));
     }
 
-    private void closePalletRequest(PalletCloseRequest palletCloseRequest){
+    public void deletePallet(String serialNumber) {
+        handlePalletRequest(palletService.deletePallet(new PalletCloseRequest(serialNumber)));
+    }
+
+    private void handlePalletRequest(Single<PalletCloseResponse> request) {
         loading.setValue(true);
-
-        Disposable disposable = palletService.closePallet(palletCloseRequest)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(() -> loading.setValue(false))
-                .subscribe(
-                        palletCloseResponse::setValue,
-                        throwable -> error.setValue(throwable.getMessage())
-                );
-
-        compositeDisposable.add(disposable);
-    }
-
-    public void deletePallet(String serialNumber){
-        deletePalletRequest(new PalletCloseRequest(serialNumber));
-    }
-
-    private void deletePalletRequest(PalletCloseRequest palletCloseRequest){
-        loading.setValue(true);
-
-        Disposable disposable = palletService.deletePallet(palletCloseRequest)
+        Disposable disposable = request
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> loading.setValue(false))

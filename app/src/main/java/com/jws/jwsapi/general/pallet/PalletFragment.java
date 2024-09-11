@@ -21,6 +21,7 @@ import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -48,20 +49,16 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
         palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
         setupButtons();
 
-        binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        palletAdapter = new PalletAdapter(new ArrayList<>(),this);
-        binding.recycler.setAdapter(palletAdapter);
+        setupRecycler();
 
-        palletViewModel.getPallets().observe(getViewLifecycleOwner(), pallets -> {
-            if (pallets!=null) {
-                palletAdapter.updateData(pallets);
-            }
-        });
+        observeViewModel();
+    }
+
+    private void observeViewModel() {
+        palletViewModel.getPallets().observe(getViewLifecycleOwner(), this::handlePalletsUpdate);
 
         palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> {
-            if (palletResponse != null) {
-                ToastHelper.message(requireContext().getString(R.string.toast_message_pallet_closed),R.layout.item_customtoastok,getContext());
-            }
+            showMessage(palletResponse != null, requireContext().getString(R.string.toast_message_pallet_closed), R.layout.item_customtoastok);
         });
 
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
@@ -71,10 +68,26 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
         });
 
         palletViewModel.getError().observe(getViewLifecycleOwner(), error -> {
-            if (error != null) {
-                ToastHelper.message(error,R.layout.item_customtoasterror,getContext());
-            }
+            showMessage(error != null, error, R.layout.item_customtoasterror);
         });
+    }
+
+    private void setupRecycler() {
+        binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        palletAdapter = new PalletAdapter(new ArrayList<>(),this);
+        binding.recycler.setAdapter(palletAdapter);
+    }
+
+    private void showMessage(boolean message, String toastMessage, int layout) {
+        if (message) {
+            ToastHelper.message(toastMessage, layout,getContext());
+        }
+    }
+
+    private void handlePalletsUpdate(List<Pallet> pallets) {
+        if (pallets !=null) {
+            palletAdapter.updateData(pallets);
+        }
     }
 
     private void setupButtons() {

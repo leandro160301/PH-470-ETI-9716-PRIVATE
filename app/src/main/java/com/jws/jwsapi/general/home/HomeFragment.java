@@ -5,28 +5,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.base.containers.clases.ButtonProviderSingletonPrincipal;
 import com.jws.jwsapi.base.containers.interfaces.ButtonProvider_Principal;
 import com.jws.jwsapi.base.ui.activities.MainActivity;
 import com.jws.jwsapi.common.users.UsersManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
-import com.jws.jwsapi.general.formulador.ui.fragment.FormFragmentRecetas;
 import com.jws.jwsapi.general.pallet.Pallet;
 import com.jws.jwsapi.general.pallet.PalletCreateFragment;
 import com.jws.jwsapi.general.pallet.PalletFragment;
 import com.jws.jwsapi.general.toast.ToastHelper;
 import com.jws.jwsapi.general.weighing.WeighingFragment;
+import com.jws.jwsapi.general.weighing.WeighingResponse;
 import com.jws.jwsapi.general.weighing.WeighingViewModel;
-
 import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -54,7 +52,7 @@ public class HomeFragment extends Fragment{
         mainActivity=(MainActivity)getActivity();
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
         HomeViewModelFactory factory = new HomeViewModelFactory(mainActivity.mainClass.bza);
-        homeViewModel = new ViewModelProvider(this, factory).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(requireActivity(), factory).get(HomeViewModel.class);
 
         setupButtons();
 
@@ -63,37 +61,19 @@ public class HomeFragment extends Fragment{
     }
 
     private void observeViewModels() {
-        weighingViewModel.getCurrentPallet().observe(getViewLifecycleOwner(), pallet -> {
-            if (pallet!=null) {
-                updateUI(pallet);
-            }
-        });
+        weighingViewModel.getCurrentPallet().observe(getViewLifecycleOwner(), this::handlePalletUpdate);
+
+        weighingViewModel.getLoading().observe(getViewLifecycleOwner(), this::handleLoadingUpdate);
 
         weighingViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
 
         weighingViewModel.getErrorRequest().observe(getViewLifecycleOwner(), this::messageError);
 
-        weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), weighingResponse -> {
-            if(weighingResponse!=null){
-                if(weighingResponse.getStatus()){
-                    ToastHelper.message(requireContext().getString(R.string.toast_message_weighing_created),R.layout.item_customtoastok,getContext());
-                }else{
-                    ToastHelper.message(weighingResponse.getError(),R.layout.item_customtoasterror,getContext());
-                }
-            }
-        });
+        weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), this::handleWeighingResponse);
 
-        homeViewModel.getNet().observe(getViewLifecycleOwner(), net -> {
-            if(net!=null){
-                binding.tvNet.setText(net);
-            }
-        });
+        homeViewModel.getNet().observe(getViewLifecycleOwner(), net -> handleWeighUpdate(net, binding.tvNet));
 
-        homeViewModel.getGross().observe(getViewLifecycleOwner(), gross -> {
-            if(gross!=null){
-                binding.tvGross.setText(gross);
-            }
-        });
+        homeViewModel.getGross().observe(getViewLifecycleOwner(), gross -> handleWeighUpdate(gross, binding.tvGross));
 
         homeViewModel.getUnit().observe(getViewLifecycleOwner(), unit -> {
             binding.tvTotalNetUnit.setText(unit);
@@ -102,13 +82,41 @@ public class HomeFragment extends Fragment{
         });
     }
 
+    private void handleWeighUpdate(String net, TextView binding) {
+        if(net !=null){
+            binding.setText(net);
+        }
+    }
+
+    private void handleWeighingResponse(WeighingResponse weighingResponse) {
+        if(weighingResponse !=null){
+            if(weighingResponse.getStatus()){
+                ToastHelper.message(requireContext().getString(R.string.toast_message_weighing_created),R.layout.item_customtoastok,getContext());
+            }else{
+                ToastHelper.message(weighingResponse.getError(),R.layout.item_customtoasterror,getContext());
+            }
+        }
+    }
+
+    private void handleLoadingUpdate(Boolean isLoading) {
+        if (isLoading !=null){
+            binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void handlePalletUpdate(Pallet pallet) {
+        if (pallet !=null) {
+            updateUi(pallet);
+        }
+    }
+
     private void messageError(String error) {
         if(error !=null){
             ToastHelper.message(error,R.layout.item_customtoasterror,getContext());
         }
     }
 
-    private void updateUI(Pallet pallet) {
+    private void updateUi(Pallet pallet) {
         binding.tvCantidad.setText(String.valueOf(pallet.getQuantity()));
         binding.tvDone.setText(String.valueOf(pallet.getDone()));
         binding.tvProduct.setText(pallet.getName());
@@ -120,20 +128,22 @@ public class HomeFragment extends Fragment{
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            Button bt1 = buttonProvider.getButton1();
-            Button bt2 = buttonProvider.getButton2();
-            Button bt3 = buttonProvider.getButton3();
-            Button bt4 = buttonProvider.getButton4();
-            Button bt5 = buttonProvider.getButton5();
-            bt1.setText(requireContext().getString(R.string.button_text_1));
-            bt2.setText(requireContext().getString(R.string.button_text_2));
-            bt3.setText(requireContext().getString(R.string.button_text_3));
-            bt4.setText(requireContext().getString(R.string.button_text_4));
-            bt5.setText(requireContext().getString(R.string.button_text_5));
-            bt2.setOnClickListener(v -> weighingViewModel.createWeighing("10","5","5"));
-            bt3.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletFragment()));
-            bt4.setOnClickListener(view -> mainActivity.mainClass.openFragment(new WeighingFragment()));
-            bt5.setOnClickListener(view -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
+            setupButton(buttonProvider.getButton1(), R.string.button_text_1, null);
+            setupButton(buttonProvider.getButton2(), R.string.button_text_2,
+                    v -> weighingViewModel.createWeighing("10", "5", "5"));
+            setupButton(buttonProvider.getButton3(), R.string.button_text_3,
+                    v -> mainActivity.mainClass.openFragment(new PalletFragment()));
+            setupButton(buttonProvider.getButton4(), R.string.button_text_4,
+                    v -> mainActivity.mainClass.openFragment(new WeighingFragment()));
+            setupButton(buttonProvider.getButton5(), R.string.button_text_5,
+                    v -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
+        }
+    }
+
+    private void setupButton(Button button, int textResId, View.OnClickListener onClickListener) {
+        button.setText(requireContext().getString(textResId));
+        if (onClickListener != null) {
+            button.setOnClickListener(onClickListener);
         }
     }
 

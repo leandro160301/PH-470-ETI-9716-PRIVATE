@@ -40,6 +40,9 @@ public class Weighing {
     @ColumnInfo(name = "quantity")
     private int quantity;
 
+    @ColumnInfo(name = "unit")
+    private String unit;
+
     public int getId() {
         return id;
     }
@@ -126,6 +129,14 @@ public class Weighing {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
 }

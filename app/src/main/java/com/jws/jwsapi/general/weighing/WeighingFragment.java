@@ -24,7 +24,6 @@ public class WeighingFragment extends Fragment {
 
     private WeighingAdapter weighingAdapter;
     private FragmentPalletBinding binding;
-    private WeighingViewModel weighingViewModel;
     private ButtonProvider buttonProvider;
     MainActivity mainActivity;
 
@@ -40,7 +39,7 @@ public class WeighingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mainActivity=(MainActivity)getActivity();
-        weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
+        WeighingViewModel weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
         setupButtons();
 
         binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));

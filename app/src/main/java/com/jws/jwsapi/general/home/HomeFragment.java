@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment{
         if (buttonProvider != null) {
             setupButton(buttonProvider.getButton1(), R.string.button_text_1, null);
             setupButton(buttonProvider.getButton2(), R.string.button_text_2,
-                    v -> weighingViewModel.createWeighing("10", "5", "5"));
+                    v -> weighingViewModel.createWeighing("10", "5", "5","kg"));
             setupButton(buttonProvider.getButton3(), R.string.button_text_3,
                     v -> mainActivity.mainClass.openFragment(new PalletFragment()));
             setupButton(buttonProvider.getButton4(), R.string.button_text_4,

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ItemWeighingBinding;
 import java.util.List;
+import java.util.Locale;
 
 public class WeighingAdapter extends RecyclerView.Adapter<WeighingAdapter.WeighingViewHolder> {
 
@@ -43,7 +44,7 @@ public class WeighingAdapter extends RecyclerView.Adapter<WeighingAdapter.Weighi
         return weighingList.size();
     }
 
-    class WeighingViewHolder extends RecyclerView.ViewHolder {
+    static class WeighingViewHolder extends RecyclerView.ViewHolder {
         private final ItemWeighingBinding binding;
 
         public WeighingViewHolder(ItemWeighingBinding binding) {
@@ -54,9 +55,9 @@ public class WeighingAdapter extends RecyclerView.Adapter<WeighingAdapter.Weighi
         public void bind(Weighing weighing) {
             binding.tvWeighingCode.setText(weighing.getCode());
             binding.tvWeighingName.setText(weighing.getName());
-            binding.tvWeighingNet.setText(weighing.getNet());
-            binding.tvWeighingGross.setText(weighing.getGross());
-            binding.tvWeighingTare.setText(weighing.getTare());
+            binding.tvWeighingNet.setText(weighFormat(weighing.getNet(),weighing));
+            binding.tvWeighingGross.setText(weighFormat(weighing.getGross(),weighing));
+            binding.tvWeighingTare.setText(weighFormat(weighing.getTare(),weighing));
             binding.tvWeighingOperator.setText(weighing.getOperator());
             binding.tvWeighingSerialNumber.setText(weighing.getSerialNumber());
             binding.tvWeighingScale.setText(String.valueOf(weighing.getScaleNumber()));
@@ -65,6 +66,10 @@ public class WeighingAdapter extends RecyclerView.Adapter<WeighingAdapter.Weighi
                 binding.lnExpand.setVisibility(isGone ? View.VISIBLE : View.GONE);
                 binding.btExpand.setBackgroundResource(isGone ? R.drawable.boton_menos_i : R.drawable.boton_mas_i);
             });
+        }
+
+        public String weighFormat(String weight,Weighing weighing) {
+            return String.format(Locale.US, "%s%s", weight, weighing.getUnit());
         }
     }
 }

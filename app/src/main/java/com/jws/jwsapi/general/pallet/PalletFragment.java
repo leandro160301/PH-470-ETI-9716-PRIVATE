@@ -57,9 +57,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
     private void observeViewModel() {
         palletViewModel.getPallets().observe(getViewLifecycleOwner(), this::handlePalletsUpdate);
 
-        palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> {
-            showMessage(palletResponse != null, requireContext().getString(R.string.toast_message_pallet_closed), R.layout.item_customtoastok);
-        });
+        palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> showMessage(palletResponse != null, requireContext().getString(R.string.toast_message_pallet_closed), R.layout.item_customtoastok));
 
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading!=null){
@@ -67,9 +65,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
             }
         });
 
-        palletViewModel.getError().observe(getViewLifecycleOwner(), error -> {
-            showMessage(error != null, error, R.layout.item_customtoasterror);
-        });
+        palletViewModel.getError().observe(getViewLifecycleOwner(), error -> showMessage(error != null, error, R.layout.item_customtoasterror));
     }
 
     private void setupRecycler() {

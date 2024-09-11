@@ -66,7 +66,7 @@ public class WeighingViewModel extends ViewModel {
         return error;
     }
 
-    public void createWeighing(String gross, String net, String tare) {
+    public void createWeighing(String gross, String net, String tare, String unit) {
         Weighing weighing= new Weighing();
         Pallet pallet= getCurrentPallet().getValue();
         if(pallet!=null) {
@@ -74,6 +74,7 @@ public class WeighingViewModel extends ViewModel {
             weighing.setGross(gross);
             weighing.setTare(net);
             weighing.setNet(tare);
+            weighing.setUnit(unit);
             weighing.setName(pallet.getName());
             weighing.setOperator(usersManager.getUsuarioActual());
             weighing.setIdPallet(pallet.getId());

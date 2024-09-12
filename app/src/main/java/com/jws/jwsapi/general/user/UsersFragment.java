@@ -41,7 +41,7 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
     List<UserModel> ListElementsArrayList=new ArrayList<>();
     String nusuario="",nnombre="",ncontrasena="",ncodigo="";
     @Inject
-    UsersManager usersManager;
+    UserManager userManager;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -96,10 +96,10 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
 
     public void DevuelveElementos(){
 
-        List<UserModel> lista= usersManager.obtenerUsuarios();
+        List<UserModel> lista= userManager.getUsers();
         for(int i=0;i<lista.size();i++){
-            ListElementsArrayList.add(new UserModel(lista.get(i).id,lista.get(i).nombre,lista.get(i).usuario,lista.get(i).password, lista.get(i).codigo,
-                    lista.get(i).tipo));
+            ListElementsArrayList.add(new UserModel(lista.get(i).id,lista.get(i).name,lista.get(i).user,lista.get(i).password, lista.get(i).code,
+                    lista.get(i).type));
         }
 
     }
@@ -137,14 +137,14 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
         dialog.show();
 
         Guardar.setOnClickListener(view -> {
-            if(usersManager.getNivelUsuario()>2){
+            if(userManager.getNivelUsuario()>2){
                 if(!nnombre.equals("")&&!nusuario.equals("")
                         &&!ncontrasena.equals("")&&!ncodigo.equals("")){
 
                     long id=-1;
 
-                    try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), UsersManager.DB_USERS_NAME, null, UsersManager.DB_USERS_VERSION)) {
-                        id=dbHelper.nuevoUsuario(nnombre,nusuario,ncontrasena,ncodigo,spinnertipo.getSelectedItem().toString(),"SI","SI","SI");
+                    try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), UserManager.DB_USERS_NAME, null, UserManager.DB_USERS_VERSION)) {
+                        id=dbHelper.newUser(nnombre,nusuario,ncontrasena,ncodigo,spinnertipo.getSelectedItem().toString(),"SI","SI","SI");
                     }
                     if(id!=-1){
                         AgregarItemLista((int) id,nnombre,nusuario,ncontrasena,ncodigo,spinnertipo.getSelectedItem().toString());
@@ -160,7 +160,7 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
                     dialog.cancel();
                 }
             }else{
-                Utils.Mensaje("El usuario logeado no puede modificar otros usuarios",R.layout.item_customtoasterror,mainActivity);
+                Utils.Mensaje("El user logeado no puede modificar otros usuarios",R.layout.item_customtoasterror,mainActivity);
             }
 
 
@@ -205,7 +205,7 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
                     tv_nusuario.setText(userInput.getText().toString());
                 }
                 else{
-                    Utils.Mensaje("Ya existe un usuario igual al ingresado",R.layout.item_customtoasterror,mainActivity);
+                    Utils.Mensaje("Ya existe un user igual al ingresado",R.layout.item_customtoasterror,mainActivity);
                 }
 
             }
@@ -220,7 +220,7 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
                     tvcodigo.setText(userInput.getText().toString());
                 }
                 else{
-                    Utils.Mensaje("Ya existe un codigo igual al ingresado",R.layout.item_customtoasterror,mainActivity);
+                    Utils.Mensaje("Ya existe un code igual al ingresado",R.layout.item_customtoasterror,mainActivity);
                 }
 
             }
@@ -245,11 +245,11 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
     public boolean BuscarUsuario(String user){
 
         List<UserModel> lista=new ArrayList<>();
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), UsersManager.DB_USERS_NAME, null, UsersManager.DB_USERS_VERSION)) {
-            lista=dbHelper.obtenerUsuarios();
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), UserManager.DB_USERS_NAME, null, UserManager.DB_USERS_VERSION)) {
+            lista=dbHelper.getAllUsers();
         }
         for(int i=0;i<lista.size();i++){
-            if(lista.get(i).usuario.equals(user)){
+            if(lista.get(i).user.equals(user)){
                 return true;
             }
         }
@@ -257,11 +257,11 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
     }
     public boolean BuscarCodigo(String codigo){
         List<UserModel> lista;
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), UsersManager.DB_USERS_NAME, null, UsersManager.DB_USERS_VERSION)) {
-            lista=dbHelper.obtenerUsuarios();
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), UserManager.DB_USERS_NAME, null, UserManager.DB_USERS_VERSION)) {
+            lista=dbHelper.getAllUsers();
         }
         for(int i=0;i<lista.size();i++){
-            if(lista.get(i).codigo.equals(codigo)){
+            if(lista.get(i).code.equals(codigo)){
                 return true;
             }
         }
@@ -271,26 +271,26 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
 
     @Override
     public void eliminarUsuario(List<UserModel> mData, int posicion) {
-        if(usersManager.getNivelUsuario()>2){
+        if(userManager.getNivelUsuario()>2){
             if (mData.size() > 0) {
-                if(!mData.get(posicion).nombre.equals(usersManager.getUsuarioActual())){
-                    dialogText(getContext(), "Quiere eliminar el usuario " + mData.get(posicion).nombre + "?", "ELIMINAR", () -> {
-                        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(mainActivity, UsersManager.DB_USERS_NAME, null, UsersManager.DB_USERS_VERSION)) {
-                            dbHelper.eliminarUsuario(mData.get(posicion).usuario);
+                if(!mData.get(posicion).name.equals(userManager.getUsuarioActual())){
+                    dialogText(getContext(), "Quiere eliminar el user " + mData.get(posicion).name + "?", "ELIMINAR", () -> {
+                        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(mainActivity, UserManager.DB_USERS_NAME, null, UserManager.DB_USERS_VERSION)) {
+                            dbHelper.deleteUser(mData.get(posicion).user);
                         }
                         mData.remove(posicion);
                         adapter.filterList(mData);
                     });
                 }
                 else {
-                    Utils.Mensaje("No puedes eliminar el usuario actual",R.layout.item_customtoasterror,mainActivity);
+                    Utils.Mensaje("No puedes eliminar el user actual",R.layout.item_customtoasterror,mainActivity);
                 }
             }
             else {
                 Utils.Mensaje("No puedes eliminar mas usuarios",R.layout.item_customtoasterror,mainActivity);
             }
         }else{
-            Utils.Mensaje("El usuario logeado no puede modificar otros usuarios",R.layout.item_customtoasterror,mainActivity);
+            Utils.Mensaje("El user logeado no puede modificar otros usuarios",R.layout.item_customtoasterror,mainActivity);
         }
 
     }

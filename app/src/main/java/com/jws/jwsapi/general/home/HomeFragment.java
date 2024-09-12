@@ -15,7 +15,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.container.HomeButtonProviderSingleton;
 import com.jws.jwsapi.general.container.HomeButtonProvider;
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
 import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.pallet.PalletCreateFragment;
@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment{
     HomeViewModel homeViewModel;
 
     @Inject
-    UsersManager usersManager;
+    UserManager userManager;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

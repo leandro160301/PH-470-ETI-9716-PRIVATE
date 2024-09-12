@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.jws.jwsapi.general.container.HomeContainerFragment;
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.general.home.HomeFragment;
 import com.service.Balanzas.BalanzaService;
 import com.service.Comunicacion.OnFragmentChangeListener;
@@ -23,13 +23,13 @@ public class MainClass implements OnFragmentChangeListener {
     public BalanzaService service;
     public BalanzaService.Balanzas bza;
     public int nBza =1;
-    UsersManager usersManager;
+    UserManager userManager;
     Boolean permitirClic=true;
 
-    public MainClass(Context context, MainActivity activity, UsersManager usersManager) {
+    public MainClass(Context context, MainActivity activity, UserManager userManager) {
         this.context = context;
         this.mainActivity = activity;
-        this.usersManager = usersManager;
+        this.userManager = userManager;
     }
 
     public void init() {
@@ -76,7 +76,7 @@ public class MainClass implements OnFragmentChangeListener {
         if(permitirClic){
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             Fragment fragmentoActual = new ContainerFragment();
-            boolean programador= usersManager.getNivelUsuario() > 3;
+            boolean programador= userManager.getNivelUsuario() > 3;
             ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(),arg,programador);
             containerFragment.setFragmentActual(fragmentoActual);
             fragmentManager.beginTransaction()

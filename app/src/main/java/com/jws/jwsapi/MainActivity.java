@@ -18,7 +18,7 @@ import com.jws.jwsapi.general.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.general.services.FtpInit;
 import com.jws.jwsapi.general.services.httpserver.InitServer;
 import com.jws.jwsapi.general.files.Storage;
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.general.utils.Utils;
 import java.io.IOException;
 import javax.inject.Inject;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity{
     InitServer initServer;
     public PreferencesManagerBase preferencesManagerBase;
     @Inject
-    UsersManager usersManager;
+    UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +58,12 @@ public class MainActivity extends AppCompatActivity{
 
     private void initFtpWebRTC() {
         try {
-            FtpInit ftpInit= new FtpInit(getApplicationContext(),usersManager.obtenerUsuarios());
+            FtpInit ftpInit= new FtpInit(getApplicationContext(), userManager.getUsers());
             ftpInit.ftpServer();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        initServer = new InitServer(this,this,usersManager);
+        initServer = new InitServer(this,this, userManager);
         try {
             initServer.start();
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initMainClass() {
-        mainClass = new MainClass(this,this,usersManager);
+        mainClass = new MainClass(this,this, userManager);
         mainClass.init();
     }
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void clearCache(){
         Context context=getApplicationContext();
-        if(usersManager.getNivelUsuario()>2){
+        if(userManager.getNivelUsuario()>2){
             dialogText(this, "¿Esta seguro de volver a los valores de fabrica del equipo?", "RESER", () -> {
                 // Elimina la caché de la aplicación
                 deleteCache(context);

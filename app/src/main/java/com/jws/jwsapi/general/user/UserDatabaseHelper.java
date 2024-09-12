@@ -31,15 +31,15 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
     }
 
 
-    public long nuevoUsuario(String nombre, String usuario, String password, String codigo,String tipo,String Permiso1, String Permiso2, String Permiso3) {
+    public long newUser(String nombre, String usuario, String password, String codigo, String tipo, String Permiso1, String Permiso2, String Permiso3) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("nombre", nombre);
-        values.put("usuario", usuario);
+        values.put("name", nombre);
+        values.put("user", usuario);
         values.put("password", password);
-        values.put("codigo", codigo);
-        values.put("tipo", tipo);
+        values.put("code", codigo);
+        values.put("type", tipo);
         values.put("Permiso1",Permiso1);
         values.put("Permiso2", Permiso2);
         values.put("Permiso3", Permiso3);
@@ -56,7 +56,7 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         return id;
     }
 
-    public void eliminarTodos() {
+    public void deleteAllUsers() {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String query = "DELETE FROM usuarios";
@@ -65,7 +65,7 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         db.close();
     }
 
-    public void eliminarUsuario(String user) {
+    public void deleteUser(String user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String query = "DELETE FROM usuarios WHERE usuario='"+user+"'";
@@ -74,7 +74,7 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         db.close();
     }
 
-    public List<UserModel> obtenerUsuarios() {
+    public List<UserModel> getAllUsers() {
         List<UserModel> filas = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -102,7 +102,7 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         return filas;
     }
 
-    public List<UserModel> buscarUsuario(String user) {
+    public List<UserModel> searchUsers(String user) {
         List<UserModel> filas = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -131,7 +131,7 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         return filas;
     }
 
-    public int cantidadUsuarios() {
+    public int getQuantity() {
         int count = 0;
         SQLiteDatabase db = this.getReadableDatabase();
 

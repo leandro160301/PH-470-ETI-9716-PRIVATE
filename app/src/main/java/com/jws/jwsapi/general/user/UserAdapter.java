@@ -36,16 +36,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tv_nombre.setText( ListElementsArrayList2.get(position).nombre);
-        holder.tv_tipo.setText( ListElementsArrayList2.get(position).tipo);
+        holder.tv_nombre.setText( ListElementsArrayList2.get(position).name);
+        holder.tv_tipo.setText( ListElementsArrayList2.get(position).type);
         holder.tv_id.setText(String.valueOf(ListElementsArrayList2.get(position).id));
-        holder.tv_codigo.setText(ListElementsArrayList2.get(position).codigo);
+        holder.tv_codigo.setText(ListElementsArrayList2.get(position).code);
         holder.ln_eliminar.setOnClickListener(view -> userButtonClickListener.eliminarUsuario(ListElementsArrayList2, position));
 
-        if(Objects.equals(ListElementsArrayList2.get(position).tipo, "Supervisor")){
+        if(Objects.equals(ListElementsArrayList2.get(position).type, "Supervisor")){
             holder.idIVCourseImage.setImageResource(R.drawable.icono_supervisor_negro);
         }
-        if(Objects.equals(ListElementsArrayList2.get(position).tipo, "Operador")){
+        if(Objects.equals(ListElementsArrayList2.get(position).type, "Operador")){
             holder.idIVCourseImage.setImageResource(R.drawable.usuario_icono_negro);
         }
 

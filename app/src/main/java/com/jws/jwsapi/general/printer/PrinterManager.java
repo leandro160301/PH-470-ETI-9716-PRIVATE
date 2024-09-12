@@ -9,7 +9,7 @@ import com.jws.jwsapi.general.printer.preferences.PreferencesPrinterManager;
 import com.jws.jwsapi.general.printer.types.SerialPortPrinter;
 import com.jws.jwsapi.general.printer.types.NetworkPrinter;
 import com.jws.jwsapi.general.printer.types.UsbPrinter;
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.general.label.LabelManager;
 import com.jws.jwsapi.general.data.local.PreferencesManager;
 import com.jws.jwsapi.general.utils.Utils;
@@ -24,17 +24,17 @@ public class PrinterManager {
     private final Context context;
     private MainActivity mainActivity;
     private PreferencesPrinterManager preferencesPrinterManager;
-    UsersManager usersManager;
+    UserManager userManager;
     PreferencesManager preferencesManager;
     LabelManager labelManager;
 
-    public PrinterManager(Context context, MainActivity activity, UsersManager usersManager, PreferencesManager preferencesManager, LabelManager labelManager) {
+    public PrinterManager(Context context, MainActivity activity, UserManager userManager, PreferencesManager preferencesManager, LabelManager labelManager) {
         this.context = context;
         this.mainActivity = activity;
         this.preferencesManager=preferencesManager;
         this.labelManager=labelManager;
         preferencesPrinterManager=new PreferencesPrinterManager(context);
-        this.usersManager=usersManager;
+        this.userManager = userManager;
     }
 
     public void EnviarEtiqueta(PuertosSerie2 serialPort, int numetiqueta){
@@ -167,7 +167,7 @@ public class PrinterManager {
                                         ListElementsFinales.add(mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza));
                                     }
                                     if(ListElementsInt.get(i)==4){
-                                        ListElementsFinales.add(usersManager.getUsuarioActual());
+                                        ListElementsFinales.add(userManager.getUsuarioActual());
                                     }
                                     if(ListElementsInt.get(i)==5){
                                         ListElementsFinales.add(Utils.getFecha());
@@ -197,7 +197,7 @@ public class PrinterManager {
                                                             concat=concat.concat(mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==4){
-                                                            concat=concat.concat(usersManager.getUsuarioActual()+separador);
+                                                            concat=concat.concat(userManager.getUsuarioActual()+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==5){
                                                             concat=concat.concat(Utils.getFecha()+separador);

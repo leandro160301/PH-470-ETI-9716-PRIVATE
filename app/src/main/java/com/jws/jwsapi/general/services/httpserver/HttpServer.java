@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.files.Storage;
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.MainClass;
 import org.apache.poi.util.IOUtils;
 import org.json.JSONException;
@@ -65,17 +65,17 @@ public class HttpServer extends NanoWSD {
     private static MainActivity mainActivity;
     private Context context;
     Ws webSocket = null;
-    UsersManager usersManager;
+    UserManager userManager;
 
     private HttpServerInterface httpServerInterface;
 
     public HttpServer(int port, Context context,
-                      HttpServerInterface httpServerInterface,MainActivity activity,UsersManager usersManager) {
+                      HttpServerInterface httpServerInterface, MainActivity activity, UserManager userManager) {
         super(port);
         this.context = context;
         this.httpServerInterface = httpServerInterface;
         this.mainActivity=activity;
-        this.usersManager= usersManager;
+        this.userManager = userManager;
     }
 
     class Ws extends WebSocket {
@@ -184,7 +184,7 @@ public class HttpServer extends NanoWSD {
             Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,"OPTIONS RECIBIDO");
             response.addHeader("Access-Control-Allow-Origin", "*");
             response.addHeader("Access-Control-Allow-Methods","OPTIONS,POST,GET,PUT,DELETE");
-            response.addHeader("Access-Control-Allow-Headers","nombre");
+            response.addHeader("Access-Control-Allow-Headers","name");
 
             return response;
         }
@@ -223,7 +223,7 @@ public class HttpServer extends NanoWSD {
 
         }
         if(uri.endsWith("GetUsuarios")){
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,usersManager.JSONusuarios());
+            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON, userManager.JSONusuarios());
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
         }
@@ -335,7 +335,7 @@ public class HttpServer extends NanoWSD {
         InputStream inputStream=null ;
         inputStream = session.getInputStream();
 
-        String nuev="/storage/emulated/0/Memoria/"+URLDecoder.decode(session.getHeaders().get("nombre"),"UTF-8");
+        String nuev="/storage/emulated/0/Memoria/"+URLDecoder.decode(session.getHeaders().get("name"),"UTF-8");
         File fil= new File(nuev);
         if(fil.exists()){
             fil.delete();

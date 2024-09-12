@@ -19,7 +19,7 @@ import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.navigation.NavigationFragment;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.general.utils.Utils;
 
 import javax.inject.Inject;
@@ -44,7 +44,7 @@ public class HomeContainerFragment extends Fragment implements HomeButtonProvide
     ImageView imuser;
     int iconflag=-1;
     @Inject
-    UsersManager usersManager;
+    UserManager userManager;
 
     public static HomeContainerFragment newInstance(Class<? extends Fragment> fragmentClass) {
         HomeContainerFragment fragment = new HomeContainerFragment();
@@ -104,7 +104,7 @@ public class HomeContainerFragment extends Fragment implements HomeButtonProvide
         });*/
 
         ln_menu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
-        lr_usuario.setOnClickListener(view13 -> usersManager.BotonLogeo(mainActivity,mainActivity));
+        lr_usuario.setOnClickListener(view13 -> userManager.BotonLogeo(mainActivity,mainActivity));
         bt_wifi.setOnClickListener(view12 -> DialogoInformacion());
 
         HomeButtonProvider buttonProvider = this;
@@ -163,23 +163,23 @@ public class HomeContainerFragment extends Fragment implements HomeButtonProvide
         runnable = new Runnable() {
             @Override
             public void run() {
-                if(usersManager.getNivelUsuario()==4&&iconflag!=4){
+                if(userManager.getNivelUsuario()==4&&iconflag!=4){
                     imuser.setImageResource(R.drawable.icono_programador);
                     iconflag=4;
                 }
-                if(usersManager.getNivelUsuario()==3&&iconflag!=3){
+                if(userManager.getNivelUsuario()==3&&iconflag!=3){
                     imuser.setImageResource(R.drawable.icono_administrador);
                     iconflag=3;
                 }
-                if(usersManager.getNivelUsuario()==2&&iconflag!=2){
+                if(userManager.getNivelUsuario()==2&&iconflag!=2){
                     imuser.setImageResource(R.drawable.icono_supervisor);
                     iconflag=2;
                 }
-                if(usersManager.getNivelUsuario()==1&&iconflag!=1){
+                if(userManager.getNivelUsuario()==1&&iconflag!=1){
                     imuser.setImageResource(R.drawable.icon_user);
                     iconflag=1;
                 }
-                if(usersManager.getNivelUsuario()==0&&iconflag!=0){
+                if(userManager.getNivelUsuario()==0&&iconflag!=0){
                     imuser.setImageResource(R.drawable.icono_nologin);
                     iconflag=0;
                 }
@@ -227,7 +227,7 @@ public class HomeContainerFragment extends Fragment implements HomeButtonProvide
                     bt_wifi.setBackgroundResource(R.color.transparente);
                 }
                 tv_fecha.setText(Utils.getFecha()+" "+ Utils.getHora());
-                tv_usuario.setText(usersManager.getUsuarioActual());
+                tv_usuario.setText(userManager.getUsuarioActual());
 
                 if(!stoped){
                     handler.postDelayed(this, 50);

@@ -9,10 +9,10 @@ import com.google.gson.annotations.SerializedName;
  */
 public class PalletResponse {
 
-    @SerializedName("codigo")
+    @SerializedName("code")
     private String code;
 
-    @SerializedName("nombre")
+    @SerializedName("name")
     private String name;
 
     @SerializedName("cantidad")

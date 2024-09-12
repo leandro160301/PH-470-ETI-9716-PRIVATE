@@ -5,7 +5,7 @@ import static net.sourceforge.jtds.jdbc.DefaultProperties.DATABASE_NAME;
 import android.app.Application;
 import android.content.Context;
 import androidx.room.Room;
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.AppDatabase;
 import com.jws.jwsapi.pallet.PalletApi;
 import com.jws.jwsapi.pallet.PalletDao;
@@ -32,8 +32,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public UsersManager provideUserManager(Application application){
-        return new UsersManager(application);
+    public UserManager provideUserManager(Application application){
+        return new UserManager(application);
     }
 
     @Provides

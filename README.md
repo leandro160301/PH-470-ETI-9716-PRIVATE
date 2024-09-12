@@ -35,7 +35,7 @@ Funcionalidades
      height="450">
 
 <img src="capturas/Permisos de usuarios.png"
-     alt="Screenshot Permisos de cada usuario"
+     alt="Screenshot Permisos de cada user"
      height="450">
 
 <img src="capturas/GRAFICO CURSORES (1).png"

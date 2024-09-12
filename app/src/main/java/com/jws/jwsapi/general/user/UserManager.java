@@ -29,7 +29,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class UsersManager {
+public class UserManager {
 
     private final Application application;
     public static String DB_USERS_NAME ="Usuarios_DB";
@@ -42,13 +42,13 @@ public class UsersManager {
     String password ="";
 
     @Inject
-    public UsersManager(Application application){
+    public UserManager(Application application){
         this.application =application;
     }
 
 
     public int cantidadUsuarios(){
-        List<UserModel> lista=obtenerUsuarios();
+        List<UserModel> lista= getUsers();
         if(lista!=null){
             return lista.size();
         }else {
@@ -56,10 +56,10 @@ public class UsersManager {
         }
     }
 
-    public List<UserModel> obtenerUsuarios(){
+    public List<UserModel> getUsers(){
         List<UserModel> lista;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            lista=dbHelper.obtenerUsuarios();
+            lista=dbHelper.getAllUsers();
         }
         return lista;
     }
@@ -83,7 +83,7 @@ public class UsersManager {
         dialog.show();
 
         Deslogear.setOnClickListener(view -> {
-            Deslogear();
+            logout();
             dialog.cancel();
 
         });
@@ -117,7 +117,7 @@ public class UsersManager {
     }
 
 
-    public void Deslogear(){
+    public void logout(){
         usuario ="";
         nivelUsuario =0;
 
@@ -126,11 +126,11 @@ public class UsersManager {
     public List<String> DevuelveListaUsuarios(){
         List<UserModel> lista;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            lista=dbHelper.obtenerUsuarios();
+            lista=dbHelper.getAllUsers();
         }
         List<String> listElementsArrayList = new ArrayList<>(Arrays.asList(USUARIOS));
         for(int i=0;i<lista.size();i++){
-            listElementsArrayList.add(lista.get(i).usuario);
+            listElementsArrayList.add(lista.get(i).user);
         }
         if(listElementsArrayList.size()>0){
             return listElementsArrayList;
@@ -151,20 +151,20 @@ public class UsersManager {
     public void BuscarUsuario(String user, String contrasenia, AppCompatActivity activity){
         List<UserModel> lista;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            lista=dbHelper.buscarUsuario(user);
+            lista=dbHelper.searchUsers(user);
         }
         try {
             if(lista.size()==0){
-                Utils.Mensaje("No existe el usuario ingresado", R.layout.item_customtoasterror,activity);
+                Utils.Mensaje("No existe el user ingresado", R.layout.item_customtoasterror,activity);
             }
             else{
                 for(int i=0;i<lista.size();i++){
                     if(lista.get(i).password.equals(contrasenia)){
-                        usuario =lista.get(i).nombre;
-                        if(Objects.equals(lista.get(i).tipo, "Supervisor")){
+                        usuario =lista.get(i).name;
+                        if(Objects.equals(lista.get(i).type, "Supervisor")){
                             nivelUsuario=2;
                         }
-                        if(Objects.equals(lista.get(i).tipo, "Operador")){
+                        if(Objects.equals(lista.get(i).type, "Operador")){
                             nivelUsuario=1;
                         }
                         Utils.Mensaje("LOGEO CORRECTO",R.layout.item_customtoastok,activity);
@@ -187,7 +187,7 @@ public class UsersManager {
     public String JSONusuarios() throws JSONException {
         List<UserModel> lista;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            lista=dbHelper.obtenerUsuarios();
+            lista=dbHelper.getAllUsers();
         }
 
         JSONArray jsonArray = new JSONArray();
@@ -207,8 +207,8 @@ public class UsersManager {
             JSONObject Usuario = new JSONObject();
             try {
                 Usuario.put("Id", lista.get(i).id);
-                Usuario.put("Nombre", lista.get(i).nombre);
-                Usuario.put("Usuario", lista.get(i).usuario);
+                Usuario.put("Nombre", lista.get(i).name);
+                Usuario.put("Usuario", lista.get(i).user);
                 jsonArray.put(Usuario);
 
             } catch (JSONException e) {
@@ -225,7 +225,7 @@ public class UsersManager {
     }
     public Boolean modificarDatos(){
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application,DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            int cantidad=dbHelper.cantidadUsuarios();
+            int cantidad=dbHelper.getQuantity();
             if(cantidad==0){
                 return true;
             }else{

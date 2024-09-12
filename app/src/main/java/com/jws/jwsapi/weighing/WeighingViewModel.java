@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.shared.PalletRepository;
 
@@ -30,13 +30,13 @@ public class WeighingViewModel extends ViewModel {
     private final MutableLiveData<String> errorRequest = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final LiveData<Pallet> currentPallet;
-    private final UsersManager usersManager;
+    private final UserManager userManager;
 
     @Inject
-    public WeighingViewModel(PalletRepository repository, WeighingService weighingService, UsersManager usersManager) {
+    public WeighingViewModel(PalletRepository repository, WeighingService weighingService, UserManager userManager) {
         this.repository = repository;
         this.weighingService = weighingService;
-        this.usersManager = usersManager;
+        this.userManager = userManager;
         this.weighings = weighingService.getAllWeighings();
         this.currentPallet = repository.getCurrentPallet();
 
@@ -76,7 +76,7 @@ public class WeighingViewModel extends ViewModel {
             weighing.setNet(tare);
             weighing.setUnit(unit);
             weighing.setName(pallet.getName());
-            weighing.setOperator(usersManager.getUsuarioActual());
+            weighing.setOperator(userManager.getUsuarioActual());
             weighing.setIdPallet(pallet.getId());
             weighing.setScaleNumber(pallet.getScaleNumber());
             weighing.setQuantity(pallet.getQuantity());

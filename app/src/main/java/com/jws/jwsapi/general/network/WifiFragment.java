@@ -204,7 +204,7 @@ public class WifiFragment extends Fragment  {
                 ImageView image = layout.findViewById(R.id.image);
                 image.setImageResource(R.drawable.error_preview_rev_1);
                 TextView text = layout.findViewById(R.id.text);
-                text.setText("Si usted modifico una red ya guardada debera eliminar los datos antiguos (mantenga presionado el nombre de la red)");
+                text.setText("Si usted modifico una red ya guardada debera eliminar los datos antiguos (mantenga presionado el name de la red)");
 
 
                 Toast toast = new Toast(getContext());

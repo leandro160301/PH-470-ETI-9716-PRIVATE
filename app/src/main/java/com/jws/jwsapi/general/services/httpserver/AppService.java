@@ -18,7 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,9 +109,9 @@ public class AppService extends Service {
     }
 
     public boolean serverStart(Intent intent, int port,
-                               boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity, UsersManager usersManager) {
+                               boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity, UserManager userManager) {
         this.mainActivity=mainActivity;
-        if (!(isWebServerRunning = startHttpServer(port,usersManager)))
+        if (!(isWebServerRunning = startHttpServer(port, userManager)))
             return false;
 
         webRtcManager = new WebRtcManager(intent, context, httpServer,mainActivity);
@@ -138,8 +138,8 @@ public class AppService extends Service {
     }
 
 
-    public boolean startHttpServer(int httpServerPort, UsersManager usersManager) {
-        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface,mainActivity,usersManager);
+    public boolean startHttpServer(int httpServerPort, UserManager userManager) {
+        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface,mainActivity, userManager);
         try {
             httpServer.start();
         } catch (IOException e) {

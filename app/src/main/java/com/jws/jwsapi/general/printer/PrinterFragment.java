@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.printer.preferences.PreferencesPrinterManager;
-import com.jws.jwsapi.general.user.UsersManager;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.general.label.LabelManager;
 import com.jws.jwsapi.general.data.local.PreferencesManager;
 import com.service.Comunicacion.ButtonProvider;
@@ -41,7 +41,7 @@ public class PrinterFragment extends Fragment{
     PrinterManager imprimirStandar;
     PreferencesPrinterManager preferencesPrinterManager;
     @Inject
-    UsersManager usersManager;
+    UserManager userManager;
 
     @Nullable
     @Override
@@ -58,7 +58,7 @@ public class PrinterFragment extends Fragment{
         configuracionBotones();
         tv_ipimpresora=view.findViewById(R.id.tv_ipimpresora);
         sp_impresora= view.findViewById(R.id.sp_impresora);
-        imprimirStandar=new PrinterManager(getContext(),mainActivity,usersManager,preferencesManager,labelManager);
+        imprimirStandar=new PrinterManager(getContext(),mainActivity, userManager,preferencesManager,labelManager);
         preferencesPrinterManager= new PreferencesPrinterManager(mainActivity);
         tv_ipimpresora.setText(preferencesPrinterManager.consultaIP());
         tv_ipimpresora.setOnClickListener(view1 -> Teclado(tv_ipimpresora,"Ingrese IP de Impresora"));

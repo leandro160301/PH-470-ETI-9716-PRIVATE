@@ -3,8 +3,9 @@ package com.jws.jwsapi.general.services;
 import android.content.Context;
 import android.os.Environment;
 import com.jws.jwsapi.general.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.general.user.UserModel;
-import com.jws.jwsapi.general.user.UsersManager;
+
 import org.apache.ftpserver.ConnectionConfigFactory;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
@@ -37,7 +38,7 @@ public class FtpInit {
         List<Authority> authorities = new ArrayList<>();
         authorities.add(new WritePermission());
         BaseUser usuarioGregoArchivos = new BaseUser();
-        usuarioGregoArchivos.setName(UsersManager.USUARIOS[1]);
+        usuarioGregoArchivos.setName(UserManager.USUARIOS[1]);
         usuarioGregoArchivos.setPassword("3031");
         usuarioGregoArchivos.setAuthorities(authorities);
         try {
@@ -46,7 +47,7 @@ public class FtpInit {
             e.printStackTrace();
         }
         BaseUser user = new BaseUser();
-        user.setName(UsersManager.USUARIOS[0]);
+        user.setName(UserManager.USUARIOS[0]);
         user.setPassword(new PreferencesManagerBase(context).consultaPIN());
         user.setHomeDirectory(Environment.getExternalStorageDirectory().toString()+"/Memoria");
         user.setAuthorities(authorities);
@@ -68,7 +69,7 @@ public class FtpInit {
         List<UserModel> lista= listaUsuarios;
         for (UserModel usuario : lista) {
             BaseUser user = new BaseUser();
-            user.setName(usuario.usuario);
+            user.setName(usuario.user);
             user.setPassword(usuario.password);
             user.setHomeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath());
             try {

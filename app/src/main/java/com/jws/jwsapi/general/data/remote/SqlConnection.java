@@ -14,7 +14,7 @@ import java.sql.SQLException;
  *                     runOnUiThread(new Runnable() {
  *                         @Override
  *                         public void run() {
- *                             // Código que se ejecutará en el hilo de la interfaz de usuario
+ *                             // Código que se ejecutará en el hilo de la interfaz de user
  *                             Mensaje("Conexion exitosa", R.layout.customtoastok);
  *                         }
  *                     });

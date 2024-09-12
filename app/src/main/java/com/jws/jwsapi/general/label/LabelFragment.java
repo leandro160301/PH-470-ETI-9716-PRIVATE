@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.general.MainActivity;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.general.adapter.AdapterMultimedia;
-import com.jws.jwsapi.general.data.PreferencesManager;
+import com.jws.jwsapi.general.utils.AdapterCommon;
+import com.jws.jwsapi.general.data.local.PreferencesManager;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class LabelFragment extends Fragment implements AdapterMultimedia.ItemClickListener {
+public class LabelFragment extends Fragment implements AdapterCommon.ItemClickListener {
 
     @Inject
     PreferencesManager preferencesManager;
@@ -37,7 +37,7 @@ public class LabelFragment extends Fragment implements AdapterMultimedia.ItemCli
     List<LabelModel> listaCampos =new ArrayList<>();
     List<String> listaEtiquetas=new ArrayList<>();
     RecyclerView recyclerEtiquetas, recyclerCampos;
-    AdapterMultimedia adapterEtiquetas;
+    AdapterCommon adapterEtiquetas;
     LabelAdapter adapterCampos;
     public int posicion =0;
     String etiquetaNombre ="";
@@ -120,7 +120,7 @@ public class LabelFragment extends Fragment implements AdapterMultimedia.ItemCli
 
     public void setupRecycler(List<String> lista) {
         recyclerEtiquetas.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterEtiquetas = new AdapterMultimedia(getContext(), lista);
+        adapterEtiquetas = new AdapterCommon(getContext(), lista);
         adapterEtiquetas.setClickListener(this);
         recyclerEtiquetas.setAdapter(adapterEtiquetas);
 

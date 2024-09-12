@@ -12,8 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.general.container.ButtonProviderSingletonPrincipal;
-import com.jws.jwsapi.general.container.ButtonProvider_Principal;
+import com.jws.jwsapi.general.container.HomeButtonProviderSingleton;
+import com.jws.jwsapi.general.container.HomeButtonProvider;
 import com.jws.jwsapi.general.MainActivity;
 import com.jws.jwsapi.general.user.UsersManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
@@ -31,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class HomeFragment extends Fragment{
 
     private HomeFragmentBinding binding;
-    private ButtonProvider_Principal buttonProvider;
+    private HomeButtonProvider buttonProvider;
     MainActivity mainActivity;
     WeighingViewModel weighingViewModel;
     HomeViewModel homeViewModel;
@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment{
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        buttonProvider = ButtonProviderSingletonPrincipal.getInstance().getButtonProvider();
+        buttonProvider = HomeButtonProviderSingleton.getInstance().getButtonProvider();
         binding = HomeFragmentBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }

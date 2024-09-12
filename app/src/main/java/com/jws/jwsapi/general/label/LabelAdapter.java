@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.general.MainActivity;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.general.adapter.AdapterMultimedia;
-import com.jws.jwsapi.general.data.PreferencesManager;
+import com.jws.jwsapi.general.utils.AdapterCommon;
+import com.jws.jwsapi.general.data.local.PreferencesManager;
 import com.jws.jwsapi.general.utils.AdapterHelper;
 import com.jws.jwsapi.general.utils.Utils;
 import java.util.ArrayList;
@@ -248,7 +248,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
         final AppCompatButton btborrar= mView.findViewById(R.id.btborrar);
         setupSpinner(spCampo,context.getApplicationContext(),listaVariables);
 
-        AdapterMultimedia adapter;
+        AdapterCommon adapter;
         listview.setLayoutManager(new LinearLayoutManager(context));
         ListElementsArrayConcatFormat=preferencesManager.getListConcat(etiqueta,posicion);
         List<String> ListElementsArrayConcat=new ArrayList<>();
@@ -260,7 +260,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
                 ListElementsArrayConcat.add(listaVariables.get(ListElementsArrayConcatFormat.get(i)));
             }
         }
-        adapter = new AdapterMultimedia(context, ListElementsArrayConcat);
+        adapter = new AdapterCommon(context, ListElementsArrayConcat);
         adapter.setClickListener((view, position) -> posicionconcat=position);
         listview.setAdapter(adapter);
 
@@ -345,7 +345,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
 
     }
 
-    private void btBorrarClick(AdapterMultimedia adapter, List<String> ListElementsArrayConcat) {
+    private void btBorrarClick(AdapterCommon adapter, List<String> ListElementsArrayConcat) {
         if(posicionconcat< ListElementsArrayConcat.size()&&posicionconcat!=-1){
             ListElementsArrayConcatFormat.remove(posicionconcat);
             ListElementsArrayConcat.remove(posicionconcat);
@@ -357,7 +357,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
         }
     }
 
-    private void btAddClick(Spinner spCampo, AdapterMultimedia adapter, List<String> ListElementsArrayConcat) {
+    private void btAddClick(Spinner spCampo, AdapterCommon adapter, List<String> ListElementsArrayConcat) {
         if(spCampo.getSelectedItemPosition()>0&& spCampo.getSelectedItemPosition()< listaVariables.size()){
             if(ListElementsArrayConcatFormat!=null){
                 ListElementsArrayConcatFormat.add(spCampo.getSelectedItemPosition());

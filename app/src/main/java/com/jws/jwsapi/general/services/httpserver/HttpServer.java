@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import com.jws.jwsapi.general.MainActivity;
 import com.jws.jwsapi.general.files.Storage;
 import com.jws.jwsapi.general.user.UsersManager;
-import com.jws.jwsapi.general.MainFormClass;
+import com.jws.jwsapi.general.MainClass;
 import org.apache.poi.util.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -446,7 +446,7 @@ public class HttpServer extends NanoWSD {
 
     @NonNull
     private Response downloadDb() {
-        String filePath = context.getDatabasePath(MainFormClass.DB_NAME).getAbsolutePath();
+        String filePath = context.getDatabasePath(MainClass.DB_NAME).getAbsolutePath();
         InputStream fileStream;
         try {
             fileStream = new FileInputStream(new File(filePath));

@@ -15,7 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.general.data.PreferencesManagerBase;
+import com.jws.jwsapi.general.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.general.utils.Utils;
 
 import org.json.JSONArray;

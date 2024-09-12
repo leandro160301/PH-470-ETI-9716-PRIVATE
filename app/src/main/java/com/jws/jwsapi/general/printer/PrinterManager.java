@@ -11,7 +11,7 @@ import com.jws.jwsapi.general.printer.types.NetworkPrinter;
 import com.jws.jwsapi.general.printer.types.UsbPrinter;
 import com.jws.jwsapi.general.user.UsersManager;
 import com.jws.jwsapi.general.label.LabelManager;
-import com.jws.jwsapi.general.data.PreferencesManager;
+import com.jws.jwsapi.general.data.local.PreferencesManager;
 import com.jws.jwsapi.general.utils.Utils;
 import com.jws.jwsapi.R;
 import com.service.PuertosSerie.PuertosSerie2;

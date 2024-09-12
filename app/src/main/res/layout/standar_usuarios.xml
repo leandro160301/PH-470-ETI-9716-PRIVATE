@@ -64,7 +64,7 @@
                                             android:background="@drawable/banner_menu_"
                                             android:orientation="vertical">
 
-                                            <com.jws.jwsapi.general.customviews.RecyclerViewScroll
+                                            <com.jws.jwsapi.general.views.RecyclerViewScroll
                                                 android:id="@+id/listausuarios"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"

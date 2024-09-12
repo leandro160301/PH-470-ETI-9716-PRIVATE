@@ -15,12 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.general.data.PreferencesManagerBase;
+import com.jws.jwsapi.general.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.general.services.FtpInit;
 import com.jws.jwsapi.general.services.httpserver.InitServer;
 import com.jws.jwsapi.general.files.Storage;
 import com.jws.jwsapi.general.user.UsersManager;
-import com.jws.jwsapi.general.dialog.DialogButtonInterface;
 import com.jws.jwsapi.general.utils.Utils;
 import java.io.IOException;
 import javax.inject.Inject;
@@ -30,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity{
     public static String VERSION ="PH 470 BZA 1.00";
     public JwsManager jwsObject;
-    public MainFormClass mainClass;
+    public MainClass mainClass;
     public Storage storage;
     InitServer initServer;
     public PreferencesManagerBase preferencesManagerBase;
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initMainClass() {
-        mainClass = new MainFormClass(this,this,usersManager);
+        mainClass = new MainClass(this,this,usersManager);
         mainClass.init();
     }
 
@@ -114,16 +113,13 @@ public class MainActivity extends AppCompatActivity{
     public void clearCache(){
         Context context=getApplicationContext();
         if(usersManager.getNivelUsuario()>2){
-            dialogText(this, "¿Esta seguro de volver a los valores de fabrica del equipo?", "RESER", new DialogButtonInterface() {
-                @Override
-                public void buttonClick() {
-                    // Elimina la caché de la aplicación
-                    deleteCache(context);
-                    // Puedes agregar más código para eliminar otros datos específicos de tu aplicación si es necesario
-                    deleteDatabase(MainFormClass.DB_NAME);
-                    deleteDatabase("bza-database");
-                    jwsObject.jwsReboot("");
-                }
+            dialogText(this, "¿Esta seguro de volver a los valores de fabrica del equipo?", "RESER", () -> {
+                // Elimina la caché de la aplicación
+                deleteCache(context);
+                // Puedes agregar más código para eliminar otros datos específicos de tu aplicación si es necesario
+                deleteDatabase(MainClass.DB_NAME);
+                deleteDatabase("bza-database");
+                jwsObject.jwsReboot("");
             });
         }else{
             Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,this);

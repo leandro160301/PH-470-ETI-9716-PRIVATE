@@ -2,7 +2,7 @@ package com.jws.jwsapi.general.services;
 
 import android.content.Context;
 import android.os.Environment;
-import com.jws.jwsapi.general.data.PreferencesManagerBase;
+import com.jws.jwsapi.general.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.general.user.UserModel;
 import com.jws.jwsapi.general.user.UsersManager;
 import org.apache.ftpserver.ConnectionConfigFactory;

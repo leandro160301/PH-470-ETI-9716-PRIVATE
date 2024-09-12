@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.MainActivity;
-import com.jws.jwsapi.general.adapter.AdapterMultimedia2;
+import com.jws.jwsapi.general.utils.AdapterCommonFix;
 import com.jws.jwsapi.general.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,7 +127,7 @@ public class Storage {
         Button bt_csv = mView.findViewById(R.id.bt_csv);
         Button bt_captura = mView.findViewById(R.id.bt_captura);
         RecyclerView recyclerView=mView.findViewById(R.id.listview);
-        AdapterMultimedia2 adapter =seteo(".pdf",recyclerView);
+        AdapterCommonFix adapter =seteo(".pdf",recyclerView);
         adapter.setClickListener((view, position) -> {
             String archivo = "/storage/emulated/0/Memoria/";
             FileDialog=adapter.getItem(position);
@@ -139,7 +139,7 @@ public class Storage {
         dialogusb.show();
         bt_pdf.setOnClickListener(view -> {
             file=null;
-            AdapterMultimedia2 adapter1 =seteo(".pdf",recyclerView);
+            AdapterCommonFix adapter1 =seteo(".pdf",recyclerView);
             adapter1.setClickListener((view1, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter1.getItem(position);
@@ -149,7 +149,7 @@ public class Storage {
         });
         bt_captura.setOnClickListener(view -> {
             file=null;
-            AdapterMultimedia2 adapter1 =seteo(".png",recyclerView);
+            AdapterCommonFix adapter1 =seteo(".png",recyclerView);
             adapter1.setClickListener((view1, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter1.getItem(position);
@@ -159,7 +159,7 @@ public class Storage {
         });
         bt_excel.setOnClickListener(view -> {
             file=null;
-            AdapterMultimedia2 adapter12 =seteo(".xls",recyclerView);
+            AdapterCommonFix adapter12 =seteo(".xls",recyclerView);
             adapter12.setClickListener((view13, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter12.getItem(position);
@@ -169,7 +169,7 @@ public class Storage {
         });
         bt_csv.setOnClickListener(view -> {
             file=null;
-            AdapterMultimedia2 adapter13 =seteo(".csv",recyclerView);
+            AdapterCommonFix adapter13 =seteo(".csv",recyclerView);
             adapter13.setClickListener((view12, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter13.getItem(position);
@@ -251,9 +251,9 @@ public class Storage {
 
     }
 
-    public AdapterMultimedia2 seteo(String tipo, RecyclerView recyclerView) {
+    public AdapterCommonFix seteo(String tipo, RecyclerView recyclerView) {
         List<String> ListElementsArrayList2=new ArrayList<>();
-        AdapterMultimedia2 adapter3 = new AdapterMultimedia2(activity, ListElementsArrayList2);
+        AdapterCommonFix adapter3 = new AdapterCommonFix(activity, ListElementsArrayList2);
         File  root = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
         if(root.exists()){
             File[] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(tipo));
@@ -275,7 +275,7 @@ public class Storage {
                 }
             }
             recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-            adapter3 = new AdapterMultimedia2(activity, ListElementsArrayList2);
+            adapter3 = new AdapterCommonFix(activity, ListElementsArrayList2);
             recyclerView.setAdapter(adapter3);
         }
         return adapter3;

@@ -12,7 +12,7 @@ import com.jws.jwsapi.general.pallet.PalletDao;
 import com.jws.jwsapi.general.pallet.PalletService;
 import com.jws.jwsapi.general.label.LabelManager;
 import com.jws.jwsapi.general.shared.PalletRepository;
-import com.jws.jwsapi.general.data.PreferencesManager;
+import com.jws.jwsapi.general.data.local.PreferencesManager;
 import com.jws.jwsapi.general.weighing.WeighingApi;
 import com.jws.jwsapi.general.weighing.WeighingDao;
 import com.jws.jwsapi.general.weighing.WeighingService;

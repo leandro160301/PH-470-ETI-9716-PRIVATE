@@ -12,7 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.general.data.PreferencesManager;
+import com.jws.jwsapi.general.data.local.PreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;

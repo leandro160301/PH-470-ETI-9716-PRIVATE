@@ -14,9 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.base.ui.activities.MainActivity;
+import com.jws.jwsapi.general.MainActivity;
 import com.jws.jwsapi.databinding.FragmentPalletBinding;
-import com.jws.jwsapi.general.toast.ToastHelper;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 

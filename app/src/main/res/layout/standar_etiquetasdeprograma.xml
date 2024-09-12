@@ -38,7 +38,7 @@
                         android:background="@drawable/banner_menu_"
                         android:orientation="vertical">
 
-                        <com.jws.jwsapi.base.customviews.RecyclerViewScroll
+                        <com.jws.jwsapi.general.customviews.RecyclerViewScroll
                             android:id="@+id/lista_ingredientes"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

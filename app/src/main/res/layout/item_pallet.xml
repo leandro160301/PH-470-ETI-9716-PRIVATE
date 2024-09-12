@@ -107,7 +107,7 @@
 
                     <TextView
                         android:id="@+id/tv_pallet_total_header"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
@@ -122,7 +122,7 @@
 
                     <TextView
                         android:id="@+id/tv_pallet_total"
-                        android:layout_width="wrap_content"
+                        android:layout_width="25dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"

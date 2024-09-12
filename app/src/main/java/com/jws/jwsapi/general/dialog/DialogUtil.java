@@ -14,7 +14,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.DialogoDosopcionesBinding;
 import com.jws.jwsapi.databinding.DialogoDosopcionescheckboxBinding;
 import com.jws.jwsapi.databinding.DialogoDossinetBinding;
-import com.jws.jwsapi.utils.Utils;
+import com.jws.jwsapi.general.utils.Utils;
 
 public class DialogUtil {
 

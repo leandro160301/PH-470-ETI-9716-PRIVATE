@@ -39,11 +39,6 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="DialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/fadein2</item>
-        <item name="android:windowExitAnimation">@anim/fadeout2</item>
-    </style>
-
 
     <style name="AppTheme2.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar"
         >
@@ -97,12 +92,6 @@
         <item name="recyclerViewStyle">@style/RecyclerViewStyle</item>
 
 
-    </style>
-
-
-    <style name="splashScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_image</item>
-        <item name="android:statusBarColor">@color/blanco</item>
     </style>
 
 

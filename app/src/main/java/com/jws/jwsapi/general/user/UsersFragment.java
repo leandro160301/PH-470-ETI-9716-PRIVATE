@@ -102,7 +102,7 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
             if (areFieldsValid(nombre, usuario, contrasena, codigo)) {
                 long id;
                 try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), UserManager.DB_USERS_NAME, null, UserManager.DB_USERS_VERSION)) {
-                    id = dbHelper.newUser(nombre, usuario, contrasena, codigo, binding.spinnertipo.getSelectedItem().toString(), "SI", "SI", "SI");
+                    id = dbHelper.createUser(nombre, usuario, contrasena, codigo, binding.spinnertipo.getSelectedItem().toString(), "SI", "SI", "SI");
                 }
                 if (id != -1) {
                     AgregarItemLista((int) id, nombre, usuario, contrasena, codigo, binding.spinnertipo.getSelectedItem().toString(),userManager.getUsers());

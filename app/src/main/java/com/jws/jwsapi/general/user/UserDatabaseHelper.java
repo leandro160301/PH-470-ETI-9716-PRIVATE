@@ -31,7 +31,7 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
     }
 
 
-    public long newUser(String nombre, String usuario, String password, String codigo, String tipo, String Permiso1, String Permiso2, String Permiso3) {
+    public long createUser(String nombre, String usuario, String password, String codigo, String tipo, String Permiso1, String Permiso2, String Permiso3) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -44,7 +44,7 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         values.put("Permiso2", Permiso2);
         values.put("Permiso3", Permiso3);
 
-        long id = -1;  // Inicializamos id con un valor predeterminado
+        long id = -1;
 
         try {
             id = db.insertOrThrow("usuarios", null, values);
@@ -58,19 +58,15 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
 
     public void deleteAllUsers() {
         SQLiteDatabase db = this.getWritableDatabase();
-
         String query = "DELETE FROM usuarios";
         db.execSQL(query);
-
         db.close();
     }
 
     public void deleteUser(String user) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         String query = "DELETE FROM usuarios WHERE usuario='"+user+"'";
         db.execSQL(query);
-
         db.close();
     }
 
@@ -134,16 +130,13 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
     public int getQuantity() {
         int count = 0;
         SQLiteDatabase db = this.getReadableDatabase();
-
         String query = "SELECT COUNT(*) FROM usuarios";
         Cursor cursor = db.rawQuery(query, null);
-
         if (cursor.moveToFirst()) {
             count = cursor.getInt(0);
         }
         cursor.close();
         db.close();
-
         return count;
     }
 

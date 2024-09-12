@@ -4,6 +4,7 @@ import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
 import static com.jws.jwsapi.general.dialog.DialogUtil.keyboard;
 import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardInt;
 import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardPassword;
+import static com.jws.jwsapi.general.user.UserManager.ROLE_SUPERVISOR;
 import static com.jws.jwsapi.general.utils.SpinnerHelper.setupSpinner;
 
 import android.app.AlertDialog;
@@ -94,7 +95,7 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
     }
 
     private void handleCreateUserButton(DialogoUsuarioBinding binding, AlertDialog dialog) {
-        if (userManager.getNivelUsuario() > 2) {
+        if (userManager.getUserLevel() > ROLE_SUPERVISOR) {
             String nombre= binding.tvnNombre.getText().toString();
             String usuario= binding.tvnUsuario.getText().toString();
             String contrasena= binding.tvnContrasena.getText().toString();
@@ -144,7 +145,6 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
         binding.tvnNombre.setText("");
     }
 
-
     public void AgregarItemLista(int id,String nombre, String usuario, String password,String codigo,String tipo, List<UserModel> ListElementsArrayList){
         ListElementsArrayList.add(new UserModel(id,nombre,usuario,password,codigo,tipo));
         adapter.filterList(ListElementsArrayList);
@@ -158,7 +158,7 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
 
     @Override
     public void deleteUser(List<UserModel> mData, int posicion) {
-        if(userManager.getNivelUsuario()>2){
+        if(userManager.getUserLevel()>ROLE_SUPERVISOR){
             if (mData.size() > 0) {
                 if(!mData.get(posicion).getName().equals(userManager.getUsuarioActual())){
                     dialogText(getContext(), "Quiere eliminar el usuario " + mData.get(posicion).getName() + "?", "ELIMINAR", () -> {

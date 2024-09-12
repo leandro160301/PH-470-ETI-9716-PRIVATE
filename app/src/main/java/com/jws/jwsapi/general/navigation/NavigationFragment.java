@@ -76,7 +76,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
     public void onItemClick(View view, int position) {
         menuElegido =position;
         if(position==0){
-            if(userManager.getNivelUsuario()>1){
+            if(userManager.getUserLevel()>1){
                 ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.service);
                 Bundle args = new Bundle();
                 args.putSerializable("instanceService", mainActivity.mainClass.service);
@@ -103,7 +103,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             CargarDatosADinamico(ListElementsArrayListdinamicos1);
         }
         if(position==3){
-            if(userManager.getNivelUsuario()>2){
+            if(userManager.getUserLevel()>2){
                 mainActivity.mainClass.openFragment(new UsersFragment());
             }else{
                 Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
@@ -158,7 +158,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         lr_dinamico2.setVisibility(View.INVISIBLE);
         jwsManager= JwsManager.create(requireActivity());
 
-        cantidadUsuarios = userManager.cantidadUsuarios();
+        cantidadUsuarios = userManager.usersQuantity();
 
 
         ListElementsArrayList=new ArrayList<>(Arrays.asList(ListElements));
@@ -214,7 +214,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         adapterDinamicos1.setClickListener((view, position) -> {
             menuElegido2=position;
             if(menuElegido ==1){
-                if(userManager.getNivelUsuario()>1){
+                if(userManager.getUserLevel()>1){
                     if(position==0){
 //                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionPrograma());
                     }
@@ -246,7 +246,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
 
             if(menuElegido ==4){
                 if(position==0){
-                    if(userManager.getNivelUsuario()>1){
+                    if(userManager.getUserLevel()>1){
                         DialogoCambiarHorayFecha();
                     }
                     else{
@@ -254,7 +254,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                     }
                 }
                 if(position==1){
-                    if(userManager.getNivelUsuario()>1){
+                    if(userManager.getUserLevel()>1){
                         DialogoCambiarTema();
                     }
                     else{
@@ -296,7 +296,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         recycler3.setAdapter(adapterDinamicos2);
         adapterDinamicos2.setClickListener((view, position) -> {
             if(menuElegido ==5){
-                if(userManager.getNivelUsuario()>1){
+                if(userManager.getUserLevel()>1){
                     if(menuElegido2==0){
                         if(position==0){
                             mainActivity.mainClass.openFragment(new PrinterFragment());

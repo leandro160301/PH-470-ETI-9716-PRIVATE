@@ -197,23 +197,23 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         runnable = new Runnable() {
             @Override
             public void run() {
-                if(userManager.getNivelUsuario()==4&&iconflag!=4){
+                if(userManager.getUserLevel()==4&&iconflag!=4){
                     imuser.setImageResource(R.drawable.icono_programador);
                     iconflag=4;
                 }
-                if(userManager.getNivelUsuario()==3&&iconflag!=3){
+                if(userManager.getUserLevel()==3&&iconflag!=3){
                     imuser.setImageResource(R.drawable.icono_administrador);
                     iconflag=3;
                 }
-                if(userManager.getNivelUsuario()==2&&iconflag!=2){
+                if(userManager.getUserLevel()==2&&iconflag!=2){
                     imuser.setImageResource(R.drawable.icono_supervisor);
                     iconflag=2;
                 }
-                if(userManager.getNivelUsuario()==1&&iconflag!=1){
+                if(userManager.getUserLevel()==1&&iconflag!=1){
                     imuser.setImageResource(R.drawable.icon_user);
                     iconflag=1;
                 }
-                if(userManager.getNivelUsuario()==0&&iconflag!=0){
+                if(userManager.getUserLevel()==0&&iconflag!=0){
                     imuser.setImageResource(R.drawable.icono_nologin);
                     iconflag=0;
                 }

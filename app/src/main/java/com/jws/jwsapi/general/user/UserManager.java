@@ -35,7 +35,12 @@ public class UserManager {
     public static String DB_USERS_NAME ="Usuarios_DB";
     public static int DB_USERS_VERSION =1;
     String usuario ="";
-    int nivelUsuario =0; //0 no logeado, 1 operador, 2 supervisor, 3 administrador, 4 programador
+    int userLevel =0;
+    public static final int ROLE_NOT_LOGGED = 0;
+    public static final int ROLE_OPERATOR = 1;
+    public static final int ROLE_SUPERVISOR = 2;
+    public static final int ROLE_ADMINISTRATOR = 3;
+    public static final int ROLE_PROGRAMMER = 4;
     public static final String[] USUARIOS = {
             "ADMINISTRADOR", "PROGRAMADOR",
     };
@@ -47,7 +52,7 @@ public class UserManager {
     }
 
 
-    public int cantidadUsuarios(){
+    public int usersQuantity(){
         List<UserModel> lista= getUsers();
         if(lista!=null){
             return lista.size();
@@ -63,6 +68,7 @@ public class UserManager {
         }
         return lista;
     }
+
     public void BotonLogeo (Context context,AppCompatActivity activity){
         PreferencesManagerBase preferencesManagerBase=new PreferencesManagerBase(application);
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
@@ -88,21 +94,17 @@ public class UserManager {
 
         });
         Guardar.setOnClickListener(view -> {
-            if(!password.equals("") && !spinner.getSelectedItem().toString().equals("")){
+            if(!password.isEmpty() && !spinner.getSelectedItem().toString().isEmpty()){
                 boolean logeo=false;
                 if((password.equals(preferencesManagerBase.consultaPIN())) && spinner.getSelectedItemPosition()==0){
-                    nivelUsuario =3;
+                    userLevel = ROLE_ADMINISTRATOR;
                     logeo=true;
                     usuario ="ADMINISTRADOR";
-                   // Utils.Mensaje("LOGEO CORRECTO",R.layout.item_customtoastok,this);
-
                 }
                 if((password.equals("3031")) && spinner.getSelectedItemPosition()==1){
-                    nivelUsuario =4;
+                    userLevel = ROLE_PROGRAMMER;
                     logeo=true;
                     usuario ="PROGRAMADOR";
-                  //  Utils.Mensaje("LOGEO CORRECTO",R.layout.item_customtoastok,this);
-
                 }
                 if(!logeo){
                     BuscarUsuario(spinner.getSelectedItem().toString(), password,activity);
@@ -119,8 +121,7 @@ public class UserManager {
 
     public void logout(){
         usuario ="";
-        nivelUsuario =0;
-
+        userLevel =0;
     }
 
     public List<String> DevuelveListaUsuarios(){
@@ -148,6 +149,7 @@ public class UserManager {
             textView.setText(copia);
         }, PasswordTransformationMethod.getInstance());
     }
+
     public void BuscarUsuario(String user, String contrasenia, AppCompatActivity activity){
         List<UserModel> lista;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
@@ -162,10 +164,10 @@ public class UserManager {
                     if(lista.get(i).getPassword().equals(contrasenia)){
                         usuario = lista.get(i).getName();
                         if(Objects.equals(lista.get(i).getType(), "Supervisor")){
-                            nivelUsuario=2;
+                            userLevel = ROLE_SUPERVISOR;
                         }
                         if(Objects.equals(lista.get(i).getType(), "Operador")){
-                            nivelUsuario=1;
+                            userLevel = ROLE_OPERATOR;
                         }
                         Utils.Mensaje("LOGEO CORRECTO",R.layout.item_customtoastok,activity);
                     }
@@ -220,8 +222,8 @@ public class UserManager {
     public String getUsuarioActual(){
         return usuario;
     }
-    public int getNivelUsuario(){
-        return nivelUsuario;
+    public int getUserLevel(){
+        return userLevel;
     }
     public Boolean modificarDatos(){
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application,DB_USERS_NAME, null, DB_USERS_VERSION)) {
@@ -229,7 +231,7 @@ public class UserManager {
             if(cantidad==0){
                 return true;
             }else{
-                return getNivelUsuario() > 1;
+                return getUserLevel() > ROLE_OPERATOR;
             }
         }
     }

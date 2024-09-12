@@ -1,5 +1,6 @@
 package com.jws.jwsapi;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,9 +13,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
-    public String Version="FRM 1.04";
+    public String Version="BZA 1.00";
     Intent hidenav;
     ImageView imageView;
     TextView tvVersion;
@@ -34,7 +36,6 @@ public class SplashActivity extends AppCompatActivity {
         tvVersion.setText(Version);
        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
 
-       // Asignar la animación al TextView
        imageView.startAnimation(fadeIn);
 
        // Hacer que el TextView sea visible cuando la animación termine

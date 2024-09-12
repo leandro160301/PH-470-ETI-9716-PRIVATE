@@ -106,7 +106,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
         int posi=position;
         try {
             setupSpinner(holder.spCampo,context.getApplicationContext(),listaVariables);
-            holder.tv_campo.setText(mData.get(posi).nombrecampo);
+            holder.tv_campo.setText(mData.get(posi).getFieldName());
             updateViews(holder, posi);
         } catch (Exception e) {
             e.printStackTrace();

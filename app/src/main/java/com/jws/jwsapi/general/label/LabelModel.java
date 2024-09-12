@@ -2,16 +2,29 @@ package com.jws.jwsapi.general.label;
 
 public class LabelModel {
 
-    public String nombrecampo;
-    public int posicion;
+    private String fieldName;
+    private int position;
 
-    // Constructor
-    public LabelModel(String nombre, int posicion) {
-        this.nombrecampo = nombre;
-        this.posicion = posicion;
-
+    public LabelModel(String fieldName, int position) {
+        this.fieldName = fieldName;
+        this.position = position;
     }
 
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
 
 

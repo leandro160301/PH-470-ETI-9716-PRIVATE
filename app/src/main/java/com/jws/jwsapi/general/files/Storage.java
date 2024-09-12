@@ -63,8 +63,8 @@ public class Storage {
     public void init(){
         startUsbRead.run();
     }
+
     Runnable startUsbRead = new Runnable() {
-        //Runnable que se encarga de leer si ingresa un pendrive usb
         @Override
         public void run() {
             verificaMemoriaUSB();
@@ -337,7 +337,6 @@ public class Storage {
         InputStream in = new FileInputStream(src);
         OutputStream out = new FileOutputStream(dst);
 
-        // Transfer bytes from in to out
         byte[] buf = new byte[1024];
         int len;
         while ((len = in.read(buf)) > 0) {

@@ -137,6 +137,24 @@
         android:supportsRtl="true">
 
 
+
+        <activity
+            android:name="com.jws.jwsapi.general.SplashActivity"
+            android:clearTaskOnLaunch="true"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:largeHeap="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:stateNotNeeded="true">
+            <intent-filter tools:ignore="ExtraText">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
         <activity
             android:name="com.jws.jwsapi.general.MainActivity"
             android:clearTaskOnLaunch="true"

@@ -6,10 +6,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.files.Storage;
 import com.jws.jwsapi.general.user.UsersManager;
-import com.jws.jwsapi.general.MainClass;
+import com.jws.jwsapi.MainClass;
 import org.apache.poi.util.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;

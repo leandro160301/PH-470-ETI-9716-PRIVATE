@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 import com.harrysoft.androidbluetoothserial.BluetoothManager;
 import com.harrysoft.androidbluetoothserial.BluetoothSerialDevice;
 import com.harrysoft.androidbluetoothserial.SimpleBluetoothDeviceInterface;
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.utils.Utils;
 

@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.user.UsersManager;
 
 import org.json.JSONException;

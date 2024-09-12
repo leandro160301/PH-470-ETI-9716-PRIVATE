@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.android.jws.JwsManager;
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;

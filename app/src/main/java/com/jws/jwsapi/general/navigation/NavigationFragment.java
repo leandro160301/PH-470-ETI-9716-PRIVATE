@@ -21,7 +21,7 @@ import com.android.jws.JwsManager;
 import com.jws.jwsapi.general.label.LabelProgramFragment;
 import com.jws.jwsapi.general.printer.PrinterFragment;
 import com.jws.jwsapi.general.files.FileFragment;
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.user.UsersManager;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.label.LabelFragment;

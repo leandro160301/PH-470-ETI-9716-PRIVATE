@@ -1,7 +1,6 @@
 package com.jws.jwsapi.general.network
 
-import com.jws.jwsapi.general.MainActivity
-import com.jws.jwsapi.R
+import com.jws.jwsapi.MainActivity
 import com.jws.jwsapi.general.utils.Utils
 import java.io.IOException
 import java.net.DatagramPacket

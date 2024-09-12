@@ -3,7 +3,7 @@ package com.jws.jwsapi.general.printer.types;
 import android.content.Context;
 import android.hardware.usb.UsbManager;
 
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.printer.types.usb.more.DiscoveredPrinterListAdapter;
 import com.jws.jwsapi.general.printer.types.usb.more.SelectedPrinterManager;
 import com.jws.jwsapi.R;

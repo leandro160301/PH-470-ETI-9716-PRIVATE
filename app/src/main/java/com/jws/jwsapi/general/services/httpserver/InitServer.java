@@ -9,7 +9,7 @@ import android.media.projection.MediaProjectionManager;
 import android.os.IBinder;
 import android.provider.Settings;
 import androidx.core.content.ContextCompat;
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.user.UsersManager;
 
 

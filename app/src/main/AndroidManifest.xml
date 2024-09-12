@@ -139,7 +139,7 @@
 
 
         <activity
-            android:name="com.jws.jwsapi.general.SplashActivity"
+            android:name="com.jws.jwsapi.SplashActivity"
             android:clearTaskOnLaunch="true"
             android:exported="true"
             android:launchMode="singleTop"
@@ -156,7 +156,7 @@
 
 
         <activity
-            android:name="com.jws.jwsapi.general.MainActivity"
+            android:name="com.jws.jwsapi.MainActivity"
             android:clearTaskOnLaunch="true"
             android:exported="true"
             android:largeHeap="true"

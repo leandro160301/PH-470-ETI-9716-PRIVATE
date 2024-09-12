@@ -16,7 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.utils.AdapterCommon;
 import com.jws.jwsapi.general.data.local.PreferencesManager;

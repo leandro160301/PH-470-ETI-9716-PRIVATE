@@ -21,7 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.jws.JwsManager;
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.navigation.NavigationFragment;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.user.UsersManager;

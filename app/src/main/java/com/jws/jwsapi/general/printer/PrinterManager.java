@@ -4,7 +4,7 @@ import static com.jws.jwsapi.general.files.Storage.openAndReadFile;
 
 import android.content.Context;
 import android.util.Log;
-import com.jws.jwsapi.general.MainActivity;
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.printer.preferences.PreferencesPrinterManager;
 import com.jws.jwsapi.general.printer.types.SerialPortPrinter;
 import com.jws.jwsapi.general.printer.types.NetworkPrinter;

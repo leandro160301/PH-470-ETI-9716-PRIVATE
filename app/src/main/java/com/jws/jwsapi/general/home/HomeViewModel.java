@@ -3,7 +3,7 @@ package com.jws.jwsapi.general.home;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.jws.jwsapi.general.pallet.PalletService;
+
 import com.service.Balanzas.BalanzaService;
 
 import java.util.Timer;

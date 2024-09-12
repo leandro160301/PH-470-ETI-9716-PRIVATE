@@ -1,5 +1,6 @@
 package com.jws.jwsapi.general.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ListAdapter;
@@ -23,26 +24,21 @@ public class CustomSpinner extends androidx.appcompat.widget.AppCompatSpinner {
     @Override
     public void setAdapter(SpinnerAdapter adapter) {
         super.setAdapter(adapter);
-        // No necesita hacer nada más aquí
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean performClick() {
-        // Mostrar la ventana emergente personalizada al hacer clic en el Spinner
         showPopupWindow();
         return true;
     }
 
     private void showPopupWindow() {
-        // Crear una ventana emergente con el ListView personalizado
         PopupWindow popupWindow = new PopupWindow(getContext());
         CustomSpinnerListView listView = new CustomSpinnerListView(getContext());
 
-        // Convertir el adaptador del Spinner a ListAdapter y asignarlo al ListView
         ListAdapter listAdapter = (ListAdapter) getAdapter();
         listView.setAdapter(listAdapter);
-
-        // Configurar el ListView y la ventana emergente
         listView.setOnItemClickListener((parent, view, position, id) -> {
             setSelection(position);
             popupWindow.dismiss();

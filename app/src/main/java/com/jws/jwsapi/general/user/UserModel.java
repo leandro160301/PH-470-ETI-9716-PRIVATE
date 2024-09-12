@@ -2,15 +2,14 @@ package com.jws.jwsapi.general.user;
 
 public class UserModel {
 
-    public int id;
-    public String name;
-    public String user;
-    public String password;
-    public String code;
-    public String type;
+    private int id;
+    private String name;
+    private String user;
+    private String password;
+    private String code;
+    private String type;
 
     public UserModel(int id, String name, String user, String password, String code, String type) {
-
         this.id=id;
         this.name = name;
         this.password=password;
@@ -67,8 +66,5 @@ public class UserModel {
     public void setType(String type) {
         this.type = type;
     }
-
-
-
 
 }

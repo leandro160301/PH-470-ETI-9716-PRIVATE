@@ -1,45 +1,48 @@
 package com.jws.jwsapi.general.user;
 
 import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboard;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardInt;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardPassword;
+import static com.jws.jwsapi.general.utils.SpinnerHelper.setupSpinner;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.databinding.DialogoUsuarioBinding;
 import com.jws.jwsapi.general.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class UsersFragment extends Fragment implements UserAdapter.ItemClickListener, UserButtonClickListener {
+public class UsersFragment extends Fragment implements UserButtonClickListener {
 
     Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    TextView tv_nnombre, tv_nusuario, tv_ncontrasena,tvcodigo;
     RecyclerView recycler_usuarios;
     UserAdapter adapter;
     List<UserModel> ListElementsArrayList=new ArrayList<>();
-    String nusuario="",nnombre="",ncontrasena="",ncodigo="";
     @Inject
     UserManager userManager;
 
@@ -60,16 +63,10 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
 
         recycler_usuarios.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new UserAdapter(getContext(), ListElementsArrayList,this);
-        adapter.setClickListener(this);
         recycler_usuarios.setAdapter(adapter);
 
 
     }
-    @Override
-    public void onItemClick(View view, int position) {
-
-    }
-
     private void configuracionBotones() {
         if (buttonProvider != null) {
             bt_home = buttonProvider.getButtonHome();
@@ -88,148 +85,84 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
             bt_5.setVisibility(View.INVISIBLE);
             bt_6.setVisibility(View.INVISIBLE);
 
-            bt_1.setOnClickListener(view -> DialogoNuevoUsuario());
+            bt_1.setOnClickListener(view -> newUserDialog());
             bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
     }
 
     public void DevuelveElementos(){
-
         List<UserModel> lista= userManager.getUsers();
         for(int i=0;i<lista.size();i++){
-            ListElementsArrayList.add(new UserModel(lista.get(i).id,lista.get(i).name,lista.get(i).user,lista.get(i).password, lista.get(i).code,
-                    lista.get(i).type));
+            ListElementsArrayList.add(new UserModel(lista.get(i).getId(), lista.get(i).getName(), lista.get(i).getUser(), lista.get(i).getPassword(), lista.get(i).getCode(),
+                    lista.get(i).getType()));
         }
-
     }
 
+    public void newUserDialog() {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
+        DialogoUsuarioBinding binding = DialogoUsuarioBinding.inflate(getLayoutInflater());
 
+        setupSpinner(binding.spinnertipo,requireContext(), Arrays.asList(getResources().getStringArray(R.array.tipoUsuarios)));
 
-    public void DialogoNuevoUsuario(){
+        binding.tvnContrasena.setOnClickListener(v -> keyboardPassword(binding.tvnContrasena,"Ingrese la contraseña",getContext(),null,null));
+        binding.tvnNombre.setOnClickListener(v -> keyboard(binding.tvnNombre, "Ingrese el nombre", getContext(),null));
+        binding.tvnUsuario.setOnClickListener(v -> keyboard(binding.tvnUsuario, "Ingrese el usuario", getContext(), texto -> {
+            if(BuscarUsuario(texto)){
+                Utils.Mensaje("Ya existe un usuario igual al ingresado",R.layout.item_customtoasterror,mainActivity);
+                binding.tvnUsuario.setText("");
+            }
+        }));
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_usuario, null);
+        binding.tvcodigo.setOnClickListener(v -> keyboardInt(binding.tvcodigo, "Ingrese el codigo", getContext(), texto -> {
+            if(BuscarCodigo(texto)){
+                Utils.Mensaje("Ya existe un codigo igual al ingresado",R.layout.item_customtoasterror,mainActivity);
+                binding.tvcodigo.setText("");
+            }
+        }));
 
-
-        tv_nnombre =  mView.findViewById(R.id.tvnNombre);
-        tv_nusuario =  mView.findViewById(R.id.tvnUsuario);
-        tv_ncontrasena =  mView.findViewById(R.id.tvnContrasena);
-        tvcodigo= mView.findViewById(R.id.tvcodigo);
-        Spinner spinnertipo=mView.findViewById(R.id.spinnertipo);
-        String[] Balanzas_arrtipo = getResources().getStringArray(R.array.tipoUsuarios);
-        ArrayAdapter<String> adapter7 = new ArrayAdapter<>(requireContext(),R.layout.item_spinner,Balanzas_arrtipo);
-        adapter7.setDropDownViewResource(R.layout.item_spinner);
-        spinnertipo.setAdapter(adapter7);
-        spinnertipo.setPopupBackgroundResource(R.drawable.campollenarclickeable);
-
-        tv_nnombre.setOnClickListener(view -> DialogoSeteoVariablesNuevoUsuario(tv_nnombre));
-        tv_nusuario.setOnClickListener(view -> DialogoSeteoVariablesNuevoUsuario(tv_nusuario));
-        tv_ncontrasena.setOnClickListener(view -> DialogoSeteoVariablesNuevoUsuario(tv_ncontrasena));
-        tvcodigo.setOnClickListener(view -> DialogoSeteoVariablesNuevoUsuario(tvcodigo));
-
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-
-        mBuilder.setView(mView);
+        mBuilder.setView(binding.getRoot());
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
 
-        Guardar.setOnClickListener(view -> {
-            if(userManager.getNivelUsuario()>2){
-                if(!nnombre.equals("")&&!nusuario.equals("")
-                        &&!ncontrasena.equals("")&&!ncodigo.equals("")){
-
-                    long id=-1;
+        binding.buttons.setOnClickListener(view -> {
+            if (userManager.getNivelUsuario() > 2) {
+                String nombre=binding.tvnNombre.getText().toString();
+                String usuario=binding.tvnUsuario.getText().toString();
+                String contrasena=binding.tvnContrasena.getText().toString();
+                String codigo=binding.tvcodigo.getText().toString();
+                if (!nombre.isEmpty() && !usuario.isEmpty() && !contrasena.isEmpty() && !codigo.isEmpty()) {
+                    long id;
 
                     try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), UserManager.DB_USERS_NAME, null, UserManager.DB_USERS_VERSION)) {
-                        id=dbHelper.newUser(nnombre,nusuario,ncontrasena,ncodigo,spinnertipo.getSelectedItem().toString(),"SI","SI","SI");
+                        id = dbHelper.newUser(nombre, usuario, contrasena, codigo, binding.spinnertipo.getSelectedItem().toString(), "SI", "SI", "SI");
                     }
-                    if(id!=-1){
-                        AgregarItemLista((int) id,nnombre,nusuario,ncontrasena,ncodigo,spinnertipo.getSelectedItem().toString());
-                    }else{
-                        Utils.Mensaje("Ocurrio un error con la base de datos, haga un reset del indicador",R.layout.item_customtoasterror,mainActivity);
+                    if (id != -1) {
+                        AgregarItemLista((int) id, nombre, usuario, contrasena, codigo, binding.spinnertipo.getSelectedItem().toString());
+                    } else {
+                        Utils.Mensaje("Ocurrio un error con la base de datos, haga un reset del indicador", R.layout.item_customtoasterror, mainActivity);
                     }
-
-
-                    nnombre="";
-                    ncontrasena="";
-                    nusuario="";
-
+                    resetDialogTexts(binding);
                     dialog.cancel();
                 }
-            }else{
-                Utils.Mensaje("El user logeado no puede modificar otros usuarios",R.layout.item_customtoasterror,mainActivity);
+            } else {
+                Utils.Mensaje("El user logeado no puede modificar otros usuarios", R.layout.item_customtoasterror, mainActivity);
             }
-
-
         });
-        Cancelar.setOnClickListener(view -> {
-            nnombre="";
-            ncontrasena="";
-            nusuario="";
+
+        binding.buttonc.setOnClickListener(view -> {
+            resetDialogTexts(binding);
             dialog.cancel();
         });
-
     }
-    public void DialogoSeteoVariablesNuevoUsuario(TextView textViewelegido){
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopciones, null);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        final LinearLayout delete_text= mView.findViewById(R.id.lndelete_text);
-        delete_text.setOnClickListener(view -> userInput.setText(""));
-        TextView textView=mView.findViewById(R.id.textViewt);
-        textView.setText("Ingrese");
-
-        if(textViewelegido== tvcodigo|| textViewelegido==tv_ncontrasena){
-            userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-        }
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            if(textViewelegido== tv_nnombre){
-                nnombre=userInput.getText().toString();
-                tv_nnombre.setText(userInput.getText().toString());
-            }
-            if(textViewelegido== tv_nusuario){
-                if(!BuscarUsuario(userInput.getText().toString())){
-                    nusuario=userInput.getText().toString();
-                    tv_nusuario.setText(userInput.getText().toString());
-                }
-                else{
-                    Utils.Mensaje("Ya existe un user igual al ingresado",R.layout.item_customtoasterror,mainActivity);
-                }
-
-            }
-            if(textViewelegido== tv_ncontrasena){
-                ncontrasena=userInput.getText().toString();
-                tv_ncontrasena.setText(userInput.getText().toString());
-            }
-
-            if(textViewelegido==tvcodigo){
-                if(!BuscarCodigo(userInput.getText().toString())){
-                    ncodigo=userInput.getText().toString();
-                    tvcodigo.setText(userInput.getText().toString());
-                }
-                else{
-                    Utils.Mensaje("Ya existe un code igual al ingresado",R.layout.item_customtoasterror,mainActivity);
-                }
-
-            }
-
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-
+    private void resetDialogTexts(DialogoUsuarioBinding binding) {
+        binding.tvcodigo.setText("");
+        binding.tvnUsuario.setText("");
+        binding.tvnNombre.setText("");
     }
+
+
     public void AgregarItemLista(int id,String nombre, String usuario, String password,String codigo,String tipo){
 
         ListElementsArrayList.add(new UserModel(id,nombre,usuario,password,codigo,tipo));
@@ -238,18 +171,14 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
 
     }
 
-    public boolean BuscarNombre(String nombre){
-        return false;
-
-    }
     public boolean BuscarUsuario(String user){
 
-        List<UserModel> lista=new ArrayList<>();
+        List<UserModel> lista;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), UserManager.DB_USERS_NAME, null, UserManager.DB_USERS_VERSION)) {
             lista=dbHelper.getAllUsers();
         }
         for(int i=0;i<lista.size();i++){
-            if(lista.get(i).user.equals(user)){
+            if(lista.get(i).getUser().equals(user)){
                 return true;
             }
         }
@@ -261,7 +190,7 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
             lista=dbHelper.getAllUsers();
         }
         for(int i=0;i<lista.size();i++){
-            if(lista.get(i).code.equals(codigo)){
+            if(lista.get(i).getCode().equals(codigo)){
                 return true;
             }
         }
@@ -270,20 +199,20 @@ public class UsersFragment extends Fragment implements UserAdapter.ItemClickList
 
 
     @Override
-    public void eliminarUsuario(List<UserModel> mData, int posicion) {
+    public void deleteUser(List<UserModel> mData, int posicion) {
         if(userManager.getNivelUsuario()>2){
             if (mData.size() > 0) {
-                if(!mData.get(posicion).name.equals(userManager.getUsuarioActual())){
-                    dialogText(getContext(), "Quiere eliminar el user " + mData.get(posicion).name + "?", "ELIMINAR", () -> {
+                if(!mData.get(posicion).getName().equals(userManager.getUsuarioActual())){
+                    dialogText(getContext(), "Quiere eliminar el usuario " + mData.get(posicion).getName() + "?", "ELIMINAR", () -> {
                         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(mainActivity, UserManager.DB_USERS_NAME, null, UserManager.DB_USERS_VERSION)) {
-                            dbHelper.deleteUser(mData.get(posicion).user);
+                            dbHelper.deleteUser(mData.get(posicion).getUser());
                         }
                         mData.remove(posicion);
                         adapter.filterList(mData);
                     });
                 }
                 else {
-                    Utils.Mensaje("No puedes eliminar el user actual",R.layout.item_customtoasterror,mainActivity);
+                    Utils.Mensaje("No puedes eliminar el usuario actual",R.layout.item_customtoasterror,mainActivity);
                 }
             }
             else {

@@ -35,11 +35,11 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("name", nombre);
-        values.put("user", usuario);
+        values.put("nombre", nombre);
+        values.put("usuario", usuario);
         values.put("password", password);
-        values.put("code", codigo);
-        values.put("type", tipo);
+        values.put("codigo", codigo);
+        values.put("tipo", tipo);
         values.put("Permiso1",Permiso1);
         values.put("Permiso2", Permiso2);
         values.put("Permiso3", Permiso3);

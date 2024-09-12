@@ -130,7 +130,7 @@ public class UserManager {
         }
         List<String> listElementsArrayList = new ArrayList<>(Arrays.asList(USUARIOS));
         for(int i=0;i<lista.size();i++){
-            listElementsArrayList.add(lista.get(i).user);
+            listElementsArrayList.add(lista.get(i).getUser());
         }
         if(listElementsArrayList.size()>0){
             return listElementsArrayList;
@@ -159,12 +159,12 @@ public class UserManager {
             }
             else{
                 for(int i=0;i<lista.size();i++){
-                    if(lista.get(i).password.equals(contrasenia)){
-                        usuario =lista.get(i).name;
-                        if(Objects.equals(lista.get(i).type, "Supervisor")){
+                    if(lista.get(i).getPassword().equals(contrasenia)){
+                        usuario = lista.get(i).getName();
+                        if(Objects.equals(lista.get(i).getType(), "Supervisor")){
                             nivelUsuario=2;
                         }
-                        if(Objects.equals(lista.get(i).type, "Operador")){
+                        if(Objects.equals(lista.get(i).getType(), "Operador")){
                             nivelUsuario=1;
                         }
                         Utils.Mensaje("LOGEO CORRECTO",R.layout.item_customtoastok,activity);
@@ -206,9 +206,9 @@ public class UserManager {
         for(int i=0; i<lista.size();i++){
             JSONObject Usuario = new JSONObject();
             try {
-                Usuario.put("Id", lista.get(i).id);
-                Usuario.put("Nombre", lista.get(i).name);
-                Usuario.put("Usuario", lista.get(i).user);
+                Usuario.put("Id", lista.get(i).getId());
+                Usuario.put("Nombre", lista.get(i).getName());
+                Usuario.put("Usuario", lista.get(i).getUser());
                 jsonArray.put(Usuario);
 
             } catch (JSONException e) {

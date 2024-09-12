@@ -65,12 +65,13 @@ public class FtpInit {
         }
 
     }
+
     public void cargadeUsuariosFtp(FtpServerFactory serverFactory){
         List<UserModel> lista= listaUsuarios;
         for (UserModel usuario : lista) {
             BaseUser user = new BaseUser();
-            user.setName(usuario.user);
-            user.setPassword(usuario.password);
+            user.setName(usuario.getUser());
+            user.setPassword(usuario.getPassword());
             user.setHomeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath());
             try {
                 serverFactory.getUserManager().save(user);

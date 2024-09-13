@@ -20,9 +20,9 @@ public class WeighingViewHolder extends RecyclerView.ViewHolder {
 
         binding.tvWeighingCode.setText(weighing.getCode());
         binding.tvWeighingName.setText(weighing.getName());
-        binding.tvWeighingNet.setText(weighFormat(weighing.getNet(),weighing));
-        binding.tvWeighingGross.setText(weighFormat(weighing.getGross(),weighing));
-        binding.tvWeighingTare.setText(weighFormat(weighing.getTare(),weighing));
+        binding.tvWeighingNet.setText(weighFormat(weighing.getNet(),weighing.getUnit()));
+        binding.tvWeighingGross.setText(weighFormat(weighing.getGross(),weighing.getUnit()));
+        binding.tvWeighingTare.setText(weighFormat(weighing.getTare(),weighing.getUnit()));
         binding.tvWeighingOperator.setText(weighing.getOperator());
         binding.tvWeighingSerialNumber.setText(weighing.getSerialNumber());
         binding.tvWeighingScale.setText(String.valueOf(weighing.getScaleNumber()));
@@ -33,7 +33,7 @@ public class WeighingViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public String weighFormat(String weight,Weighing weighing) {
-        return String.format(Locale.US, "%s%s", weight, weighing.getUnit());
+    public String weighFormat(String weight, String unit) {
+        return String.format(Locale.US, "%s%s", weight, unit);
     }
 }

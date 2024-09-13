@@ -1,8 +1,11 @@
 package com.jws.jwsapi.pallet;
 
 import android.view.View;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.jws.jwsapi.databinding.ItemPalletBinding;
+
 import java.util.Locale;
 
 public class PalletViewHolder extends RecyclerView.ViewHolder {

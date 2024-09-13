@@ -2,6 +2,7 @@ package com.jws.jwsapi.shared;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import javax.inject.Singleton;
 
 @Singleton

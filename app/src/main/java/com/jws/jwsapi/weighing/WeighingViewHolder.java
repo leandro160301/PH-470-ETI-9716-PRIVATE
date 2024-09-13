@@ -1,9 +1,12 @@
 package com.jws.jwsapi.weighing;
 
 import android.view.View;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.ItemWeighingBinding;
+
 import java.util.Locale;
 
 public class WeighingViewHolder extends RecyclerView.ViewHolder {

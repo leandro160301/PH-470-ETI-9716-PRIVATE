@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.jws.jwsapi.R;
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.FragmentPalletCreateBinding;
 import com.jws.jwsapi.general.utils.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;

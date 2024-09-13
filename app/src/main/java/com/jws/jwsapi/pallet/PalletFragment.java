@@ -14,8 +14,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.jws.jwsapi.R;
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.FragmentPalletBinding;
 import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.shared.WeighRepository;

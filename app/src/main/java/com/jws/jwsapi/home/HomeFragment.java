@@ -10,23 +10,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import com.jws.jwsapi.R;
-import com.jws.jwsapi.general.container.HomeButtonProviderSingleton;
-import com.jws.jwsapi.general.container.HomeButtonProvider;
+
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.general.user.UserManager;
+import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
+import com.jws.jwsapi.general.container.HomeButtonProvider;
+import com.jws.jwsapi.general.container.HomeButtonProviderSingleton;
+import com.jws.jwsapi.general.user.UserManager;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.pallet.PalletCreateFragment;
 import com.jws.jwsapi.pallet.PalletFragment;
-import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.weighing.WeighingFragment;
 import com.jws.jwsapi.weighing.WeighingResponse;
 import com.jws.jwsapi.weighing.WeighingViewModel;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint

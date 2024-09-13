@@ -4,23 +4,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.jws.jwsapi.R;
+
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.FragmentWeighingBinding;
-import com.jws.jwsapi.general.utils.ToastHelper;
-import com.jws.jwsapi.shared.WeighRepository;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
 import java.util.ArrayList;
-
-import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 

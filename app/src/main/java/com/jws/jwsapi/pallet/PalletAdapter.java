@@ -3,9 +3,12 @@ package com.jws.jwsapi.pallet;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.jws.jwsapi.databinding.ItemPalletBinding;
+
 import java.util.List;
 
 public class PalletAdapter extends RecyclerView.Adapter<PalletViewHolder> {

@@ -133,13 +133,23 @@ public class HomeFragment extends Fragment{
         if (buttonProvider != null) {
             setupButton(buttonProvider.getButton1(), R.string.button_text_1, null);
             setupButton(buttonProvider.getButton2(), R.string.button_text_2,
-                    v -> weighingViewModel.createWeighing("10", "5", "5","kg"));
+                    v -> btCreateWeighing());
             setupButton(buttonProvider.getButton3(), R.string.button_text_3,
                     v -> mainActivity.mainClass.openFragment(new PalletFragment()));
             setupButton(buttonProvider.getButton4(), R.string.button_text_4,
                     v -> mainActivity.mainClass.openFragment(new WeighingFragment()));
             setupButton(buttonProvider.getButton5(), R.string.button_text_5,
                     v -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
+        }
+    }
+
+    private void btCreateWeighing() {
+        String unit = repository.getUnit().getValue();
+        String tare = repository.getTare().getValue();
+        String net = repository.getNet().getValue();
+        String gross = repository.getGross().getValue();
+        if(unit!=null&&tare!=null&&net!=null&&gross!=null) {
+            weighingViewModel.createWeighing(gross, net, tare,unit);
         }
     }
 

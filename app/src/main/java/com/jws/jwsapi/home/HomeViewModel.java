@@ -31,6 +31,7 @@ public class HomeViewModel extends ViewModel {
             @Override
             public void run() {
                 repository.updateNet(scaleService.getNetoStr(1));
+                repository.updateTare(scaleService.getTaraStr(1));
                 repository.updateGross(scaleService.getBrutoStr(1));
                 repository.updateUnit(scaleService.getUnidad(1));
             }
@@ -47,10 +48,6 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<String> getUnit() {
         return repository.getUnit();
-    }
-
-    public LiveData<String> getTare() {
-        return repository.getTare();
     }
 
 

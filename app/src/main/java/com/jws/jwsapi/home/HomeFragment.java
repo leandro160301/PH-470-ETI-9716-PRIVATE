@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jws.jwsapi.MainActivity;
@@ -19,6 +20,7 @@ import com.jws.jwsapi.general.container.HomeButtonProvider;
 import com.jws.jwsapi.general.container.HomeButtonProviderSingleton;
 import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.general.utils.ToastHelper;
+import com.jws.jwsapi.general.utils.Utils;
 import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.pallet.PalletCreateFragment;
 import com.jws.jwsapi.pallet.PalletFragment;
@@ -82,6 +84,8 @@ public class HomeFragment extends Fragment{
         homeViewModel.getGross().observe(getViewLifecycleOwner(), gross -> handleWeighUpdate(gross, binding.tvGross));
 
         homeViewModel.getStable().observe(getViewLifecycleOwner(), stable -> binding.imEstable.setVisibility(stable ? View.VISIBLE : View.INVISIBLE));
+
+        homeViewModel.getTare().observe(getViewLifecycleOwner(), tare -> binding.imTare.setVisibility(Utils.isNumeric(tare) && Float.parseFloat(tare) > 0 ? View.VISIBLE : View.INVISIBLE));
 
         homeViewModel.getUnit().observe(getViewLifecycleOwner(), unit -> {
             binding.tvTotalNetUnit.setText(unit);

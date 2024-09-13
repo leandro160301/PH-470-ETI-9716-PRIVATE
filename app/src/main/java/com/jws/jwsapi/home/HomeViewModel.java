@@ -50,6 +50,10 @@ public class HomeViewModel extends ViewModel {
         return repository.getUnit();
     }
 
+    public LiveData<String> getTare() {
+        return repository.getTare();
+    }
+
     public LiveData<Boolean> getStable() {
         return repository.getStable();
     }

@@ -18,6 +18,32 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginLeft="25dp"
+                android:background="@drawable/stylekeycor7"
+                app:tabIndicatorColor="@color/transparente"
+                app:tabSelectedTextColor="@color/blanco"
+                app:tabTextAppearance="@style/TabTextAppearance"
+                app:tabTextColor="@color/grisbarrasuperior"
+                app:tabMode="scrollable">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ACTIVOS" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CERRADOS" />
+
+
+            </com.google.android.material.tabs.TabLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

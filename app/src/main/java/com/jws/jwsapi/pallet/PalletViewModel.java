@@ -2,10 +2,12 @@ package com.jws.jwsapi.pallet;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.jws.jwsapi.shared.PalletRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,12 +33,21 @@ public class PalletViewModel extends ViewModel {
     private final MutableLiveData<Integer> scale = new MutableLiveData<>();
     private final MutableLiveData<String> palletOrigin = new MutableLiveData<>();
     private final MutableLiveData<String> palletDestination = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isClosedFilter = new MutableLiveData<>();
 
     @Inject
     public PalletViewModel(PalletService palletService, PalletRepository palletRepository) {
         this.palletService = palletService;
         this.palletRepository = palletRepository;
-        this.pallets = palletService.getAllPallets();
+        pallets = Transformations.switchMap(isClosedFilter, active -> {
+            if (active != null) {
+                return palletService.getAllPallets(active);
+            } else {
+                return new MutableLiveData<>(new ArrayList<>());
+            }
+        });
+
+        isClosedFilter.setValue(false);
     }
 
     public LiveData<List<Pallet>> getPallets(){
@@ -127,5 +138,9 @@ public class PalletViewModel extends ViewModel {
 
     public void setCurrentPallet(Pallet pallet) {
         palletRepository.setCurrentPallet(pallet.getId());
+    }
+
+    public void setupPalletType(Boolean active) {
+        isClosedFilter.setValue(active);
     }
 }

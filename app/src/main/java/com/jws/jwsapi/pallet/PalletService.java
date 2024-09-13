@@ -53,7 +53,7 @@ public class PalletService {
                 });
     }
 
-    public LiveData<List<Pallet>> getAllPallets() {
-        return palletDao.getAllPallets();
+    public LiveData<List<Pallet>> getAllPallets(Boolean avaible) {
+        return palletDao.getAllPalletsAvaible(avaible);
     }
 }

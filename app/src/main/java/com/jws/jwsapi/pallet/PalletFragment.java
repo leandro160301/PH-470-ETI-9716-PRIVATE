@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.databinding.FragmentPalletBinding;
@@ -47,6 +48,9 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
 
         mainActivity=(MainActivity)getActivity();
         palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
+
+        tabLayoutListener();
+
         setupButtons();
 
         setupRecycler();
@@ -73,6 +77,28 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
         palletViewModel.getError().observe(getViewLifecycleOwner(), error
                 -> showMessage(error != null, error, R.layout.item_customtoasterror));
     }
+
+    private void tabLayoutListener() {
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(@NonNull TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                switch (position) {
+                    case 0:
+                        palletViewModel.setupPalletType(false);
+                        break;
+                    case 1:
+                        palletViewModel.setupPalletType(true);
+                        break;
+                }
+            }
+            @Override
+            public void onTabUnselected(@NonNull TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(@NonNull TabLayout.Tab tab) {}
+        });
+    }
+
 
     private void setupRecycler() {
         binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));

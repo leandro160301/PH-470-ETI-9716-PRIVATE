@@ -8,7 +8,9 @@
     <string name="dialog_palleto_input">Ingrese pallet origen</string>
     <string name="dialog_palletd_input">Ingrese pallet destino</string>
     <string name="title_new_pallet">NUEVO PALLET</string>
-    <string name="title_pallets">PALLETS ACTIVOS</string>
+    <string name="title_pallets">PALLETS</string>
+    <string name="tab_pallets_activos">ACTIVOS</string>
+    <string name="tab_pallets_cerrados">CERRADOS</string>
     <string name="dialog_close_pallet">¿quiere cerrar el pallet?</string>
     <string name="dialog_button_close_pallet">CERRAR</string>
 
@@ -340,6 +342,17 @@
     <string name="dialog_delete_pallet">¿quiere eliminar el pallet?</string>
     <string name="dialog_button_delete_pallet">ELIMINAR</string>
     <string name="title_weighings">PESADAS</string>
+    <string name="user_error_create">No puedes eliminar el usuario actual</string>
+    <string name="user_error_create_2">No puedes eliminar mas usuarios</string>
+    <string name="user_error_create_login">El usuario logeado no puede modificar otros usuarios</string>
+    <string name="user_error_code_exist">Ya existe un codigo igual al ingresado</string>
+    <string name="user_error_user_exist">Ya existe un usuario igual al ingresado</string>
+    <string name="error_reset">Ocurrio un error con la base de datos, haga un reset del indicador</string>
+    <string name="input_password">Ingrese la contraseña</string>
+    <string name="input_name">Ingrese el nombre</string>
+    <string name="input_user">Ingrese el usuario</string>
+    <string name="input_code">Ingrese el codigo</string>
+    <string name="users_title">USUARIOS</string>
 
 
 </resources>

@@ -39,7 +39,7 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
 
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    RecyclerView recycler_usuarios;
+    RecyclerView recycler;
     UserAdapter adapter;
     @Inject
     UserManager userManager;
@@ -55,17 +55,20 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         configuracionBotones();
-        recycler_usuarios =view.findViewById(R.id.listausuarios);
+        setupRecycler(view);
 
-        recycler_usuarios.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    private void setupRecycler(@NonNull View view) {
+        recycler = view.findViewById(R.id.listausuarios);
+        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new UserAdapter(getContext(), userManager.getUsers(),this);
-        recycler_usuarios.setAdapter(adapter);
-
+        recycler.setAdapter(adapter);
     }
 
     private void configuracionBotones() {
         if (buttonProvider != null) {
-            buttonProvider.getTitulo().setText("USUARIOS");
+            buttonProvider.getTitulo().setText(getString(R.string.users_title));
             buttonProvider.getButton1().setBackgroundResource(R.drawable.boton_add_i);
             buttonProvider.getButton2().setVisibility(View.INVISIBLE);
             buttonProvider.getButton3().setVisibility(View.INVISIBLE);
@@ -76,7 +79,6 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
             buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
         }
     }
-
 
     public void createUserDialog() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
@@ -108,13 +110,13 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
                 if (id != -1) {
                     AgregarItemLista((int) id, nombre, usuario, contrasena, codigo, binding.spinnertipo.getSelectedItem().toString(),userManager.getUsers());
                 } else {
-                    Utils.Mensaje("Ocurrio un error con la base de datos, haga un reset del indicador", R.layout.item_customtoasterror, mainActivity);
+                    Utils.Mensaje(getString(R.string.error_reset), R.layout.item_customtoasterror, mainActivity);
                 }
                 resetDialogTexts(binding);
                 dialog.cancel();
             }
         } else {
-            Utils.Mensaje("El user logeado no puede modificar otros usuarios", R.layout.item_customtoasterror, mainActivity);
+            Utils.Mensaje(getString(R.string.user_error_create_login), R.layout.item_customtoasterror, mainActivity);
         }
     }
 
@@ -123,17 +125,17 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
     }
 
     private void handleCreateDialogListeners(DialogoUsuarioBinding binding) {
-        binding.tvnContrasena.setOnClickListener(v -> keyboardPassword(binding.tvnContrasena,"Ingrese la contraseña",getContext(),null,null));
-        binding.tvnNombre.setOnClickListener(v -> keyboard(binding.tvnNombre, "Ingrese el nombre", getContext(),null));
-        binding.tvnUsuario.setOnClickListener(v -> keyboard(binding.tvnUsuario, "Ingrese el usuario", getContext(), texto -> {
+        binding.tvnContrasena.setOnClickListener(v -> keyboardPassword(binding.tvnContrasena,getString(R.string.input_password),getContext(),null,null));
+        binding.tvnNombre.setOnClickListener(v -> keyboard(binding.tvnNombre, getString(R.string.input_name), getContext(),null));
+        binding.tvnUsuario.setOnClickListener(v -> keyboard(binding.tvnUsuario, getString(R.string.input_user), getContext(), texto -> {
             if(searchUserOrCode(usuario -> usuario.getUser().equals(texto))){
-                Utils.Mensaje("Ya existe un usuario igual al ingresado",R.layout.item_customtoasterror,mainActivity);
+                Utils.Mensaje(getString(R.string.user_error_user_exist),R.layout.item_customtoasterror,mainActivity);
                 binding.tvnUsuario.setText("");
             }
         }));
-        binding.tvcodigo.setOnClickListener(v -> keyboardInt(binding.tvcodigo, "Ingrese el codigo", getContext(), texto -> {
+        binding.tvcodigo.setOnClickListener(v -> keyboardInt(binding.tvcodigo, getString(R.string.input_code), getContext(), texto -> {
             if(searchUserOrCode(usuario -> usuario.getCode().equals(texto))){
-                Utils.Mensaje("Ya existe un codigo igual al ingresado",R.layout.item_customtoasterror,mainActivity);
+                Utils.Mensaje(getString(R.string.user_error_code_exist),R.layout.item_customtoasterror,mainActivity);
                 binding.tvcodigo.setText("");
             }
         }));
@@ -170,14 +172,14 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
                     });
                 }
                 else {
-                    Utils.Mensaje("No puedes eliminar el usuario actual",R.layout.item_customtoasterror,mainActivity);
+                    Utils.Mensaje(getString(R.string.user_error_create),R.layout.item_customtoasterror,mainActivity);
                 }
             }
             else {
-                Utils.Mensaje("No puedes eliminar mas usuarios",R.layout.item_customtoasterror,mainActivity);
+                Utils.Mensaje(getString(R.string.user_error_create_2),R.layout.item_customtoasterror,mainActivity);
             }
         }else{
-            Utils.Mensaje("El user logeado no puede modificar otros usuarios",R.layout.item_customtoasterror,mainActivity);
+            Utils.Mensaje(getString(R.string.user_error_create_login),R.layout.item_customtoasterror,mainActivity);
         }
 
     }

@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.databinding.FragmentPalletBinding;
+import com.jws.jwsapi.databinding.FragmentWeighingBinding;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -23,14 +23,14 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class WeighingFragment extends Fragment {
 
     private WeighingAdapter weighingAdapter;
-    private FragmentPalletBinding binding;
+    private FragmentWeighingBinding binding;
     private ButtonProvider buttonProvider;
     MainActivity mainActivity;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
-        binding = FragmentPalletBinding.inflate(inflater, container, false);
+        binding = FragmentWeighingBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

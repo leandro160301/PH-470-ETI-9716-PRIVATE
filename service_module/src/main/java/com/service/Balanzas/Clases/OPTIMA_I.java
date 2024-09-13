@@ -42,7 +42,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
 
     public OnFragmentChangeListener fragmentChangeListener;
     public AppCompatActivity mainActivity;
-
+    Boolean estableBoo=false;
 
     Boolean PorDemandaBool=false;
     public PuertosSerie2 serialPort=null;
@@ -216,10 +216,13 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
 
                         if (data.toLowerCase().contains("E".toLowerCase())) {
                             estable = "E";
+                            estableBoo= true;
                         } else if (data.toLowerCase().contains("S".toLowerCase())) {
                             estable = "S";
+                            estableBoo= false;
                         } else {
                             estable = "";
+                            estableBoo= false;
                         }
                         array = data.split(filtro);
 
@@ -1331,7 +1334,8 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
     @Override
     public Boolean getEstable(int numBza) {
-        return null;
+
+        return estableBoo;
     }
 
     public String format(String numero) {

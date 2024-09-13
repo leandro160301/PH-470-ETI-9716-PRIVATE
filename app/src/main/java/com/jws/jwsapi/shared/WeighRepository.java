@@ -6,40 +6,60 @@ import javax.inject.Singleton;
 
 @Singleton
 public class WeighRepository {
-    private final MutableLiveData<String> netLiveData = new MutableLiveData<>();
-    private final MutableLiveData<String> grossLiveData = new MutableLiveData<>();
-    private final MutableLiveData<String> unitLiveData = new MutableLiveData<>();
-    private final MutableLiveData<String> tareLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> net = new MutableLiveData<>();
+    private final MutableLiveData<String> gross = new MutableLiveData<>();
+    private final MutableLiveData<String> unit = new MutableLiveData<>();
+    private final MutableLiveData<String> tare = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> stable = new MutableLiveData<>();
 
     public LiveData<String> getNet() {
-        return netLiveData;
+        return net;
     }
 
     public LiveData<String> getGross() {
-        return grossLiveData;
+        return gross;
     }
 
     public LiveData<String> getUnit() {
-        return unitLiveData;
+        return unit;
     }
 
     public LiveData<String> getTare() {
-        return tareLiveData;
+        return tare;
     }
 
-    public void updateNet(String net) {
-        netLiveData.postValue(net);
+    public LiveData<Boolean> getStable() {
+        return stable;
     }
 
-    public void updateGross(String gross) {
-        grossLiveData.postValue(gross);
+    public void updateNet(String newNet) {
+        if (!newNet.equals(net.getValue())) {
+            net.postValue(newNet);
+        }
     }
 
-    public void updateUnit(String unit) {
-        unitLiveData.postValue(unit);
+    public void updateGross(String newGross) {
+        if (!newGross.equals(gross.getValue())) {
+            gross.postValue(newGross);
+        }
     }
 
-    public void updateTare(String tare) {
-        tareLiveData.postValue(tare);
+    public void updateTare(String newTare) {
+        if (!newTare.equals(tare.getValue())) {
+            tare.postValue(newTare);
+        }
     }
+
+    public void updateUnit(String newUnit) {
+        if (!newUnit.equals(unit.getValue())) {
+            unit.postValue(newUnit);
+        }
+    }
+
+    public void updateStable(Boolean newStable) {
+        if (!newStable.equals(stable.getValue())) {
+            stable.postValue(newStable);
+        }
+    }
+
 }

@@ -34,6 +34,7 @@ public class HomeViewModel extends ViewModel {
                 repository.updateTare(scaleService.getTaraStr(1));
                 repository.updateGross(scaleService.getBrutoStr(1));
                 repository.updateUnit(scaleService.getUnidad(1));
+                repository.updateStable(scaleService.getEstable(1));
             }
         }, 0, 200);
     }
@@ -48,6 +49,10 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<String> getUnit() {
         return repository.getUnit();
+    }
+
+    public LiveData<Boolean> getStable() {
+        return repository.getStable();
     }
 
 

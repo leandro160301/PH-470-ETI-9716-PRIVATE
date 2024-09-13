@@ -7,15 +7,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.databinding.FragmentWeighingBinding;
+import com.jws.jwsapi.general.utils.ToastHelper;
+import com.jws.jwsapi.shared.WeighRepository;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -26,6 +31,8 @@ public class WeighingFragment extends Fragment {
     private FragmentWeighingBinding binding;
     private ButtonProvider buttonProvider;
     MainActivity mainActivity;
+    @Inject
+    WeighRepository repository;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,6 +56,12 @@ public class WeighingFragment extends Fragment {
         weighingViewModel.getWeighings().observe(getViewLifecycleOwner(), pallets -> {
             if (pallets!=null) {
                 weighingAdapter.updateData(pallets);
+            }
+        });
+        repository.getStable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                ToastHelper.message("hola",R.layout.item_customtoasterror,requireContext());
             }
         });
 

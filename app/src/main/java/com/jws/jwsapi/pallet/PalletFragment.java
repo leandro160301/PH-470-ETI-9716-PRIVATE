@@ -85,10 +85,10 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
                 int position = tab.getPosition();
                 switch (position) {
                     case 0:
-                        palletViewModel.setupPalletType(false);
+                        palletViewModel.setupPalletOpen();
                         break;
                     case 1:
-                        palletViewModel.setupPalletType(true);
+                        palletViewModel.setupPalletClose();
                         break;
                 }
             }

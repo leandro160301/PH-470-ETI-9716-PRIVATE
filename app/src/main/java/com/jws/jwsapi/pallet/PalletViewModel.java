@@ -33,13 +33,13 @@ public class PalletViewModel extends ViewModel {
     private final MutableLiveData<Integer> scale = new MutableLiveData<>();
     private final MutableLiveData<String> palletOrigin = new MutableLiveData<>();
     private final MutableLiveData<String> palletDestination = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> isClosedFilter = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isClosed = new MutableLiveData<>();
 
     @Inject
     public PalletViewModel(PalletService palletService, PalletRepository palletRepository) {
         this.palletService = palletService;
         this.palletRepository = palletRepository;
-        pallets = Transformations.switchMap(isClosedFilter, active -> {
+        pallets = Transformations.switchMap(isClosed, active -> {
             if (active != null) {
                 return palletService.getAllPallets(active);
             } else {
@@ -47,7 +47,7 @@ public class PalletViewModel extends ViewModel {
             }
         });
 
-        isClosedFilter.setValue(false);
+        isClosed.setValue(false);
     }
 
     public LiveData<List<Pallet>> getPallets(){
@@ -140,7 +140,12 @@ public class PalletViewModel extends ViewModel {
         palletRepository.setCurrentPallet(pallet.getId());
     }
 
-    public void setupPalletType(Boolean active) {
-        isClosedFilter.setValue(active);
+    public void setupPalletOpen() {
+        isClosed.setValue(false);
     }
+
+    public void setupPalletClose() {
+        isClosed.setValue(true);
+    }
+
 }

@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment;
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -223,7 +224,7 @@ public class WifiFragment extends Fragment  {
 
             }
             else {
-                Utils.Mensaje("WIFI apagado, debe encender el WIFI para ver las redes",R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("WIFI apagado, debe encender el WIFI para ver las redes",R.layout.item_customtoasterror,mainActivity);
             }
         });
 

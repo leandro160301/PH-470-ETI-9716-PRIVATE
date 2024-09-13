@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.DialogoUsuarioBinding;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -110,13 +111,13 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
                 if (id != -1) {
                     AgregarItemLista((int) id, nombre, usuario, contrasena, codigo, binding.spinnertipo.getSelectedItem().toString(),userManager.getUsers());
                 } else {
-                    Utils.Mensaje(getString(R.string.error_reset), R.layout.item_customtoasterror, mainActivity);
+                    ToastHelper.message(getString(R.string.error_reset), R.layout.item_customtoasterror, mainActivity);
                 }
                 resetDialogTexts(binding);
                 dialog.cancel();
             }
         } else {
-            Utils.Mensaje(getString(R.string.user_error_create_login), R.layout.item_customtoasterror, mainActivity);
+            ToastHelper.message(getString(R.string.user_error_create_login), R.layout.item_customtoasterror, mainActivity);
         }
     }
 
@@ -129,13 +130,13 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
         binding.tvnNombre.setOnClickListener(v -> keyboard(binding.tvnNombre, getString(R.string.input_name), getContext(),null));
         binding.tvnUsuario.setOnClickListener(v -> keyboard(binding.tvnUsuario, getString(R.string.input_user), getContext(), texto -> {
             if(searchUserOrCode(usuario -> usuario.getUser().equals(texto))){
-                Utils.Mensaje(getString(R.string.user_error_user_exist),R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message(getString(R.string.user_error_user_exist),R.layout.item_customtoasterror,mainActivity);
                 binding.tvnUsuario.setText("");
             }
         }));
         binding.tvcodigo.setOnClickListener(v -> keyboardInt(binding.tvcodigo, getString(R.string.input_code), getContext(), texto -> {
             if(searchUserOrCode(usuario -> usuario.getCode().equals(texto))){
-                Utils.Mensaje(getString(R.string.user_error_code_exist),R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message(getString(R.string.user_error_code_exist),R.layout.item_customtoasterror,mainActivity);
                 binding.tvcodigo.setText("");
             }
         }));
@@ -172,14 +173,14 @@ public class UsersFragment extends Fragment implements UserButtonClickListener {
                     });
                 }
                 else {
-                    Utils.Mensaje(getString(R.string.user_error_create),R.layout.item_customtoasterror,mainActivity);
+                    ToastHelper.message(getString(R.string.user_error_create),R.layout.item_customtoasterror,mainActivity);
                 }
             }
             else {
-                Utils.Mensaje(getString(R.string.user_error_create_2),R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message(getString(R.string.user_error_create_2),R.layout.item_customtoasterror,mainActivity);
             }
         }else{
-            Utils.Mensaje(getString(R.string.user_error_create_login),R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message(getString(R.string.user_error_create_login),R.layout.item_customtoasterror,mainActivity);
         }
 
     }

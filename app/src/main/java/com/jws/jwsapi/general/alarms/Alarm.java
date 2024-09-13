@@ -6,6 +6,7 @@ import android.os.Handler;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 
 public class Alarm<T> {
@@ -119,7 +120,7 @@ public class Alarm<T> {
 
     private void activarAlarma() {
         if(mensaje){
-            Utils.Mensaje(errorName, R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message(errorName, R.layout.item_customtoasterror,mainActivity);
         }
         setEstado(true);
     }
@@ -133,7 +134,7 @@ public class Alarm<T> {
         if(!alarmaActiva){
             setEstado(false);
         }else{
-            Utils.Mensaje("No puede desactivar la alarma porque continua en error, solucione el error para desactivarla",R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message("No puede desactivar la alarma porque continua en error, solucione el error para desactivarla",R.layout.item_customtoasterror,mainActivity);
         }
 
     }

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 
 import org.json.JSONArray;
@@ -157,7 +158,7 @@ public class UserManager {
         }
         try {
             if(lista.size()==0){
-                Utils.Mensaje("No existe el user ingresado", R.layout.item_customtoasterror,activity);
+                ToastHelper.message("No existe el user ingresado", R.layout.item_customtoasterror,activity);
             }
             else{
                 for(int i=0;i<lista.size();i++){
@@ -169,11 +170,11 @@ public class UserManager {
                         if(Objects.equals(lista.get(i).getType(), "Operador")){
                             userLevel = ROLE_OPERATOR;
                         }
-                        Utils.Mensaje("LOGEO CORRECTO",R.layout.item_customtoastok,activity);
+                        ToastHelper.message("LOGEO CORRECTO",R.layout.item_customtoastok,activity);
                     }
                     else
                     {
-                        Utils.Mensaje("Contraseña incorrecta",R.layout.item_customtoasterror,activity);
+                        ToastHelper.message("Contraseña incorrecta",R.layout.item_customtoasterror,activity);
                     }
                 }
 

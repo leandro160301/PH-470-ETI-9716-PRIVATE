@@ -7,6 +7,7 @@ import com.harrysoft.androidbluetoothserial.BluetoothSerialDevice;
 import com.harrysoft.androidbluetoothserial.SimpleBluetoothDeviceInterface;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -70,16 +71,14 @@ public class BluetoothPrinter {
     }
 
     private void onMessageSent(String message) {
-        // We sent a message! Handle it here.
-       Utils.Mensaje("mensaje enviado",R.layout.item_customtoasterror,mainActivity);
+        ToastHelper.message("mensaje enviado",R.layout.item_customtoasterror,mainActivity);
     }
 
     private void onMessageReceived(String message) {
-        // We received a message! Handle it here.
-        Utils.Mensaje("llega mensaje",R.layout.item_customtoasterror,mainActivity);
+        ToastHelper.message("llega mensaje",R.layout.item_customtoasterror,mainActivity);
     }
 
     private void onError(Throwable error) {
-        Utils.Mensaje("error:"+error.toString(),R.layout.item_customtoasterror,mainActivity);
+        ToastHelper.message("error:"+error.toString(),R.layout.item_customtoasterror,mainActivity);
     }
 }

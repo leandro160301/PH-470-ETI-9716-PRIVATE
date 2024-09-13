@@ -31,8 +31,6 @@ public class WeighingFragment extends Fragment {
     private FragmentWeighingBinding binding;
     private ButtonProvider buttonProvider;
     MainActivity mainActivity;
-    @Inject
-    WeighRepository repository;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,12 +54,6 @@ public class WeighingFragment extends Fragment {
         weighingViewModel.getWeighings().observe(getViewLifecycleOwner(), pallets -> {
             if (pallets!=null) {
                 weighingAdapter.updateData(pallets);
-            }
-        });
-        repository.getStable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                ToastHelper.message("hola",R.layout.item_customtoasterror,requireContext());
             }
         });
 

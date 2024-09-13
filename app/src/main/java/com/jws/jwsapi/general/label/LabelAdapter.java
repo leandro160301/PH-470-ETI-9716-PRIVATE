@@ -21,6 +21,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.utils.AdapterCommon;
 import com.jws.jwsapi.general.data.local.PreferencesManager;
 import com.jws.jwsapi.general.utils.AdapterHelper;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -110,7 +111,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
             updateViews(holder, posi);
         } catch (Exception e) {
             e.printStackTrace();
-            Utils.Mensaje("Ocurrió un error:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message("Ocurrió un error:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
         }
 
         holder.spCampo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -229,7 +230,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Utils.Mensaje("Ocurrió un error:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message("Ocurrió un error:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
         }
     }
 

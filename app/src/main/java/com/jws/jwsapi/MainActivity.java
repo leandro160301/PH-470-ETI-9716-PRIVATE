@@ -21,6 +21,7 @@ import com.jws.jwsapi.general.services.FtpInit;
 import com.jws.jwsapi.general.services.httpserver.InitServer;
 import com.jws.jwsapi.general.files.Storage;
 import com.jws.jwsapi.general.user.UserManager;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 import java.io.IOException;
 import javax.inject.Inject;
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity{
                 jwsObject.jwsReboot("");
             });
         }else{
-            Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,this);
+            ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,this);
         }
     }
 

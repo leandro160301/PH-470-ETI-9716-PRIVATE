@@ -12,6 +12,7 @@ import com.jws.jwsapi.general.printer.types.UsbPrinter;
 import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.general.label.LabelManager;
 import com.jws.jwsapi.general.data.local.PreferencesManager;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 import com.jws.jwsapi.R;
 import com.service.PuertosSerie.PuertosSerie2;
@@ -49,7 +50,7 @@ public class PrinterManager {
                 NetworkPrinter networkPrinter = new NetworkPrinter();
                 networkPrinter.Imprimir(preferencesPrinterManager.consultaIP(),etiqueta(numetiqueta));
             }else {
-                Utils.Mensaje("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
             }
 
         }
@@ -58,7 +59,7 @@ public class PrinterManager {
                 SerialPortPrinter serialPortPrinter = new SerialPortPrinter(serialPort);
                 serialPortPrinter.Imprimir(etiqueta(numetiqueta));
             }else {
-                Utils.Mensaje("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
             }
 
         }
@@ -80,7 +81,7 @@ public class PrinterManager {
                 NetworkPrinter networkPrinter = new NetworkPrinter();
                 networkPrinter.Imprimir(preferencesPrinterManager.consultaIP(),preferencesPrinterManager.getultimaEtiqueta());
             }else {
-                Utils.Mensaje("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
             }
 
         }
@@ -89,7 +90,7 @@ public class PrinterManager {
                 SerialPortPrinter serialPortPrinter = new SerialPortPrinter(serialPort);
                 serialPortPrinter.Imprimir(preferencesPrinterManager.getultimaEtiqueta());
             }else {
-                Utils.Mensaje("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
             }
 
         }
@@ -112,7 +113,7 @@ public class PrinterManager {
                 NetworkPrinter networkPrinter = new NetworkPrinter();
                 networkPrinter.Imprimir(preferencesPrinterManager.consultaIP(),etiqueta);
             }else {
-                Utils.Mensaje("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
             }
 
         }
@@ -121,7 +122,7 @@ public class PrinterManager {
                 SerialPortPrinter serialPortPrinter = new SerialPortPrinter(serialPort);
                 serialPortPrinter.Imprimir(etiqueta);
             }else {
-                Utils.Mensaje("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
             }
 
         }
@@ -249,11 +250,11 @@ public class PrinterManager {
                         }
 
                     }else{
-                        Utils.Mensaje("Error,faltan campos por configurar", R.layout.item_customtoasterror,mainActivity);
+                        ToastHelper.message("Error,faltan campos por configurar", R.layout.item_customtoasterror,mainActivity);
                     }
 
                 }else{
-                    Utils.Mensaje("Error,la etiqueta no esta configurada",R.layout.item_customtoasterror,mainActivity);
+                    ToastHelper.message("Error,la etiqueta no esta configurada",R.layout.item_customtoasterror,mainActivity);
                 }
 
             }
@@ -261,7 +262,7 @@ public class PrinterManager {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error etiqueta:"+e.getMessage());
-            Utils.Mensaje("Ocurrió un error al procesar la etiqueta:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message("Ocurrió un error al procesar la etiqueta:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
             return ""; // O devolver un valor predeterminado en caso de error
         }
 
@@ -302,8 +303,8 @@ public class PrinterManager {
             return resultado;
         } catch (Exception e) {
             e.printStackTrace();
-            Utils.Mensaje("Ocurrió un error al procesar la etiqueta:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
-            return ""; // O devolver un valor predeterminado en caso de error
+            ToastHelper.message("Ocurrió un error al procesar la etiqueta:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+            return "";
         }
     }
 

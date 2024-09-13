@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.utils.AdapterCommonFix;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -185,7 +186,7 @@ public class Storage {
                     }
                 }
                 if (usbMultimediaPaths.stream().noneMatch(File::isDirectory)) {
-                    Utils.Mensaje("Pendrive no disponible", R.layout.item_customtoasterror,activity);
+                    ToastHelper.message("Pendrive no disponible", R.layout.item_customtoasterror,activity);
                 }
             }
         });
@@ -194,12 +195,12 @@ public class Storage {
             if (file != null && file.exists()) {
                 boolean eliminacion=file.delete();
                 if(eliminacion){
-                    Utils.Mensaje("Archivo borrado", R.layout.item_customtoastok,activity);
+                    ToastHelper.message("Archivo borrado", R.layout.item_customtoastok,activity);
                 }else{
-                    Utils.Mensaje("El archivo no se pudo borrar", R.layout.item_customtoasterror,activity);
+                    ToastHelper.message("El archivo no se pudo borrar", R.layout.item_customtoasterror,activity);
                 }
             }else{
-                Utils.Mensaje("El archivo no existe", R.layout.item_customtoasterror,activity);
+                ToastHelper.message("El archivo no existe", R.layout.item_customtoasterror,activity);
             }
         });
     }
@@ -216,7 +217,7 @@ public class Storage {
         String filePath = "/storage/emulated/0/Memoria/"+archivo;
         File file = new File(filePath);
         if (!file.exists()) {
-            Utils.Mensaje("La etiqueta ya no esta disponible",R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message("La etiqueta ya no esta disponible",R.layout.item_customtoasterror,mainActivity);
             return "";
         }else{
             String fileContent="";
@@ -236,7 +237,7 @@ public class Storage {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Utils.Mensaje("Error al intentar leer la etiqueta"+ e,R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Error al intentar leer la etiqueta"+ e,R.layout.item_customtoasterror,mainActivity);
             } finally {
                 try {
                     if (br != null) br.close();
@@ -307,7 +308,7 @@ public class Storage {
 
                 activity.runOnUiThread(() -> {
                     dialog.cancel();
-                    Utils.Mensaje("Archivo enviado", R.layout.item_customtoastok,activity);
+                    ToastHelper.message("Archivo enviado", R.layout.item_customtoastok,activity);
                 });
             } catch (IOException e) {
                 e.printStackTrace();

@@ -28,6 +28,7 @@ import com.jws.jwsapi.general.label.LabelFragment;
 import com.jws.jwsapi.general.network.EthernetFragment;
 import com.jws.jwsapi.general.user.UsersFragment;
 import com.jws.jwsapi.general.network.WifiFragment;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 import com.service.Balanzas.Fragments.ServiceFragment;
 import com.service.Comunicacion.ButtonProvider;
@@ -82,7 +83,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                 args.putSerializable("instanceService", mainActivity.mainClass.service);
                 mainActivity.mainClass.openFragmentService(fragment,args);
             }else{
-                Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
             }
 
         }
@@ -106,7 +107,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             if(userManager.getUserLevel()>2){
                 mainActivity.mainClass.openFragment(new UsersFragment());
             }else{
-                Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
             }
         }
         if(position==4){
@@ -231,7 +232,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                         mainActivity.mainClass.openFragment(new LabelProgramFragment());
                     }
                 }else{
-                    Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                    ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
                 }
 
             }
@@ -250,7 +251,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                         DialogoCambiarHorayFecha();
                     }
                     else{
-                        Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                        ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
                     }
                 }
                 if(position==1){
@@ -258,7 +259,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                         DialogoCambiarTema();
                     }
                     else{
-                        Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                        ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
                     }
                 }
             }
@@ -308,7 +309,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                     }
                 }
                 else{
-                    Utils.Mensaje("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                    ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
                 }
 
             }
@@ -322,7 +323,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                         mainActivity.mainClass.openFragment(new EthernetFragment());
                     }
                     else{
-                        Utils.Mensaje("Debe ingresar la clave de programador para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                        ToastHelper.message("Debe ingresar la clave de programador para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
                     }
 
                 }
@@ -365,21 +366,21 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
 
         tvTema1.setOnClickListener(view -> {
             mainActivity.preferencesManagerBase.nuevoTema(R.style.AppTheme_NoActionBar);
-            Utils.Mensaje("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
+            ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
             tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
             tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
             tvTema3.setBackgroundResource(R.drawable.stylekeycor3);
         });
         tvTema2.setOnClickListener(view -> {
             mainActivity.preferencesManagerBase.nuevoTema(R.style.AppTheme2_NoActionBar);
-            Utils.Mensaje("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
+            ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
             tvTema2.setBackgroundResource(R.drawable.fondoinfoprincipal);
             tvTema1.setBackgroundResource(R.drawable.stylekeycor3);
             tvTema3.setBackgroundResource(R.drawable.stylekeycor3);
         });
         tvTema3.setOnClickListener(view -> {
             mainActivity.preferencesManagerBase.nuevoTema(R.style.AppTheme4_NoActionBar);
-            Utils.Mensaje("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
+            ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
             tvTema3.setBackgroundResource(R.drawable.fondoinfoprincipal);
             tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
             tvTema1.setBackgroundResource(R.drawable.stylekeycor3);
@@ -546,7 +547,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             if(!tvpin.getText().toString().equals("error")){
                 if(tvpin.getText().toString().equals(pin)){
                     mainActivity.preferencesManagerBase.nuevoPin(pin);
-                    Utils.Mensaje("PIN CORRECTO",R.layout.item_customtoastok,mainActivity);
+                    ToastHelper.message("PIN CORRECTO",R.layout.item_customtoastok,mainActivity);
                     dialog.cancel();
                 }
             }
@@ -562,12 +563,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopciones, null);
         final EditText userInput = mView.findViewById(R.id.etDatos);
         final LinearLayout delete_text= mView.findViewById(R.id.lndelete_text);
-        delete_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userInput.setText("");
-            }
-        });
+        delete_text.setOnClickListener(view -> userInput.setText(""));
         TextView titulo=mView.findViewById(R.id.textViewt);
         titulo.setText("");
         userInput.setInputType(InputType.TYPE_CLASS_NUMBER);

@@ -7,6 +7,7 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.printer.types.usb.DiscoveredPrinterListAdapter;
 import com.jws.jwsapi.general.printer.types.usb.SelectedPrinterManager;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
 import com.zebra.sdk.comm.Connection;
 import com.zebra.sdk.comm.ConnectionException;
@@ -94,7 +95,7 @@ public class UsbPrinter {
                 }
 
             } catch (InterruptedException e) {
-                Utils.Mensaje("usb init:"+e.getMessage(),R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("usb init:"+e.getMessage(),R.layout.item_customtoasterror,mainActivity);
             }
         };
 
@@ -110,7 +111,7 @@ public class UsbPrinter {
         try {
             connection = SelectedPrinterManager.getPrinterConnection();
         }catch (Exception e){
-            Utils.Mensaje("usb 0:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message("usb 0:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
         }
 
 
@@ -159,7 +160,7 @@ public class UsbPrinter {
                 try {
                     printer = ZebraPrinterFactory.getInstance(connection);
                 }catch (Exception e){
-                    Utils.Mensaje("usb 1:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+                    ToastHelper.message("usb 1:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
                 }
 
                 if(printer!=null&&Memoria){
@@ -168,7 +169,7 @@ public class UsbPrinter {
                     if(printer!=null){
                         printer.sendCommand(Etiqueta);
                     }else{
-                        Utils.Mensaje("usb 4: printer null", R.layout.item_customtoasterror,mainActivity);
+                        ToastHelper.message("usb 4: printer null", R.layout.item_customtoasterror,mainActivity);
                     }
 
                 }
@@ -177,16 +178,16 @@ public class UsbPrinter {
 
 
             } catch (ConnectionException | ZebraPrinterLanguageUnknownException e) {
-                Utils.Mensaje("usb 2:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("usb 2:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
             } finally {
                 try {
                     connection.close();
                 } catch (ConnectionException e) {
-                    Utils.Mensaje("usb 3:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+                    ToastHelper.message("usb 3:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);
                 }
             }
         }else{
-            Utils.Mensaje("usb 5: connection null", R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message("usb 5: connection null", R.layout.item_customtoasterror,mainActivity);
         }
 
     }

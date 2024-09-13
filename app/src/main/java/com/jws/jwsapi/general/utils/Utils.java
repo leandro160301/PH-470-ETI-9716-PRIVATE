@@ -40,8 +40,6 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
-    private static Toast toast;
-
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
@@ -86,25 +84,7 @@ public class Utils {
         double pesoNumero = Double.parseDouble(peso);
         return df.format(pesoNumero);
     }
-
-    public static void Mensaje(String texto, int Color, AppCompatActivity appCompatActivity) {
-        appCompatActivity.runOnUiThread(() -> {
-            if (toast != null) {
-                toast.cancel();
-            }
-            LayoutInflater inflater = appCompatActivity.getLayoutInflater();
-            View layout = inflater.inflate(Color, appCompatActivity.findViewById(com.service.R.id.toast_layout_root));
-            TextView text = layout.findViewById(com.service.R.id.text);
-            text.setText(texto);
-            toast = new Toast(appCompatActivity);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        });
-
-    }
-
+    
     /**
      * Convert byte array to hex string
      * @param bytes toConvert

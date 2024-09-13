@@ -1,8 +1,8 @@
 package com.jws.jwsapi;
 
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
 import static com.jws.jwsapi.general.files.Storage.createMemoryDirectory;
 import static com.jws.jwsapi.general.files.Storage.deleteCache;
-import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
 import static com.jws.jwsapi.general.user.UserManager.ROLE_SUPERVISOR;
 
 import android.app.WallpaperManager;
@@ -12,19 +12,24 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.WindowManager;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.general.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.general.files.Storage;
 import com.jws.jwsapi.general.services.FtpInit;
 import com.jws.jwsapi.general.services.httpserver.InitServer;
-import com.jws.jwsapi.general.files.Storage;
 import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.general.utils.ToastHelper;
 import com.jws.jwsapi.general.utils.Utils;
+
 import java.io.IOException;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint

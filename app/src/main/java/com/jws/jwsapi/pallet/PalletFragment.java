@@ -109,7 +109,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
         String unit = repository.getUnit().getValue();
         if(unit!=null) {
             binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-            palletAdapter = new PalletAdapter(new ArrayList<>(),this,unit);
+            palletAdapter = new PalletAdapter(new ArrayList<>(),this, unit);
             binding.recycler.setAdapter(palletAdapter);
         }
 

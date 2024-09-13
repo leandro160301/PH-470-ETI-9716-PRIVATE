@@ -1,7 +1,5 @@
 package com.jws.jwsapi.general.di;
 
-import static net.sourceforge.jtds.jdbc.DefaultProperties.DATABASE_NAME;
-
 import android.app.Application;
 import android.content.Context;
 import androidx.room.Room;
@@ -31,6 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @InstallIn(SingletonComponent.class)
 public class AppModule {
 
+    private static final String DATABASE_NAME = "bza-database";
+    private static final String BASE_URL = "http://10.41.0.78:8080/";
+
     @Provides
     @Singleton
     public UserManager provideUserManager(Application application){
@@ -55,7 +56,7 @@ public class AppModule {
         return new PalletRepository(palletDao);
     }
 
-    private static final String BASE_URL = "http://10.41.0.78:8080/";
+
 
     @Provides
     public Retrofit provideRetrofit() {
@@ -78,14 +79,14 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public WeighingDao provideWeighingDao(@ApplicationContext Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, "bza-database").build().weighingDao();
+    public WeighingDao provideWeighingDao(AppDatabase appDatabase) {
+        return appDatabase.weighingDao();
     }
 
     @Provides
     @Singleton
-    public PalletDao providePalletDao(@ApplicationContext Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, "bza-database").build().palletDao();
+    public PalletDao providePalletDao(AppDatabase appDatabase) {
+        return appDatabase.palletDao();
     }
 
     @Provides
@@ -106,7 +107,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public WeighRepository providePesoRepository() {
+    public WeighRepository provideWeighRepository() {
         return new WeighRepository();
     }
 

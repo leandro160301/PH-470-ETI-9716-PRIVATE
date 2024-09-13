@@ -56,4 +56,5 @@ public class PalletService {
     public LiveData<List<Pallet>> getAllPallets(Boolean open) {
         return palletDao.getAllPalletsAvaible(open);
     }
+
 }

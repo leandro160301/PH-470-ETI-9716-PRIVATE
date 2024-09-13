@@ -1,4 +1,4 @@
-package com.jws.jwsapi.general.printer.types.usb;
+package com.jws.jwsapi.general.printer.types;
 
 import android.annotation.SuppressLint;
 

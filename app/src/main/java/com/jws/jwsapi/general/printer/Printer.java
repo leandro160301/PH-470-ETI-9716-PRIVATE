@@ -1,4 +1,4 @@
-package com.jws.jwsapi.general.printer.clases;
+package com.jws.jwsapi.general.printer;
 
 public class Printer {
     public String descripcion="";

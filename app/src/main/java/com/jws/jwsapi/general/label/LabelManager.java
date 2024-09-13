@@ -1,7 +1,7 @@
 package com.jws.jwsapi.general.label;
 
-import com.jws.jwsapi.general.printer.clases.Printer;
-import com.jws.jwsapi.general.printer.clases.PrinterObject;
+import com.jws.jwsapi.general.printer.Printer;
+import com.jws.jwsapi.general.printer.PrinterObject;
 import com.jws.jwsapi.general.data.local.PreferencesManager;
 
 import java.util.ArrayList;

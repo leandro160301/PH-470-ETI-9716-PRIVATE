@@ -11,7 +11,7 @@
  * 
  * ALL RIGHTS RESERVED
  ***********************************************/
-package com.jws.jwsapi.general.printer.types.usb.more;
+package com.jws.jwsapi.general.printer.types.usb;
 
 import android.content.Context;
 import android.content.SharedPreferences;

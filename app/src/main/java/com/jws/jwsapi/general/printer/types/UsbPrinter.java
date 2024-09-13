@@ -4,8 +4,8 @@ import android.content.Context;
 import android.hardware.usb.UsbManager;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.general.printer.types.usb.more.DiscoveredPrinterListAdapter;
-import com.jws.jwsapi.general.printer.types.usb.more.SelectedPrinterManager;
+import com.jws.jwsapi.general.printer.types.usb.DiscoveredPrinterListAdapter;
+import com.jws.jwsapi.general.printer.types.usb.SelectedPrinterManager;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.utils.Utils;
 import com.zebra.sdk.comm.Connection;

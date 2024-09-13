@@ -9,11 +9,13 @@ public class PalletViewHolder extends RecyclerView.ViewHolder {
 
     private final ItemPalletBinding binding;
     private final PalletButtonClickListener listener;
+    private final String unit;
 
-    public PalletViewHolder(ItemPalletBinding binding, PalletButtonClickListener listener) {
+    public PalletViewHolder(ItemPalletBinding binding, PalletButtonClickListener listener, String unit) {
         super(binding.getRoot());
         this.binding = binding;
         this.listener = listener;
+        this.unit = unit;
     }
 
     public void bind(Pallet pallet) {
@@ -26,9 +28,10 @@ public class PalletViewHolder extends RecyclerView.ViewHolder {
 
         binding.tvPalletCode.setText(pallet.getCode());
         binding.tvPalletName.setText(pallet.getName());
-        binding.tvPalletTotal.setText(pallet.getTotalNet());
-        String text = String.format(Locale.US, "%d/%d", pallet.getDone(), pallet.getQuantity());
-        binding.tvPalletQuantity.setText(text);
+        String totalNet = String.format(Locale.US, "%s%s", pallet.getTotalNet(), unit);
+        binding.tvPalletTotal.setText(totalNet);
+        String done = String.format(Locale.US, "%d/%d", pallet.getDone(), pallet.getQuantity());
+        binding.tvPalletQuantity.setText(done);
 
         binding.lnDelete.setOnClickListener(v -> listener.deletePallet(pallet));
         binding.lnSelect.setOnClickListener(v -> listener.selectPallet(pallet));

@@ -12,10 +12,12 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletViewHolder> {
 
     private List<Pallet> palletList;
     private final PalletButtonClickListener listener;
+    private final String unit;
 
-    public PalletAdapter(List<Pallet> palletList, PalletButtonClickListener listener) {
+    public PalletAdapter(List<Pallet> palletList, PalletButtonClickListener listener, String unit) {
         this.palletList = palletList;
         this.listener = listener;
+        this.unit = unit;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -29,7 +31,7 @@ public class PalletAdapter extends RecyclerView.Adapter<PalletViewHolder> {
     public PalletViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ItemPalletBinding binding = ItemPalletBinding.inflate(inflater, parent, false);
-        return new PalletViewHolder(binding, listener);
+        return new PalletViewHolder(binding, listener, unit);
     }
 
     @Override

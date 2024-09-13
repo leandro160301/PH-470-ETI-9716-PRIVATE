@@ -13,6 +13,7 @@ import com.jws.jwsapi.pallet.PalletService;
 import com.jws.jwsapi.general.label.LabelManager;
 import com.jws.jwsapi.shared.PalletRepository;
 import com.jws.jwsapi.general.data.local.PreferencesManager;
+import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.weighing.WeighingApi;
 import com.jws.jwsapi.weighing.WeighingDao;
 import com.jws.jwsapi.weighing.WeighingService;
@@ -101,6 +102,12 @@ public class AppModule {
     @Provides
     public WeighingService provideWeighingService(WeighingApi weighingApi, WeighingDao weighingDao,PalletDao palletDao) {
         return new WeighingService(weighingApi, weighingDao,palletDao);
+    }
+
+    @Provides
+    @Singleton
+    public WeighRepository providePesoRepository() {
+        return new WeighRepository();
     }
 
 }

@@ -18,11 +18,14 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.databinding.FragmentPalletBinding;
 import com.jws.jwsapi.general.utils.ToastHelper;
+import com.jws.jwsapi.shared.WeighRepository;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -34,6 +37,8 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
     private PalletViewModel palletViewModel;
     private ButtonProvider buttonProvider;
     MainActivity mainActivity;
+    @Inject
+    WeighRepository repository;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,9 +106,13 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
 
 
     private void setupRecycler() {
-        binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        palletAdapter = new PalletAdapter(new ArrayList<>(),this);
-        binding.recycler.setAdapter(palletAdapter);
+        String unit = repository.getUnit().getValue();
+        if(unit!=null) {
+            binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+            palletAdapter = new PalletAdapter(new ArrayList<>(),this,unit);
+            binding.recycler.setAdapter(palletAdapter);
+        }
+
     }
 
     private void showMessage(boolean message, String toastMessage, int layout) {

@@ -16,7 +16,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.utils.AdapterCommonFix;
 import com.jws.jwsapi.general.utils.ToastHelper;
-import com.jws.jwsapi.general.utils.Utils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,6 +92,7 @@ public class Storage {
             updateUsbState =0;
         }
     }
+
     public boolean isPackageExisted(String targetPackage){
         PackageManager pm= activity.getApplicationContext().getPackageManager();
         try {
@@ -101,6 +102,7 @@ public class Storage {
         }
         return true;
     }
+
     public Boolean DevuelveEstadoUSB(){
         return updateUsbState == 1;
     }
@@ -128,7 +130,7 @@ public class Storage {
         Button bt_csv = mView.findViewById(R.id.bt_csv);
         Button bt_captura = mView.findViewById(R.id.bt_captura);
         RecyclerView recyclerView=mView.findViewById(R.id.listview);
-        AdapterCommonFix adapter =seteo(".pdf",recyclerView);
+        AdapterCommonFix adapter = setupRecyclerExtension(".pdf",recyclerView);
         adapter.setClickListener((view, position) -> {
             String archivo = "/storage/emulated/0/Memoria/";
             FileDialog=adapter.getItem(position);
@@ -140,7 +142,7 @@ public class Storage {
         dialogusb.show();
         bt_pdf.setOnClickListener(view -> {
             file=null;
-            AdapterCommonFix adapter1 =seteo(".pdf",recyclerView);
+            AdapterCommonFix adapter1 = setupRecyclerExtension(".pdf",recyclerView);
             adapter1.setClickListener((view1, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter1.getItem(position);
@@ -150,7 +152,7 @@ public class Storage {
         });
         bt_captura.setOnClickListener(view -> {
             file=null;
-            AdapterCommonFix adapter1 =seteo(".png",recyclerView);
+            AdapterCommonFix adapter1 = setupRecyclerExtension(".png",recyclerView);
             adapter1.setClickListener((view1, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter1.getItem(position);
@@ -160,7 +162,7 @@ public class Storage {
         });
         bt_excel.setOnClickListener(view -> {
             file=null;
-            AdapterCommonFix adapter12 =seteo(".xls",recyclerView);
+            AdapterCommonFix adapter12 = setupRecyclerExtension(".xls",recyclerView);
             adapter12.setClickListener((view13, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter12.getItem(position);
@@ -170,7 +172,7 @@ public class Storage {
         });
         bt_csv.setOnClickListener(view -> {
             file=null;
-            AdapterCommonFix adapter13 =seteo(".csv",recyclerView);
+            AdapterCommonFix adapter13 = setupRecyclerExtension(".csv",recyclerView);
             adapter13.setClickListener((view12, position) -> {
                 String archivo = "/storage/emulated/0/Memoria/";
                 FileDialog= adapter13.getItem(position);
@@ -252,33 +254,10 @@ public class Storage {
 
     }
 
-    public AdapterCommonFix seteo(String tipo, RecyclerView recyclerView) {
-        List<String> ListElementsArrayList2=new ArrayList<>();
-        AdapterCommonFix adapter3 = new AdapterCommonFix(activity, ListElementsArrayList2);
-        File  root = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
-        if(root.exists()){
-            File[] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(tipo));
-            File[] fileArray2 = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(".png"));
-            StringBuilder f = new StringBuilder();
-            if(fileArray!=null&&fileArray.length>0){
-                for (File value : fileArray) {
-                    f.append(value.getName());
-                    ListElementsArrayList2.add(f.toString());
-                    f = new StringBuilder();
-                }
-            }
-            if(fileArray2!=null&&fileArray2.length>0){
-                f = new StringBuilder();
-                for (File value : fileArray2) {
-                    f.append(value.getName());
-                    ListElementsArrayList2.add(f.toString());
-                    f = new StringBuilder();
-                }
-            }
-            recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-            adapter3 = new AdapterCommonFix(activity, ListElementsArrayList2);
-            recyclerView.setAdapter(adapter3);
-        }
+    public AdapterCommonFix setupRecyclerExtension(String extension, RecyclerView recyclerView) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        AdapterCommonFix adapter3 = new AdapterCommonFix(activity, getFilesExtension(extension));
+        recyclerView.setAdapter(adapter3);
         return adapter3;
     }
 
@@ -286,7 +265,7 @@ public class Storage {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(activity,R.style.AlertDialogCustom);
         View mView = activity.getLayoutInflater().inflate(R.layout.dialogo_transferenciaarchivo, null);
         TextView textView= mView.findViewById(R.id.textView);
-        textView.setText("Copiando archivo...");
+        textView.setText(R.string.dialog_copy_file);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
@@ -303,12 +282,10 @@ public class Storage {
                 outputChannel.close();
 
                 long endTime = System.currentTimeMillis();
-                long elapsedTime = endTime - startTime;
-                System.out.println("Tiempo de copia: " + elapsedTime + " milisegundos");
 
                 activity.runOnUiThread(() -> {
                     dialog.cancel();
-                    ToastHelper.message("Archivo enviado", R.layout.item_customtoastok,activity);
+                    ToastHelper.message(activity.getString(R.string.dialog_file_copied), R.layout.item_customtoastok,activity);
                 });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -348,7 +325,7 @@ public class Storage {
     }
 
     public static String JSONarchivos() throws JSONException {
-        List<String> guardado= getArchivos();
+        List<String> guardado= getAllFiles();
         JSONArray jsonArray = new JSONArray();
         try {
             for(int i=0;i<guardado.size();i++){
@@ -388,7 +365,7 @@ public class Storage {
         return jsonArray.toString();
     }
 
-    public static List<String> getArchivosExtension(String extension){
+    public static List<String> getFilesExtension(String extension){
         List <String>lista =new ArrayList<>();
         File root = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
         if(root.exists()){
@@ -414,7 +391,7 @@ public class Storage {
         }
     }
 
-    public static List<String> getArchivos() {
+    public static List<String> getAllFiles() {
         List<String> lista = new ArrayList<>();
         File root2 = new File(Environment.getExternalStorageDirectory().toString() + "/Memoria");
 

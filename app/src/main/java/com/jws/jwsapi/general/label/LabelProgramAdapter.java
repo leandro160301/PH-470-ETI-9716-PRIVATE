@@ -47,7 +47,7 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         int posi=position;
-        holder.tv_campo.setText(mData.get(position).nombrecampo);
+        holder.tv_campo.setText(mData.get(position).getName());
         setupSpinner(holder.spCampo,context,etiquetas);
         int index= etiquetas.indexOf(preferencesManager.getEtiqueta(posi));
         if (index>-1){

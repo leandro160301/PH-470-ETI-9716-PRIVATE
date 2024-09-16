@@ -335,7 +335,7 @@ public class HttpServer extends NanoWSD {
         InputStream inputStream=null ;
         inputStream = session.getInputStream();
 
-        String nuev="/storage/emulated/0/Memoria/"+URLDecoder.decode(session.getHeaders().get("name"),"UTF-8");
+        String nuev="/storage/emulated/0/Memoria/"+URLDecoder.decode(session.getHeaders().get("nombre"),"UTF-8");
         File fil= new File(nuev);
         if(fil.exists()){
             fil.delete();

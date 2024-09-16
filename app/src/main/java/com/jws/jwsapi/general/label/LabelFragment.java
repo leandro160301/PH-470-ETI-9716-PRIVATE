@@ -1,7 +1,7 @@
 package com.jws.jwsapi.general.label;
 
 import static com.jws.jwsapi.general.utils.PrinterHelper.getCamposEtiqueta;
-import static com.jws.jwsapi.general.files.Storage.getArchivosExtension;
+import static com.jws.jwsapi.general.files.Storage.getFilesExtension;
 import static com.jws.jwsapi.general.files.Storage.openAndReadFile;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -71,7 +71,7 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
         recyclerEtiquetas =view.findViewById(R.id.listview);
         recyclerCampos =view.findViewById(R.id.recyclerEtiqueta);
 
-        listaEtiquetas= getArchivosExtension(".prn");
+        listaEtiquetas= getFilesExtension(".prn");
         setupRecycler(listaEtiquetas);
 
     }

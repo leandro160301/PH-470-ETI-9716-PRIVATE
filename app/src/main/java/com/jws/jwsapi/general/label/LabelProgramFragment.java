@@ -1,11 +1,10 @@
 package com.jws.jwsapi.general.label;
 
-import static com.jws.jwsapi.general.files.Storage.getArchivosExtension;
+import static com.jws.jwsapi.general.files.Storage.getFilesExtension;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -28,7 +27,6 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
     PreferencesManager preferencesManager;
     @Inject
     LabelManager labelManager;
-    Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     LabelProgramAdapter adapter;
@@ -62,7 +60,7 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
 
     private void cargarRecyclerView(){
         rc_lista_ingredientes.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LabelProgramAdapter(getContext(),lista_ingredientes, getArchivosExtension(".prn"),preferencesManager);
+        adapter = new LabelProgramAdapter(getContext(),lista_ingredientes, getFilesExtension(".prn"),preferencesManager);
         adapter.setClickListener(this);
         rc_lista_ingredientes.setAdapter(adapter);
 
@@ -71,26 +69,16 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
 
     private void configuracionBotones() {
         if (buttonProvider != null) {
-            bt_home = buttonProvider.getButtonHome();
-            bt_1 = buttonProvider.getButton1();
-            bt_2 = buttonProvider.getButton2();
-            bt_3 = buttonProvider.getButton3();
-            bt_4 = buttonProvider.getButton4();
-            bt_5 = buttonProvider.getButton5();
-            bt_6 = buttonProvider.getButton6();
-            buttonProvider.getTitulo().setText("ETIQUETAS DE PROGRAMA");
-
-            bt_1.setVisibility(View.INVISIBLE);
-            bt_2.setVisibility(View.INVISIBLE);
-            bt_1.setBackgroundResource(R.drawable.boton_buscar_i);
-            bt_2.setBackgroundResource(R.drawable.boton_add_i);
-            bt_3.setVisibility(View.INVISIBLE);
-            bt_4.setVisibility(View.INVISIBLE);
-            bt_5.setVisibility(View.INVISIBLE);
-            bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
-
-
+            buttonProvider.getTitulo().setText(R.string.title_label_program_fragment);
+            buttonProvider.getButton1().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton2().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton1().setBackgroundResource(R.drawable.boton_buscar_i);
+            buttonProvider.getButton2().setBackgroundResource(R.drawable.boton_add_i);
+            buttonProvider.getButton3().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton4().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton5().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton6().setVisibility(View.INVISIBLE);
+            buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
     }

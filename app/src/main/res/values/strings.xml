@@ -353,6 +353,10 @@
     <string name="input_user">Ingrese el usuario</string>
     <string name="input_code">Ingrese el codigo</string>
     <string name="users_title">USUARIOS</string>
+    <string name="title_file_fragment">MANUALES Y ARCHIVOS</string>
+    <string name="dialog_copy_file">Copiando archivo...</string>
+    <string name="dialog_file_copied">Archivo enviado</string>
+    <string name="title_label_program_fragment">ETIQUETAS DE PROGRAMA</string>
 
 
 </resources>

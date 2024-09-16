@@ -1,7 +1,7 @@
 package com.jws.jwsapi.general.storage;
 
 import static com.jws.jwsapi.general.dialog.DialogUtil.dialogLoading;
-import static com.jws.jwsapi.general.storage.StoragePaths.memoryPath;
+import static com.jws.jwsapi.general.storage.StoragePaths.MEMORY_PATH;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -69,7 +69,7 @@ public class Storage {
     }
 
     public static String openAndReadFile(String archivo, MainActivity mainActivity) {
-        String filePath = memoryPath+archivo;
+        String filePath = MEMORY_PATH +archivo;
         File file = new File(filePath);
         if (!file.exists()) {
             ToastHelper.message("La etiqueta ya no esta disponible",R.layout.item_customtoasterror,mainActivity);
@@ -143,7 +143,7 @@ public class Storage {
 
     public int cantidadRegistros() {
         List<String> Lista=new ArrayList<>();
-        File  root = new File(memoryPath);
+        File  root = new File(MEMORY_PATH);
         if(root.exists()){
             File[] filearr = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(".xls") && filename.toLowerCase().startsWith("registro"));
             StringBuilder f = new StringBuilder();
@@ -215,7 +215,7 @@ public class Storage {
 
     public static List<String> getFilesExtension(String extension){
         List <String>lista =new ArrayList<>();
-        File root = new File(memoryPath);
+        File root = new File(MEMORY_PATH);
         if(root.exists()){
             File [] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(extension));
             StringBuilder f = new StringBuilder();
@@ -232,7 +232,7 @@ public class Storage {
 
 
     public static void createMemoryDirectory() {
-        File fileMemoria = new File(memoryPath);
+        File fileMemoria = new File(MEMORY_PATH);
         if (!fileMemoria.isDirectory()){
             fileMemoria.mkdir();
         }
@@ -240,7 +240,7 @@ public class Storage {
 
     public static List<String> getAllFiles() {
         List<String> lista = new ArrayList<>();
-        File root2 = new File(memoryPath);
+        File root2 = new File(MEMORY_PATH);
 
         if (root2.exists()) {
             Set<String> extensions = new HashSet<>(Arrays.asList(".pdf", ".png", ".xls", ".csv", ".jpg", ".prn", ".lbl", ".nlbl"));

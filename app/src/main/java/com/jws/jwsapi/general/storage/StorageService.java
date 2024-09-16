@@ -37,18 +37,18 @@ public class StorageService {
     };
 
     public void verificaMemoriaUSB(){
-        if (StoragePaths.usbPaths.stream().anyMatch(File::isDirectory)) {
-            for(File apk: StoragePaths.apks){
+        if (StoragePaths.DIRECTORY_MEMORY_LIST.stream().anyMatch(File::isDirectory)) {
+            for(File apk: StoragePaths.FILE_APK_LIST){
                 if(apk.exists()){
                     installApk(context);
                 }
             }
-            if(StoragePaths.usbMultimediaPaths.stream().anyMatch(File::isDirectory)&& usbState ==0){
+            if(StoragePaths.DIRECTORY_MEMORY_LIST.stream().anyMatch(File::isDirectory)&& usbState ==0){
                 StorageDialogHandler storageDialogHandler = new StorageDialogHandler(appCompatActivity);
                 storageDialogHandler.showDialog();
                 usbState =1;
             }
-            if(StoragePaths.usbMultimediaPaths.stream().noneMatch(File::isDirectory)&& usbState ==1){
+            if(StoragePaths.DIRECTORY_MEMORY_LIST.stream().noneMatch(File::isDirectory)&& usbState ==1){
                 usbState =0;
             }
         }else {

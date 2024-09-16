@@ -1,6 +1,6 @@
 package com.jws.jwsapi.general.storage;
 
-import static com.jws.jwsapi.general.storage.StoragePaths.memoryPath;
+import static com.jws.jwsapi.general.storage.StoragePaths.MEMORY_PATH;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -63,12 +63,12 @@ public class StorageDialogHandler {
 
     private void copyFileToUsb() {
         if (file != null && file.exists()) {
-            for(File dir: StoragePaths.usbMultimediaPaths){
+            for(File dir: StoragePaths.DIRECTORY_MEMORY_LIST){
                 if (dir.isDirectory()) {
                     Storage.copyFileProgress(file, dir,context);
                 }
             }
-            if (StoragePaths.usbMultimediaPaths.stream().noneMatch(File::isDirectory)) {
+            if (StoragePaths.DIRECTORY_MEMORY_LIST.stream().noneMatch(File::isDirectory)) {
                 ToastHelper.message("Pendrive no disponible", R.layout.item_customtoasterror,context);
             }
         }
@@ -77,7 +77,7 @@ public class StorageDialogHandler {
     private void setupRecyclerView(RecyclerView recyclerView, String extension) {
         AdapterCommonFix adapter = Storage.setupRecyclerExtension(extension, recyclerView, context);
         adapter.setClickListener((view, position) -> {
-            String archivoPath = memoryPath.concat(adapter.getItem(position));
+            String archivoPath = MEMORY_PATH.concat(adapter.getItem(position));
             file = new File(archivoPath);
         });
     }

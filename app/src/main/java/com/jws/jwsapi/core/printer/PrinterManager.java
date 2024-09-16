@@ -168,7 +168,7 @@ public class PrinterManager {
                                         ListElementsFinales.add(mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza));
                                     }
                                     if(ListElementsInt.get(i)==4){
-                                        ListElementsFinales.add(userManager.getUsuarioActual());
+                                        ListElementsFinales.add(userManager.getCurrentUser());
                                     }
                                     if(ListElementsInt.get(i)==5){
                                         ListElementsFinales.add(Utils.getFecha());
@@ -198,7 +198,7 @@ public class PrinterManager {
                                                             concat=concat.concat(mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==4){
-                                                            concat=concat.concat(userManager.getUsuarioActual()+separador);
+                                                            concat=concat.concat(userManager.getCurrentUser()+separador);
                                                         }
                                                         if(ListElementsConcat.get(j)==5){
                                                             concat=concat.concat(Utils.getFecha()+separador);

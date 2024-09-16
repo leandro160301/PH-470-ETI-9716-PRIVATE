@@ -26,7 +26,7 @@ import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelFragment;
 import com.jws.jwsapi.core.network.EthernetFragment;
-import com.jws.jwsapi.core.user.UsersFragment;
+import com.jws.jwsapi.core.user.UserFragment;
 import com.jws.jwsapi.core.network.WifiFragment;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
@@ -77,7 +77,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
     public void onItemClick(View view, int position) {
         menuElegido =position;
         if(position==0){
-            if(userManager.getUserLevel()>1){
+            if(userManager.getLevelUser()>1){
                 ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.service);
                 Bundle args = new Bundle();
                 args.putSerializable("instanceService", mainActivity.mainClass.service);
@@ -104,8 +104,8 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             CargarDatosADinamico(ListElementsArrayListdinamicos1);
         }
         if(position==3){
-            if(userManager.getUserLevel()>2){
-                mainActivity.mainClass.openFragment(new UsersFragment());
+            if(userManager.getLevelUser()>2){
+                mainActivity.mainClass.openFragment(new UserFragment());
             }else{
                 ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
             }
@@ -215,7 +215,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         adapterDinamicos1.setClickListener((view, position) -> {
             menuElegido2=position;
             if(menuElegido ==1){
-                if(userManager.getUserLevel()>1){
+                if(userManager.getLevelUser()>1){
                     if(position==0){
 //                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionPrograma());
                     }
@@ -247,7 +247,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
 
             if(menuElegido ==4){
                 if(position==0){
-                    if(userManager.getUserLevel()>1){
+                    if(userManager.getLevelUser()>1){
                         DialogoCambiarHorayFecha();
                     }
                     else{
@@ -255,7 +255,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                     }
                 }
                 if(position==1){
-                    if(userManager.getUserLevel()>1){
+                    if(userManager.getLevelUser()>1){
                         DialogoCambiarTema();
                     }
                     else{
@@ -297,7 +297,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         recycler3.setAdapter(adapterDinamicos2);
         adapterDinamicos2.setClickListener((view, position) -> {
             if(menuElegido ==5){
-                if(userManager.getUserLevel()>1){
+                if(userManager.getLevelUser()>1){
                     if(menuElegido2==0){
                         if(position==0){
                             mainActivity.mainClass.openFragment(new PrinterFragment());
@@ -319,7 +319,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                 }
                 if(position==1){
 
-                    if(userManager.getUsuarioActual().equals("*Programador*")){
+                    if(userManager.getCurrentUser().equals("*Programador*")){
                         mainActivity.mainClass.openFragment(new EthernetFragment());
                     }
                     else{

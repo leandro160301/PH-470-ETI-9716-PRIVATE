@@ -51,12 +51,12 @@ public class StorageDialogHandler {
         if (file != null && file.exists()) {
             boolean eliminacion=file.delete();
             if(eliminacion){
-                ToastHelper.message("Archivo borrado", R.layout.item_customtoastok,context);
+                ToastHelper.message(context.getString(R.string.toast_storage_file_deleted), R.layout.item_customtoastok,context);
             }else{
-                ToastHelper.message("El archivo no se pudo borrar", R.layout.item_customtoasterror,context);
+                ToastHelper.message(context.getString(R.string.toast_storage_file_not_deleted), R.layout.item_customtoasterror,context);
             }
         }else{
-            ToastHelper.message("El archivo no existe", R.layout.item_customtoasterror,context);
+            ToastHelper.message(context.getString(R.string.toast_storage_file_not_exist), R.layout.item_customtoasterror,context);
         }
     }
 
@@ -68,7 +68,7 @@ public class StorageDialogHandler {
                 }
             }
             if (StoragePaths.DIRECTORY_MEMORY_LIST.stream().noneMatch(File::isDirectory)) {
-                ToastHelper.message("Pendrive no disponible", R.layout.item_customtoasterror,context);
+                ToastHelper.message(context.getString(R.string.toast_storage_pendrive_not_avaible), R.layout.item_customtoasterror,context);
             }
         }
     }

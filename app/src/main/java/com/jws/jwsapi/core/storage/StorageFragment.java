@@ -1,6 +1,7 @@
 package com.jws.jwsapi.core.storage;
 
 import static com.jws.jwsapi.core.storage.Storage.getFilesExtension;
+import static com.jws.jwsapi.core.storage.StoragePaths.MEMORY_PATH;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,8 +39,7 @@ public class StorageFragment extends Fragment implements AdapterCommon.ItemClick
     }
 
     private void fileSelected(int position) {
-        String archivo = "/storage/emulated/0/Memoria/";
-        String archivocompleto = archivo.concat(adapter.getItem(position));
+        String archivocompleto = MEMORY_PATH.concat(adapter.getItem(position));
         if (!extension.equals(".csv")) {
             loadFile(archivocompleto);
         } else {

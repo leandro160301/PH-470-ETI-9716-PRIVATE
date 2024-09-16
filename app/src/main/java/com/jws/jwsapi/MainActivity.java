@@ -1,9 +1,9 @@
 package com.jws.jwsapi;
 
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
 import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
 import static com.jws.jwsapi.core.storage.Storage.createMemoryDirectory;
 import static com.jws.jwsapi.core.storage.Storage.deleteCache;
-import static com.jws.jwsapi.core.user.UserManager.ROLE_SUPERVISOR;
 
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void clearCache(){
         Context context=getApplicationContext();
-        if(userManager.getUserLevel()>ROLE_SUPERVISOR){
+        if(userManager.getLevelUser()>ROLE_SUPERVISOR){
             dialogText(this, "¿Esta seguro de volver a los valores de fabrica del equipo?", "RESER", () -> {
                 // Elimina la caché de la aplicación
                 deleteCache(context);

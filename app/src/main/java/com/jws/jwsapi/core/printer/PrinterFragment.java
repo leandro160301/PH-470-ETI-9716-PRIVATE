@@ -8,19 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Spinner;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.printer.preferences.PreferencesPrinterManager;
 import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.databinding.StandarImpresorasBinding;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
@@ -42,17 +39,16 @@ public class PrinterFragment extends Fragment{
     UserManager userManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    TextView tv_ipimpresora;
-    Spinner sp_impresora;
     PrinterManager imprimirStandar;
     PreferencesPrinterManager preferencesPrinterManager;
+    StandarImpresorasBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.standar_impresoras,container,false);
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
-        return view;
+        binding = StandarImpresorasBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -60,8 +56,7 @@ public class PrinterFragment extends Fragment{
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         setupButtons();
-        tv_ipimpresora=view.findViewById(R.id.tv_ipimpresora);
-        sp_impresora= view.findViewById(R.id.sp_impresora);
+
         initPrinter();
 
         initTextView();
@@ -77,14 +72,14 @@ public class PrinterFragment extends Fragment{
     }
 
     private void initTextView() {
-        tv_ipimpresora.setText(preferencesPrinterManager.consultaIP());
-        tv_ipimpresora.setOnClickListener(v -> keyboardIpAdress(tv_ipimpresora, "Ingrese IP de Impresora", requireContext(), this::setupIpHandler));
+        binding.tvIpimpresora.setText(preferencesPrinterManager.consultaIP());
+        binding.tvIpimpresora.setOnClickListener(v -> keyboardIpAdress(binding.tvIpimpresora, "Ingrese IP de Impresora", requireContext(), this::setupIpHandler));
     }
 
     private void initSpinner() {
-        setupSpinner(sp_impresora, requireContext(), Arrays.asList(getResources().getStringArray(R.array.ImpresoraModo)));
-        sp_impresora.setSelection(preferencesPrinterManager.consultaModo());
-        sp_impresora.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        setupSpinner(binding.spImpresora, requireContext(), Arrays.asList(getResources().getStringArray(R.array.ImpresoraModo)));
+        binding.spImpresora.setSelection(preferencesPrinterManager.consultaModo());
+        binding.spImpresora.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i!=2){
@@ -104,7 +99,7 @@ public class PrinterFragment extends Fragment{
             preferencesPrinterManager.setIP(ip);
         } else {
             ToastHelper.message(getString(R.string.error_ip_adress_invalid),R.layout.item_customtoasterror,requireContext());
-            tv_ipimpresora.setText("");
+            binding.tvIpimpresora.setText("");
         }
     }
 

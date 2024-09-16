@@ -76,7 +76,7 @@ public class WeighingViewModel extends ViewModel {
             weighing.setNet(net);
             weighing.setUnit(unit);
             weighing.setName(pallet.getName());
-            weighing.setOperator(userManager.getUsuarioActual());
+            weighing.setOperator(userManager.getCurrentUser());
             weighing.setIdPallet(pallet.getId());
             weighing.setScaleNumber(pallet.getScaleNumber());
             weighing.setQuantity(pallet.getQuantity());

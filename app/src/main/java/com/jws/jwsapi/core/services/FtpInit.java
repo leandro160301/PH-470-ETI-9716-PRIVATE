@@ -1,5 +1,7 @@
 package com.jws.jwsapi.core.services;
 
+import static com.jws.jwsapi.core.user.UserConstants.USERS_LIST;
+
 import android.content.Context;
 import android.os.Environment;
 import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
@@ -38,7 +40,7 @@ public class FtpInit {
         List<Authority> authorities = new ArrayList<>();
         authorities.add(new WritePermission());
         BaseUser usuarioGregoArchivos = new BaseUser();
-        usuarioGregoArchivos.setName(UserManager.USUARIOS[1]);
+        usuarioGregoArchivos.setName(USERS_LIST[1]);
         usuarioGregoArchivos.setPassword("3031");
         usuarioGregoArchivos.setAuthorities(authorities);
         try {
@@ -47,7 +49,7 @@ public class FtpInit {
             e.printStackTrace();
         }
         BaseUser user = new BaseUser();
-        user.setName(UserManager.USUARIOS[0]);
+        user.setName(USERS_LIST[0]);
         user.setPassword(new PreferencesManagerBase(context).consultaPIN());
         user.setHomeDirectory(Environment.getExternalStorageDirectory().toString()+"/Memoria");
         user.setAuthorities(authorities);

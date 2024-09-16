@@ -134,7 +134,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         });
 
         ln_menu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
-        lr_usuario.setOnClickListener(view13 -> userManager.BotonLogeo(mainActivity,mainActivity));
+        lr_usuario.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
         bt_wifi.setOnClickListener(view12 -> DialogoInformacion());
 
         ButtonProvider buttonProvider = this;
@@ -200,23 +200,23 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         runnable = new Runnable() {
             @Override
             public void run() {
-                if(userManager.getUserLevel()==4&&iconflag!=4){
+                if(userManager.getLevelUser()==4&&iconflag!=4){
                     imuser.setImageResource(R.drawable.icono_programador);
                     iconflag=4;
                 }
-                if(userManager.getUserLevel()==3&&iconflag!=3){
+                if(userManager.getLevelUser()==3&&iconflag!=3){
                     imuser.setImageResource(R.drawable.icono_administrador);
                     iconflag=3;
                 }
-                if(userManager.getUserLevel()==2&&iconflag!=2){
+                if(userManager.getLevelUser()==2&&iconflag!=2){
                     imuser.setImageResource(R.drawable.icono_supervisor);
                     iconflag=2;
                 }
-                if(userManager.getUserLevel()==1&&iconflag!=1){
+                if(userManager.getLevelUser()==1&&iconflag!=1){
                     imuser.setImageResource(R.drawable.icon_user);
                     iconflag=1;
                 }
-                if(userManager.getUserLevel()==0&&iconflag!=0){
+                if(userManager.getLevelUser()==0&&iconflag!=0){
                     imuser.setImageResource(R.drawable.icono_nologin);
                     iconflag=0;
                 }
@@ -265,7 +265,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
                     bt_wifi.setBackgroundResource(R.color.transparente);
                 }
                 tv_fecha.setText(Utils.getFecha()+" "+ Utils.getHora());
-                tv_usuario.setText(userManager.getUsuarioActual());
+                tv_usuario.setText(userManager.getCurrentUser());
 
                 if(!stoped){
                     handler.postDelayed(this, 50);

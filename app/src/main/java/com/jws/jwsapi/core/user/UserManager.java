@@ -1,19 +1,19 @@
 package com.jws.jwsapi.core.user;
 
-import static com.jws.jwsapi.dialog.DialogUtil.keyboardPassword;
-import static com.jws.jwsapi.utils.SpinnerHelper.setupSpinner;
+import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_NAME;
+import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_VERSION;
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_ADMINISTRATOR;
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_OPERATOR;
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_PROGRAMMER;
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
+import static com.jws.jwsapi.core.user.UserConstants.USERS_LIST;
+
 import android.app.AlertDialog;
 import android.app.Application;
-import android.content.Context;
-import android.text.method.PasswordTransformationMethod;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.utils.ToastHelper;
@@ -21,10 +21,12 @@ import com.jws.jwsapi.utils.ToastHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -32,26 +34,14 @@ import javax.inject.Singleton;
 public class UserManager {
 
     private final Application application;
-    public static String DB_USERS_NAME ="Usuarios_DB";
-    public static int DB_USERS_VERSION =1;
-    String usuario ="";
+    String userName ="";
     int userLevel =0;
-    public static final int ROLE_NOT_LOGGED = 0;
-    public static final int ROLE_OPERATOR = 1;
-    public static final int ROLE_SUPERVISOR = 2;
-    public static final int ROLE_ADMINISTRATOR = 3;
-    public static final int ROLE_PROGRAMMER = 4;
-    public static final String[] USUARIOS = {
-            "ADMINISTRADOR", "PROGRAMADOR",
-    };
-    String password ="";
 
     @Inject
     public UserManager(Application application){
         this.application =application;
     }
-
-
+    
     public int usersQuantity(){
         List<UserModel> lista= getUsers();
         if(lista!=null){
@@ -69,67 +59,39 @@ public class UserManager {
         return lista;
     }
 
-    public void BotonLogeo (Context context,AppCompatActivity activity){
-        PreferencesManagerBase preferencesManagerBase=new PreferencesManagerBase(application);
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-        View mView = LayoutInflater.from(context).inflate(R.layout.dialogo_logeo, null);
-        TextView tvnContrasena=  mView.findViewById(R.id.tvnContrasena);
-        Spinner spinner=mView.findViewById(R.id.spinner);
-        setupSpinner(spinner,application,DevuelveListaUsuarios());
-        spinner.setSelection(0);
-        tvnContrasena.setOnClickListener(view -> Logeo(tvnContrasena,context));
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        Button Deslogear = mView.findViewById(R.id.buttond);
-        Guardar.setText("LOGEAR");
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Deslogear.setOnClickListener(view -> {
-            logout();
+    public void login(PreferencesManagerBase preferencesManagerBase, TextView tvnContrasena, Spinner spinner, AlertDialog dialog) {
+        String password = tvnContrasena.getText().toString();
+        if(!password.isEmpty() && !spinner.getSelectedItem().toString().isEmpty()){
+            boolean logeo=false;
+            if((password.equals(preferencesManagerBase.consultaPIN())) && spinner.getSelectedItemPosition()==0){
+                userLevel = ROLE_ADMINISTRATOR;
+                logeo=true;
+                userName ="ADMINISTRADOR";
+            }
+            if((password.equals("3031")) && spinner.getSelectedItemPosition()==1){
+                userLevel = ROLE_PROGRAMMER;
+                logeo=true;
+                userName ="PROGRAMADOR";
+            }
+            if(!logeo){
+                searchUser(spinner.getSelectedItem().toString(), password);
+            }
             dialog.cancel();
 
-        });
-        Guardar.setOnClickListener(view -> {
-            if(!password.isEmpty() && !spinner.getSelectedItem().toString().isEmpty()){
-                boolean logeo=false;
-                if((password.equals(preferencesManagerBase.consultaPIN())) && spinner.getSelectedItemPosition()==0){
-                    userLevel = ROLE_ADMINISTRATOR;
-                    logeo=true;
-                    usuario ="ADMINISTRADOR";
-                }
-                if((password.equals("3031")) && spinner.getSelectedItemPosition()==1){
-                    userLevel = ROLE_PROGRAMMER;
-                    logeo=true;
-                    usuario ="PROGRAMADOR";
-                }
-                if(!logeo){
-                    BuscarUsuario(spinner.getSelectedItem().toString(), password,activity);
-                }
-                password ="";
-                dialog.cancel();
-
-            }
-
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
+        }
     }
-
-
+    
     public void logout(){
-        usuario ="";
+        userName ="";
         userLevel =0;
     }
 
-    public List<String> DevuelveListaUsuarios(){
+    public List<String> getUsersSpinner(){
         List<UserModel> lista;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
             lista=dbHelper.getAllUsers();
         }
-        List<String> listElementsArrayList = new ArrayList<>(Arrays.asList(USUARIOS));
+        List<String> listElementsArrayList = new ArrayList<>(Arrays.asList(USERS_LIST));
         for(int i=0;i<lista.size();i++){
             listElementsArrayList.add(lista.get(i).getUser());
         }
@@ -140,43 +102,32 @@ public class UserManager {
         }
     }
 
-
-    public void Logeo(TextView textView,Context context){
-        keyboardPassword(null, "", context, texto -> {
-            password =texto;
-            String copia = password;
-            copia=copia.replaceAll("(?s).", "*");
-            textView.setText(copia);
-        }, PasswordTransformationMethod.getInstance());
-    }
-
-    public void BuscarUsuario(String user, String contrasenia, AppCompatActivity activity){
-        List<UserModel> lista;
+    public void searchUser(String user, String password){
+        List<UserModel> list;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            lista=dbHelper.searchUsers(user);
+            list=dbHelper.searchUsers(user);
         }
         try {
-            if(lista.size()==0){
-                ToastHelper.message("No existe el user ingresado", R.layout.item_customtoasterror,activity);
+            if(list.size()==0){
+                ToastHelper.message(application.getResources().getString(R.string.toast_user_not_exist), R.layout.item_customtoasterror,application);
             }
             else{
-                for(int i=0;i<lista.size();i++){
-                    if(lista.get(i).getPassword().equals(contrasenia)){
-                        usuario = lista.get(i).getName();
-                        if(Objects.equals(lista.get(i).getType(), "Supervisor")){
+                for(int i=0;i<list.size();i++){
+                    if(list.get(i).getPassword().equals(password)){
+                        userName = list.get(i).getName();
+                        if(Objects.equals(list.get(i).getType(), "Supervisor")){
                             userLevel = ROLE_SUPERVISOR;
                         }
-                        if(Objects.equals(lista.get(i).getType(), "Operador")){
+                        if(Objects.equals(list.get(i).getType(), "Operador")){
                             userLevel = ROLE_OPERATOR;
                         }
-                        ToastHelper.message("LOGEO CORRECTO",R.layout.item_customtoastok,activity);
+                        ToastHelper.message(application.getResources().getString(R.string.toast_user_login_succesfull),R.layout.item_customtoastok,application);
                     }
                     else
                     {
-                        ToastHelper.message("Contraseña incorrecta",R.layout.item_customtoasterror,activity);
+                        ToastHelper.message(application.getResources().getString(R.string.toast_user_wrong_password),R.layout.item_customtoasterror,application);
                     }
                 }
-
             }
 
         } catch (Exception e) {
@@ -184,6 +135,25 @@ public class UserManager {
         }
 
 
+    }
+
+    public String getCurrentUser(){
+        return userName;
+    }
+
+    public int getLevelUser(){
+        return userLevel;
+    }
+
+    public Boolean isEnabled(){
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application,DB_USERS_NAME, null, DB_USERS_VERSION)) {
+            int cantidad=dbHelper.getQuantity();
+            if(cantidad==0){
+                return true;
+            }else{
+                return getLevelUser() > ROLE_OPERATOR;
+            }
+        }
     }
 
     public String JSONusuarios() throws JSONException {
@@ -219,21 +189,9 @@ public class UserManager {
         }
         return jsonArray.toString();
     }
-    public String getUsuarioActual(){
-        return usuario;
-    }
-    public int getUserLevel(){
-        return userLevel;
-    }
-    public Boolean modificarDatos(){
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application,DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            int cantidad=dbHelper.getQuantity();
-            if(cantidad==0){
-                return true;
-            }else{
-                return getUserLevel() > ROLE_OPERATOR;
-            }
-        }
-    }
 
+    public void loginDialog(MainActivity mainActivity) {
+        UserDialogHandler userDialogHandler = new UserDialogHandler();
+        userDialogHandler.showDialog(mainActivity,this,application);
+    }
 }

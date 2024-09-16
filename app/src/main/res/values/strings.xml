@@ -356,6 +356,14 @@
     <string name="title_label_program_fragment">ETIQUETAS DE PROGRAMA</string>
     <string name="title_fragment_printer">CONFIGURACION DE IMPRESORAS</string>
     <string name="error_ip_adress_invalid">Direccion IP no valida</string>
+    <string name="dialog_login">LOGEAR</string>
+    <string name="toast_storage_file_deleted">Archivo borrado</string>
+    <string name="toast_storage_file_not_deleted">El archivo no se pudo borrar</string>
+    <string name="toast_storage_file_not_exist">El archivo no existe</string>
+    <string name="toast_storage_pendrive_not_avaible">Pendrive no disponible</string>
+    <string name="toast_user_not_exist">No existe el usuario ingresado</string>
+    <string name="toast_user_login_succesfull">LOGEO CORRECTO</string>
+    <string name="toast_user_wrong_password">CONTRASEÑA INCORRECTA</string>
 
 
 </resources>

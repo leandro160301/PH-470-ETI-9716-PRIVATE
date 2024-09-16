@@ -1,6 +1,7 @@
 package com.jws.jwsapi;
 
-import static com.jws.jwsapi.core.user.UserManager.ROLE_ADMINISTRATOR;
+
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_ADMINISTRATOR;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -78,7 +79,7 @@ public class MainClass implements OnFragmentChangeListener {
         if(permitirClic){
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             Fragment fragmentoActual = new ContainerFragment();
-            boolean programador= userManager.getUserLevel() > ROLE_ADMINISTRATOR;
+            boolean programador= userManager.getLevelUser() > ROLE_ADMINISTRATOR;
             ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(),arg,programador);
             containerFragment.setFragmentActual(fragmentoActual);
             fragmentManager.beginTransaction()

@@ -123,8 +123,8 @@ public class Storage {
         new Thread(() -> {
             File newFile = new File(dir, file.getName());
             try (
-                    FileChannel outputChannel = new FileOutputStream(newFile).getChannel();
-                    FileChannel inputChannel = new FileInputStream(file).getChannel()
+                FileChannel outputChannel = new FileOutputStream(newFile).getChannel();
+                FileChannel inputChannel = new FileInputStream(file).getChannel()
             ) {
                 inputChannel.transferTo(0, inputChannel.size(), outputChannel);
                 outputChannel.force(true); // Asegura que todos los datos se escriban en el pendrive

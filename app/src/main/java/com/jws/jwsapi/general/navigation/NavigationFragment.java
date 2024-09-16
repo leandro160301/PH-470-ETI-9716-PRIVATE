@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.general.label.LabelProgramFragment;
 import com.jws.jwsapi.general.printer.PrinterFragment;
-import com.jws.jwsapi.general.files.FileFragment;
+import com.jws.jwsapi.general.storage.StorageFragment;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.R;
@@ -123,7 +123,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             CargarDatosADinamico(ListElementsArrayListdinamicos1);
         }
         if(position==6){
-            mainActivity.mainClass.openFragment(new FileFragment());
+            mainActivity.mainClass.openFragment(new StorageFragment());
         }
         if(position==7){
             mainActivity.clearCache();

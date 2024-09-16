@@ -17,8 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.general.files.StorageService;
-import com.jws.jwsapi.general.files.UsbDialogHandler;
+import com.jws.jwsapi.general.storage.StorageService;
+import com.jws.jwsapi.general.storage.StorageDialogHandler;
 import com.jws.jwsapi.general.navigation.NavigationFragment;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.user.UserManager;
@@ -154,8 +154,8 @@ public class HomeContainerFragment extends Fragment implements HomeButtonProvide
         dialog.show();
         Cancelar.setOnClickListener(view -> dialog.cancel());
         Guardar.setOnClickListener(view -> {
-            UsbDialogHandler usbDialogHandler = new UsbDialogHandler(getContext());
-            usbDialogHandler.showDialog();
+            StorageDialogHandler storageDialogHandler = new StorageDialogHandler(getContext());
+            storageDialogHandler.showDialog();
             dialog.cancel();
         });
 

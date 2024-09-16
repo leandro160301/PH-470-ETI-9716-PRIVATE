@@ -1,8 +1,8 @@
 package com.jws.jwsapi.general.label;
 
 import static com.jws.jwsapi.general.utils.PrinterHelper.getCamposEtiqueta;
-import static com.jws.jwsapi.general.files.Storage.getFilesExtension;
-import static com.jws.jwsapi.general.files.Storage.openAndReadFile;
+import static com.jws.jwsapi.general.storage.Storage.getFilesExtension;
+import static com.jws.jwsapi.general.storage.Storage.openAndReadFile;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

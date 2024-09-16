@@ -1,6 +1,6 @@
-package com.jws.jwsapi.general.files;
+package com.jws.jwsapi.general.storage;
 
-import static com.jws.jwsapi.general.files.Storage.getFilesExtension;
+import static com.jws.jwsapi.general.storage.Storage.getFilesExtension;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +21,7 @@ import com.service.Comunicacion.ButtonProviderSingleton;
 
 import java.io.File;
 
-public class FileFragment extends Fragment implements AdapterCommon.ItemClickListener {
+public class StorageFragment extends Fragment implements AdapterCommon.ItemClickListener {
 
     private MainActivity mainActivity;
     private ButtonProvider buttonProvider;

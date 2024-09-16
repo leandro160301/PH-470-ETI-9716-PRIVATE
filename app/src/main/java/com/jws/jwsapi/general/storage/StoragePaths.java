@@ -1,10 +1,10 @@
-package com.jws.jwsapi.general.files;
+package com.jws.jwsapi.general.storage;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class FilePaths {
+public abstract class StoragePaths {
     public static final List<File> usbMultimediaPaths = Arrays.asList(
             new File("/storage/udisk0"),
             new File("/storage/udisk1"),

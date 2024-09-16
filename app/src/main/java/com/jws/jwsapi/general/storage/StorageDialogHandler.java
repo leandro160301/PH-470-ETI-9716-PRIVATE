@@ -1,6 +1,6 @@
-package com.jws.jwsapi.general.files;
+package com.jws.jwsapi.general.storage;
 
-import static com.jws.jwsapi.general.files.FilePaths.memoryPath;
+import static com.jws.jwsapi.general.storage.StoragePaths.memoryPath;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,11 +16,11 @@ import com.jws.jwsapi.general.utils.ToastHelper;
 
 import java.io.File;
 
-public class UsbDialogHandler {
+public class StorageDialogHandler {
     private final Context context;
     File file;
 
-    public UsbDialogHandler(Context context) {
+    public StorageDialogHandler(Context context) {
         this.context = context;
     }
 
@@ -63,12 +63,12 @@ public class UsbDialogHandler {
 
     private void copyFileToUsb() {
         if (file != null && file.exists()) {
-            for(File dir:FilePaths.usbMultimediaPaths){
+            for(File dir: StoragePaths.usbMultimediaPaths){
                 if (dir.isDirectory()) {
                     Storage.copyFileProgress(file, dir,context);
                 }
             }
-            if (FilePaths.usbMultimediaPaths.stream().noneMatch(File::isDirectory)) {
+            if (StoragePaths.usbMultimediaPaths.stream().noneMatch(File::isDirectory)) {
                 ToastHelper.message("Pendrive no disponible", R.layout.item_customtoasterror,context);
             }
         }

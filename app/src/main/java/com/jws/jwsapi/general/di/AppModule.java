@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import androidx.room.Room;
 
-import com.jws.jwsapi.general.files.StorageService;
+import com.jws.jwsapi.general.storage.StorageService;
 import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.AppDatabase;
 import com.jws.jwsapi.pallet.PalletApi;

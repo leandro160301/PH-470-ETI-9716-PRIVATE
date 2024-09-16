@@ -1,7 +1,7 @@
-package com.jws.jwsapi.general.files;
+package com.jws.jwsapi.general.storage;
 
 import static com.jws.jwsapi.general.dialog.DialogUtil.dialogLoading;
-import static com.jws.jwsapi.general.files.FilePaths.memoryPath;
+import static com.jws.jwsapi.general.storage.StoragePaths.memoryPath;
 
 import android.app.AlertDialog;
 import android.content.Context;

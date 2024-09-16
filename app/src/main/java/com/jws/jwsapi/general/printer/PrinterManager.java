@@ -1,6 +1,6 @@
 package com.jws.jwsapi.general.printer;
 
-import static com.jws.jwsapi.general.files.Storage.openAndReadFile;
+import static com.jws.jwsapi.general.storage.Storage.openAndReadFile;
 
 import android.content.Context;
 import android.util.Log;

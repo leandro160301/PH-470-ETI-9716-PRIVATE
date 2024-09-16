@@ -1,6 +1,6 @@
-package com.jws.jwsapi.general.files;
+package com.jws.jwsapi.general.storage;
 
-import static com.jws.jwsapi.general.files.Storage.installApk;
+import static com.jws.jwsapi.general.storage.Storage.installApk;
 
 import android.content.Context;
 import android.os.Handler;
@@ -37,18 +37,18 @@ public class StorageService {
     };
 
     public void verificaMemoriaUSB(){
-        if (FilePaths.usbPaths.stream().anyMatch(File::isDirectory)) {
-            for(File apk:FilePaths.apks){
+        if (StoragePaths.usbPaths.stream().anyMatch(File::isDirectory)) {
+            for(File apk: StoragePaths.apks){
                 if(apk.exists()){
                     installApk(context);
                 }
             }
-            if(FilePaths.usbMultimediaPaths.stream().anyMatch(File::isDirectory)&& usbState ==0){
-                UsbDialogHandler usbDialogHandler= new UsbDialogHandler(appCompatActivity);
-                usbDialogHandler.showDialog();
+            if(StoragePaths.usbMultimediaPaths.stream().anyMatch(File::isDirectory)&& usbState ==0){
+                StorageDialogHandler storageDialogHandler = new StorageDialogHandler(appCompatActivity);
+                storageDialogHandler.showDialog();
                 usbState =1;
             }
-            if(FilePaths.usbMultimediaPaths.stream().noneMatch(File::isDirectory)&& usbState ==1){
+            if(StoragePaths.usbMultimediaPaths.stream().noneMatch(File::isDirectory)&& usbState ==1){
                 usbState =0;
             }
         }else {

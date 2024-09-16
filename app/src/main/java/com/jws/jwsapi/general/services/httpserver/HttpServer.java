@@ -1,7 +1,7 @@
 package com.jws.jwsapi.general.services.httpserver;
 
 
-import static com.jws.jwsapi.general.files.Storage.installApk;
+import static com.jws.jwsapi.general.storage.Storage.installApk;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,7 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.general.files.Storage;
+import com.jws.jwsapi.general.storage.Storage;
 import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.MainClass;
 import org.apache.poi.util.IOUtils;

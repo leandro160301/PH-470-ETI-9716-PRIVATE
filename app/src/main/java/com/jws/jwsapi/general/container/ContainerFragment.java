@@ -22,8 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.general.files.StorageService;
-import com.jws.jwsapi.general.files.UsbDialogHandler;
+import com.jws.jwsapi.general.storage.StorageService;
+import com.jws.jwsapi.general.storage.StorageDialogHandler;
 import com.jws.jwsapi.general.navigation.NavigationFragment;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.user.UserManager;
@@ -186,8 +186,8 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         dialog.show();
         Cancelar.setOnClickListener(view -> dialog.cancel());
         Guardar.setOnClickListener(view -> {
-            UsbDialogHandler usbDialogHandler = new UsbDialogHandler(mainActivity);
-            usbDialogHandler.showDialog();
+            StorageDialogHandler storageDialogHandler = new StorageDialogHandler(mainActivity);
+            storageDialogHandler.showDialog();
             dialog.cancel();
         });
 

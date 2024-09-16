@@ -1,9 +1,9 @@
 package com.jws.jwsapi;
 
-import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
-import static com.jws.jwsapi.general.storage.Storage.createMemoryDirectory;
-import static com.jws.jwsapi.general.storage.Storage.deleteCache;
-import static com.jws.jwsapi.general.user.UserManager.ROLE_SUPERVISOR;
+import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
+import static com.jws.jwsapi.core.storage.Storage.createMemoryDirectory;
+import static com.jws.jwsapi.core.storage.Storage.deleteCache;
+import static com.jws.jwsapi.core.user.UserManager.ROLE_SUPERVISOR;
 
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -18,13 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.android.jws.JwsManager;
-import com.jws.jwsapi.general.data.local.PreferencesManagerBase;
-import com.jws.jwsapi.general.storage.StorageService;
-import com.jws.jwsapi.general.services.FtpInit;
-import com.jws.jwsapi.general.services.httpserver.InitServer;
-import com.jws.jwsapi.general.user.UserManager;
-import com.jws.jwsapi.general.utils.ToastHelper;
-import com.jws.jwsapi.general.utils.Utils;
+import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.storage.StorageService;
+import com.jws.jwsapi.core.services.FtpInit;
+import com.jws.jwsapi.core.services.httpserver.InitServer;
+import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.utils.ToastHelper;
+import com.jws.jwsapi.utils.Utils;
 
 import java.io.IOException;
 

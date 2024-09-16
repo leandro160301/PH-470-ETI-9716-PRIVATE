@@ -15,11 +15,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
-import com.jws.jwsapi.general.container.HomeButtonProvider;
-import com.jws.jwsapi.general.container.HomeButtonProviderSingleton;
-import com.jws.jwsapi.general.user.UserManager;
-import com.jws.jwsapi.general.utils.ToastHelper;
-import com.jws.jwsapi.general.utils.Utils;
+import com.jws.jwsapi.core.container.ContainerButtonProvider;
+import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
+import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.utils.ToastHelper;
+import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.pallet.PalletCreateFragment;
 import com.jws.jwsapi.pallet.PalletFragment;
@@ -36,7 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class HomeFragment extends Fragment{
 
     private HomeFragmentBinding binding;
-    private HomeButtonProvider buttonProvider;
+    private ContainerButtonProvider buttonProvider;
     MainActivity mainActivity;
     WeighingViewModel weighingViewModel;
     HomeViewModel homeViewModel;
@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment{
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        buttonProvider = HomeButtonProviderSingleton.getInstance().getButtonProvider();
+        buttonProvider = ContainerButtonProviderSingleton.getInstance().getButtonProvider();
         binding = HomeFragmentBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }

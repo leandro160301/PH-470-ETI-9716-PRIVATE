@@ -33,7 +33,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.jws.jwsapi.general.views.ScrollViewScroll
+                <com.jws.jwsapi.core.views.ScrollViewScroll
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -387,7 +387,7 @@
                         </RelativeLayout>
 
                     </LinearLayout>
-                </com.jws.jwsapi.general.views.ScrollViewScroll>
+                </com.jws.jwsapi.core.views.ScrollViewScroll>
 
             </LinearLayout>
 

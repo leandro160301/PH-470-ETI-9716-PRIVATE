@@ -1,7 +1,7 @@
 package com.jws.jwsapi.pallet;
 
-import static com.jws.jwsapi.general.dialog.DialogUtil.keyboard;
-import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardInt;
+import static com.jws.jwsapi.dialog.DialogUtil.keyboard;
+import static com.jws.jwsapi.dialog.DialogUtil.keyboardInt;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.FragmentPalletCreateBinding;
-import com.jws.jwsapi.general.utils.ToastHelper;
+import com.jws.jwsapi.utils.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 

@@ -1,6 +1,6 @@
 package com.jws.jwsapi;
 
-import static com.jws.jwsapi.general.user.UserManager.ROLE_ADMINISTRATOR;
+import static com.jws.jwsapi.core.user.UserManager.ROLE_ADMINISTRATOR;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.jws.jwsapi.general.container.ContainerFragment;
-import com.jws.jwsapi.general.container.HomeContainerFragment;
-import com.jws.jwsapi.general.user.UserManager;
+import com.jws.jwsapi.core.container.ContainerContainerFragment;
+import com.jws.jwsapi.core.container.ContainerFragment;
+import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.home.HomeFragment;
 import com.service.Balanzas.BalanzaService;
 import com.service.Comunicacion.OnFragmentChangeListener;
@@ -22,7 +22,6 @@ public class MainClass implements OnFragmentChangeListener {
     private final Context context;
     private final MainActivity mainActivity;
     public static String DB_NAME = "Frm_DB";
-    public static int DB_VERSION = 4;
     public BalanzaService service;
     public BalanzaService.Balanzas bza;
     public int nBza =1;
@@ -55,8 +54,8 @@ public class MainClass implements OnFragmentChangeListener {
     public void openFragmentPrincipal() {
         Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-        Fragment fragmentoActual = new HomeContainerFragment();
-        HomeContainerFragment containerFragment = HomeContainerFragment.newInstance(fragment.getClass());
+        Fragment fragmentoActual = new ContainerContainerFragment();
+        ContainerContainerFragment containerFragment = ContainerContainerFragment.newInstance(fragment.getClass());
         containerFragment.setFragmentActual(fragmentoActual);
         fragmentManager.beginTransaction()
                 .replace(R.id.container_fragment, containerFragment)

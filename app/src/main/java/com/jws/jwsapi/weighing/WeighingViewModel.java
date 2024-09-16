@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.jws.jwsapi.general.user.UserManager;
+import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.shared.PalletRepository;
 

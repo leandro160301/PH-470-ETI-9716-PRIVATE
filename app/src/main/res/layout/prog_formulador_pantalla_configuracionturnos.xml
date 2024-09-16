@@ -56,7 +56,7 @@
                                 android:layout_height="match_parent"
                                 android:orientation="horizontal"></LinearLayout>
 
-                            <com.jws.jwsapi.general.views.ScrollViewScroll
+                            <com.jws.jwsapi.core.views.ScrollViewScroll
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
@@ -257,7 +257,7 @@
 
 
                                 </LinearLayout>
-                            </com.jws.jwsapi.general.views.ScrollViewScroll>
+                            </com.jws.jwsapi.core.views.ScrollViewScroll>
 
                         </LinearLayout>
 

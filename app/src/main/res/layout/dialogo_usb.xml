@@ -54,7 +54,7 @@
                         android:background="@drawable/banner_menu_"
                         android:orientation="vertical">
 
-                        <com.jws.jwsapi.general.views.RecyclerViewScroll
+                        <com.jws.jwsapi.core.views.RecyclerViewScroll
                             android:id="@+id/listview"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />

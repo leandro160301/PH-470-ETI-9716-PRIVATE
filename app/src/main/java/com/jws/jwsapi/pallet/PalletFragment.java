@@ -1,6 +1,6 @@
 package com.jws.jwsapi.pallet;
 
-import static com.jws.jwsapi.general.dialog.DialogUtil.dialogText;
+import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.FragmentPalletBinding;
-import com.jws.jwsapi.general.utils.ToastHelper;
+import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;

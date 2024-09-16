@@ -186,7 +186,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         Cancelar.setOnClickListener(view -> dialog.cancel());
         Guardar.setOnClickListener(view -> {
             UsbDialogHandler usbDialogHandler = new UsbDialogHandler(getContext());
-            usbDialogHandler.dialogoUSB();
+            usbDialogHandler.showDialog();
             dialog.cancel();
         });
 

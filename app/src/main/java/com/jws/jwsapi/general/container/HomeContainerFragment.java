@@ -155,7 +155,7 @@ public class HomeContainerFragment extends Fragment implements HomeButtonProvide
         Cancelar.setOnClickListener(view -> dialog.cancel());
         Guardar.setOnClickListener(view -> {
             UsbDialogHandler usbDialogHandler = new UsbDialogHandler(getContext());
-            usbDialogHandler.dialogoUSB();
+            usbDialogHandler.showDialog();
             dialog.cancel();
         });
 

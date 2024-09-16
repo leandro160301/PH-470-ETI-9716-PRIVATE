@@ -6,8 +6,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Singleton;
 
@@ -15,21 +13,7 @@ import javax.inject.Singleton;
 public class StorageService {
     private final Context context;
     private static final Handler mHandler= new Handler();
-    private final List<File> usbPaths = Arrays.asList(
-            new File("/storage/udisk0"),
-            new File("/storage/udisk1"),
-            new File("/storage/udisk2")
-    );
-    private final List<File> apks = Arrays.asList(
-            new File("/storage/udisk0/instalacion/jwsapi.apk"),
-            new File("/storage/udisk1/instalacion/jwsapi.apk"),
-            new File("/storage/udisk2/instalacion/jwsapi.apk")
-    );
-    private final List<File> usbMultimediaPaths = Arrays.asList(
-            new File("/storage/udisk0"),
-            new File("/storage/udisk1"),
-            new File("/storage/udisk2")
-    );
+
     private int usbState =0;
 
     public StorageService(Context context) {
@@ -50,18 +34,18 @@ public class StorageService {
     };
 
     public void verificaMemoriaUSB(){
-        if (usbPaths.stream().anyMatch(File::isDirectory)) {
-            for(File apk:apks){
+        if (FilePaths.usbPaths.stream().anyMatch(File::isDirectory)) {
+            for(File apk:FilePaths.apks){
                 if(apk.exists()){
                     installApk(context);
                 }
             }
-            if(usbMultimediaPaths.stream().anyMatch(File::isDirectory)&& usbState ==0){
+            if(FilePaths.usbMultimediaPaths.stream().anyMatch(File::isDirectory)&& usbState ==0){
                 UsbDialogHandler usbDialogHandler= new UsbDialogHandler(context);
-                usbDialogHandler.dialogoUSB();
+                usbDialogHandler.showDialog();
                 usbState =1;
             }
-            if(usbMultimediaPaths.stream().noneMatch(File::isDirectory)&& usbState ==1){
+            if(FilePaths.usbMultimediaPaths.stream().noneMatch(File::isDirectory)&& usbState ==1){
                 usbState =0;
             }
         }else {

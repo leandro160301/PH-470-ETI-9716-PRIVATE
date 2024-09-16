@@ -1,12 +1,12 @@
 package com.jws.jwsapi.general.files;
 
 import static com.jws.jwsapi.general.dialog.DialogUtil.dialogLoading;
+import static com.jws.jwsapi.general.files.FilePaths.memoryPath;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -69,7 +69,7 @@ public class Storage {
     }
 
     public static String openAndReadFile(String archivo, MainActivity mainActivity) {
-        String filePath = "/storage/emulated/0/Memoria/"+archivo;
+        String filePath = memoryPath+archivo;
         File file = new File(filePath);
         if (!file.exists()) {
             ToastHelper.message("La etiqueta ya no esta disponible",R.layout.item_customtoasterror,mainActivity);
@@ -143,7 +143,7 @@ public class Storage {
 
     public int cantidadRegistros() {
         List<String> Lista=new ArrayList<>();
-        File  root = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
+        File  root = new File(memoryPath);
         if(root.exists()){
             File[] filearr = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(".xls") && filename.toLowerCase().startsWith("registro"));
             StringBuilder f = new StringBuilder();
@@ -215,7 +215,7 @@ public class Storage {
 
     public static List<String> getFilesExtension(String extension){
         List <String>lista =new ArrayList<>();
-        File root = new File(Environment.getExternalStorageDirectory().toString()+"/Memoria");
+        File root = new File(memoryPath);
         if(root.exists()){
             File [] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(extension));
             StringBuilder f = new StringBuilder();
@@ -232,7 +232,6 @@ public class Storage {
 
 
     public static void createMemoryDirectory() {
-        String memoryPath ="/storage/emulated/0/Memoria";
         File fileMemoria = new File(memoryPath);
         if (!fileMemoria.isDirectory()){
             fileMemoria.mkdir();
@@ -241,7 +240,7 @@ public class Storage {
 
     public static List<String> getAllFiles() {
         List<String> lista = new ArrayList<>();
-        File root2 = new File(Environment.getExternalStorageDirectory().toString() + "/Memoria");
+        File root2 = new File(memoryPath);
 
         if (root2.exists()) {
             Set<String> extensions = new HashSet<>(Arrays.asList(".pdf", ".png", ".xls", ".csv", ".jpg", ".prn", ".lbl", ".nlbl"));

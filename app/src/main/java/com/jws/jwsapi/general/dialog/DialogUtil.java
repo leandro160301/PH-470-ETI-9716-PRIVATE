@@ -133,8 +133,12 @@ public class DialogUtil {
         showDialog(view,texto,context,dialogInterface,false,InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS| InputType.TYPE_CLASS_NUMBER| InputType.TYPE_TEXT_VARIATION_PASSWORD,null,null, null,passwordTransformationMethod);
     }
 
+    public static void keyboardIpAdress(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
+        showDialog(view,texto,context,dialogInterface,false,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),null, null,null);
+    }
+
     public static void keyboardFloat(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
-        showDialog(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),null, null,null);
+        showDialog(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,null,null, null,null);
     }
 
     public static void keyboardInt(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {
@@ -142,7 +146,7 @@ public class DialogUtil {
     }
 
     public static void keyboardFloatCancel(TextView view, String texto, Context context, DialogInputInterface dialogInterface, DialogButtonInterface buttonInterface, String textoCancelar) {
-        showDialog(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,DigitsKeyListener.getInstance(".0123456789"),buttonInterface,textoCancelar,null);
+        showDialog(view,texto,context,dialogInterface,true,InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL,null,buttonInterface,textoCancelar,null);
     }
 
     public static void dialogText(Context context, String texto, String textoBoton, DialogButtonInterface dialogInterface) {

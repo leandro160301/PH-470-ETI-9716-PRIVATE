@@ -1,30 +1,35 @@
 package com.jws.jwsapi.general.printer;
 
-import android.app.AlertDialog;
+import static com.jws.jwsapi.general.dialog.DialogUtil.keyboardIpAdress;
+import static com.jws.jwsapi.general.utils.SpinnerHelper.setupSpinner;
+
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.general.data.local.PreferencesManager;
+import com.jws.jwsapi.general.label.LabelManager;
 import com.jws.jwsapi.general.printer.preferences.PreferencesPrinterManager;
 import com.jws.jwsapi.general.user.UserManager;
-import com.jws.jwsapi.general.label.LabelManager;
-import com.jws.jwsapi.general.data.local.PreferencesManager;
+import com.jws.jwsapi.general.utils.ToastHelper;
+import com.jws.jwsapi.general.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
+
+import java.util.Arrays;
+
 import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -33,15 +38,15 @@ public class PrinterFragment extends Fragment{
     PreferencesManager preferencesManager;
     @Inject
     LabelManager labelManager;
-    Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
+    @Inject
+    UserManager userManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     TextView tv_ipimpresora;
     Spinner sp_impresora;
     PrinterManager imprimirStandar;
     PreferencesPrinterManager preferencesPrinterManager;
-    @Inject
-    UserManager userManager;
+
 
     @Nullable
     @Override
@@ -55,20 +60,30 @@ public class PrinterFragment extends Fragment{
 
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
-        configuracionBotones();
+        setupButtons();
         tv_ipimpresora=view.findViewById(R.id.tv_ipimpresora);
         sp_impresora= view.findViewById(R.id.sp_impresora);
+        initPrinter();
+
+        initTextView();
+
+        initSpinner();
+
+
+    }
+
+    private void initPrinter() {
         imprimirStandar=new PrinterManager(getContext(),mainActivity, userManager,preferencesManager,labelManager);
         preferencesPrinterManager= new PreferencesPrinterManager(mainActivity);
+    }
+
+    private void initTextView() {
         tv_ipimpresora.setText(preferencesPrinterManager.consultaIP());
-        tv_ipimpresora.setOnClickListener(view1 -> Teclado(tv_ipimpresora,"Ingrese IP de Impresora"));
+        tv_ipimpresora.setOnClickListener(v -> keyboardIpAdress(tv_ipimpresora, "Ingrese IP de Impresora", requireContext(), this::setupIpHandler));
+    }
 
-
-        String[] Lote_arr = getResources().getStringArray(R.array.ImpresoraModo);
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(requireContext(),R.layout.item_spinner,Lote_arr);
-        adapter3.setDropDownViewResource(R.layout.item_spinner);
-        sp_impresora.setAdapter(adapter3);
-        sp_impresora.setPopupBackgroundResource(R.drawable.campollenarclickeable);
+    private void initSpinner() {
+        setupSpinner(sp_impresora, requireContext(), Arrays.asList(getResources().getStringArray(R.array.ImpresoraModo)));
         sp_impresora.setSelection(preferencesPrinterManager.consultaModo());
         sp_impresora.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -83,65 +98,30 @@ public class PrinterFragment extends Fragment{
 
             }
         });
-
-
     }
 
-    private void configuracionBotones() {
+    private void setupIpHandler(String ip) {
+        if(Utils.isIP(ip)) {
+            preferencesPrinterManager.setIP(ip);
+        } else {
+            ToastHelper.message(getString(R.string.error_ip_adress_invalid),R.layout.item_customtoasterror,requireContext());
+            tv_ipimpresora.setText("");
+        }
+    }
+
+    private void setupButtons() {
         if (buttonProvider != null) {
-            bt_home = buttonProvider.getButtonHome();
-            bt_1 = buttonProvider.getButton1();
-            bt_2 = buttonProvider.getButton2();
-            bt_3 = buttonProvider.getButton3();
-            bt_4 = buttonProvider.getButton4();
-            bt_5 = buttonProvider.getButton5();
-            bt_6 = buttonProvider.getButton6();
-            buttonProvider.getTitulo().setText("CONFIGURACION DE IMPRESORAS");
+            buttonProvider.getTitulo().setText(R.string.title_fragment_printer);
 
-            bt_1.setVisibility(View.INVISIBLE);
-            bt_2.setVisibility(View.INVISIBLE);
-            bt_3.setVisibility(View.INVISIBLE);
-            bt_4.setVisibility(View.INVISIBLE);
-            bt_5.setVisibility(View.INVISIBLE);
-            bt_6.setVisibility(View.INVISIBLE);
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            buttonProvider.getButton1().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton2().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton3().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton4().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton5().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton6().setVisibility(View.INVISIBLE);
+            buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
-    }
-    public void Teclado(TextView View,String texto){
-
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopcionespuntos, null);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        TextView textView=mView.findViewById(R.id.textViewt);
-        textView.setText(texto);
-        userInput.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        userInput.setKeyListener(DigitsKeyListener.getInstance(".0123456789"));
-
-        userInput.setOnLongClickListener(v -> true);
-
-        userInput.requestFocus();
-
-        if(!View.getText().toString().equals("") && !View.getText().toString().equals("-")){
-            userInput.setSelection(userInput.getText().length());
-        }
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            if(!userInput.getText().toString().equals("")) {
-                preferencesPrinterManager.setIP(userInput.getText().toString());
-                View.setText(userInput.getText().toString());
-            }
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-
     }
 }
 

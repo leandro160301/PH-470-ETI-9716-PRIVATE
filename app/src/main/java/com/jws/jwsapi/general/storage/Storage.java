@@ -229,7 +229,6 @@ public class Storage {
         return lista;
     }
 
-
     public static void createMemoryDirectory() {
         File fileMemoria = new File(MEMORY_PATH);
         if (!fileMemoria.isDirectory()){

@@ -166,6 +166,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         }
         startRunnable();
     }
+
     public void DialogoInformacion(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_informacion, null);
@@ -185,7 +186,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         dialog.show();
         Cancelar.setOnClickListener(view -> dialog.cancel());
         Guardar.setOnClickListener(view -> {
-            UsbDialogHandler usbDialogHandler = new UsbDialogHandler(getContext());
+            UsbDialogHandler usbDialogHandler = new UsbDialogHandler(mainActivity);
             usbDialogHandler.showDialog();
             dialog.cancel();
         });

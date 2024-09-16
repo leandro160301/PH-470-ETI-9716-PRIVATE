@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initPendrive() {
-        storageService.initService();
+        storageService.initService(this);
     }
 
     private void initFtpWebRTC() {

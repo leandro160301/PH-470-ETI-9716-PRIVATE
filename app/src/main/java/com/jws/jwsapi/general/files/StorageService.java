@@ -5,6 +5,8 @@ import static com.jws.jwsapi.general.files.Storage.installApk;
 import android.content.Context;
 import android.os.Handler;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.File;
 
 import javax.inject.Singleton;
@@ -12,16 +14,17 @@ import javax.inject.Singleton;
 @Singleton
 public class StorageService {
     private final Context context;
+    private AppCompatActivity appCompatActivity;
     private static final Handler mHandler= new Handler();
 
     private int usbState =0;
 
     public StorageService(Context context) {
         this.context = context;
-
     }
 
-    public void initService() {
+    public void initService(AppCompatActivity appCompatActivity) {
+        this.appCompatActivity = appCompatActivity;
         startUsbRead.run();
     }
 
@@ -41,7 +44,7 @@ public class StorageService {
                 }
             }
             if(FilePaths.usbMultimediaPaths.stream().anyMatch(File::isDirectory)&& usbState ==0){
-                UsbDialogHandler usbDialogHandler= new UsbDialogHandler(context);
+                UsbDialogHandler usbDialogHandler= new UsbDialogHandler(appCompatActivity);
                 usbDialogHandler.showDialog();
                 usbState =1;
             }

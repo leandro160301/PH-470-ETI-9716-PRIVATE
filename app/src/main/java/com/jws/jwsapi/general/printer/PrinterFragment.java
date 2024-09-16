@@ -47,7 +47,6 @@ public class PrinterFragment extends Fragment{
     PrinterManager imprimirStandar;
     PreferencesPrinterManager preferencesPrinterManager;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

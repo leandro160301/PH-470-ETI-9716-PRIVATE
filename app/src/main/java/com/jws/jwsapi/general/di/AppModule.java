@@ -3,6 +3,8 @@ package com.jws.jwsapi.general.di;
 import android.app.Application;
 import android.content.Context;
 import androidx.room.Room;
+
+import com.jws.jwsapi.general.files.StorageService;
 import com.jws.jwsapi.general.user.UserManager;
 import com.jws.jwsapi.AppDatabase;
 import com.jws.jwsapi.pallet.PalletApi;
@@ -48,6 +50,12 @@ public class AppModule {
     @Singleton
     public LabelManager provideLabelManager(PreferencesManager preferencesManager){
         return new LabelManager(preferencesManager);
+    }
+
+    @Provides
+    @Singleton
+    public static StorageService provideStorageService(@ApplicationContext Context context) {
+        return new StorageService(context);
     }
 
     @Provides

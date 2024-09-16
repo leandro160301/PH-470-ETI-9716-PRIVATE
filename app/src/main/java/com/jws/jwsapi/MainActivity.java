@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.general.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.general.files.Storage;
+import com.jws.jwsapi.general.files.StorageService;
 import com.jws.jwsapi.general.services.FtpInit;
 import com.jws.jwsapi.general.services.httpserver.InitServer;
 import com.jws.jwsapi.general.user.UserManager;
@@ -37,11 +38,12 @@ public class MainActivity extends AppCompatActivity{
     public static String VERSION ="PH 470 BZA 1.00";
     public JwsManager jwsObject;
     public MainClass mainClass;
-    public Storage storage;
-    InitServer initServer;
+    private InitServer initServer;
     public PreferencesManagerBase preferencesManagerBase;
     @Inject
     UserManager userManager;
+    @Inject
+    StorageService storageService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +60,8 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-
     private void initPendrive() {
-        storage =new Storage(this);
-        storage.init();
+        storageService.initService();
     }
 
     private void initFtpWebRTC() {

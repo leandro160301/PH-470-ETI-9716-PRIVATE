@@ -1,6 +1,8 @@
 package com.jws.jwsapi.general.services.httpserver;
 
 
+import static com.jws.jwsapi.general.files.Storage.installApk;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -287,8 +289,7 @@ public class HttpServer extends NanoWSD {
             return newFixedLengthResponse("Hecho");
         }
         else if(uri.endsWith("INSTALLAPK")){
-            Storage storage= new Storage(mainActivity);
-            storage.installApk(mainActivity);
+            installApk(mainActivity);
             return newFixedLengthResponse("Hecho");
         }
         else if(uri.endsWith("CONFIGURACION")){

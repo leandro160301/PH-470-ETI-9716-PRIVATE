@@ -1,25 +1,27 @@
 package com.jws.jwsapi.general.files;
 
+import static com.jws.jwsapi.general.dialog.DialogUtil.dialogLoading;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Looper;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.jws.jwsapi.R;
+
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.utils.AdapterCommonFix;
 import com.jws.jwsapi.general.utils.ToastHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,174 +39,25 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Storage {
-    String FileDialog="";
-    private final List<File> usbMultimediaPaths = Arrays.asList(
-            new File("/storage/udisk0"),
-            new File("/storage/udisk1"),
-            new File("/storage/udisk2")
-    );
-    private final List<File> usbPaths = Arrays.asList(
-            new File("/storage/udisk0"),
-            new File("/storage/udisk1"),
-            new File("/storage/udisk2")
-    );
-    private final List<File> apks = Arrays.asList(
-            new File("/storage/udisk0/instalacion/jwsapi.apk"),
-            new File("/storage/udisk1/instalacion/jwsapi.apk"),
-            new File("/storage/udisk2/instalacion/jwsapi.apk")
-    );
-    File file;
-    int updateUsbState =0;
-    public static Handler mHandler= new Handler();
-    private final AppCompatActivity activity;
 
-    public Storage(AppCompatActivity activity){
-        this.activity=activity;
-    }
-    public void init(){
-        startUsbRead.run();
-    }
-
-    Runnable startUsbRead = new Runnable() {
-        @Override
-        public void run() {
-            verificaMemoriaUSB();
-            mHandler.postDelayed(this,1000);
-
-        }
-    };
-
-    public void verificaMemoriaUSB(){
-        if (usbPaths.stream().anyMatch(File::isDirectory)) {
-            for(File apk:apks){
-                if(apk.exists()){
-                    installApk(activity);
-                }
-            }
-            if(usbMultimediaPaths.stream().anyMatch(File::isDirectory)&& updateUsbState ==0){
-                dialogoUSB();
-                updateUsbState =1;
-            }
-            if(usbMultimediaPaths.stream().noneMatch(File::isDirectory)&& updateUsbState ==1){
-                updateUsbState =0;
-            }
-        }else {
-            updateUsbState =0;
-        }
-    }
-
-    public boolean isPackageExisted(String targetPackage){
-        PackageManager pm= activity.getApplicationContext().getPackageManager();
+    public static boolean isPackageExisted(String targetPackage, Context context) {
+        PackageManager pm = context.getPackageManager();
         try {
-            pm.getPackageInfo(targetPackage,PackageManager.GET_META_DATA);
+            pm.getPackageInfo(targetPackage, PackageManager.GET_META_DATA);
+            return true;
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-        return true;
     }
 
-    public Boolean DevuelveEstadoUSB(){
-        return updateUsbState == 1;
-    }
-
-    public void installApk(AppCompatActivity activity){
-        if(isPackageExisted("com.android.documentsui")){
-            Intent launchIntent = activity.getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.android.documentsui");
+    public static void installApk(Context context) {
+        if (isPackageExisted("com.android.documentsui", context)) {
+            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.android.documentsui");
             if (launchIntent != null) {
-                activity.startActivity(launchIntent);
-                activity.finish();
-                System.exit(0);
+                launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  // Añadido por si el contexto no es una actividad
+                context.startActivity(launchIntent);
             }
         }
-    }
-
-
-    public void dialogoUSB(){
-        AlertDialog.Builder DialogoUSB = new AlertDialog.Builder(activity, R.style.AlertDialogCustom);
-        View mView = activity.getLayoutInflater().inflate(R.layout.dialogo_usb, null);
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        Button Borrar = mView.findViewById(R.id.btborrar);
-        Button bt_pdf = mView.findViewById(R.id.bt_pdf);
-        Button bt_excel = mView.findViewById(R.id.bt_excel);
-        Button bt_csv = mView.findViewById(R.id.bt_csv);
-        Button bt_captura = mView.findViewById(R.id.bt_captura);
-        RecyclerView recyclerView=mView.findViewById(R.id.listview);
-        AdapterCommonFix adapter = setupRecyclerExtension(".pdf",recyclerView);
-        adapter.setClickListener((view, position) -> {
-            String archivo = "/storage/emulated/0/Memoria/";
-            FileDialog=adapter.getItem(position);
-            String archivo2=archivo.concat(adapter.getItem(position));
-            file = new File(archivo2);
-        });
-        DialogoUSB.setView(mView);
-        final AlertDialog dialogusb = DialogoUSB.create();
-        dialogusb.show();
-        bt_pdf.setOnClickListener(view -> {
-            file=null;
-            AdapterCommonFix adapter1 = setupRecyclerExtension(".pdf",recyclerView);
-            adapter1.setClickListener((view1, position) -> {
-                String archivo = "/storage/emulated/0/Memoria/";
-                FileDialog= adapter1.getItem(position);
-                String archivo2=archivo.concat(adapter1.getItem(position));
-                file = new File(archivo2);
-            });
-        });
-        bt_captura.setOnClickListener(view -> {
-            file=null;
-            AdapterCommonFix adapter1 = setupRecyclerExtension(".png",recyclerView);
-            adapter1.setClickListener((view1, position) -> {
-                String archivo = "/storage/emulated/0/Memoria/";
-                FileDialog= adapter1.getItem(position);
-                String archivo2=archivo.concat(adapter1.getItem(position));
-                file = new File(archivo2);
-            });
-        });
-        bt_excel.setOnClickListener(view -> {
-            file=null;
-            AdapterCommonFix adapter12 = setupRecyclerExtension(".xls",recyclerView);
-            adapter12.setClickListener((view13, position) -> {
-                String archivo = "/storage/emulated/0/Memoria/";
-                FileDialog= adapter12.getItem(position);
-                String archivo2=archivo.concat(adapter12.getItem(position));
-                file = new File(archivo2);
-            });
-        });
-        bt_csv.setOnClickListener(view -> {
-            file=null;
-            AdapterCommonFix adapter13 = setupRecyclerExtension(".csv",recyclerView);
-            adapter13.setClickListener((view12, position) -> {
-                String archivo = "/storage/emulated/0/Memoria/";
-                FileDialog= adapter13.getItem(position);
-                String archivo2=archivo.concat(adapter13.getItem(position));
-                file = new File(archivo2);
-            });
-        });
-        Guardar.setOnClickListener(view -> {
-            if (file != null && file.exists()) {
-                for(File dir:usbMultimediaPaths){
-                    if (dir.isDirectory()) {
-                        copyFileProgress(file, dir);
-                    }
-                }
-                if (usbMultimediaPaths.stream().noneMatch(File::isDirectory)) {
-                    ToastHelper.message("Pendrive no disponible", R.layout.item_customtoasterror,activity);
-                }
-            }
-        });
-        Cancelar.setOnClickListener(view -> dialogusb.cancel());
-        Borrar.setOnClickListener(view -> {
-            if (file != null && file.exists()) {
-                boolean eliminacion=file.delete();
-                if(eliminacion){
-                    ToastHelper.message("Archivo borrado", R.layout.item_customtoastok,activity);
-                }else{
-                    ToastHelper.message("El archivo no se pudo borrar", R.layout.item_customtoasterror,activity);
-                }
-            }else{
-                ToastHelper.message("El archivo no existe", R.layout.item_customtoasterror,activity);
-            }
-        });
     }
 
     public static void deleteCache(Context context) {
@@ -254,38 +107,33 @@ public class Storage {
 
     }
 
-    public AdapterCommonFix setupRecyclerExtension(String extension, RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        AdapterCommonFix adapter3 = new AdapterCommonFix(activity, getFilesExtension(extension));
+    public static AdapterCommonFix setupRecyclerExtension(String extension, RecyclerView recyclerView, Context context) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        AdapterCommonFix adapter3 = new AdapterCommonFix(context, getFilesExtension(extension));
         recyclerView.setAdapter(adapter3);
         return adapter3;
     }
 
-    public void copyFileProgress(final File file, final File dir) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(activity,R.style.AlertDialogCustom);
-        View mView = activity.getLayoutInflater().inflate(R.layout.dialogo_transferenciaarchivo, null);
-        TextView textView= mView.findViewById(R.id.textView);
-        textView.setText(R.string.dialog_copy_file);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
+    public static void copyFileProgress(final File file, final File dir, Context context) {
+        AlertDialog dialog =dialogLoading(context, String.valueOf(R.string.dialog_copy_file));
+        copyFileTransfer(file, dir, dialog, context);
+    }
 
+    private static void copyFileTransfer(File file, File dir, AlertDialog dialog, Context context) {
         new Thread(() -> {
             File newFile = new File(dir, file.getName());
             try (
                     FileChannel outputChannel = new FileOutputStream(newFile).getChannel();
                     FileChannel inputChannel = new FileInputStream(file).getChannel()
             ) {
-                long startTime = System.currentTimeMillis();
                 inputChannel.transferTo(0, inputChannel.size(), outputChannel);
                 outputChannel.force(true); // Asegura que todos los datos se escriban en el pendrive
                 outputChannel.close();
 
-                long endTime = System.currentTimeMillis();
-
-                activity.runOnUiThread(() -> {
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(() -> {
                     dialog.cancel();
-                    ToastHelper.message(activity.getString(R.string.dialog_file_copied), R.layout.item_customtoastok,activity);
+                    ToastHelper.message("Archivo enviado", R.layout.item_customtoastok, context);
                 });
             } catch (IOException e) {
                 e.printStackTrace();

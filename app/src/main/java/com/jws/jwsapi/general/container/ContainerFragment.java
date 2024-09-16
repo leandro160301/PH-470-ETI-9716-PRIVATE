@@ -22,6 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.general.files.StorageService;
+import com.jws.jwsapi.general.files.UsbDialogHandler;
 import com.jws.jwsapi.general.navigation.NavigationFragment;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.general.user.UserManager;
@@ -55,6 +57,8 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
     int iconflag=-1;
     @Inject
     UserManager userManager;
+    @Inject
+    StorageService storageService;
 
     public static ContainerFragment newInstance(Class<? extends Fragment> fragmentClass) {
         ContainerFragment fragment = new ContainerFragment();
@@ -102,8 +106,6 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         ln_nav=view.findViewById(R.id.ln_nav);
         tv_titulo=view.findViewById(R.id.tv_titulo);
         imuser=view.findViewById(R.id.imuser);
-       // ln_nav.setVisibility(View.GONE);
-        //bt_arriba.setVisibility(View.GONE);
         lr_botonera=view.findViewById(R.id.lr_botonera);
 
         bt_wifi=view.findViewById(R.id.bt_wifi);
@@ -150,7 +152,6 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
                         fragment.setArguments(args);
                     }
 
-                    // Realiza las configuraciones comunes
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.nuevofragment, fragment)
                             .commit();
@@ -174,7 +175,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         Button Cancelar =  mView.findViewById(R.id.buttonc);
         TextView tvIP = mView.findViewById(R.id.tvIP);
         TextView tvVersion = mView.findViewById(R.id.tvVersion);
-        if(!mainActivity.storage.DevuelveEstadoUSB()){
+        if(!storageService.getUsbState()){
             Guardar.setVisibility(View.INVISIBLE);
         }
         tvIP.setText(Utils.getIPAddress(true));
@@ -184,7 +185,8 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         dialog.show();
         Cancelar.setOnClickListener(view -> dialog.cancel());
         Guardar.setOnClickListener(view -> {
-            mainActivity.storage.dialogoUSB();
+            UsbDialogHandler usbDialogHandler = new UsbDialogHandler(getContext());
+            usbDialogHandler.dialogoUSB();
             dialog.cancel();
         });
 
@@ -245,7 +247,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
                     bandera=0;
                     Tipo="";
                 }
-                if(mainActivity.storage.DevuelveEstadoUSB()){
+                if(storageService.getUsbState()){
                     bt_usb.setVisibility(View.VISIBLE);
                 }else{
                     bt_usb.setVisibility(View.INVISIBLE);

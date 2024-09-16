@@ -33,8 +33,10 @@ import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -173,43 +175,40 @@ public class Storage {
     }
 
     public static String JSONarchivos() throws JSONException {
-        List<String> guardado= getAllFiles();
+        List<String> guardado = getAllFiles();
         JSONArray jsonArray = new JSONArray();
+
+        Map<String, String> tipoPorExtension = new HashMap<>();
+        tipoPorExtension.put(".pdf", "pdf");
+        tipoPorExtension.put(".png", "png");
+        tipoPorExtension.put(".xls", "xls");
+        tipoPorExtension.put(".csv", "csv");
+        tipoPorExtension.put(".jpg", "jpg");
+        tipoPorExtension.put(".prn", "prn");
+        tipoPorExtension.put(".lbl", "lbl");
+        tipoPorExtension.put(".nlbl", "nlbl");
+
         try {
-            for(int i=0;i<guardado.size();i++){
-                JSONObject Usuario = new JSONObject();
-                Usuario.put("Nombre", guardado.get(i).replace(".pdf","").replace(".png","").replace(".xls","").replace(".csv","").replace(".jpg","").replace(".prn","").replace(".lbl","").replace(".nlbl",""));
-                if(guardado.get(i).endsWith(".pdf")){
-                    Usuario.put("Tipo", "pdf");
+            for (String archivo : guardado) {
+                JSONObject usuario = new JSONObject();
+                String nombre = archivo;
+                String tipo = "";
+
+                for (Map.Entry<String, String> entry : tipoPorExtension.entrySet()) {
+                    if (archivo.endsWith(entry.getKey())) {
+                        nombre = archivo.replace(entry.getKey(), "");
+                        tipo = entry.getValue();
+                        break;
+                    }
                 }
-                if(guardado.get(i).endsWith(".png")){
-                    Usuario.put("Tipo", "png");
-                }
-                if(guardado.get(i).endsWith(".xls")){
-                    Usuario.put("Tipo", "xls");
-                }
-                if(guardado.get(i).endsWith(".csv")){
-                    Usuario.put("Tipo", "csv");
-                }
-                if(guardado.get(i).endsWith(".jpg")){
-                    Usuario.put("Tipo", "jpg");
-                }
-                if(guardado.get(i).endsWith(".prn")){
-                    Usuario.put("Tipo", "prn");
-                }
-                if(guardado.get(i).endsWith(".lbl")){
-                    Usuario.put("Tipo", "lbl");
-                }
-                if(guardado.get(i).endsWith(".nlbl")){
-                    Usuario.put("Tipo", "nlbl");
-                }
-                Usuario.put("Fecha", "");
-                jsonArray.put(Usuario);
+                usuario.put("Nombre", nombre);
+                usuario.put("Tipo", tipo);
+                usuario.put("Fecha", "");
+                jsonArray.put(usuario);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return jsonArray.toString();
     }
 

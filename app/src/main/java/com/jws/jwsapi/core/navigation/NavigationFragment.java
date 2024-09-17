@@ -378,11 +378,11 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             }
             return false;
         });
-        binding.tvMinutos.setOnClickListener(view -> keyboardInt(binding.tvMinutos, "Ingrese los minutos", requireContext(), texto -> checkMinutes(texto,binding.tvMinutos)));
-        binding.tvHora.setOnClickListener(view -> keyboardInt(binding.tvHora, "Ingrese la hora", requireContext(), texto -> checkHour(texto,binding.tvHora)));
-        binding.tvDia.setOnClickListener(view -> keyboardInt(binding.tvDia, "Ingrese el dia", requireContext(), texto -> checkDay(texto,binding.tvDia)));
-        binding.tvMes.setOnClickListener(view -> keyboardInt(binding.tvMes, "Ingrese el mes", requireContext(), texto -> checkMonth(texto,binding.tvMes)));
-        binding.tvAno.setOnClickListener(view -> keyboardInt(binding.tvAno, "Ingrese el año", requireContext(), texto -> checkYear(texto,binding.tvAno)));
+        binding.tvMinutos.setOnClickListener(view -> keyboardInt(binding.tvMinutos, "Ingrese los minutos", requireContext(), minutes -> checkMinutes(minutes,binding.tvMinutos)));
+        binding.tvHora.setOnClickListener(view -> keyboardInt(binding.tvHora, "Ingrese la hora", requireContext(), hour -> checkHour(hour,binding.tvHora)));
+        binding.tvDia.setOnClickListener(view -> keyboardInt(binding.tvDia, "Ingrese el dia", requireContext(), day -> checkDay(day,binding.tvDia)));
+        binding.tvMes.setOnClickListener(view -> keyboardInt(binding.tvMes, "Ingrese el mes", requireContext(), month -> checkMonth(month,binding.tvMes)));
+        binding.tvAno.setOnClickListener(view -> keyboardInt(binding.tvAno, "Ingrese el año", requireContext(), year -> checkYear(year,binding.tvAno)));
 
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();

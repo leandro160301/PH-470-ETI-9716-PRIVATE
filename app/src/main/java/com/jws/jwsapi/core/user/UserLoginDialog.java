@@ -40,15 +40,13 @@ public class UserLoginDialog {
 
     private static void setupUiEvents(Context context, DialogoLogeoBinding binding) {
         binding.spinner.setSelection(0);
+        binding.tvnContrasena.setTransformationMethod(new AsteriskPasswordTransformationMethod());
         binding.tvnContrasena.setOnClickListener(view -> showPasswordKeyboard(binding.tvnContrasena, context));
         binding.buttons.setText(context.getString(R.string.dialog_login));
     }
 
     private static void showPasswordKeyboard(TextView textView, Context context){
-        keyboardPassword(null, "", context, true ,texto -> {
-            String copia = texto;
-            copia=copia.replaceAll("(?s).", "*");
-            textView.setText(copia);
+        keyboardPassword(textView, "", context, true ,texto -> {
         }, PasswordTransformationMethod.getInstance());
     }
 }

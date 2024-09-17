@@ -80,8 +80,8 @@ public class UserManager implements UserLoginInterface {
 
     @Override
     public void logout(){
-        userName ="";
-        userLevel =0;
+        userName = "";
+        userLevel = 0;
     }
 
     @Override

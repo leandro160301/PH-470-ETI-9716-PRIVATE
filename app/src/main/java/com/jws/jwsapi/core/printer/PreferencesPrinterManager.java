@@ -1,4 +1,4 @@
-package com.jws.jwsapi.core.printer.preferences;
+package com.jws.jwsapi.core.printer;
 
 import android.content.Context;
 import android.content.SharedPreferences;

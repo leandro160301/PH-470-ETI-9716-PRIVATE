@@ -15,7 +15,6 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.label.LabelManager;
-import com.jws.jwsapi.core.printer.preferences.PreferencesPrinterManager;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.StandarImpresorasBinding;
 import com.jws.jwsapi.utils.ToastHelper;

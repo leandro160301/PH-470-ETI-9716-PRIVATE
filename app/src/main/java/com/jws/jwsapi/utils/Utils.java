@@ -4,13 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -138,12 +131,12 @@ public class Utils {
         }
     }
 
-    public static String jwsGetEthWifiAddress() {
+    public static String getWifiMac() {
         try {
             return loadFileAsString("/sys/class/net/wlan0/address").toUpperCase().substring(0, 17);
         } catch (IOException var2) {
             var2.printStackTrace();
-            return null;
+            return "";
         }
     }
 

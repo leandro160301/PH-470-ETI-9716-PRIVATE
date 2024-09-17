@@ -1,16 +1,13 @@
 package com.jws.jwsapi.core.network;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboardIpAdress;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
@@ -18,9 +15,7 @@ import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.databinding.StandarEthernetBinding;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
-
 import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -86,7 +81,7 @@ public class EthernetFragment extends Fragment  {
             binding.toggle.check(R.id.btOFF);
             setupLinearVisibility(View.INVISIBLE);
         }
-        binding.toggle.check(preferencesManagerBase.getEthMode()==DYNAMIC_MODE? R.id.btON2 : R.id.btOFF2);
+        binding.toggle2.check(preferencesManagerBase.getEthMode()==DYNAMIC_MODE? R.id.btON2 : R.id.btOFF2);
     }
 
     private void setOnClickListeners() {

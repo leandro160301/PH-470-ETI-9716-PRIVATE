@@ -1,15 +1,15 @@
 package com.jws.jwsapi.core.navigation;
 
+import static com.jws.jwsapi.dialog.DialogUtil.keyboardInt;
 import static com.jws.jwsapi.utils.Utils.devuelveCodigoUnico;
+import static com.jws.jwsapi.utils.Utils.isNumeric;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -29,14 +29,14 @@ import com.jws.jwsapi.core.label.LabelFragment;
 import com.jws.jwsapi.core.network.EthernetFragment;
 import com.jws.jwsapi.core.user.UserFragment;
 import com.jws.jwsapi.core.network.WifiFragment;
+import com.jws.jwsapi.databinding.DialogoFechayhoraBinding;
+import com.jws.jwsapi.databinding.DialogoPinBinding;
 import com.jws.jwsapi.utils.ToastHelper;
-import com.jws.jwsapi.utils.Utils;
 import com.service.Balanzas.Fragments.ServiceFragment;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,23 +46,21 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class NavigationFragment extends Fragment implements NavigationAdapter.ItemClickListener {
 
-    Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
     RecyclerView recycler1,recycler2,recycler3;
     LinearLayout lr_dinamico1,lr_dinamico2;
-    private int minutos=0, hora=0,
-            dia=0, mes=0, anio=0, cantidadUsuarios =0, menuElegido =0,menuElegido2 =2;
+
+    private int menuElegido =0;
+    private int menuElegido2 =2;
     NavigationAdapter adapter;
     JwsManager jwsManager;
     NavigationDynamicAdapter adapterDinamicos1, adapterDinamicos2;
-    String pin="error";
-    String[] ListElements = new String[] {},ListElementsdinamicos1 = new String[] {},
-            ListElementsdinamicos2 = new String[] {};
-    List<String> ListElementsArrayList=new ArrayList<>(Arrays.asList(ListElements));
-    List<String> ListElementsArrayListdinamicos1=new ArrayList<>(Arrays.asList(ListElementsdinamicos1));
-    List<String> ListElementsArrayListdinamicos2=new ArrayList<>(Arrays.asList(ListElementsdinamicos2));
+
+
+    List<String> ListElementsArrayList=new ArrayList<>();
+    List<String> ListElementsArrayListdinamicos1=new ArrayList<>();
+    List<String> ListElementsArrayListdinamicos2=new ArrayList<>();
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    TextView tv_minutos, tv_hora, tv_dia, tv_mes, tv_anio;
     int num=0;
     @Inject
     UserManager userManager;
@@ -86,12 +84,12 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                 args.putSerializable("instanceService", mainActivity.mainClass.service);
                 mainActivity.mainClass.openFragmentService(fragment,args);
             }else{
-                ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                toastLoginError();
             }
 
         }
         if(position==1){
-            ListElementsArrayListdinamicos1=new ArrayList<>(Arrays.asList(ListElementsdinamicos1));
+            ListElementsArrayListdinamicos1=new ArrayList<>();
             ListElementsArrayListdinamicos1.add("Programa");
             ListElementsArrayListdinamicos1.add("Balanzas");
             ListElementsArrayListdinamicos1.add("Turnos");
@@ -100,27 +98,26 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             CargarDatosADinamico(ListElementsArrayListdinamicos1);
         }
         if(position==2){
-            ListElementsArrayListdinamicos1=new ArrayList<>(Arrays.asList(ListElementsdinamicos1));
+            ListElementsArrayListdinamicos1=new ArrayList<>();
             ListElementsArrayListdinamicos1.add("Wifi");
             ListElementsArrayListdinamicos1.add("Ethernet");
-           // ListElementsArrayListdinamicos1.add("Acceso Remoto");
             CargarDatosADinamico(ListElementsArrayListdinamicos1);
         }
         if(position==3){
             if(userManager.getLevelUser()>2){
                 mainActivity.mainClass.openFragment(new UserFragment());
             }else{
-                ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                toastLoginError();
             }
         }
         if(position==4){
-            ListElementsArrayListdinamicos1=new ArrayList<>(Arrays.asList(ListElementsdinamicos1));
+            ListElementsArrayListdinamicos1=new ArrayList<>();
             ListElementsArrayListdinamicos1.add("Fecha y Hora");
             ListElementsArrayListdinamicos1.add("Tema");
             CargarDatosADinamico(ListElementsArrayListdinamicos1);
         }
         if(position==5){
-            ListElementsArrayListdinamicos1=new ArrayList<>(Arrays.asList(ListElementsdinamicos1));
+            ListElementsArrayListdinamicos1=new ArrayList<>();
             ListElementsArrayListdinamicos1.add("Impresora");
             ListElementsArrayListdinamicos1.add("Escaner");
             CargarDatosADinamico(ListElementsArrayListdinamicos1);
@@ -132,24 +129,19 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             mainActivity.clearCache();
         }
         if(position==8){
-            DialogoNuevaPIN();
+            newPinDialog();
         }
 
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
-        configuracionBotones();
+        setupButtons();
         initializeViews(view);
-        setOnClickListeners();
 
     }
 
-    private void setOnClickListeners() {
-
-    }
 
     private void initializeViews(View view) {
         recycler1=view.findViewById(R.id.recycler1);
@@ -162,10 +154,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         lr_dinamico2.setVisibility(View.INVISIBLE);
         jwsManager= JwsManager.create(requireActivity());
 
-        cantidadUsuarios = userManager.usersQuantity();
-
-
-        ListElementsArrayList=new ArrayList<>(Arrays.asList(ListElements));
+        ListElementsArrayList=new ArrayList<>();
         ListElementsArrayList.add("Menu service");
         ListElementsArrayList.add("Menu configuracion");
         ListElementsArrayList.add("Comunicacion");
@@ -176,7 +165,6 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         ListElementsArrayList.add("RESET");
         ListElementsArrayList.add("Nueva clave administrador");
 
-
         recycler1.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new NavigationAdapter(getContext(), ListElementsArrayList);
         adapter.setClickListener(this);
@@ -185,32 +173,23 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
 
     }
 
-    private void configuracionBotones() {
+    private void setupButtons() {
         if (buttonProvider != null) {
-            bt_home = buttonProvider.getButtonHome();
-            bt_1 = buttonProvider.getButton1();
-            bt_2 = buttonProvider.getButton2();
-            bt_3 = buttonProvider.getButton3();
-            bt_4 = buttonProvider.getButton4();
-            bt_5 = buttonProvider.getButton5();
-            bt_6 = buttonProvider.getButton6();
-            buttonProvider.getTitulo().setText("MENU");
+            buttonProvider.getTitulo().setText(R.string.title_fragment_menu);
+            buttonProvider.getButton1().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton2().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton3().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton4().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton5().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton6().setVisibility(View.INVISIBLE);
 
-            bt_1.setVisibility(View.INVISIBLE);
-            bt_2.setVisibility(View.INVISIBLE);
-            bt_3.setVisibility(View.INVISIBLE);
-            bt_4.setVisibility(View.INVISIBLE);
-            bt_5.setVisibility(View.INVISIBLE);
-            bt_6.setVisibility(View.INVISIBLE);
-
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
-
+            buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
         }
     }
 
     public void CargarDatosADinamico(List<String> lista){
         lr_dinamico1.setVisibility(View.VISIBLE);
-        ListElementsArrayListdinamicos2=new ArrayList<>(Arrays.asList(ListElementsdinamicos2));
+        ListElementsArrayListdinamicos2=new ArrayList<>();
         CargarDatosADinamico2(ListElementsArrayListdinamicos2);
         recycler2.setLayoutManager(new LinearLayoutManager(getContext()));
         adapterDinamicos1 = new NavigationDynamicAdapter(getContext(), lista);
@@ -235,7 +214,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                         mainActivity.mainClass.openFragment(new LabelProgramFragment());
                     }
                 }else{
-                    ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                    toastLoginError();
                 }
 
             }
@@ -251,31 +230,31 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             if(menuElegido ==4){
                 if(position==0){
                     if(userManager.getLevelUser()>1){
-                        DialogoCambiarHorayFecha();
+                        setDateDialog();
                     }
                     else{
-                        ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                        toastLoginError();
                     }
                 }
                 if(position==1){
                     if(userManager.getLevelUser()>1){
-                        DialogoCambiarTema();
+                        setThemeDialog();
                     }
                     else{
-                        ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                        toastLoginError();
                     }
                 }
             }
             if(menuElegido ==5){
                 if(position==0){
-                    ListElementsArrayListdinamicos2=new ArrayList<>(Arrays.asList(ListElementsdinamicos2));
+                    ListElementsArrayListdinamicos2=new ArrayList<>();
                     ListElementsArrayListdinamicos2.add("Configuracion");
                     ListElementsArrayListdinamicos2.add("Etiquetas");
                     CargarDatosADinamico2(ListElementsArrayListdinamicos2);
 
                 }
                 if(position==1){
-                    ListElementsArrayListdinamicos2=new ArrayList<>(Arrays.asList(ListElementsdinamicos2));
+                    ListElementsArrayListdinamicos2=new ArrayList<>();
                     CargarDatosADinamico2(ListElementsArrayListdinamicos2);
 
                 }
@@ -289,8 +268,11 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
 
     }
 
+    private void toastLoginError() {
+        ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+    }
+
     public void CargarDatosADinamico2(List<String> lista){
-       // lastVisiblePosition2=-1;
         lr_dinamico2.setVisibility(View.VISIBLE);
         if(lista.size()<4){
             lr_dinamico2.setBackgroundResource(R.drawable.banner_menu_con_trasparencia_);
@@ -312,7 +294,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
                     }
                 }
                 else{
-                    ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
+                    toastLoginError();
                 }
 
             }
@@ -337,8 +319,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
     }
 
 
-    public void DialogoCambiarTema(){
-
+    public void setThemeDialog(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_temas, null);
 
@@ -346,246 +327,140 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         TextView tvTema1 =  mView.findViewById(R.id.tvTema1);
         TextView tvTema2 =  mView.findViewById(R.id.tvTema2);
         TextView tvTema3 =  mView.findViewById(R.id.tvTema3);
-        //tvTema3.setVisibility(View.INVISIBLE);
 
         if(preferencesManagerBase.consultaTema()==R.style.AppTheme_NoActionBar){
-            tvTema1.setText("Tema Rojo (actual)");
-            tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
+            setupTextTheme(tvTema1, "Tema Rojo (actual)");
 
         }
         if(preferencesManagerBase.consultaTema()==R.style.AppTheme2_NoActionBar){
-            tvTema2.setText("Tema Azul (actual)");
-            tvTema2.setBackgroundResource(R.drawable.fondoinfoprincipal);
+            setupTextTheme(tvTema2, "Tema Azul (actual)");
 
         }
         if(preferencesManagerBase.consultaTema()==R.style.AppTheme4_NoActionBar){
-            tvTema3.setText("Tema Negro (actual)");
-            tvTema3.setBackgroundResource(R.drawable.fondoinfoprincipal);
+            setupTextTheme(tvTema3, "Tema Negro (actual)");
         }
 
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
 
-        tvTema1.setOnClickListener(view -> {
-            preferencesManagerBase.nuevoTema(R.style.AppTheme_NoActionBar);
-            ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
-            tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
-            tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
-            tvTema3.setBackgroundResource(R.drawable.stylekeycor3);
-        });
-        tvTema2.setOnClickListener(view -> {
-            preferencesManagerBase.nuevoTema(R.style.AppTheme2_NoActionBar);
-            ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
-            tvTema2.setBackgroundResource(R.drawable.fondoinfoprincipal);
-            tvTema1.setBackgroundResource(R.drawable.stylekeycor3);
-            tvTema3.setBackgroundResource(R.drawable.stylekeycor3);
-        });
-        tvTema3.setOnClickListener(view -> {
-            preferencesManagerBase.nuevoTema(R.style.AppTheme4_NoActionBar);
-            ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
-            tvTema3.setBackgroundResource(R.drawable.fondoinfoprincipal);
-            tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
-            tvTema1.setBackgroundResource(R.drawable.stylekeycor3);
-        });
+        tvTema1.setOnClickListener(view -> setupTheme(R.style.AppTheme_NoActionBar, tvTema1, tvTema2, tvTema3));
+        tvTema2.setOnClickListener(view -> setupTheme(R.style.AppTheme2_NoActionBar, tvTema2, tvTema1, tvTema3));
+        tvTema3.setOnClickListener(view -> setupTheme(R.style.AppTheme4_NoActionBar, tvTema3, tvTema2, tvTema1));
 
         Cancelar.setOnClickListener(view -> dialog.cancel());
 
     }
 
+    private static void setupTextTheme(TextView tvTema1, String text) {
+        tvTema1.setText(text);
+        tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
+    }
 
-    public void DialogoCambiarHorayFecha(){
+    private void setupTheme(int appTheme_NoActionBar, TextView tvTema1, TextView tvTema2, TextView tvTema3) {
+        preferencesManagerBase.nuevoTema(appTheme_NoActionBar);
+        ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
+        tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
+        tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
+        tvTema3.setBackgroundResource(R.drawable.stylekeycor3);
+    }
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_fechayhora, null);
 
-        tv_minutos =  mView.findViewById(R.id.tvMinutos);
-        tv_hora =  mView.findViewById(R.id.tvHora);
-        tv_dia =  mView.findViewById(R.id.tvDia);
-        tv_mes =  mView.findViewById(R.id.tvMes);
-        tv_anio =  mView.findViewById(R.id.tvAno);
+    public void setDateDialog(){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
+        DialogoFechayhoraBinding binding = DialogoFechayhoraBinding.inflate(getLayoutInflater());
+        View mView = binding.getRoot();
 
-        tv_minutos.setOnLongClickListener(view -> {
+        binding.tvMinutos.setOnLongClickListener(view -> {
             num=num+1;
             if(num==2){
                 preferencesManagerBase.setCorreccionRemoto(!preferencesManagerBase.getCorreccionRemoto());
             }
             return false;
         });
-        tv_minutos.setOnClickListener(view -> DialogoSeteoVariables(tv_minutos));
-        tv_hora.setOnClickListener(view -> DialogoSeteoVariables(tv_hora));
-        tv_dia.setOnClickListener(view -> DialogoSeteoVariables(tv_dia));
-        tv_mes.setOnClickListener(view -> DialogoSeteoVariables(tv_mes));
-        tv_anio.setOnClickListener(view -> DialogoSeteoVariables(tv_anio));
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
+        binding.tvMinutos.setOnClickListener(view -> keyboardInt(binding.tvMinutos, "Ingrese los minutos", requireContext(), texto -> checkMinutes(texto,binding.tvMinutos)));
+        binding.tvHora.setOnClickListener(view -> keyboardInt(binding.tvHora, "Ingrese la hora", requireContext(), texto -> checkHour(texto,binding.tvHora)));
+        binding.tvDia.setOnClickListener(view -> keyboardInt(binding.tvDia, "Ingrese el dia", requireContext(), texto -> checkDay(texto,binding.tvDia)));
+        binding.tvMes.setOnClickListener(view -> keyboardInt(binding.tvMes, "Ingrese el mes", requireContext(), texto -> checkMonth(texto,binding.tvMes)));
+        binding.tvAno.setOnClickListener(view -> keyboardInt(binding.tvAno, "Ingrese el año", requireContext(), texto -> checkYear(texto,binding.tvAno)));
 
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
 
-        Guardar.setOnClickListener(view -> {
-            if(dia!=0&&mes!=0&&anio!=0){
-                jwsManager.jwsSetTime(getContext(),anio,mes,dia,hora,minutos);
+        binding.buttons.setOnClickListener(view -> {
+            String day=binding.tvDia.getText().toString();
+            String hour=binding.tvHora.getText().toString();
+            String minutes=binding.tvMinutos.getText().toString();
+            String month=binding.tvMes.getText().toString();
+            String year=binding.tvAno.getText().toString();
+            if(isNumeric(day)&&isNumeric(hour)&&isNumeric(minutes)&&isNumeric(month)&&isNumeric(year)){
+                jwsManager.jwsSetTime(getContext(),Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day)
+                        ,Integer.parseInt(hour),Integer.parseInt(minutes));
                 dialog.cancel();
             }
         });
-        Cancelar.setOnClickListener(view -> {
-            minutos=0;
-            hora=0;
-            dia=0;
-            mes=0;
-            anio=0;
-            dialog.cancel();
-        });
+        binding.buttonc.setOnClickListener(view -> dialog.cancel());
 
     }
 
-    public void DialogoSeteoVariables(TextView textViewelegido){
+    private void checkMinutes(String userInput, TextView textView) {
+        if (Integer.parseInt(userInput) > 59) {
+            textView.setText("");
+        }
+    }
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopciones, null);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        final LinearLayout delete_text= mView.findViewById(R.id.lndelete_text);
-        delete_text.setOnClickListener(view -> userInput.setText(""));
-        TextView textView=mView.findViewById(R.id.textViewt);
-        textView.setText("Ingrese");
+    private void checkYear(String userInput, TextView textView) {
+        if (Integer.parseInt(userInput) >= 2200) {
+            textView.setText("");
+        }
+    }
 
-        userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-          /*  userInput.setInputType(InputType.TYPE_CLASS_NUMBER |InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            userInput.requestFocus();
+    private void checkMonth(String userInput, TextView textView) {
+        if (Integer.parseInt(userInput) > 12) {
+            textView.setText("");
+        }
+    }
 
-            userInput.setInputType(InputType.TYPE_CLASS_NUMBER |InputType.TYPE_NUMBER_FLAG_SIGNED);
-            userInput.requestFocus();*/
+    private void checkDay(String userInput, TextView textView) {
+        if (Integer.parseInt(userInput) > 31) {
+            textView.setText("");
+        }
+    }
 
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(textViewelegido== tv_minutos){
-                    if(!userInput.getText().toString().equals("")&& Utils.isNumeric(userInput.getText().toString())){
-                        if (Integer.parseInt(userInput.getText().toString()) <= 59) {
-                            minutos=Integer.parseInt(userInput.getText().toString());
-                            tv_minutos.setText(userInput.getText().toString());
-                        }
-                    }
-
-                }
-                if(textViewelegido== tv_hora){
-                    if(!userInput.getText().toString().equals("")&& Utils.isNumeric(userInput.getText().toString())){
-                        if (Integer.parseInt(userInput.getText().toString()) <= 24) {
-                            tv_hora.setText(userInput.getText().toString());
-                            hora=Integer.parseInt(userInput.getText().toString());
-                        }
-                    }
-
-                }
-                if(textViewelegido== tv_dia){
-                    if(!userInput.getText().toString().equals("")&& Utils.isNumeric(userInput.getText().toString())) {
-                        if (Integer.parseInt(userInput.getText().toString()) <= 31) {
-                            dia = Integer.parseInt(userInput.getText().toString());
-                            tv_dia.setText(userInput.getText().toString());
-                        }
-                    }
-
-                }
-                if(textViewelegido== tv_mes){
-                    if(!userInput.getText().toString().equals("")&& Utils.isNumeric(userInput.getText().toString())) {
-                        if (Integer.parseInt(userInput.getText().toString()) <= 12) {
-                            mes = Integer.parseInt(userInput.getText().toString());
-                            tv_mes.setText(userInput.getText().toString());
-                        }
-
-                    }
-
-                }
-                if(textViewelegido== tv_anio){
-                    if(!userInput.getText().toString().equals("")&& Utils.isNumeric(userInput.getText().toString())) {
-                        if (Integer.parseInt(userInput.getText().toString()) < 2200) {
-                            anio = Integer.parseInt(userInput.getText().toString());
-                            tv_anio.setText(userInput.getText().toString());
-                        }
-
-                    }
-
-                }
-                dialog.cancel();
-            }
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-
+    private void checkHour(String userInput, TextView textView) {
+        if (Integer.parseInt(userInput) > 24) {
+            textView.setText("");
+        }
     }
 
 
-    public void DialogoNuevaPIN(){
+    public void newPinDialog() {
+        final String[] pin = {"error"};
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
+        DialogoPinBinding binding = DialogoPinBinding.inflate(getLayoutInflater());
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_pin, null);
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        Button bt_generar =  mView.findViewById(R.id.bt_generar);
-        TextView tvCodigo = mView.findViewById(R.id.tvCodigo);
-        TextView tvpin = mView.findViewById(R.id.tvpin);
-
-        mBuilder.setView(mView);
+        mBuilder.setView(binding.getRoot());
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
-        tvpin.setOnClickListener(view -> DialogoTeclado(tvpin));
-        bt_generar.setOnClickListener(view -> {
-            int Codigo=devuelveCodigoUnico();
-            pin=String.valueOf(((Codigo+3031)*6)/4);
-            tvCodigo.setText(String.valueOf(Codigo));
+
+        binding.tvpin.setOnClickListener(view -> keyboardInt(binding.tvpin, null, requireContext(), null));
+        binding.btGenerar.setOnClickListener(view -> {
+            int Codigo = devuelveCodigoUnico();
+            pin[0] = String.valueOf(((Codigo + 3031) * 6) / 4);
+            binding.tvCodigo.setText(String.valueOf(Codigo));
         });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-        Guardar.setOnClickListener(view -> {
-            if(!tvpin.getText().toString().equals("error")){
-                if(tvpin.getText().toString().equals(pin)){
-                    preferencesManagerBase.nuevoPin(pin);
-                    ToastHelper.message("PIN CORRECTO",R.layout.item_customtoastok,mainActivity);
+
+        binding.buttonc.setOnClickListener(view -> dialog.cancel());
+        binding.buttons.setOnClickListener(view -> {
+            if (!binding.tvpin.getText().toString().equals("error")) {
+                if (binding.tvpin.getText().toString().equals(pin[0])) {
+                    preferencesManagerBase.nuevoPin(pin[0]);
+                    ToastHelper.message("PIN CORRECTO", R.layout.item_customtoastok, requireContext());
                     dialog.cancel();
                 }
             }
         });
-
-
-
-
-    }
-
-    public void DialogoTeclado(TextView textView){
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_dosopciones, null);
-        final EditText userInput = mView.findViewById(R.id.etDatos);
-        final LinearLayout delete_text= mView.findViewById(R.id.lndelete_text);
-        delete_text.setOnClickListener(view -> userInput.setText(""));
-        TextView titulo=mView.findViewById(R.id.textViewt);
-        titulo.setText("");
-        userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-        userInput.requestFocus();
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            textView.setText(userInput.getText().toString());
-            dialog.cancel();
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-
-
     }
 
 

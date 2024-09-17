@@ -3,7 +3,6 @@ package com.jws.jwsapi.core.network;
 import static android.content.Context.WIFI_SERVICE;
 import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
 import static com.jws.jwsapi.dialog.DialogUtil.keyboardPassword;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -19,51 +18,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.databinding.StandarWifiBinding;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
-
 import java.util.List;
 import java.util.Objects;
 
 public class WifiFragment extends Fragment {
 
-    Button bt_1;
-    LinearLayout ln6, ln5, ln4;
-    ListView wifiList;
-    TextView tvSSIRED, tvMAC;
-    WifiManager wifiManager;
-    Spinner sethernetsino;
-    Handler handler = new Handler();
-    TextView tvSSIconnected, tvIP;
-    private final int MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 1;
+    private Button bt_1;
+    private WifiManager wifiManager;
+    private final Handler handler = new Handler();
     private JwsManager jwsobject;
-    WifiReceiver receiverWifi;
-    Boolean stoped = false;
-
-    MainActivity mainActivity;
+    private boolean stoped = false;
+    private MainActivity mainActivity;
     private ButtonProvider buttonProvider;
+    private StandarWifiBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.standar_wifi, container, false);
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
-        return view;
+        binding = StandarWifiBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -71,51 +58,77 @@ public class WifiFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupButtons();
-
-        wifiList = view.findViewById(R.id.wifiList);
-        TextView tvred = view.findViewById(R.id.tvred);
-        LinearLayout layoutwifilist = view.findViewById(R.id.layoutwifilist);
-        LinearLayout tableLayoutwifi = view.findViewById(R.id.tableLayoutwifi);
-        ln6 = view.findViewById(R.id.ln6);
-        ln5 = view.findViewById(R.id.ln5);
-        ln4 = view.findViewById(R.id.ln4);
-
-        tvMAC = view.findViewById(R.id.tvMAC);
-        RadioGroup rGroup = view.findViewById(R.id.toggle);
-        tvSSIconnected = view.findViewById(R.id.tvSSIconnected);
-        tvIP = view.findViewById(R.id.tvIP);
         mainActivity = (MainActivity) getActivity();
 
-        layoutwifilist.setVisibility(View.INVISIBLE);
-        tvSSIconnected.setVisibility(View.INVISIBLE);
-        sethernetsino = view.findViewById(R.id.sethernetsino);
-        sethernetsino.setPopupBackgroundResource(R.drawable.campollenarclickeable);
-        tvSSIRED = view.findViewById(R.id.tvSSIRED);
-        tvIP.setText(Utils.getIPAddress(true));
+        setupViews();
 
-        String mac = Utils.jwsGetEthWifiAddress();
-        if (mac != null) {
-            tvMAC.setText(mac);
-        }
+        initClass();
 
-        wifiManager = (WifiManager) requireActivity().getApplicationContext().getSystemService(WIFI_SERVICE);
-        jwsobject = JwsManager.create(getContext());
+        setupToggle();
 
-        if (jwsobject.jwsGetEthernetState()) {
-            sethernetsino.setSelection(0);
-        } else {
-            sethernetsino.setSelection(1);
-        }
+        handleWifiOnOff();
+
+        setOnClickListeners();
+
+        initWifiReceiver();
+
+        handleWifiListItem();
+
+        mToastRunnable.run();
+
+    }
+
+    private void initWifiReceiver() {
+        WifiReceiver receiverWifi = new WifiReceiver(wifiManager, binding.wifiList);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        requireActivity().registerReceiver(receiverWifi, intentFilter);
+        getWifi();
+    }
+
+    private void handleWifiListItem() {
+        binding.wifiList.setOnItemLongClickListener((adapterView, view12, i, l) -> {
+            handleDeleteWifi(i);
+            return true;
+        });
+
+        binding.wifiList.setOnItemClickListener((adapterView, view1, i, l) -> handleWifiSelected(i));
+    }
+
+    private void setupViews() {
+        binding.layoutwifilist.setVisibility(View.INVISIBLE);
+        binding.tvSSIconnected.setVisibility(View.INVISIBLE);
+        binding.tvMAC.setText(Utils.getWifiMac());
+    }
+
+    private void setOnClickListeners() {
+        bt_1.setOnClickListener(v -> {
+            if (buttonProvider != null) {
+                bt_1.setVisibility(View.INVISIBLE);
+            }
+            setupVisibilityPanel(binding.layoutwifilist, View.INVISIBLE, binding.tableLayoutwifi, View.VISIBLE);
+        });
+
+        binding.tvred.setOnClickListener(v -> showWifiList(binding.layoutwifilist, binding.tableLayoutwifi));
+    }
+
+    private void setupToggle() {
         if (isWifiEnabled()) {
-            rGroup.check(R.id.btON);
+            binding.toggle.check(R.id.btON);
         } else {
-            rGroup.check(R.id.btOFF);
+            binding.toggle.check(R.id.btOFF);
             setupLinearVisibility(View.INVISIBLE);
         }
+    }
 
+    private void initClass() {
+        wifiManager = (WifiManager) requireActivity().getApplicationContext().getSystemService(WIFI_SERVICE);
+        jwsobject = JwsManager.create(getContext());
+    }
 
-        rGroup.setOnCheckedChangeListener((radioGroup, i) -> {
-            if (rGroup.getCheckedRadioButtonId() == R.id.btON) {
+    private void handleWifiOnOff() {
+        binding.toggle.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (binding.toggle.getCheckedRadioButtonId() == R.id.btON) {
                 if (!wifiManager.isWifiEnabled()) {
                     jwsobject.getWifiInterface(getContext()).wifiOpen();
                     setupLinearVisibility(View.VISIBLE);
@@ -127,70 +140,43 @@ public class WifiFragment extends Fragment {
                 }
             }
         });
-
-        bt_1.setOnClickListener(v -> {
-            if (buttonProvider != null) {
-                bt_1.setVisibility(View.INVISIBLE);
-            }
-            layoutwifilist.setVisibility(View.INVISIBLE);
-            tableLayoutwifi.setVisibility(View.VISIBLE);
-
-        });
-
-        tvred.setOnClickListener(v -> showWifiList(layoutwifilist, tableLayoutwifi));
-
-        receiverWifi = new WifiReceiver(wifiManager, wifiList);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        requireActivity().registerReceiver(receiverWifi, intentFilter);
-        getWifi();
-
-        wifiList.setOnItemLongClickListener((adapterView, view12, i, l) -> {
-            handleDeleteWifi(i);
-            return true;
-        });
-
-        wifiList.setOnItemClickListener((adapterView, view1, i, l) -> handleWifiSelected(i));
-
-        mToastRunnable.run();
-
     }
 
     private void setupLinearVisibility(int invisible) {
-        ln4.setVisibility(invisible);
-        ln5.setVisibility(invisible);
-        ln6.setVisibility(invisible);
+        setupVisibilityPanel(binding.ln4, invisible, binding.ln5, invisible);
+        binding.ln6.setVisibility(invisible);
     }
 
     private void showWifiList(LinearLayout layoutwifilist, LinearLayout tableLayoutwifi) {
         if (isWifiEnabled()) {
-            ToastHelper.message(getString(R.string.toast_wifi_on),
-                    R.layout.item_customtoast, requireContext());
-            if (buttonProvider != null) {
-                bt_1.setVisibility(View.VISIBLE);
-            }
-            layoutwifilist.setVisibility(View.VISIBLE);
-            tableLayoutwifi.setVisibility(View.INVISIBLE);
-            tvSSIconnected.setVisibility(View.VISIBLE);
+            ToastHelper.message(getString(R.string.toast_wifi_on), R.layout.item_customtoast, requireContext());
+            if (buttonProvider != null) bt_1.setVisibility(View.VISIBLE);
+            setupVisibilityPanel(layoutwifilist, View.VISIBLE, tableLayoutwifi, View.INVISIBLE);
+            binding.tvSSIconnected.setVisibility(View.VISIBLE);
         } else {
-            ToastHelper.message(getString(R.string.toast_wifi_off), R.layout.item_customtoasterror, mainActivity);
+            ToastHelper.message(getString(R.string.toast_wifi_off), R.layout.item_customtoasterror, requireContext());
         }
     }
 
+    private static void setupVisibilityPanel(LinearLayout layoutwifilist, int visible, LinearLayout tableLayoutwifi, int invisible) {
+        layoutwifilist.setVisibility(visible);
+        tableLayoutwifi.setVisibility(invisible);
+    }
+
     private void handleDeleteWifi(int i) {
-        String saveSSI2 = (String) wifiList.getItemAtPosition(i);
+        String saveSSI2 = (String) binding.wifiList.getItemAtPosition(i);
         List<WifiConfiguration> configurationList = getWifiConfigurationList();
         if (configurationList == null) return;
 
-        for (WifiConfiguration z : configurationList) {
-            if (z.SSID != null && z.SSID.equals("\"" + saveSSI2 + "\"")) {
-                deleteWifiDialog(saveSSI2, z);
+        for (WifiConfiguration network : configurationList) {
+            if (network.SSID != null && network.SSID.equals("\"" + saveSSI2 + "\"")) {
+                deleteWifiDialog(saveSSI2, network);
             }
         }
     }
 
     private void handleWifiSelected(int i) {
-        String saveSSI = (String) wifiList.getItemAtPosition(i);
+        String saveSSI = (String) binding.wifiList.getItemAtPosition(i);
         List<WifiConfiguration> configurationList = getWifiConfigurationList();
         if (configurationList == null) return;
         boolean isConfigurated = false;
@@ -203,20 +189,19 @@ public class WifiFragment extends Fragment {
                 wifiManager.reconnect();
             }}
         if(!isConfigurated){
-            keyboardPassword(null, "Ingrese contraseña", requireContext(), false,password -> connectToWifi(saveSSI, password), PasswordTransformationMethod.getInstance());
+            keyboardPassword(null, getString(R.string.dialog_wifi_password), requireContext(), false, password -> connectToWifi(saveSSI, password), PasswordTransformationMethod.getInstance());
         }
     }
 
     @Nullable
     private List<WifiConfiguration> getWifiConfigurationList() {
-        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            return null;
+        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return null;
         return wifiManager.getConfiguredNetworks();
     }
 
-    private void connectToWifi(String saveSSI, String password) {
+    private void connectToWifi(String ssid, String password) {
         WifiConfiguration wifiConfig = new WifiConfiguration();
-        wifiConfig.SSID = String.format("\"%s\"", saveSSI);
+        wifiConfig.SSID = String.format("\"%s\"", ssid);
         wifiConfig.preSharedKey = String.format("\"%s\"", password);
 
         WifiManager wifiManager = (WifiManager) requireActivity().getApplicationContext().getSystemService(WIFI_SERVICE);
@@ -250,6 +235,7 @@ public class WifiFragment extends Fragment {
     private void getWifi() {
         wifiManager.startScan();
     }
+
     public boolean isWifiEnabled() {
         WifiManager wifiManager = (WifiManager) mainActivity.getSystemService(Context.WIFI_SERVICE);
         return wifiManager != null && wifiManager.isWifiEnabled();
@@ -262,13 +248,12 @@ public class WifiFragment extends Fragment {
             String ssid=wifiInfo.getSSID();
 
             if(Objects.equals(ssid, "<unknown ssid>")){
-                tvSSIRED.setText(R.string.fragment_wifi_disconnect);
-                tvSSIconnected.setText(R.string.fragment_wifi_disconnect);
+                binding.tvSSIRED.setText(R.string.fragment_wifi_disconnect);
+                binding.tvSSIconnected.setText(R.string.fragment_wifi_disconnect);
             }else{
-                tvSSIRED.setText(wifiInfo.getSSID());
-                tvSSIconnected.setText("conectado a:"+wifiInfo.getSSID());
+                binding.tvSSIRED.setText(wifiInfo.getSSID());
+                binding.tvSSIconnected.setText(String.format("%s%s", getString(R.string.fragment_wifi_connect_to), wifiInfo.getSSID()));
             }
-            tvIP.setText(Utils.getIPAddress(true));
 
             if(!stoped){
                 handler.postDelayed(this,1000);

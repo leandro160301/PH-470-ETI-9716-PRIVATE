@@ -8,10 +8,7 @@ import static com.jws.jwsapi.core.user.UserConstants.ROLE_PROGRAMMER;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
 import static com.jws.jwsapi.core.user.UserConstants.USERS_LIST;
 
-import android.app.AlertDialog;
 import android.app.Application;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
@@ -31,7 +28,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class UserManager {
+public class UserManager implements UserLoginInterface {
 
     private final Application application;
     String userName ="";
@@ -59,33 +56,35 @@ public class UserManager {
         return lista;
     }
 
-    public void login(PreferencesManagerBase preferencesManagerBase, TextView tvnContrasena, Spinner spinner, AlertDialog dialog) {
-        String password = tvnContrasena.getText().toString();
-        if(!password.isEmpty() && !spinner.getSelectedItem().toString().isEmpty()){
-            boolean logeo=false;
-            if((password.equals(preferencesManagerBase.consultaPIN())) && spinner.getSelectedItemPosition()==0){
+    @Override
+    public boolean login(String password, String user) {
+        PreferencesManagerBase preferencesManagerBase = new PreferencesManagerBase(application);
+        boolean logeo=false;
+        if(!password.isEmpty() && !user.isEmpty()){
+            if((password.equals(preferencesManagerBase.consultaPIN())) && user.equals("ADMINISTRADOR")){
                 userLevel = ROLE_ADMINISTRATOR;
                 logeo=true;
                 userName ="ADMINISTRADOR";
             }
-            if((password.equals("3031")) && spinner.getSelectedItemPosition()==1){
+            if((password.equals("3031")) && user.equals("PROGRAMADOR")){
                 userLevel = ROLE_PROGRAMMER;
                 logeo=true;
                 userName ="PROGRAMADOR";
             }
             if(!logeo){
-                searchUser(spinner.getSelectedItem().toString(), password);
+                searchUser(user, password);
             }
-            dialog.cancel();
-
         }
+        return logeo;
     }
-    
+
+    @Override
     public void logout(){
         userName ="";
         userLevel =0;
     }
 
+    @Override
     public List<String> getUsersSpinner(){
         List<UserModel> lista;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
@@ -133,7 +132,6 @@ public class UserManager {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
 
     }
 
@@ -191,7 +189,7 @@ public class UserManager {
     }
 
     public void loginDialog(MainActivity mainActivity) {
-        UserDialogHandler userDialogHandler = new UserDialogHandler();
-        userDialogHandler.showDialog(mainActivity,this,application);
+        UserLoginDialog userLoginDialog = new UserLoginDialog();
+        userLoginDialog.showDialog(mainActivity, this);
     }
 }

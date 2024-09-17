@@ -376,6 +376,9 @@
     <string name="fragment_wifi_disconnect">DESCONECTADO</string>
     <string name="toast_wifi_off">WIFI apagado, debe encender el WIFI para ver las redes</string>
     <string name="toast_wifi_on">Si usted modifico una red ya guardada debera eliminar los datos antiguos (mantenga presionado el nombre de la red)</string>
+    <string name="fragment_wifi_connect_to">conectado a:</string>
+    <string name="dialog_wifi_password">Ingrese contraseña</string>
+    <string name="title_fragment_menu">MENU</string>
 
 
 </resources>

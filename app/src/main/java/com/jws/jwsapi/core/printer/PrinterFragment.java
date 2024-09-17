@@ -62,7 +62,6 @@ public class PrinterFragment extends Fragment{
 
         initSpinner();
 
-
     }
 
     private void initPrinter() {

@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.core.user.UserManager;
 
 import org.json.JSONException;
@@ -41,6 +42,7 @@ public class AppService extends Service {
     private boolean isWebServerRunning = false;
     private MouseAccessibilityService mouseAccessibilityService = null;
     public MainActivity mainActivity;
+    private PreferencesManagerBase preferencesManagerBase;
 
     @Override
     public void onCreate() {
@@ -109,12 +111,13 @@ public class AppService extends Service {
     }
 
     public boolean serverStart(Intent intent, int port,
-                               boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity, UserManager userManager) {
+                               boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity, UserManager userManager, PreferencesManagerBase preferencesManagerBase) {
         this.mainActivity=mainActivity;
+        this.preferencesManagerBase= preferencesManagerBase;
         if (!(isWebServerRunning = startHttpServer(port, userManager)))
             return false;
 
-        webRtcManager = new WebRtcManager(intent, context, httpServer,mainActivity);
+        webRtcManager = new WebRtcManager(intent, context, httpServer,mainActivity,preferencesManagerBase);
 
         accessibilityServiceSet(context, isAccessibilityServiceEnabled);
 
@@ -139,7 +142,7 @@ public class AppService extends Service {
 
 
     public boolean startHttpServer(int httpServerPort, UserManager userManager) {
-        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface,mainActivity, userManager);
+        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface,mainActivity, userManager,preferencesManagerBase);
         try {
             httpServer.start();
         } catch (IOException e) {

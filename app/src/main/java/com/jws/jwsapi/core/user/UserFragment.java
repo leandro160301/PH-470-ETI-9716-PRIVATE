@@ -127,7 +127,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener {
     }
 
     private void handleCreateDialogListeners(DialogoUsuarioBinding binding) {
-        binding.tvnContrasena.setOnClickListener(v -> keyboardPassword(binding.tvnContrasena,getString(R.string.input_password),getContext(),null,null));
+        binding.tvnContrasena.setOnClickListener(v -> keyboardPassword(binding.tvnContrasena,getString(R.string.input_password),getContext(), true,null,null));
         binding.tvnNombre.setOnClickListener(v -> keyboard(binding.tvnNombre, getString(R.string.input_name), getContext(),null));
         binding.tvnUsuario.setOnClickListener(v -> keyboard(binding.tvnUsuario, getString(R.string.input_user), getContext(), texto -> {
             if(searchUserOrCode(usuario -> usuario.getUser().equals(texto))){

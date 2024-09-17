@@ -38,16 +38,16 @@ public class MainActivity extends AppCompatActivity{
     public JwsManager jwsObject;
     public MainClass mainClass;
     private InitServer initServer;
-    public PreferencesManagerBase preferencesManagerBase;
     @Inject
     UserManager userManager;
     @Inject
     StorageService storageService;
+    @Inject
+    PreferencesManagerBase preferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferencesManagerBase= new PreferencesManagerBase(this);
         setTheme();
         initJwsObject();
         updateViews();
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        initServer = new InitServer(this,this, userManager);
+        initServer = new InitServer(this,this, userManager,preferencesManager);
         try {
             initServer.start();
         } catch (Exception e) {
@@ -107,9 +107,9 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void setTheme() {
-        if(preferencesManagerBase.consultaTema()!=R.style.AppTheme_NoActionBar){
+        if(preferencesManager.consultaTema()!=R.style.AppTheme_NoActionBar){
             try {
-                setTheme(preferencesManagerBase.consultaTema());
+                setTheme(preferencesManager.consultaTema());
             } catch (Exception e) {
                 e.printStackTrace();
             }

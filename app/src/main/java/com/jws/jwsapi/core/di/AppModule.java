@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import androidx.room.Room;
 
+import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.AppDatabase;
@@ -44,6 +45,12 @@ public class AppModule {
     @Singleton
     public PreferencesManager providePreferencesManager(Application application) {
         return new PreferencesManager(application);
+    }
+
+    @Provides
+    @Singleton
+    public PreferencesManagerBase providePreferencesManagerBase(Application application) {
+        return new PreferencesManagerBase(application);
     }
 
     @Provides

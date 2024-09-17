@@ -129,8 +129,8 @@ public class DialogUtil {
         showDialog(view,texto,context,dialogInterface,false,null,null,null, null,null);
     }
 
-    public static void keyboardPassword(TextView view, String texto, Context context, DialogInputInterface dialogInterface, PasswordTransformationMethod passwordTransformationMethod) {
-        showDialog(view,texto,context,dialogInterface,false,InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS| InputType.TYPE_CLASS_NUMBER| InputType.TYPE_TEXT_VARIATION_PASSWORD,null,null, null,passwordTransformationMethod);
+    public static void keyboardPassword(TextView view, String texto, Context context, boolean numeric, DialogInputInterface dialogInterface, PasswordTransformationMethod passwordTransformationMethod) {
+        showDialog(view,texto,context,dialogInterface,false,(numeric? InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS| InputType.TYPE_CLASS_NUMBER| InputType.TYPE_TEXT_VARIATION_PASSWORD : InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS| InputType.TYPE_TEXT_VARIATION_PASSWORD),null,null, null,passwordTransformationMethod);
     }
 
     public static void keyboardIpAdress(TextView view, String texto, Context context, DialogInputInterface dialogInterface) {

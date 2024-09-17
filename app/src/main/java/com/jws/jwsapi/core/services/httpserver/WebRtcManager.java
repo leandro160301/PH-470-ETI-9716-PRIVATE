@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,10 +73,11 @@ public class WebRtcManager {
     private Display display;
     private DisplayMetrics screenMetrics = new DisplayMetrics();
     private Thread rotationDetectorThread = null;
+    private PreferencesManagerBase preferencesManagerBase;
 
-    public WebRtcManager(Intent intent, Context context, HttpServer server,MainActivity activity) {
+    public WebRtcManager(Intent intent, Context context, HttpServer server, MainActivity activity, PreferencesManagerBase preferencesManagerBase) {
         this.server = server;
-        //XXX getIceServers();
+        this.preferencesManagerBase = preferencesManagerBase;
         this.mainActivity=activity;
         WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         display = wm.getDefaultDisplay();
@@ -149,7 +151,7 @@ public class WebRtcManager {
         display.getRealMetrics(screenMetrics);
         if (videoCapturer != null) {
 
-            if(mainActivity.preferencesManagerBase.getCorreccionRemoto()){
+            if(preferencesManagerBase.getCorreccionRemoto()){
                 videoCapturer.startCapture((screenMetrics.widthPixels), (screenMetrics.heightPixels),
                         FRAMES_PER_SECOND);
             }else{

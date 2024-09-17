@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.core.storage.Storage;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.MainClass;
@@ -68,13 +69,15 @@ public class HttpServer extends NanoWSD {
     private Context context;
     Ws webSocket = null;
     UserManager userManager;
+    PreferencesManagerBase preferencesManagerBase;
 
     private HttpServerInterface httpServerInterface;
 
     public HttpServer(int port, Context context,
-                      HttpServerInterface httpServerInterface, MainActivity activity, UserManager userManager) {
+                      HttpServerInterface httpServerInterface, MainActivity activity, UserManager userManager, PreferencesManagerBase preferencesManagerBase) {
         super(port);
         this.context = context;
+        this.preferencesManagerBase = preferencesManagerBase;
         this.httpServerInterface = httpServerInterface;
         this.mainActivity=activity;
         this.userManager = userManager;
@@ -262,7 +265,7 @@ public class HttpServer extends NanoWSD {
 
         }
         if (uri.endsWith("LoginHabilitado")){
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_TEXT_PLAIN_JS,String.valueOf(mainActivity.preferencesManagerBase.getAuthorization()));
+            Response response = newFixedLengthResponse(Response.Status.OK,MIME_TEXT_PLAIN_JS,String.valueOf(preferencesManagerBase.getAuthorization()));
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
@@ -491,7 +494,7 @@ public class HttpServer extends NanoWSD {
 
     private Response handleRootRequest(IHTTPSession session) {
         String indexHtml = readFile(HTML_DIR + INDEX_HTML);
-        if(mainActivity.preferencesManagerBase.getCorreccionRemoto()){
+        if(preferencesManagerBase.getCorreccionRemoto()){
             indexHtml = readFile(HTML_DIR + INDEX_HTML_error);
         }else{
             indexHtml = readFile(HTML_DIR + INDEX_HTML);

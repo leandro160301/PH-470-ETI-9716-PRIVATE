@@ -37,7 +37,6 @@ public class WifiReceiver extends BroadcastReceiver {
                 if(!scanResult.SSID.equals("")&&!deviceList.contains(scanResult.SSID)){
                 deviceList.add(scanResult.SSID);
             }}
-            //Toast.makeText(context, sb, Toast.LENGTH_SHORT).show();
 
             ArrayAdapter arrayAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, Objects.requireNonNull(deviceList.toArray()));
 

@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.jws.JwsManager;
+import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
 import com.jws.jwsapi.core.label.LabelProgramFragment;
 import com.jws.jwsapi.core.printer.PrinterFragment;
 import com.jws.jwsapi.core.storage.StorageFragment;
@@ -65,6 +66,8 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
     int num=0;
     @Inject
     UserManager userManager;
+    @Inject
+    PreferencesManagerBase preferencesManagerBase;
 
     @Nullable
     @Override
@@ -345,17 +348,17 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         TextView tvTema3 =  mView.findViewById(R.id.tvTema3);
         //tvTema3.setVisibility(View.INVISIBLE);
 
-        if(mainActivity.preferencesManagerBase.consultaTema()==R.style.AppTheme_NoActionBar){
+        if(preferencesManagerBase.consultaTema()==R.style.AppTheme_NoActionBar){
             tvTema1.setText("Tema Rojo (actual)");
             tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
 
         }
-        if(mainActivity.preferencesManagerBase.consultaTema()==R.style.AppTheme2_NoActionBar){
+        if(preferencesManagerBase.consultaTema()==R.style.AppTheme2_NoActionBar){
             tvTema2.setText("Tema Azul (actual)");
             tvTema2.setBackgroundResource(R.drawable.fondoinfoprincipal);
 
         }
-        if(mainActivity.preferencesManagerBase.consultaTema()==R.style.AppTheme4_NoActionBar){
+        if(preferencesManagerBase.consultaTema()==R.style.AppTheme4_NoActionBar){
             tvTema3.setText("Tema Negro (actual)");
             tvTema3.setBackgroundResource(R.drawable.fondoinfoprincipal);
         }
@@ -365,21 +368,21 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         dialog.show();
 
         tvTema1.setOnClickListener(view -> {
-            mainActivity.preferencesManagerBase.nuevoTema(R.style.AppTheme_NoActionBar);
+            preferencesManagerBase.nuevoTema(R.style.AppTheme_NoActionBar);
             ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
             tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
             tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
             tvTema3.setBackgroundResource(R.drawable.stylekeycor3);
         });
         tvTema2.setOnClickListener(view -> {
-            mainActivity.preferencesManagerBase.nuevoTema(R.style.AppTheme2_NoActionBar);
+            preferencesManagerBase.nuevoTema(R.style.AppTheme2_NoActionBar);
             ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
             tvTema2.setBackgroundResource(R.drawable.fondoinfoprincipal);
             tvTema1.setBackgroundResource(R.drawable.stylekeycor3);
             tvTema3.setBackgroundResource(R.drawable.stylekeycor3);
         });
         tvTema3.setOnClickListener(view -> {
-            mainActivity.preferencesManagerBase.nuevoTema(R.style.AppTheme4_NoActionBar);
+            preferencesManagerBase.nuevoTema(R.style.AppTheme4_NoActionBar);
             ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
             tvTema3.setBackgroundResource(R.drawable.fondoinfoprincipal);
             tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
@@ -405,7 +408,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         tv_minutos.setOnLongClickListener(view -> {
             num=num+1;
             if(num==2){
-                mainActivity.preferencesManagerBase.setCorreccionRemoto(!mainActivity.preferencesManagerBase.getCorreccionRemoto());
+                preferencesManagerBase.setCorreccionRemoto(!preferencesManagerBase.getCorreccionRemoto());
             }
             return false;
         });
@@ -546,7 +549,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         Guardar.setOnClickListener(view -> {
             if(!tvpin.getText().toString().equals("error")){
                 if(tvpin.getText().toString().equals(pin)){
-                    mainActivity.preferencesManagerBase.nuevoPin(pin);
+                    preferencesManagerBase.nuevoPin(pin);
                     ToastHelper.message("PIN CORRECTO",R.layout.item_customtoastok,mainActivity);
                     dialog.cancel();
                 }

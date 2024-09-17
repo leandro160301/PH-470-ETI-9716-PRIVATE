@@ -39,7 +39,7 @@ public class UserDialogHandler {
     }
 
     private static void showPasswordKeyboard(TextView textView, Context context){
-        keyboardPassword(null, "", context, texto -> {
+        keyboardPassword(null, "", context, true ,texto -> {
             String copia = texto;
             copia=copia.replaceAll("(?s).", "*");
             textView.setText(copia);

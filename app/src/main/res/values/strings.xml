@@ -364,6 +364,18 @@
     <string name="toast_user_not_exist">No existe el usuario ingresado</string>
     <string name="toast_user_login_succesfull">LOGEO CORRECTO</string>
     <string name="toast_user_wrong_password">CONTRASEÑA INCORRECTA</string>
+    <string name="title_fragment_ethernet">ETHERNET</string>
+    <string name="dialog_ethernet_ip">Ingrese la ip estatica</string>
+    <string name="dialog_ethernet_subnet">Ingrese la subnet</string>
+    <string name="dialog_ethernet_gateway">Ingrese el gateway</string>
+    <string name="dialog_ethernet_dns1">Ingrese la dns 1</string>
+    <string name="dialog_ethernet_dns2">Ingrese la dns 2</string>
+    <string name="title_fragment_wifi">WIFI</string>
+    <string name="dialog_wifi_delete_button">ELIMINAR</string>
+    <string name="dialog_wifi_delete">Eliminar datos de la red:</string>
+    <string name="fragment_wifi_disconnect">DESCONECTADO</string>
+    <string name="toast_wifi_off">WIFI apagado, debe encender el WIFI para ver las redes</string>
+    <string name="toast_wifi_on">Si usted modifico una red ya guardada debera eliminar los datos antiguos (mantenga presionado el nombre de la red)</string>
 
 
 </resources>

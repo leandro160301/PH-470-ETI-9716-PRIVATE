@@ -326,12 +326,10 @@ public class Utils {
         }
     }
 
-    public static int devuelveCodigoUnico() {
+    public static int randomNumber() {
         int min = 1000;
         int max = 9999;
-        int random_int = (int)Math.floor(Math.random() * (max - min + 1) + min);
-        // Printing the generated random numbers
-        return random_int;
+        return (int)Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     public static String pointDecimalFormat(String numero, int decimales) {

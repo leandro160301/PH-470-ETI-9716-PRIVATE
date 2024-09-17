@@ -1,7 +1,7 @@
 package com.jws.jwsapi.core.navigation;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboardInt;
-import static com.jws.jwsapi.utils.Utils.devuelveCodigoUnico;
+import static com.jws.jwsapi.utils.Utils.randomNumber;
 import static com.jws.jwsapi.utils.Utils.isNumeric;
 
 import android.app.AlertDialog;
@@ -446,7 +446,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
 
         binding.tvpin.setOnClickListener(view -> keyboardInt(binding.tvpin, null, requireContext(), null));
         binding.btGenerar.setOnClickListener(view -> {
-            int Codigo = devuelveCodigoUnico();
+            int Codigo = randomNumber();
             pin[0] = String.valueOf(((Codigo + 3031) * 6) / 4);
             binding.tvCodigo.setText(String.valueOf(Codigo));
         });

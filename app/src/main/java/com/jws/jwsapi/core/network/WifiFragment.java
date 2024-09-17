@@ -246,13 +246,16 @@ public class WifiFragment extends Fragment {
         public void run() {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String ssid=wifiInfo.getSSID();
-
-            if(Objects.equals(ssid, "<unknown ssid>")){
-                binding.tvSSIRED.setText(R.string.fragment_wifi_disconnect);
-                binding.tvSSIconnected.setText(R.string.fragment_wifi_disconnect);
-            }else{
-                binding.tvSSIRED.setText(wifiInfo.getSSID());
-                binding.tvSSIconnected.setText(String.format("%s%s", getString(R.string.fragment_wifi_connect_to), wifiInfo.getSSID()));
+            try {
+                if(Objects.equals(ssid, "<unknown ssid>")){
+                    binding.tvSSIRED.setText(R.string.fragment_wifi_disconnect);
+                    binding.tvSSIconnected.setText(R.string.fragment_wifi_disconnect);
+                }else{
+                    binding.tvSSIRED.setText(wifiInfo.getSSID());
+                    binding.tvSSIconnected.setText(String.format("%s%s", requireContext().getString(R.string.fragment_wifi_connect_to), wifiInfo.getSSID()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             if(!stoped){

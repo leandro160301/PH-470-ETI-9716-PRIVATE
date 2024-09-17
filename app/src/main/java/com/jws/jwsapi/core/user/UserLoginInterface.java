@@ -1,6 +1,5 @@
 package com.jws.jwsapi.core.user;
 
-
 import java.util.List;
 
 public interface UserLoginInterface {

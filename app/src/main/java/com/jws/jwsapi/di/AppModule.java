@@ -1,4 +1,4 @@
-package com.jws.jwsapi.core.di;
+package com.jws.jwsapi.di;
 
 import android.app.Application;
 import android.content.Context;

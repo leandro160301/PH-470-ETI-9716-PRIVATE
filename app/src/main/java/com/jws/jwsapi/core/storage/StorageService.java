@@ -1,6 +1,8 @@
 package com.jws.jwsapi.core.storage;
 
 import static com.jws.jwsapi.core.storage.Storage.installApk;
+import static com.jws.jwsapi.core.storage.StoragePaths.USB_NOT_AVAIBLE;
+import static com.jws.jwsapi.core.storage.StoragePaths.USB_CONNECTED;
 
 import android.content.Context;
 import android.os.Handler;
@@ -16,8 +18,7 @@ public class StorageService {
     private final Context context;
     private AppCompatActivity appCompatActivity;
     private static final Handler mHandler= new Handler();
-
-    private int usbState =0;
+    private int state = USB_NOT_AVAIBLE;
 
     public StorageService(Context context) {
         this.context = context;
@@ -31,32 +32,33 @@ public class StorageService {
     private final Runnable startUsbRead = new Runnable() {
         @Override
         public void run() {
-            verificaMemoriaUSB();
+            verifyMemoryConnected();
             mHandler.postDelayed(this,1000);
         }
     };
 
-    public void verificaMemoriaUSB(){
+    private void verifyMemoryConnected(){
         if (StoragePaths.DIRECTORY_MEMORY_LIST.stream().anyMatch(File::isDirectory)) {
             for(File apk: StoragePaths.FILE_APK_LIST){
                 if(apk.exists()){
                     installApk(context);
                 }
             }
-            if(StoragePaths.DIRECTORY_MEMORY_LIST.stream().anyMatch(File::isDirectory)&& usbState ==0){
+            if(StoragePaths.DIRECTORY_MEMORY_LIST.stream().anyMatch(File::isDirectory)&& state == USB_NOT_AVAIBLE){
                 StorageDialogHandler storageDialogHandler = new StorageDialogHandler(appCompatActivity);
                 storageDialogHandler.showDialog();
-                usbState =1;
+                state = USB_CONNECTED;
             }
-            if(StoragePaths.DIRECTORY_MEMORY_LIST.stream().noneMatch(File::isDirectory)&& usbState ==1){
-                usbState =0;
+            if(StoragePaths.DIRECTORY_MEMORY_LIST.stream().noneMatch(File::isDirectory)&& state == USB_CONNECTED){
+                state = USB_NOT_AVAIBLE;
             }
         }else {
-            usbState =0;
+            state = USB_NOT_AVAIBLE;
         }
     }
 
-    public Boolean getUsbState(){
-        return usbState == 1;
+    public Boolean getState(){
+        return state == 1;
     }
+
 }

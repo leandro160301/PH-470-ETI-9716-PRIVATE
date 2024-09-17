@@ -176,7 +176,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         Button Cancelar =  mView.findViewById(R.id.buttonc);
         TextView tvIP = mView.findViewById(R.id.tvIP);
         TextView tvVersion = mView.findViewById(R.id.tvVersion);
-        if(!storageService.getUsbState()){
+        if(!storageService.getState()){
             Guardar.setVisibility(View.INVISIBLE);
         }
         tvIP.setText(Utils.getIPAddress(true));
@@ -248,7 +248,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
                     bandera=0;
                     Tipo="";
                 }
-                if(storageService.getUsbState()){
+                if(storageService.getState()){
                     bt_usb.setVisibility(View.VISIBLE);
                 }else{
                     bt_usb.setVisibility(View.INVISIBLE);

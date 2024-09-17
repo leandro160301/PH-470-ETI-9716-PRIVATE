@@ -16,4 +16,6 @@ public abstract class StoragePaths {
             new File("/storage/udisk2/instalacion/jwsapi.apk")
     );
     public static final String MEMORY_PATH = "/storage/emulated/0/Memoria/";
+    public static final int USB_CONNECTED = 1;
+    public static final int USB_NOT_AVAIBLE = 0;
 }

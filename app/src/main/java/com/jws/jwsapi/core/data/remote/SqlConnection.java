@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-
 /**IMPLEMENTACION:
  *                 connection= SQLConnection.connect(ip,instance,db,user,pass);
  *                 if(connection!=null){
@@ -24,16 +22,12 @@ import java.sql.SQLException;
  *
  */
 
-
 public class SqlConnection {
     private static final String LOG = "DEBUG";
-   // private static String vanillaip = "10.41.0.78\\";
    // private static String instance = "SQLSERVER";
     private static final String port = "1433";
-  //  private static String db = "prueba_db";
     private static final String classs = "net.sourceforge.jtds.jdbc.Driver";
-  /*  private static String un = "sa";
-    private static String password = "sa";*/
+
     public static Connection connect(@NonNull String IpAddress,String Instance, String Database, String Username, String Password) {
         Connection conn = null;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -45,9 +39,7 @@ public class SqlConnection {
             System.out.println("Connection successful!");
         } catch (SQLException | ClassNotFoundException e) {
             Log.d(LOG, e.getMessage());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
+        } catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
         return conn;

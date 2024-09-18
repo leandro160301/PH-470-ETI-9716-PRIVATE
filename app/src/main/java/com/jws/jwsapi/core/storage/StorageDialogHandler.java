@@ -62,12 +62,12 @@ public class StorageDialogHandler {
 
     private void copyFileToUsb() {
         if (file != null && file.exists()) {
-            for(File dir: StoragePaths.DIRECTORY_MEMORY_LIST){
+            for(File dir: StoragePaths.DIRECTORY_MEMORY_PATHS){
                 if (dir.isDirectory()) {
                     Storage.copyFileProgress(file, dir,context);
                 }
             }
-            if (StoragePaths.DIRECTORY_MEMORY_LIST.stream().noneMatch(File::isDirectory)) {
+            if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().noneMatch(File::isDirectory)) {
                 ToastHelper.message(context.getString(R.string.toast_storage_pendrive_not_avaible), R.layout.item_customtoasterror,context);
             }
         }

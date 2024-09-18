@@ -38,18 +38,18 @@ public class StorageService {
     };
 
     private void verifyMemoryConnected(){
-        if (StoragePaths.DIRECTORY_MEMORY_LIST.stream().anyMatch(File::isDirectory)) {
-            for(File apk: StoragePaths.FILE_APK_LIST){
+        if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory)) {
+            for(File apk: StoragePaths.FILE_APKS){
                 if(apk.exists()){
                     installApk(context);
                 }
             }
-            if(StoragePaths.DIRECTORY_MEMORY_LIST.stream().anyMatch(File::isDirectory)&& state == USB_NOT_AVAIBLE){
+            if(StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory)&& state == USB_NOT_AVAIBLE){
                 StorageDialogHandler storageDialogHandler = new StorageDialogHandler(appCompatActivity);
                 storageDialogHandler.showDialog();
                 state = USB_CONNECTED;
             }
-            if(StoragePaths.DIRECTORY_MEMORY_LIST.stream().noneMatch(File::isDirectory)&& state == USB_CONNECTED){
+            if(StoragePaths.DIRECTORY_MEMORY_PATHS.stream().noneMatch(File::isDirectory)&& state == USB_CONNECTED){
                 state = USB_NOT_AVAIBLE;
             }
         }else {

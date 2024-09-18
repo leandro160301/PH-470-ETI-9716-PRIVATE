@@ -31,9 +31,7 @@ public class UsbPrinter {
     Connection connection;
     DiscoveredPrinterListAdapter discoveredPrinterListAdapter;
     Map<Integer, String> vars;
-
-
-    private MainActivity mainActivity;
+    private final MainActivity mainActivity;
 
     public UsbPrinter(MainActivity activity) {
         this.mainActivity = activity;
@@ -58,7 +56,6 @@ public class UsbPrinter {
                     DiscoveredPrinter printer = discoveredPrinterListAdapter.getPrinter(0);
                     SelectedPrinterManager.setSelectedPrinter(printer);
                     DiscoveredPrinter formatPrinter;
-                    formatPrinter = SelectedPrinterManager.getSelectedPrinter();
                     Print(Etiqueta,Memoria,ListaMemoria);
                 }
 
@@ -86,16 +83,6 @@ public class UsbPrinter {
         if (connection != null) {
             try {
                 connection.open();
-                /*
-                *  ZebraPrinter printer = ZebraPrinterFactory.getInstance(connection);
-                String pruebasasasss= new String(printer.retrieveFormatFromPrinter("! U1 do \"file.dir\" \"E:\""),StandardCharsets.UTF_8);
-                System.out.println("oooole1");
-                System.out.println(pruebasasasss);
-                String pruebasasa= new String(printer.retrieveFormatFromPrinter("^XA^HFE:ENS.ZPL^XZ"),StandardCharsets.UTF_8);
-                System.out.println("oooole2");
-                System.out.println(pruebasasa);
-                * */
-
                 if(Memoria){
                     ZebraPrinter printer = ZebraPrinterFactory.getInstance(connection);
                     String formatContents = new String(printer.retrieveFormatFromPrinter(Etiqueta), StandardCharsets.UTF_8);
@@ -141,9 +128,6 @@ public class UsbPrinter {
                     }
 
                 }
-                    //  printer.printStoredFormat("", vars);
-
-
 
             } catch (ConnectionException | ZebraPrinterLanguageUnknownException e) {
                 ToastHelper.message("usb 2:"+e.getMessage(), R.layout.item_customtoasterror,mainActivity);

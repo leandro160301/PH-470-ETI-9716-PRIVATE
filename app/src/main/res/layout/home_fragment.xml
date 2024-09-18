@@ -148,7 +148,8 @@
                                 android:layout_marginEnd="10dp"
                                 android:layout_marginBottom="10dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/flecha_arriba" />
+                                android:background="@drawable/flecha_arriba"
+                                android:visibility="invisible" />
 
                         </LinearLayout>
 

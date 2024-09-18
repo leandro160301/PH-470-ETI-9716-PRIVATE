@@ -32,13 +32,11 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     PrinterPreferences printerPreferences;
     @Inject
     LabelManager labelManager;
-    MainActivity mainActivity;
+    private MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    List<LabelModel> fieldList = new ArrayList<>();
-    List<String> labelList = new ArrayList<>();
-    AdapterCommon labelAdapter;
-    LabelAdapter fieldAdapter;
-    StandarImpresorasEtiquetasBinding binding;
+    private List<String> labelList = new ArrayList<>();
+    private LabelAdapter fieldAdapter;
+    private StandarImpresorasEtiquetasBinding binding;
 
     @Override
     public void onItemClick(View view, int position) {
@@ -48,8 +46,7 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     private void handleItemClick(int position) {
         String label =openAndReadFile(labelList.get(position),mainActivity);
         if(label!=null&& !label.isEmpty()){
-            fieldList = getFieldsFromLabel(label);
-            setupFieldRecycler(fieldList, position, labelList.get(position));
+            setupFieldRecycler(getFieldsFromLabel(label), position, labelList.get(position));
         }
     }
 
@@ -107,7 +104,7 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
 
     public void setupLabelRecycler(List<String> lista) {
         binding.recyclerLabel.setLayoutManager(new LinearLayoutManager(getContext()));
-        labelAdapter = new AdapterCommon(getContext(), lista);
+        AdapterCommon labelAdapter = new AdapterCommon(getContext(), lista);
         labelAdapter.setClickListener(this);
         binding.recyclerLabel.setAdapter(labelAdapter);
 

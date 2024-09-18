@@ -379,6 +379,7 @@
     <string name="fragment_wifi_connect_to">conectado a:</string>
     <string name="dialog_wifi_password">Ingrese contraseña</string>
     <string name="title_fragment_menu">MENU</string>
+    <string name="title_fragment_label">CONFIGURACION ETIQUETAS</string>
 
 
 </resources>

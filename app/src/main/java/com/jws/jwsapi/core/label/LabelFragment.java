@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -31,7 +30,6 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     PrinterPreferences printerPreferences;
     @Inject
     LabelManager labelManager;
-    Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     List<LabelModel> listaCampos =new ArrayList<>();
@@ -39,21 +37,21 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     RecyclerView recyclerEtiquetas, recyclerCampos;
     AdapterCommon adapterEtiquetas;
     LabelAdapter adapterCampos;
-    public int posicion =0;
     String etiquetaNombre ="";
-
 
     @Override
     public void onItemClick(View view, int position) {
-        posicion=position;
-        String etiqueta =openAndReadFile(listaEtiquetas.get(position),mainActivity);
-        if(etiqueta!=null&& !etiqueta.equals("")){
-            listaCampos=getCamposEtiqueta(etiqueta);
-            etiquetaNombre = listaEtiquetas.get(position);
-            setupRecyclerCampos(listaCampos,posicion);
-        }
+        handleItemClick(position);
     }
 
+    private void handleItemClick(int position) {
+        String label =openAndReadFile(listaEtiquetas.get(position),mainActivity);
+        if(label!=null&& !label.isEmpty()){
+            listaCampos=getCamposEtiqueta(label);
+            etiquetaNombre = listaEtiquetas.get(position);
+            setupRecyclerCampos(listaCampos, position);
+        }
+    }
 
     @Nullable
     @Override
@@ -79,28 +77,21 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
 
     private void configuracionBotones() {
         if (buttonProvider != null) {
-            bt_home = buttonProvider.getButtonHome();
-            bt_1 = buttonProvider.getButton1();
-            bt_2 = buttonProvider.getButton2();
-            bt_3 = buttonProvider.getButton3();
-            bt_4 = buttonProvider.getButton4();
-            bt_5 = buttonProvider.getButton5();
-            bt_6 = buttonProvider.getButton6();
-            buttonProvider.getTitulo().setText("CONFIGURACION ETIQUETAS");
+            buttonProvider.getTitulo().setText(R.string.title_fragment_label);
 
-            bt_1.setBackgroundResource(R.drawable.boton_guardado_i);
-            bt_2.setBackgroundResource(R.drawable.boton_impresora_i);
-            bt_3.setBackgroundResource(R.drawable.boton_pdf_i);
-            bt_4.setBackgroundResource(R.drawable.boton_video_i);
-            bt_5.setBackgroundResource(R.drawable.boton_camara_i);
+            buttonProvider.getButton1().setBackgroundResource(R.drawable.boton_guardado_i);
+            buttonProvider.getButton2().setBackgroundResource(R.drawable.boton_impresora_i);
+            buttonProvider.getButton3().setBackgroundResource(R.drawable.boton_pdf_i);
+            buttonProvider.getButton4().setBackgroundResource(R.drawable.boton_video_i);
+            buttonProvider.getButton5().setBackgroundResource(R.drawable.boton_camara_i);
 
-            bt_2.setVisibility(View.INVISIBLE);
-            bt_3.setVisibility(View.INVISIBLE);
-            bt_4.setVisibility(View.INVISIBLE);
-            bt_5.setVisibility(View.INVISIBLE);
-            bt_6.setVisibility(View.INVISIBLE);
+            buttonProvider.getButton2().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton3().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton4().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton5().setVisibility(View.INVISIBLE);
+            buttonProvider.getButton6().setVisibility(View.INVISIBLE);
 
-            bt_1.setOnClickListener(view -> {
+            buttonProvider.getButton1().setOnClickListener(view -> {
                 if(adapterCampos !=null){
                     if(adapterCampos.ListElementsInt!=null){
                         printerPreferences.saveListSpinner(adapterCampos.ListElementsInternaInt, adapterCampos.etiqueta);
@@ -112,11 +103,10 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
                 }
             });
 
-            bt_home.setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
+            buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
     }
-
 
     public void setupRecycler(List<String> lista) {
         recyclerEtiquetas.setLayoutManager(new LinearLayoutManager(getContext()));

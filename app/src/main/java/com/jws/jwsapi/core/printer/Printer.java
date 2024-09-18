@@ -1,10 +1,10 @@
 package com.jws.jwsapi.core.printer;
 
 public class Printer {
-    public String descripcion="";
+    public String descripcion;
     PrinterObject impresoravar;
-    String codigo="";
-    int num=0;
+    String codigo;
+    int num;
 
     public Printer(String codigo, PrinterObject impresoravar, String descripcion, int num) {
         this.codigo=codigo;

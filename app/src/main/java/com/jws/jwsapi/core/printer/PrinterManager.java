@@ -218,7 +218,6 @@ public class PrinterManager {
                                         }
                                         String resultado = stringBuilder.toString();
 
-
                                         ListElementsFinales.add(resultado);
                                     }
                                     if(ListElementsInt.get(i)==labelManager.constantPrinterList.size()-2){//fijo

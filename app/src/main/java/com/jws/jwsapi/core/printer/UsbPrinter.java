@@ -1,11 +1,11 @@
-package com.jws.jwsapi.core.printer.types;
+package com.jws.jwsapi.core.printer;
 
 import android.content.Context;
 import android.hardware.usb.UsbManager;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.printer.types.usb.DiscoveredPrinterListAdapter;
-import com.jws.jwsapi.core.printer.types.usb.SelectedPrinterManager;
+import com.jws.jwsapi.core.printer.utils.DiscoveredPrinterListAdapter;
+import com.jws.jwsapi.core.printer.utils.SelectedPrinterManager;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.zebra.sdk.comm.Connection;
@@ -26,37 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 public class UsbPrinter {
-
-
-    /**
-     * ImprimirUSB imprimirUSB= new ImprimirUSB();
-     *         imprimirUSB.Imprimir("^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR6,6~SD15^JUS^LRN^CI0^XZ\n" +
-     *                 "^XA\n" +
-     *                 "^MMT\n" +
-     *                 "^PW799\n" +
-     *                 "^LL0519\n" +
-     *                 "^LS0\n" +
-     *                 "^FO0,416^GFA,02688,02688,00028,:Z64:\n" +
-     *                 "eJztkzFuwjAUhp9jRUZI2AxU6oDaFfUMFeEIDCD1GBm74a1jr5AR+RQ+AkPZiJQjZGRAdZ8dR4USe6Cq1CFPUQZ/+nj+3wsAffXV12+KRZiInGYRNo+w1xtZ/vdshdOQQI04Itpof5qoodomSkJWQWaEkchOnpFyVB5GpQZzBIOsQmbOvaEqiDk5VlsmPRwDTCawpNWc1oKTI+Q5axvOAAYzmFH9SLXgOJQ8p5Vny8ZjUuDD4RkZqS49BuwNkE2RQX3Wb2xjs3fLHs5Z4yGjjnHL2sncA0yngGcdzHpPAWb73QV+03pDJZm/C4f68p7pXrcZLpj1QBVtdk6q7+zWA7JkWriZcVr5mSXew3nWbtbAhc6Fm3Xa5AN4wR0RY5Bl0u8oka1nd7txDPxuyaLph+9Njd8EsjlsPputF+0erv9ZZOf3N/5J0Ns6b2DfV96q/V66vES5eRbXLD2QEvOlpQ569rvu6hcsvGewyMeNXqyfCrO0LCNeVzLfb71eRLwi6O33u4gXTIj9ggnRiyTs61/XF/ZBjzM=:9986\n" +
-     *                 "^FT56,364^A0I,37,36^FH\\^FD"+contenedor+"^FS\n" +
-     *                 "^FT662,300^A0I,40,36^FH\\^FD"+tara+"kg"+"^FS\n" +
-     *                 "^FT662,361^A0I,40,36^FH\\^FD"+bruto+"kg"+"^FS\n" +
-     *                 "^FT579,239^A0I,40,36^FH\\^FD"+destinatario+"^FS\n" +
-     *                 "^FT325,42^A0I,65,62^FH\\^FD"+neto+"kg"+"^FS\n" +
-     *                 "^FT601,179^A0I,39,36^FH\\^FD"+transporte+"^FS\n" +
-     *                 "^FT451,457^A0I,37,36^FH\\^FD"+hora+"^FS\n" +
-     *                 "^FT778,457^A0I,37,36^FH\\^FD"+fecha+"^FS\n" +
-     *                 "^FT783,300^A0I,39,40^FH\\^FDTara:^FS\n" +
-     *                 "^FT783,361^A0I,39,40^FH\\^FDBruto:^FS\n" +
-     *                 "^FT244,364^A0I,37,38^FH\\^FDContenedor:^FS\n" +
-     *                 "^FT782,241^A0I,39,38^FH\\^FDDestinatario:^FS\n" +
-     *                 "^FT781,181^A0I,37,38^FH\\^FDTransporte:^FS\n" +
-     *                 "^FO14,423^GB778,0,8^FS\n" +
-     *                 "^FO6,7^GB787,505,8^FS\n" +
-     *                 "^FO7,8^GB351,116,8^FS\n" +
-     *                 "^PQ1,0,1,Y^XZ",this,getApplicationContext(),false,null);
-     */
-
 
     List<FieldDescriptionData> variablesList = new ArrayList<FieldDescriptionData>();
     Connection connection;

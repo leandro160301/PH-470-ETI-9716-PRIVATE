@@ -11,7 +11,7 @@
  * 
  * ALL RIGHTS RESERVED
  ***********************************************/
-package com.jws.jwsapi.core.printer.types.usb;
+package com.jws.jwsapi.core.printer.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

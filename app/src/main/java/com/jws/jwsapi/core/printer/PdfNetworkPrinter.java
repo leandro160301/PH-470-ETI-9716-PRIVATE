@@ -1,4 +1,4 @@
-package com.jws.jwsapi.core.printer.types;
+package com.jws.jwsapi.core.printer;
 
 
 

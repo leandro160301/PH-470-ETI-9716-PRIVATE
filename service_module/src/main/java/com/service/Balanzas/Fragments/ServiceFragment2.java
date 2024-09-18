@@ -3,8 +3,6 @@ package com.service.Balanzas.Fragments;
 import static android.view.View.GONE;
 
 import android.app.AlertDialog;
-import android.icu.text.SymbolTable;
-import android.media.midi.MidiManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +33,6 @@ import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import com.service.Comunicacion.MyRecyclerViewAdapter;
 import com.service.R;
-import com.service.Recyclers.recyclerModbus;
 import com.service.Recyclers.recyclerModbus2;
 import com.service.Utils;
 

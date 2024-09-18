@@ -2,8 +2,6 @@ package com.service.Balanzas.Fragments;
 
 import static android.view.View.GONE;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
 import android.app.AlertDialog;
 
 import android.os.Bundle;
@@ -18,9 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultRegistry;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

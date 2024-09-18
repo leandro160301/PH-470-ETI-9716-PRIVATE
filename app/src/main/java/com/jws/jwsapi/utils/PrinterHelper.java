@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PrinterHelper {
 
-    public static List<LabelModel> getCamposEtiqueta(String etiqueta){
+    public static List<LabelModel> getFieldsFromLabel(String etiqueta){
         List<LabelModel> listaCampos = new ArrayList<>();
         String[] arr = etiqueta.split("\\^FN");
         for(int i=1;i<arr.length;i++){

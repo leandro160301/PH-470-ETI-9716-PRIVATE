@@ -38,7 +38,7 @@
                     android:splitMotionEvents="false">
 
                     <com.jws.jwsapi.core.views.RecyclerViewScroll
-                        android:id="@+id/listview"
+                        android:id="@+id/recycler_label"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scrollbars="vertical"
@@ -67,7 +67,7 @@
                     android:orientation="vertical">
 
                     <com.jws.jwsapi.core.views.RecyclerViewScroll
-                        android:id="@+id/recyclerEtiqueta"
+                        android:id="@+id/recycler_field"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scrollbars="vertical"

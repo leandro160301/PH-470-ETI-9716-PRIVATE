@@ -41,7 +41,7 @@
                     android:splitMotionEvents="false">
 
                     <com.jws.jwsapi.Utils.RecyclerViewScroll
-                        android:id="@+id/listview"
+                        android:id="@+id/recycler_label"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1" />

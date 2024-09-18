@@ -1,8 +1,9 @@
 package com.jws.jwsapi.core.label;
 
-import static com.jws.jwsapi.utils.PrinterHelper.getCamposEtiqueta;
+import static com.jws.jwsapi.utils.PrinterHelper.getFieldsFromLabel;
 import static com.jws.jwsapi.core.storage.Storage.getFilesExtension;
 import static com.jws.jwsapi.core.storage.Storage.openAndReadFile;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.AdapterCommon;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
+import com.jws.jwsapi.databinding.StandarImpresorasEtiquetasBinding;
 
 @AndroidEntryPoint
 public class LabelFragment extends Fragment implements AdapterCommon.ItemClickListener {
@@ -32,12 +34,11 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     LabelManager labelManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    List<LabelModel> listaCampos =new ArrayList<>();
-    List<String> listaEtiquetas=new ArrayList<>();
-    RecyclerView recyclerEtiquetas, recyclerCampos;
-    AdapterCommon adapterEtiquetas;
-    LabelAdapter adapterCampos;
-    String etiquetaNombre ="";
+    List<LabelModel> fieldList = new ArrayList<>();
+    List<String> labelList = new ArrayList<>();
+    AdapterCommon labelAdapter;
+    LabelAdapter fieldAdapter;
+    StandarImpresorasEtiquetasBinding binding;
 
     @Override
     public void onItemClick(View view, int position) {
@@ -45,37 +46,33 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     }
 
     private void handleItemClick(int position) {
-        String label =openAndReadFile(listaEtiquetas.get(position),mainActivity);
+        String label =openAndReadFile(labelList.get(position),mainActivity);
         if(label!=null&& !label.isEmpty()){
-            listaCampos=getCamposEtiqueta(label);
-            etiquetaNombre = listaEtiquetas.get(position);
-            setupRecyclerCampos(listaCampos, position);
+            fieldList = getFieldsFromLabel(label);
+            setupFieldRecycler(fieldList, position, labelList.get(position));
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.standar_impresoras_etiquetas,container,false);
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
-        return view;
+        binding = StandarImpresorasEtiquetasBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
-        configuracionBotones();
-        recyclerEtiquetas =view.findViewById(R.id.listview);
-        recyclerCampos =view.findViewById(R.id.recyclerEtiqueta);
+        setupButtons();
 
-        listaEtiquetas= getFilesExtension(".prn");
-        setupRecycler(listaEtiquetas);
+        labelList = getFilesExtension(".prn");
+        setupLabelRecycler(labelList);
 
     }
 
-
-    private void configuracionBotones() {
+    private void setupButtons() {
         if (buttonProvider != null) {
             buttonProvider.getTitulo().setText(R.string.title_fragment_label);
 
@@ -91,34 +88,34 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
             buttonProvider.getButton5().setVisibility(View.INVISIBLE);
             buttonProvider.getButton6().setVisibility(View.INVISIBLE);
 
-            buttonProvider.getButton1().setOnClickListener(view -> {
-                if(adapterCampos !=null){
-                    if(adapterCampos.ListElementsInt!=null){
-                        printerPreferences.saveListSpinner(adapterCampos.ListElementsInternaInt, adapterCampos.etiqueta);
-                    }
-                    if(adapterCampos.ListElementsInternaFijo!=null){
-                        printerPreferences.saveListFijo(adapterCampos.ListElementsInternaFijo, adapterCampos.etiqueta);
-                    }
-
-                }
-            });
-
+            buttonProvider.getButton1().setOnClickListener(view -> saveSettings());
             buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
     }
 
-    public void setupRecycler(List<String> lista) {
-        recyclerEtiquetas.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterEtiquetas = new AdapterCommon(getContext(), lista);
-        adapterEtiquetas.setClickListener(this);
-        recyclerEtiquetas.setAdapter(adapterEtiquetas);
+    private void saveSettings() {
+        if(fieldAdapter !=null){
+            if(fieldAdapter.ListElementsInt!=null){
+                printerPreferences.saveListSpinner(fieldAdapter.ListElementsInternaInt, fieldAdapter.etiqueta);
+            }
+            if(fieldAdapter.ListElementsInternaFijo!=null){
+                printerPreferences.saveListFijo(fieldAdapter.ListElementsInternaFijo, fieldAdapter.etiqueta);
+            }
+        }
+    }
+
+    public void setupLabelRecycler(List<String> lista) {
+        binding.recyclerLabel.setLayoutManager(new LinearLayoutManager(getContext()));
+        labelAdapter = new AdapterCommon(getContext(), lista);
+        labelAdapter.setClickListener(this);
+        binding.recyclerLabel.setAdapter(labelAdapter);
 
     }
-    private void setupRecyclerCampos(List<LabelModel> lista, int posi) {
-        recyclerCampos.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterCampos = new LabelAdapter(getContext(), lista,mainActivity, etiquetaNombre,posi,labelManager, printerPreferences);
-        recyclerCampos.setAdapter(adapterCampos);
+    private void setupFieldRecycler(List<LabelModel> lista, int posi, String name) {
+        binding.recyclerField.setLayoutManager(new LinearLayoutManager(getContext()));
+        fieldAdapter = new LabelAdapter(getContext(), lista,mainActivity, name,posi,labelManager, printerPreferences);
+        binding.recyclerField.setAdapter(fieldAdapter);
     }
 
 }

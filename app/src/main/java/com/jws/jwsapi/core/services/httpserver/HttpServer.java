@@ -9,7 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.storage.Storage;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.MainClass;
@@ -69,12 +69,12 @@ public class HttpServer extends NanoWSD {
     private Context context;
     Ws webSocket = null;
     UserManager userManager;
-    PreferencesManagerBase preferencesManagerBase;
+    PreferencesManager preferencesManagerBase;
 
     private HttpServerInterface httpServerInterface;
 
     public HttpServer(int port, Context context,
-                      HttpServerInterface httpServerInterface, MainActivity activity, UserManager userManager, PreferencesManagerBase preferencesManagerBase) {
+                      HttpServerInterface httpServerInterface, MainActivity activity, UserManager userManager, PreferencesManager preferencesManagerBase) {
         super(port);
         this.context = context;
         this.preferencesManagerBase = preferencesManagerBase;

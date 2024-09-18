@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.databinding.StandarEthernetBinding;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -28,7 +28,7 @@ public class EthernetFragment extends Fragment  {
     private ButtonProvider buttonProvider;
     private StandarEthernetBinding binding;
     @Inject
-    PreferencesManagerBase preferencesManagerBase;
+    PreferencesManager preferencesManagerBase;
 
     @Nullable
     @Override

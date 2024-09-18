@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class LabelProgramFragment extends Fragment implements LabelProgramAdapter.ItemClickListener {
 
     @Inject
-    PreferencesManager preferencesManager;
+    PrinterPreferences printerPreferences;
     @Inject
     LabelManager labelManager;
     MainActivity mainActivity;
@@ -47,10 +47,10 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         rc_lista_ingredientes =view.findViewById(R.id.lista_ingredientes);
-        List<String> nombreetiquetas=labelManager.nombreEtiquetas;
+        List<String> nombreetiquetas=labelManager.nameLabelList;
         lista_ingredientes= new ArrayList<>();
         for(int i=0;i<nombreetiquetas.size();i++){
-            lista_ingredientes.add(new LabelProgramModel(nombreetiquetas.get(i),preferencesManager.getEtiqueta(i)));
+            lista_ingredientes.add(new LabelProgramModel(nombreetiquetas.get(i), printerPreferences.getEtiqueta(i)));
         }
         configuracionBotones();
         cargarRecyclerView();
@@ -60,7 +60,7 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
 
     private void cargarRecyclerView(){
         rc_lista_ingredientes.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LabelProgramAdapter(getContext(),lista_ingredientes, getFilesExtension(".prn"),preferencesManager);
+        adapter = new LabelProgramAdapter(getContext(),lista_ingredientes, getFilesExtension(".prn"), printerPreferences);
         adapter.setClickListener(this);
         rc_lista_ingredientes.setAdapter(adapter);
 

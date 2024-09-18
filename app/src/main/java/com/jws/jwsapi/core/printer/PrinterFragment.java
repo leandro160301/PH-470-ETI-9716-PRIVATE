@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.StandarImpresorasBinding;
@@ -31,15 +30,14 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class PrinterFragment extends Fragment{
     @Inject
-    PreferencesManager preferencesManager;
+    PrinterPreferences printerPreferences;
     @Inject
     LabelManager labelManager;
     @Inject
     UserManager userManager;
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    PrinterManager imprimirStandar;
-    PreferencesPrinterManager preferencesPrinterManager;
+    PrinterManager printerManager;
     StandarImpresorasBinding binding;
 
     @Nullable
@@ -65,23 +63,22 @@ public class PrinterFragment extends Fragment{
     }
 
     private void initPrinter() {
-        imprimirStandar=new PrinterManager(getContext(),mainActivity, userManager,preferencesManager,labelManager);
-        preferencesPrinterManager= new PreferencesPrinterManager(mainActivity);
+        printerManager =new PrinterManager(getContext(),mainActivity, userManager, printerPreferences,labelManager);
     }
 
     private void initTextView() {
-        binding.tvIpimpresora.setText(preferencesPrinterManager.consultaIP());
+        binding.tvIpimpresora.setText(printerPreferences.getIp());
         binding.tvIpimpresora.setOnClickListener(v -> keyboardIpAdress(binding.tvIpimpresora, "Ingrese IP de Impresora", requireContext(), this::setupIpHandler));
     }
 
     private void initSpinner() {
         setupSpinner(binding.spImpresora, requireContext(), Arrays.asList(getResources().getStringArray(R.array.ImpresoraModo)));
-        binding.spImpresora.setSelection(preferencesPrinterManager.consultaModo());
+        binding.spImpresora.setSelection(printerPreferences.getMode());
         binding.spImpresora.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i!=2){
-                    preferencesPrinterManager.setModo(i);
+                    printerPreferences.setMode(i);
                 }
             }
 
@@ -94,7 +91,7 @@ public class PrinterFragment extends Fragment{
 
     private void setupIpHandler(String ip) {
         if(Utils.isIP(ip)) {
-            preferencesPrinterManager.setIP(ip);
+            printerPreferences.setIp(ip);
         } else {
             ToastHelper.message(getString(R.string.error_ip_adress_invalid),R.layout.item_customtoasterror,requireContext());
             binding.tvIpimpresora.setText("");

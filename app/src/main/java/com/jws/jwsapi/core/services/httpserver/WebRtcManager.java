@@ -12,7 +12,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,9 +73,9 @@ public class WebRtcManager {
     private Display display;
     private DisplayMetrics screenMetrics = new DisplayMetrics();
     private Thread rotationDetectorThread = null;
-    private PreferencesManagerBase preferencesManagerBase;
+    private PreferencesManager preferencesManagerBase;
 
-    public WebRtcManager(Intent intent, Context context, HttpServer server, MainActivity activity, PreferencesManagerBase preferencesManagerBase) {
+    public WebRtcManager(Intent intent, Context context, HttpServer server, MainActivity activity, PreferencesManager preferencesManagerBase) {
         this.server = server;
         this.preferencesManagerBase = preferencesManagerBase;
         this.mainActivity=activity;

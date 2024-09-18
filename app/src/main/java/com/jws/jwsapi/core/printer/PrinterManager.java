@@ -10,7 +10,6 @@ import com.jws.jwsapi.core.printer.types.NetworkPrinter;
 import com.jws.jwsapi.core.printer.types.UsbPrinter;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.core.label.LabelManager;
-import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.R;
@@ -23,31 +22,29 @@ import java.util.Objects;
 public class PrinterManager {
     private final Context context;
     private MainActivity mainActivity;
-    private PreferencesPrinterManager preferencesPrinterManager;
     UserManager userManager;
-    PreferencesManager preferencesManager;
+    PrinterPreferences printerPreferences;
     LabelManager labelManager;
 
-    public PrinterManager(Context context, MainActivity activity, UserManager userManager, PreferencesManager preferencesManager, LabelManager labelManager) {
+    public PrinterManager(Context context, MainActivity activity, UserManager userManager, PrinterPreferences printerPreferences, LabelManager labelManager) {
         this.context = context;
         this.mainActivity = activity;
-        this.preferencesManager=preferencesManager;
+        this.printerPreferences = printerPreferences;
         this.labelManager=labelManager;
-        preferencesPrinterManager=new PreferencesPrinterManager(context);
         this.userManager = userManager;
     }
 
     public void EnviarEtiqueta(PuertosSerie2 serialPort, int numetiqueta){
-        int modo=preferencesPrinterManager.consultaModo();
+        int modo= printerPreferences.getMode();
         if(modo==0){
             UsbPrinter usbPrinter = new UsbPrinter(mainActivity);
             usbPrinter.Imprimir(etiqueta(numetiqueta),context,false,null);
         }
         if(modo==1){
 
-            if (Utils.isIP(preferencesPrinterManager.consultaIP())) {
+            if (Utils.isIP(printerPreferences.getIp())) {
                 NetworkPrinter networkPrinter = new NetworkPrinter();
-                networkPrinter.Imprimir(preferencesPrinterManager.consultaIP(),etiqueta(numetiqueta));
+                networkPrinter.Imprimir(printerPreferences.getIp(),etiqueta(numetiqueta));
             }else {
                 ToastHelper.message("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
             }
@@ -70,15 +67,15 @@ public class PrinterManager {
     }
 
     public void EnviarUltimaEtiqueta(PuertosSerie2 serialPort){
-        int modo=preferencesPrinterManager.consultaModo();
+        int modo= printerPreferences.getMode();
         if(modo==0){
             UsbPrinter usbPrinter = new UsbPrinter(mainActivity);
-            usbPrinter.Imprimir(preferencesPrinterManager.getultimaEtiqueta(),context,false,null);
+            usbPrinter.Imprimir(printerPreferences.getLastLabel(),context,false,null);
         }
         if(modo==1){
-            if (Utils.isIP(preferencesPrinterManager.consultaIP())) {
+            if (Utils.isIP(printerPreferences.getIp())) {
                 NetworkPrinter networkPrinter = new NetworkPrinter();
-                networkPrinter.Imprimir(preferencesPrinterManager.consultaIP(),preferencesPrinterManager.getultimaEtiqueta());
+                networkPrinter.Imprimir(printerPreferences.getIp(), printerPreferences.getLastLabel());
             }else {
                 ToastHelper.message("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
             }
@@ -87,30 +84,26 @@ public class PrinterManager {
         if(modo==2){
             if(serialPort!=null){
                 SerialPortPrinter serialPortPrinter = new SerialPortPrinter(serialPort);
-                serialPortPrinter.Imprimir(preferencesPrinterManager.getultimaEtiqueta());
+                serialPortPrinter.Imprimir(printerPreferences.getLastLabel());
             }else {
                 ToastHelper.message("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
             }
-
-        }
-        if(modo==3){
-            //imprimir bluetooth
 
         }
 
     }
 
     public void EnviarEtiquetaManual(PuertosSerie2 serialPort,String etiqueta){
-        int modo=preferencesPrinterManager.consultaModo();
+        int modo= printerPreferences.getMode();
 
         if(modo==0){
             UsbPrinter usbPrinter = new UsbPrinter(mainActivity);
             usbPrinter.Imprimir(etiqueta,context,false,null);
         }
         if(modo==1){
-            if (Utils.isIP(preferencesPrinterManager.consultaIP())) {
+            if (Utils.isIP(printerPreferences.getIp())) {
                 NetworkPrinter networkPrinter = new NetworkPrinter();
-                networkPrinter.Imprimir(preferencesPrinterManager.consultaIP(),etiqueta);
+                networkPrinter.Imprimir(printerPreferences.getIp(),etiqueta);
             }else {
                 ToastHelper.message("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
             }
@@ -136,11 +129,11 @@ public class PrinterManager {
 
     public String etiqueta(int numetiqueta){
         try {
-            String etiquetaActual=preferencesManager.getEtiqueta(numetiqueta);
+            String etiquetaActual= printerPreferences.getEtiqueta(numetiqueta);
             String etiqueta =openAndReadFile(etiquetaActual,mainActivity);
             if(etiqueta!=null&& !etiqueta.equals("") && !Objects.equals(etiquetaActual, "")){
-                List<Integer>ListElementsInt=preferencesManager.getListSpinner(etiquetaActual);
-                List<String>ListElementsFijo=preferencesManager.getListFijo(etiquetaActual);
+                List<Integer>ListElementsInt= printerPreferences.getListSpinner(etiquetaActual);
+                List<String>ListElementsFijo= printerPreferences.getListFijo(etiquetaActual);
                 List<String>ListElementsFinales=new ArrayList<>();
                 if(ListElementsInt!=null&&ListElementsFijo!=null){
                     String[] arr = etiqueta.split("\\^FN");
@@ -153,7 +146,7 @@ public class PrinterManager {
                             String []arr2= arr[i+1].split("\\^FS");
                             if(arr2.length>1){
                                 System.out.println("var campo:"+arr2[0]);//este string luego debemos reemplazar por FS+valorvariable con el .replace
-                                if(ListElementsInt.get(i)<labelManager.imprimiblesPredefinidas.size()){
+                                if(ListElementsInt.get(i)<labelManager.constantPrinterList.size()){
                                     if(ListElementsInt.get(i)==0){
                                         ListElementsFinales.add("");
                                     }
@@ -175,15 +168,15 @@ public class PrinterManager {
                                     if(ListElementsInt.get(i)==6){
                                         ListElementsFinales.add(Utils.getHora());
                                     }
-                                    if(ListElementsInt.get(i)==labelManager.imprimiblesPredefinidas.size()-1){//concat
-                                        List<Integer>ListElementsConcat= preferencesManager.getListConcat(etiquetaActual,i);
-                                        String separador= preferencesManager.getSeparador(etiquetaActual,i);
+                                    if(ListElementsInt.get(i)==labelManager.constantPrinterList.size()-1){//concat
+                                        List<Integer>ListElementsConcat= printerPreferences.getListConcat(etiquetaActual,i);
+                                        String separador= printerPreferences.getSeparador(etiquetaActual,i);
                                         String concat="";
 
                                         if(ListElementsConcat!=null){
                                             for(int j=0;j<ListElementsConcat.size();j++){
-                                                if(labelManager.imprimiblesPredefinidas.size()+labelManager.variablesImprimibles.size()>ListElementsConcat.get(j)){
-                                                    if(ListElementsConcat.get(j)<labelManager.imprimiblesPredefinidas.size()){
+                                                if(labelManager.constantPrinterList.size()+labelManager.varPrinterList.size()>ListElementsConcat.get(j)){
+                                                    if(ListElementsConcat.get(j)<labelManager.constantPrinterList.size()){
                                                         if(ListElementsConcat.get(j)==0){
                                                             concat=concat.concat(""+separador);
                                                         }
@@ -206,10 +199,10 @@ public class PrinterManager {
                                                             concat=concat.concat(Utils.getHora()+separador);
                                                         }
 
-                                                    }else if(ListElementsConcat.get(j)<labelManager.variablesImprimibles.size()+labelManager.imprimiblesPredefinidas.size()){
-                                                        for(int o = 0; o<labelManager.variablesImprimibles.size(); o++){
-                                                            if(ListElementsConcat.get(j)-labelManager.imprimiblesPredefinidas.size()==o){
-                                                                concat=concat.concat(labelManager.variablesImprimibles.get(o).value()+separador);
+                                                    }else if(ListElementsConcat.get(j)<labelManager.varPrinterList.size()+labelManager.constantPrinterList.size()){
+                                                        for(int o = 0; o<labelManager.varPrinterList.size(); o++){
+                                                            if(ListElementsConcat.get(j)-labelManager.constantPrinterList.size()==o){
+                                                                concat=concat.concat(labelManager.varPrinterList.get(o).value()+separador);
                                                                 //  System.out.println("esta entrando a concatenar variables");
                                                             }
                                                         }
@@ -228,13 +221,13 @@ public class PrinterManager {
 
                                         ListElementsFinales.add(resultado);
                                     }
-                                    if(ListElementsInt.get(i)==labelManager.imprimiblesPredefinidas.size()-2){//fijo
+                                    if(ListElementsInt.get(i)==labelManager.constantPrinterList.size()-2){//fijo
                                         ListElementsFinales.add(ListElementsFijo.get(i));
                                     }
-                                }else if(ListElementsInt.get(i)<labelManager.variablesImprimibles.size()+labelManager.imprimiblesPredefinidas.size()){
-                                    for(int j = 0; j<labelManager.variablesImprimibles.size(); j++){
-                                        if(ListElementsInt.get(i)-labelManager.imprimiblesPredefinidas.size()==j){
-                                            ListElementsFinales.add(labelManager.variablesImprimibles.get(j).value());
+                                }else if(ListElementsInt.get(i)<labelManager.varPrinterList.size()+labelManager.constantPrinterList.size()){
+                                    for(int j = 0; j<labelManager.varPrinterList.size(); j++){
+                                        if(ListElementsInt.get(i)-labelManager.constantPrinterList.size()==j){
+                                            ListElementsFinales.add(labelManager.varPrinterList.get(j).value());
                                         }
                                     }
                                 }
@@ -244,7 +237,7 @@ public class PrinterManager {
                         }
                         if(ListElementsFinales.size()== arr.length-1){
                             String etique=replaceEtiqueta(ListElementsFinales,etiqueta).replace("Ñ","\\A5").replace("ñ","\\A4").replace("á","\\A0").replace("é","\\82").replace("í","\\A1").replace("ó","\\A2").replace("Á","\\B5").replace("É","\\90").replace("Í","\\D6").replace("Ó","\\E3") ;
-                            preferencesPrinterManager.setUltimaEtiqueta(etique);
+                            printerPreferences.setLastLabel(etique);
                             return etique;
                         }
 

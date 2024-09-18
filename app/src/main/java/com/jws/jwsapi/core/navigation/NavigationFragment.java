@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.jws.JwsManager;
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.label.LabelProgramFragment;
 import com.jws.jwsapi.core.printer.PrinterFragment;
 import com.jws.jwsapi.core.storage.StorageFragment;
@@ -65,7 +65,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
     @Inject
     UserManager userManager;
     @Inject
-    PreferencesManagerBase preferencesManagerBase;
+    PreferencesManager preferencesManagerBase;
 
     @Nullable
     @Override

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.AdapterCommon;
-import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class LabelFragment extends Fragment implements AdapterCommon.ItemClickListener {
 
     @Inject
-    PreferencesManager preferencesManager;
+    PrinterPreferences printerPreferences;
     @Inject
     LabelManager labelManager;
     Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6;
@@ -103,10 +103,10 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
             bt_1.setOnClickListener(view -> {
                 if(adapterCampos !=null){
                     if(adapterCampos.ListElementsInt!=null){
-                        preferencesManager.saveListSpinner(adapterCampos.ListElementsInternaInt, adapterCampos.etiqueta);
+                        printerPreferences.saveListSpinner(adapterCampos.ListElementsInternaInt, adapterCampos.etiqueta);
                     }
                     if(adapterCampos.ListElementsInternaFijo!=null){
-                        preferencesManager.saveListFijo(adapterCampos.ListElementsInternaFijo, adapterCampos.etiqueta);
+                        printerPreferences.saveListFijo(adapterCampos.ListElementsInternaFijo, adapterCampos.etiqueta);
                     }
 
                 }
@@ -127,7 +127,7 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     }
     private void setupRecyclerCampos(List<LabelModel> lista, int posi) {
         recyclerCampos.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterCampos = new LabelAdapter(getContext(), lista,mainActivity, etiquetaNombre,posi,labelManager,preferencesManager);
+        adapterCampos = new LabelAdapter(getContext(), lista,mainActivity, etiquetaNombre,posi,labelManager, printerPreferences);
         recyclerCampos.setAdapter(adapterCampos);
     }
 

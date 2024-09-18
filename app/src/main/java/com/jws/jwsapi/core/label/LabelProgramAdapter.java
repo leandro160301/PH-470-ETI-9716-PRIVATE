@@ -12,7 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.core.printer.PrinterPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,14 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
     private int lastPositionAdapter = -1;
     List<String>etiquetas ;
     Context context;
-    PreferencesManager preferencesManager;
+    PrinterPreferences printerPreferences;
 
-    public LabelProgramAdapter(Context context, List<LabelProgramModel> data, List<String>etiquetas, PreferencesManager preferencesManager) {
+    public LabelProgramAdapter(Context context, List<LabelProgramModel> data, List<String>etiquetas, PrinterPreferences printerPreferences) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.etiquetas= etiquetas;
         this.context=context;
-        this.preferencesManager= preferencesManager;
+        this.printerPreferences = printerPreferences;
 
     }
 
@@ -49,14 +49,14 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
         int posi=position;
         holder.tv_campo.setText(mData.get(position).getName());
         setupSpinner(holder.spCampo,context,etiquetas);
-        int index= etiquetas.indexOf(preferencesManager.getEtiqueta(posi));
+        int index= etiquetas.indexOf(printerPreferences.getEtiqueta(posi));
         if (index>-1){
             holder.spCampo.setSelection(index);
         }
         holder.spCampo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                preferencesManager.setEtiqueta(etiquetas.get(i),posi);
+                printerPreferences.setEtiqueta(etiquetas.get(i),posi);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}

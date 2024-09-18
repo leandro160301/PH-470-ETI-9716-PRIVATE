@@ -18,7 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.user.UserManager;
 
 import org.json.JSONException;
@@ -42,7 +42,7 @@ public class AppService extends Service {
     private boolean isWebServerRunning = false;
     private MouseAccessibilityService mouseAccessibilityService = null;
     public MainActivity mainActivity;
-    private PreferencesManagerBase preferencesManagerBase;
+    private PreferencesManager preferencesManagerBase;
 
     @Override
     public void onCreate() {
@@ -111,7 +111,7 @@ public class AppService extends Service {
     }
 
     public boolean serverStart(Intent intent, int port,
-                               boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity, UserManager userManager, PreferencesManagerBase preferencesManagerBase) {
+                               boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity, UserManager userManager, PreferencesManager preferencesManagerBase) {
         this.mainActivity=mainActivity;
         this.preferencesManagerBase= preferencesManagerBase;
         if (!(isWebServerRunning = startHttpServer(port, userManager)))

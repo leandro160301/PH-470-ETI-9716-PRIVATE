@@ -2,9 +2,13 @@ package com.jws.jwsapi.di;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.room.Room;
 
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.data.local.PreferencesHelper;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.AppDatabase;
@@ -13,7 +17,6 @@ import com.jws.jwsapi.pallet.PalletDao;
 import com.jws.jwsapi.pallet.PalletService;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.shared.PalletRepository;
-import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.weighing.WeighingApi;
 import com.jws.jwsapi.weighing.WeighingDao;
@@ -34,29 +37,30 @@ public class AppModule {
 
     private static final String DATABASE_NAME = "bza-database";
     private static final String BASE_URL = "http://10.41.0.78:8080/";
+    private static final String PREFS_NAME = "bza_pref";
 
     @Provides
     @Singleton
-    public UserManager provideUserManager(Application application){
-        return new UserManager(application);
+    public UserManager provideUserManager(Application application, PreferencesManager preferencesManager){
+        return new UserManager(application, preferencesManager);
     }
 
     @Provides
     @Singleton
-    public PreferencesManager providePreferencesManager(Application application) {
-        return new PreferencesManager(application);
+    public PreferencesManager providePreferencesManager(PreferencesHelper preferencesHelper) {
+        return new PreferencesManager(preferencesHelper);
+    }
+
+    @Singleton
+    @Provides
+    public SharedPreferences provideSharedPreferences(@ApplicationContext Context context) {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     @Provides
     @Singleton
-    public PreferencesManagerBase providePreferencesManagerBase(Application application) {
-        return new PreferencesManagerBase(application);
-    }
-
-    @Provides
-    @Singleton
-    public LabelManager provideLabelManager(PreferencesManager preferencesManager){
-        return new LabelManager(preferencesManager);
+    public LabelManager provideLabelManager(PrinterPreferences printerPreferences){
+        return new LabelManager(printerPreferences);
     }
 
     @Provides
@@ -70,8 +74,6 @@ public class AppModule {
     public PalletRepository providePalletRepository(PalletDao palletDao){
         return new PalletRepository(palletDao);
     }
-
-
 
     @Provides
     public Retrofit provideRetrofit() {

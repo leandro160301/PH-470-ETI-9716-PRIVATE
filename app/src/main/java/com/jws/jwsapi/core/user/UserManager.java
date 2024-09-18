@@ -12,7 +12,7 @@ import android.app.Application;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.utils.ToastHelper;
 
 import org.json.JSONArray;
@@ -31,12 +31,14 @@ import javax.inject.Singleton;
 public class UserManager implements UserLoginInterface {
 
     private final Application application;
+    private final PreferencesManager preferencesManagerBase;
     String userName ="";
     int userLevel =0;
 
     @Inject
-    public UserManager(Application application){
-        this.application =application;
+    public UserManager(Application application, PreferencesManager preferencesManagerBase){
+        this.application = application;
+        this.preferencesManagerBase = preferencesManagerBase;
     }
     
     public int usersQuantity(){
@@ -58,7 +60,6 @@ public class UserManager implements UserLoginInterface {
 
     @Override
     public boolean login(String password, String user) {
-        PreferencesManagerBase preferencesManagerBase = new PreferencesManagerBase(application);
         boolean logeo=false;
         if(!password.isEmpty() && !user.isEmpty()){
             if((password.equals(preferencesManagerBase.consultaPIN())) && user.equals("ADMINISTRADOR")){

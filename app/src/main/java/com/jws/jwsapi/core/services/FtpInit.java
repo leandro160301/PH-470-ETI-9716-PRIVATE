@@ -4,8 +4,7 @@ import static com.jws.jwsapi.core.user.UserConstants.USERS_LIST;
 
 import android.content.Context;
 import android.os.Environment;
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
-import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.user.UserModel;
 
 import org.apache.ftpserver.ConnectionConfigFactory;
@@ -23,10 +22,12 @@ public class FtpInit {
 
     Context context;
     List<UserModel> listaUsuarios;
+    private PreferencesManager preferencesManager;
 
-    public FtpInit(Context context, List<UserModel> listaUsuarios){
+    public FtpInit(Context context, List<UserModel> listaUsuarios, PreferencesManager preferencesManager){
         this.context=context;
         this.listaUsuarios=listaUsuarios;
+        this.preferencesManager = preferencesManager;
     }
 
     public void ftpServer(){
@@ -50,7 +51,7 @@ public class FtpInit {
         }
         BaseUser user = new BaseUser();
         user.setName(USERS_LIST[0]);
-        user.setPassword(new PreferencesManagerBase(context).consultaPIN());
+        user.setPassword(preferencesManager.consultaPIN());
         user.setHomeDirectory(Environment.getExternalStorageDirectory().toString()+"/Memoria");
         user.setAuthorities(authorities);
         try {

@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import androidx.core.content.ContextCompat;
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.user.UserManager;
 
 
@@ -22,9 +22,9 @@ public class InitServer {
     private ServiceConnection serviceConnection;
     MainActivity mainActivity;
     UserManager userManager;
-    PreferencesManagerBase preferencesManagerBase;
+    PreferencesManager preferencesManagerBase;
 
-    public InitServer(Context context, MainActivity mainActivity, UserManager userManager, PreferencesManagerBase preferencesManager) {
+    public InitServer(Context context, MainActivity mainActivity, UserManager userManager, PreferencesManager preferencesManager) {
         this.context = context;
         this.preferencesManagerBase = preferencesManager;
         this.mainActivity=mainActivity;

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.AdapterCommon;
-import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.jws.jwsapi.utils.AdapterHelper;
 import com.jws.jwsapi.utils.ToastHelper;
 
@@ -45,9 +45,9 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
     public int numposicion;
     private int lastPositionAdapter = -1;
     LabelManager labelManager;
-    PreferencesManager preferencesManager;
+    PrinterPreferences printerPreferences;
 
-    public LabelAdapter(Context context, List<LabelModel> mData, MainActivity mainActivity, String etiqueta, int numposicion, LabelManager labelManager, PreferencesManager preferencesManager) {
+    public LabelAdapter(Context context, List<LabelModel> mData, MainActivity mainActivity, String etiqueta, int numposicion, LabelManager labelManager, PrinterPreferences printerPreferences) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = mData;
         this.context=context;
@@ -55,7 +55,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
         this.etiqueta=etiqueta;
         this.numposicion=numposicion;
         this.labelManager=labelManager;
-        this.preferencesManager=preferencesManager;
+        this.printerPreferences = printerPreferences;
 
         setupVariablesList();
         setupSpinnerList();
@@ -66,16 +66,16 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
 
     private void setupVariablesList() {
         listaVariables =new ArrayList<>();
-        for(int i = 0; i<labelManager.imprimiblesPredefinidas.size(); i++){
-            listaVariables.add(labelManager.imprimiblesPredefinidas.get(i));
+        for(int i = 0; i<labelManager.constantPrinterList.size(); i++){
+            listaVariables.add(labelManager.constantPrinterList.get(i));
         }
-        for(int i = 0; i<labelManager.variablesImprimibles.size(); i++){
-            listaVariables.add(labelManager.variablesImprimibles.get(i).descripcion);
+        for(int i = 0; i<labelManager.varPrinterList.size(); i++){
+            listaVariables.add(labelManager.varPrinterList.get(i).descripcion);
         }
     }
 
     private void setupSpinnerList() {
-        ListElementsInt=preferencesManager.getListSpinner(etiqueta);
+        ListElementsInt= printerPreferences.getListSpinner(etiqueta);
         if(ListElementsInt==null){
             ListElementsInt = new ArrayList<>(Collections.nCopies(mData.size(), 0));
         }
@@ -86,7 +86,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
     }
 
     private void setupTextoFijo() {
-        ListElementsFijo=preferencesManager.getListFijo(etiqueta);
+        ListElementsFijo= printerPreferences.getListFijo(etiqueta);
         if(ListElementsFijo==null){
             ListElementsFijo = new ArrayList<>(Collections.nCopies(mData.size(), ""));
         }
@@ -132,7 +132,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
     private void updateViews(ViewHolder holder, int posi) {
         if(ListElementsInt!=null&&ListElementsInt.size()> posi){
             holder.spCampo.setSelection(ListElementsInt.get(posi));
-            if(ListElementsInt.get(posi)==labelManager.imprimiblesPredefinidas.size()-1){
+            if(ListElementsInt.get(posi)==labelManager.constantPrinterList.size()-1){
                 holder.tv_textoconcatenado.setText("A,SD,AS,D");
                 if(ListElementsPosicionesTipo.size()> posi){
                     ListElementsPosicionesTipo.set(posi,2);
@@ -144,8 +144,8 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
                 holder.ln_textoconcatenado.setVisibility(View.GONE);
                 holder.ln_editar.setVisibility(View.GONE);
             }
-            if(ListElementsInt.get(posi)!=labelManager.imprimiblesPredefinidas.size()-1){
-                if(ListElementsInt.get(posi)==labelManager.imprimiblesPredefinidas.size()-2){
+            if(ListElementsInt.get(posi)!=labelManager.constantPrinterList.size()-1){
+                if(ListElementsInt.get(posi)==labelManager.constantPrinterList.size()-2){
                     holder.ln_textoconcatenado.setVisibility(View.GONE);
                     if(ListElementsPosicionesTipo.size()> posi){
                         ListElementsPosicionesTipo.set(posi,1);
@@ -182,10 +182,10 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
         try {
              if(ListElementsInt!=null&&ListElementsInt.size()> posi){
                  ListElementsInternaInt.set(posi, i);
-                 if(i ==labelManager.imprimiblesPredefinidas.size()-1){
-                     ListElementsInternalConcat=preferencesManager.getListConcat(etiqueta, posi);
+                 if(i ==labelManager.constantPrinterList.size()-1){
+                     ListElementsInternalConcat= printerPreferences.getListConcat(etiqueta, posi);
                      String concat="";
-                     String sepa=preferencesManager.getSeparador(etiqueta, posi);
+                     String sepa= printerPreferences.getSeparador(etiqueta, posi);
                      if(ListElementsInternalConcat!=null){
                          for(int j=0;j<ListElementsInternalConcat.size();j++){
                              if(listaVariables.size()>ListElementsInternalConcat.get(j)){
@@ -210,8 +210,8 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
                      holder.ln_textoconcatenado.setVisibility(View.GONE);
                      holder.ln_editar.setVisibility(View.GONE);
                  }
-                 if(i !=labelManager.imprimiblesPredefinidas.size()-1){
-                     if(i ==labelManager.imprimiblesPredefinidas.size()-2){
+                 if(i !=labelManager.constantPrinterList.size()-1){
+                     if(i ==labelManager.constantPrinterList.size()-2){
                          if(ListElementsFijo!=null&&ListElementsFijo.size()> posi){
                              holder.tv_textofijo.setText(ListElementsFijo.get(posi));
                          }
@@ -251,7 +251,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
 
         AdapterCommon adapter;
         listview.setLayoutManager(new LinearLayoutManager(context));
-        ListElementsArrayConcatFormat=preferencesManager.getListConcat(etiqueta,posicion);
+        ListElementsArrayConcatFormat= printerPreferences.getListConcat(etiqueta,posicion);
         List<String> ListElementsArrayConcat=new ArrayList<>();
         if(ListElementsArrayConcatFormat==null){
             ListElementsArrayConcatFormat=new ArrayList<>();
@@ -267,7 +267,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
 
 
         Selected=0;
-        String separacion=preferencesManager.getSeparador(etiqueta,posicion);
+        String separacion= printerPreferences.getSeparador(etiqueta,posicion);
         if(Objects.equals(separacion, bt_coma.getText().toString())){
             bt_coma.setBackgroundResource(R.drawable.botoneraprincipal_selectorgris);
             bt_coma.setTextColor(Color.WHITE);
@@ -305,22 +305,22 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
         dialog.show();
 
         Guardar.setOnClickListener(view -> {
-            preferencesManager.saveListConcat(ListElementsArrayConcatFormat,etiqueta,posicion);
+            printerPreferences.saveListConcat(ListElementsArrayConcatFormat,etiqueta,posicion);
             String separated="";
             if(Selected==1){
-                preferencesManager.setSeparador(",",etiqueta,posicion);
+                printerPreferences.setSeparador(",",etiqueta,posicion);
                 separated=",";
             }
             if(Selected==2){
-                preferencesManager.setSeparador(":",etiqueta,posicion);
+                printerPreferences.setSeparador(":",etiqueta,posicion);
                 separated=":";
             }
             if(Selected==3){
-                preferencesManager.setSeparador(";",etiqueta,posicion);
+                printerPreferences.setSeparador(";",etiqueta,posicion);
                 separated=";";
             }
             if(Selected==4){
-                preferencesManager.setSeparador("|",etiqueta,posicion);
+                printerPreferences.setSeparador("|",etiqueta,posicion);
                 separated="|";
             }
 

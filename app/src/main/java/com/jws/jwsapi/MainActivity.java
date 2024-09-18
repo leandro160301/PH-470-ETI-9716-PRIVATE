@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.android.jws.JwsManager;
-import com.jws.jwsapi.core.data.local.PreferencesManagerBase;
+import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.services.FtpInit;
 import com.jws.jwsapi.core.services.httpserver.InitServer;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
     @Inject
     StorageService storageService;
     @Inject
-    PreferencesManagerBase preferencesManager;
+    PreferencesManager preferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void initFtpWebRTC() {
         try {
-            FtpInit ftpInit= new FtpInit(getApplicationContext(), userManager.getUsers());
+            FtpInit ftpInit= new FtpInit(getApplicationContext(), userManager.getUsers(), preferencesManager);
             ftpInit.ftpServer();
         } catch (Exception e) {
             e.printStackTrace();

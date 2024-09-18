@@ -107,9 +107,9 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void setTheme() {
-        if(preferencesManager.consultaTema()!=R.style.AppTheme_NoActionBar){
+        if(preferencesManager.getTheme()!=R.style.AppTheme_NoActionBar){
             try {
-                setTheme(preferencesManager.consultaTema());
+                setTheme(preferencesManager.getTheme());
             } catch (Exception e) {
                 e.printStackTrace();
             }

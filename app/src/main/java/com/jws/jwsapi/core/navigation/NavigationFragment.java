@@ -328,15 +328,15 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         TextView tvTema2 =  mView.findViewById(R.id.tvTema2);
         TextView tvTema3 =  mView.findViewById(R.id.tvTema3);
 
-        if(preferencesManagerBase.consultaTema()==R.style.AppTheme_NoActionBar){
+        if(preferencesManagerBase.getTheme()==R.style.AppTheme_NoActionBar){
             setupTextTheme(tvTema1, "Tema Rojo (actual)");
 
         }
-        if(preferencesManagerBase.consultaTema()==R.style.AppTheme2_NoActionBar){
+        if(preferencesManagerBase.getTheme()==R.style.AppTheme2_NoActionBar){
             setupTextTheme(tvTema2, "Tema Azul (actual)");
 
         }
-        if(preferencesManagerBase.consultaTema()==R.style.AppTheme4_NoActionBar){
+        if(preferencesManagerBase.getTheme()==R.style.AppTheme4_NoActionBar){
             setupTextTheme(tvTema3, "Tema Negro (actual)");
         }
 
@@ -358,7 +358,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
     }
 
     private void setupTheme(int appTheme_NoActionBar, TextView tvTema1, TextView tvTema2, TextView tvTema3) {
-        preferencesManagerBase.nuevoTema(appTheme_NoActionBar);
+        preferencesManagerBase.setTheme(appTheme_NoActionBar);
         ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
         tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
         tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
@@ -374,7 +374,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         binding.tvMinutos.setOnLongClickListener(view -> {
             num=num+1;
             if(num==2){
-                preferencesManagerBase.setCorreccionRemoto(!preferencesManagerBase.getCorreccionRemoto());
+                preferencesManagerBase.setRemoteFix(!preferencesManagerBase.getRemoteFix());
             }
             return false;
         });
@@ -455,7 +455,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         binding.buttons.setOnClickListener(view -> {
             if (!binding.tvpin.getText().toString().equals("error")) {
                 if (binding.tvpin.getText().toString().equals(pin[0])) {
-                    preferencesManagerBase.nuevoPin(pin[0]);
+                    preferencesManagerBase.setPin(pin[0]);
                     ToastHelper.message("PIN CORRECTO", R.layout.item_customtoastok, requireContext());
                     dialog.cancel();
                 }

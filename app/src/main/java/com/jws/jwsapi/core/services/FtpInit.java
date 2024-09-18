@@ -51,7 +51,7 @@ public class FtpInit {
         }
         BaseUser user = new BaseUser();
         user.setName(USERS_LIST[0]);
-        user.setPassword(preferencesManager.consultaPIN());
+        user.setPassword(preferencesManager.getPin());
         user.setHomeDirectory(Environment.getExternalStorageDirectory().toString()+"/Memoria");
         user.setAuthorities(authorities);
         try {

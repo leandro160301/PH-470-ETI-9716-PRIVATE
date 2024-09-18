@@ -494,7 +494,7 @@ public class HttpServer extends NanoWSD {
 
     private Response handleRootRequest(IHTTPSession session) {
         String indexHtml = readFile(HTML_DIR + INDEX_HTML);
-        if(preferencesManagerBase.getCorreccionRemoto()){
+        if(preferencesManagerBase.getRemoteFix()){
             indexHtml = readFile(HTML_DIR + INDEX_HTML_error);
         }else{
             indexHtml = readFile(HTML_DIR + INDEX_HTML);

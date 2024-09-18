@@ -1,6 +1,5 @@
 package com.jws.jwsapi;
 
-
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_ADMINISTRATOR;
 
 import android.content.Context;
@@ -27,7 +26,7 @@ public class MainClass implements OnFragmentChangeListener {
     public BalanzaService.Balanzas bza;
     public int nBza =1;
     UserManager userManager;
-    Boolean permitirClic=true;
+    Boolean clickEnable = true;
 
     public MainClass(Context context, MainActivity activity, UserManager userManager) {
         this.context = context;
@@ -76,7 +75,7 @@ public class MainClass implements OnFragmentChangeListener {
 
     @Override
     public void openFragmentService(Fragment fragment, Bundle arg) {
-        if(permitirClic){
+        if(clickEnable){
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             Fragment fragmentoActual = new ContainerFragment();
             boolean programador= userManager.getLevelUser() > ROLE_ADMINISTRATOR;
@@ -85,9 +84,9 @@ public class MainClass implements OnFragmentChangeListener {
             fragmentManager.beginTransaction()
                     .replace(R.id.container_fragment, containerFragment)
                     .commit();
-            permitirClic = false;
+            clickEnable = false;
             Handler handler= new Handler();
-            handler.postDelayed(() -> permitirClic = true, 1000); //arreglar problema de que mas de una optima llame a service al mismo tiempo
+            handler.postDelayed(() -> clickEnable = true, 1000); //arreglar problema de que mas de una optima llame a service al mismo tiempo
         }
 
     }

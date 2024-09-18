@@ -62,7 +62,7 @@ public class UserManager implements UserLoginInterface {
     public boolean login(String password, String user) {
         boolean logeo=false;
         if(!password.isEmpty() && !user.isEmpty()){
-            if((password.equals(preferencesManagerBase.consultaPIN())) && user.equals("ADMINISTRADOR")){
+            if((password.equals(preferencesManagerBase.getPin())) && user.equals("ADMINISTRADOR")){
                 userLevel = ROLE_ADMINISTRATOR;
                 logeo=true;
                 userName ="ADMINISTRADOR";

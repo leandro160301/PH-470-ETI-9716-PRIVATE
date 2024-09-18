@@ -151,7 +151,7 @@ public class WebRtcManager {
         display.getRealMetrics(screenMetrics);
         if (videoCapturer != null) {
 
-            if(preferencesManagerBase.getCorreccionRemoto()){
+            if(preferencesManagerBase.getRemoteFix()){
                 videoCapturer.startCapture((screenMetrics.widthPixels), (screenMetrics.heightPixels),
                         FRAMES_PER_SECOND);
             }else{

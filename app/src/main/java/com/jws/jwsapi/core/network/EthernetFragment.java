@@ -86,7 +86,7 @@ public class EthernetFragment extends Fragment  {
 
     private void setOnClickListeners() {
         binding.tvip.setOnClickListener(v -> keyboardIpAdress(binding.tvip, getString(R.string.dialog_ethernet_ip), requireContext(), ip -> {
-            preferencesManagerBase.setIPstatic(ip);
+            preferencesManagerBase.setIpStatic(ip);
             setupStaticNetwork();
         }));
 
@@ -101,22 +101,22 @@ public class EthernetFragment extends Fragment  {
         }));
 
         binding.tvdns1.setOnClickListener(v -> keyboardIpAdress(binding.tvdns1, getString(R.string.dialog_ethernet_dns1), requireContext(), dns1 -> {
-            preferencesManagerBase.setDNS1(dns1);
+            preferencesManagerBase.setDns1(dns1);
             setupStaticNetwork();
         }));
 
         binding.tvdns2.setOnClickListener(v -> keyboardIpAdress(binding.tvdns1, getString(R.string.dialog_ethernet_dns2), requireContext(), dns2 -> {
-            preferencesManagerBase.setDNS2(dns2);
+            preferencesManagerBase.setDns2(dns2);
             setupStaticNetwork();
         }));
     }
 
     private void setupTextView() {
-        binding.tvip.setText(preferencesManagerBase.getIPstatic());
+        binding.tvip.setText(preferencesManagerBase.getIpStatic());
         binding.tvsubnet.setText(preferencesManagerBase.getSubnet());
         binding.tvgateway.setText(preferencesManagerBase.getGateway());
-        binding.tvdns1.setText(preferencesManagerBase.getDNS1());
-        binding.tvdns2.setText(preferencesManagerBase.getDNS2());
+        binding.tvdns1.setText(preferencesManagerBase.getDns1());
+        binding.tvdns2.setText(preferencesManagerBase.getDns2());
         binding.tvMAC.setText(jwsObject.jwsGetEthMacAddress());
     }
 

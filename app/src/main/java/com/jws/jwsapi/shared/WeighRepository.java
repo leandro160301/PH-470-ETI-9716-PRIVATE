@@ -12,6 +12,7 @@ public class WeighRepository {
     private final MutableLiveData<String> unit = new MutableLiveData<>();
     private final MutableLiveData<String> tare = new MutableLiveData<>();
     private final MutableLiveData<Boolean> stable = new MutableLiveData<>();
+    private int scaleNumber = 1;
 
     public LiveData<String> getNet() {
         return net;
@@ -31,6 +32,14 @@ public class WeighRepository {
 
     public LiveData<Boolean> getStable() {
         return stable;
+    }
+
+    public int getScaleNumber() {
+        return scaleNumber;
+    }
+
+    public void updateScaleNumber(int scaleNumber) {
+        this.scaleNumber = scaleNumber;
     }
 
     public void updateNet(String newNet) {

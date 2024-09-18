@@ -29,11 +29,11 @@ public class HomeViewModel extends ViewModel {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                repository.updateNet(scaleService.getNetoStr(1));
-                repository.updateTare(scaleService.getTaraStr(1));
-                repository.updateGross(scaleService.getBrutoStr(1));
-                repository.updateUnit(scaleService.getUnidad(1));
-                repository.updateStable(scaleService.getEstable(1));
+                repository.updateNet(scaleService.getNetoStr(repository.getScaleNumber()));
+                repository.updateTare(scaleService.getTaraStr(repository.getScaleNumber()));
+                repository.updateGross(scaleService.getBrutoStr(repository.getScaleNumber()));
+                repository.updateUnit(scaleService.getUnidad(repository.getScaleNumber()));
+                repository.updateStable(scaleService.getEstable(repository.getScaleNumber()));
             }
         }, 0, 200);
     }
@@ -57,7 +57,6 @@ public class HomeViewModel extends ViewModel {
     public LiveData<Boolean> getStable() {
         return repository.getStable();
     }
-
 
     @Override
     protected void onCleared() {

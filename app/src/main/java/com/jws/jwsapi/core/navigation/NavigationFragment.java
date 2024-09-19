@@ -1,8 +1,8 @@
 package com.jws.jwsapi.core.navigation;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboardInt;
-import static com.jws.jwsapi.utils.Utils.randomNumber;
 import static com.jws.jwsapi.utils.Utils.isNumeric;
+import static com.jws.jwsapi.utils.Utils.randomNumber;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -12,26 +12,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.jws.JwsManager;
+import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.core.label.LabelFragment;
 import com.jws.jwsapi.core.label.LabelProgramFragment;
+import com.jws.jwsapi.core.network.EthernetFragment;
+import com.jws.jwsapi.core.network.WifiFragment;
 import com.jws.jwsapi.core.printer.PrinterFragment;
 import com.jws.jwsapi.core.storage.StorageFragment;
-import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.user.UserManager;
-import com.jws.jwsapi.R;
-import com.jws.jwsapi.core.label.LabelFragment;
-import com.jws.jwsapi.core.network.EthernetFragment;
 import com.jws.jwsapi.core.user.UserFragment;
-import com.jws.jwsapi.core.network.WifiFragment;
-import com.jws.jwsapi.databinding.DialogoFechayhoraBinding;
+import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.core.user.UserPinDialog;
+import com.jws.jwsapi.core.user.UserPinInterface;
 import com.jws.jwsapi.databinding.DialogoPinBinding;
+import com.jws.jwsapi.utils.AdapterCommon;
 import com.jws.jwsapi.utils.ToastHelper;
+import com.jws.jwsapi.utils.date.DateDialog;
+import com.jws.jwsapi.utils.date.DateInterface;
 import com.service.Balanzas.Fragments.ServiceFragment;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -44,17 +50,15 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class NavigationFragment extends Fragment implements NavigationAdapter.ItemClickListener {
+public class NavigationFragment extends Fragment implements AdapterCommon.ItemClickListener, DateInterface, UserPinInterface {
 
     RecyclerView recycler1,recycler2,recycler3;
     LinearLayout lr_dinamico1,lr_dinamico2;
-
     private int menuElegido =0;
     private int menuElegido2 =2;
-    NavigationAdapter adapter;
+    AdapterCommon adapter;
     JwsManager jwsManager;
-    NavigationDynamicAdapter adapterDinamicos1, adapterDinamicos2;
-
+    NavigationAdapter adapterDinamicos1, adapterDinamicos2;
 
     List<String> ListElementsArrayList=new ArrayList<>();
     List<String> ListElementsArrayListdinamicos1=new ArrayList<>();
@@ -129,7 +133,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             mainActivity.clearCache();
         }
         if(position==8){
-            newPinDialog();
+            new UserPinDialog(requireContext(),this);
         }
 
     }
@@ -166,7 +170,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         ListElementsArrayList.add("Nueva clave administrador");
 
         recycler1.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new NavigationAdapter(getContext(), ListElementsArrayList);
+        adapter = new AdapterCommon(getContext(), ListElementsArrayList);
         adapter.setClickListener(this);
         recycler1.setAdapter(adapter);
 
@@ -192,7 +196,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
         ListElementsArrayListdinamicos2=new ArrayList<>();
         CargarDatosADinamico2(ListElementsArrayListdinamicos2);
         recycler2.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterDinamicos1 = new NavigationDynamicAdapter(getContext(), lista);
+        adapterDinamicos1 = new NavigationAdapter(getContext(), lista);
         recycler2.setAdapter(adapterDinamicos1);
         adapterDinamicos1.setClickListener((view, position) -> {
             menuElegido2=position;
@@ -230,7 +234,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             if(menuElegido ==4){
                 if(position==0){
                     if(userManager.getLevelUser()>1){
-                        setDateDialog();
+                        new DateDialog(this,getContext()).showDialog();
                     }
                     else{
                         toastLoginError();
@@ -278,7 +282,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
             lr_dinamico2.setBackgroundResource(R.drawable.banner_menu_con_trasparencia_);
         }
         recycler3.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterDinamicos2 = new NavigationDynamicAdapter(getContext(), lista);
+        adapterDinamicos2 = new NavigationAdapter(getContext(), lista);
         recycler3.setAdapter(adapterDinamicos2);
         adapterDinamicos2.setClickListener((view, position) -> {
             if(menuElegido ==5){
@@ -366,104 +370,33 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.It
     }
 
 
-    public void setDateDialog(){
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
-        DialogoFechayhoraBinding binding = DialogoFechayhoraBinding.inflate(getLayoutInflater());
-        View mView = binding.getRoot();
+    @Override
+    public void setRemoteFix() {
+        preferencesManagerBase.setRemoteFix(!preferencesManagerBase.getRemoteFix());
+    }
 
-        binding.tvMinutos.setOnLongClickListener(view -> {
-            num=num+1;
-            if(num==2){
-                preferencesManagerBase.setRemoteFix(!preferencesManagerBase.getRemoteFix());
+    @Override
+    public boolean setDate(String day, String hour, String minutes, String month, String year) {
+        if(isNumeric(day)&&isNumeric(hour)&&isNumeric(minutes)&&isNumeric(month)&&isNumeric(year)){
+            jwsManager.jwsSetTime(getContext(),Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day)
+                    ,Integer.parseInt(hour),Integer.parseInt(minutes));
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean setupPin(String newPin, String pinFromTv) {
+        if (!pinFromTv.equals("error")) {
+            if (pinFromTv.equals(newPin)) {
+                preferencesManagerBase.setPin(newPin);
+                ToastHelper.message("PIN CORRECTO", R.layout.item_customtoastok, mainActivity);
+                return true;
             }
-            return false;
-        });
-        binding.tvMinutos.setOnClickListener(view -> keyboardInt(binding.tvMinutos, "Ingrese los minutos", requireContext(), minutes -> checkMinutes(minutes,binding.tvMinutos)));
-        binding.tvHora.setOnClickListener(view -> keyboardInt(binding.tvHora, "Ingrese la hora", requireContext(), hour -> checkHour(hour,binding.tvHora)));
-        binding.tvDia.setOnClickListener(view -> keyboardInt(binding.tvDia, "Ingrese el dia", requireContext(), day -> checkDay(day,binding.tvDia)));
-        binding.tvMes.setOnClickListener(view -> keyboardInt(binding.tvMes, "Ingrese el mes", requireContext(), month -> checkMonth(month,binding.tvMes)));
-        binding.tvAno.setOnClickListener(view -> keyboardInt(binding.tvAno, "Ingrese el año", requireContext(), year -> checkYear(year,binding.tvAno)));
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        binding.buttons.setOnClickListener(view -> {
-            String day=binding.tvDia.getText().toString();
-            String hour=binding.tvHora.getText().toString();
-            String minutes=binding.tvMinutos.getText().toString();
-            String month=binding.tvMes.getText().toString();
-            String year=binding.tvAno.getText().toString();
-            if(isNumeric(day)&&isNumeric(hour)&&isNumeric(minutes)&&isNumeric(month)&&isNumeric(year)){
-                jwsManager.jwsSetTime(getContext(),Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day)
-                        ,Integer.parseInt(hour),Integer.parseInt(minutes));
-                dialog.cancel();
-            }
-        });
-        binding.buttonc.setOnClickListener(view -> dialog.cancel());
-
-    }
-
-    private void checkMinutes(String userInput, TextView textView) {
-        if (Integer.parseInt(userInput) > 59) {
-            textView.setText("");
         }
+        return false;
     }
-
-    private void checkYear(String userInput, TextView textView) {
-        if (Integer.parseInt(userInput) >= 2200) {
-            textView.setText("");
-        }
-    }
-
-    private void checkMonth(String userInput, TextView textView) {
-        if (Integer.parseInt(userInput) > 12) {
-            textView.setText("");
-        }
-    }
-
-    private void checkDay(String userInput, TextView textView) {
-        if (Integer.parseInt(userInput) > 31) {
-            textView.setText("");
-        }
-    }
-
-    private void checkHour(String userInput, TextView textView) {
-        if (Integer.parseInt(userInput) > 24) {
-            textView.setText("");
-        }
-    }
-
-
-    public void newPinDialog() {
-        final String[] pin = {"error"};
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
-        DialogoPinBinding binding = DialogoPinBinding.inflate(getLayoutInflater());
-
-        mBuilder.setView(binding.getRoot());
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        binding.tvpin.setOnClickListener(view -> keyboardInt(binding.tvpin, null, requireContext(), null));
-        binding.btGenerar.setOnClickListener(view -> {
-            int Codigo = randomNumber();
-            pin[0] = String.valueOf(((Codigo + 3031) * 6) / 4);
-            binding.tvCodigo.setText(String.valueOf(Codigo));
-        });
-
-        binding.buttonc.setOnClickListener(view -> dialog.cancel());
-        binding.buttons.setOnClickListener(view -> {
-            if (!binding.tvpin.getText().toString().equals("error")) {
-                if (binding.tvpin.getText().toString().equals(pin[0])) {
-                    preferencesManagerBase.setPin(pin[0]);
-                    ToastHelper.message("PIN CORRECTO", R.layout.item_customtoastok, requireContext());
-                    dialog.cancel();
-                }
-            }
-        });
-    }
-
-
 }
 
 

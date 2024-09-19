@@ -2,6 +2,7 @@ package com.jws.jwsapi.core.label;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboard;
 import static com.jws.jwsapi.utils.SpinnerHelper.setupSpinner;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -13,13 +14,15 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.utils.AdapterCommon;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
+import com.jws.jwsapi.utils.AdapterCommon;
 import com.jws.jwsapi.utils.AdapterHelper;
 import com.jws.jwsapi.utils.ToastHelper;
 

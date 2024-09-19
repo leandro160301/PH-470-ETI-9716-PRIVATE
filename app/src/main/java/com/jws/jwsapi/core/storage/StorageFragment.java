@@ -58,7 +58,7 @@ public class StorageFragment extends Fragment implements AdapterCommon.ItemClick
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
-        configuracionBotones();
+        setupButtons();
         setupRecycler(extension);
         hideVideoImage(View.INVISIBLE);
     }
@@ -68,7 +68,7 @@ public class StorageFragment extends Fragment implements AdapterCommon.ItemClick
         binding.imageViewCapturas.setVisibility(invisible);
     }
 
-    private void configuracionBotones() {
+    private void setupButtons() {
         if (buttonProvider != null) {
             buttonProvider.getTitulo().setText(R.string.title_file_fragment);
             buttonProvider.getButton1().setBackgroundResource(R.drawable.boton_pendrive_on_i);

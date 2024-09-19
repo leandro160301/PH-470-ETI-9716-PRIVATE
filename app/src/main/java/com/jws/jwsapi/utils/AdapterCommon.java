@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.R;
 
@@ -26,8 +28,9 @@ public class AdapterCommon extends RecyclerView.Adapter<AdapterCommon.ViewHolder
         this.context= context;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_list_black_tex2t, parent, false);
         return new ViewHolder(view);
     }
@@ -48,7 +51,6 @@ public class AdapterCommon extends RecyclerView.Adapter<AdapterCommon.ViewHolder
         holder.itemView.setSelected(selectedPos == position);
     }
 
-    // total number of rows
     @Override
     public int getItemCount() {
         return mData.size();

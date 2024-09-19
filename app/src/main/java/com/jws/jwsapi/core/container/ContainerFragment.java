@@ -31,10 +31,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class ContainerFragment extends Fragment implements ButtonProvider, ContainerData {
 
-    MainActivity mainActivity;
-    JwsManager jwsManager;
-    Boolean stoped=false;
-    public static Runnable runnable;
+    private MainActivity mainActivity;
+    private JwsManager jwsManager;
+    private boolean stoped=false;
     ContainFragmentBinding binding;
 
     int iconflag=-1;
@@ -122,7 +121,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
 
     private void startRunnable() {
         Handler handler = new Handler();
-        runnable = new Runnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 updateUserUi();

@@ -5,24 +5,21 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.storage.StorageService;
-import com.jws.jwsapi.core.storage.StorageDialogHandler;
-import com.jws.jwsapi.core.navigation.NavigationFragment;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.core.navigation.NavigationFragment;
+import com.jws.jwsapi.core.storage.StorageDialogHandler;
+import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.ContainPrincipalBinding;
-import com.jws.jwsapi.databinding.FragmentPalletBinding;
 import com.jws.jwsapi.utils.Utils;
 
 import javax.inject.Inject;
@@ -35,7 +32,6 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     private MainActivity mainActivity;
     private JwsManager jwsManager;
     Boolean stoped=false;
-    public static Runnable runnable;
     int iconflag=-1;
     ContainPrincipalBinding binding;
 
@@ -106,7 +102,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
 
     private void startRunnable() {
         Handler handler = new Handler();
-        runnable = new Runnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 setupIconProgrammer(4, R.drawable.icono_programador);

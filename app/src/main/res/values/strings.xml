@@ -383,6 +383,10 @@
     <string name="toast_login_error_delete_cache">Debe ingresar la clave para acceder a esta configuracion</string>
     <string name="dialog_delete_cache">¿Esta seguro de volver a los valores de fabrica del equipo?</string>
     <string name="dialog_button_text_delete_cache">RESET</string>
+    <string name="toast_theme_change">Apague el equipo y vuelva a encenderlo para cambiar el tema</string>
+    <string name="dialog_theme_rojo">Tema Rojo (actual)</string>
+    <string name="dialog_theme_azul">Tema Azul (actual)</string>
+    <string name="dialog_theme_negro">Tema Negro (actual)</string>
 
 
 </resources>

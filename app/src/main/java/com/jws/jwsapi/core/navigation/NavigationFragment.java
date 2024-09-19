@@ -1,17 +1,12 @@
 package com.jws.jwsapi.core.navigation;
 
-import static com.jws.jwsapi.dialog.DialogUtil.keyboardInt;
 import static com.jws.jwsapi.utils.Utils.isNumeric;
-import static com.jws.jwsapi.utils.Utils.randomNumber;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +28,6 @@ import com.jws.jwsapi.core.user.UserFragment;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.core.user.UserPinDialog;
 import com.jws.jwsapi.core.user.UserPinInterface;
-import com.jws.jwsapi.databinding.DialogoPinBinding;
 import com.jws.jwsapi.utils.AdapterCommon;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.date.DateDialog;
@@ -50,7 +44,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class NavigationFragment extends Fragment implements AdapterCommon.ItemClickListener, DateInterface, UserPinInterface {
+public class NavigationFragment extends Fragment implements AdapterCommon.ItemClickListener, DateInterface, UserPinInterface, ThemeInterface {
 
     RecyclerView recycler1,recycler2,recycler3;
     LinearLayout lr_dinamico1,lr_dinamico2;
@@ -242,7 +236,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
                 }
                 if(position==1){
                     if(userManager.getLevelUser()>1){
-                        setThemeDialog();
+                        new ThemeDialog(requireContext(),this).showDialog();
                     }
                     else{
                         toastLoginError();
@@ -290,7 +284,6 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
                     if(menuElegido2==0){
                         if(position==0){
                             mainActivity.mainClass.openFragment(new PrinterFragment());
-
                         }
                         if(position==1){
                             mainActivity.mainClass.openFragment(new LabelFragment());
@@ -323,52 +316,15 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     }
 
 
-    public void setThemeDialog(){
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_temas, null);
-
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        TextView tvTema1 =  mView.findViewById(R.id.tvTema1);
-        TextView tvTema2 =  mView.findViewById(R.id.tvTema2);
-        TextView tvTema3 =  mView.findViewById(R.id.tvTema3);
-
-        if(preferencesManagerBase.getTheme()==R.style.AppTheme_NoActionBar){
-            setupTextTheme(tvTema1, "Tema Rojo (actual)");
-
-        }
-        if(preferencesManagerBase.getTheme()==R.style.AppTheme2_NoActionBar){
-            setupTextTheme(tvTema2, "Tema Azul (actual)");
-
-        }
-        if(preferencesManagerBase.getTheme()==R.style.AppTheme4_NoActionBar){
-            setupTextTheme(tvTema3, "Tema Negro (actual)");
-        }
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        tvTema1.setOnClickListener(view -> setupTheme(R.style.AppTheme_NoActionBar, tvTema1, tvTema2, tvTema3));
-        tvTema2.setOnClickListener(view -> setupTheme(R.style.AppTheme2_NoActionBar, tvTema2, tvTema1, tvTema3));
-        tvTema3.setOnClickListener(view -> setupTheme(R.style.AppTheme4_NoActionBar, tvTema3, tvTema2, tvTema1));
-
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-
+    @Override
+    public int getPreferencesManagerBaseTheme() {
+        return preferencesManagerBase.getTheme();
     }
 
-    private static void setupTextTheme(TextView tvTema1, String text) {
-        tvTema1.setText(text);
-        tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
-    }
-
-    private void setupTheme(int appTheme_NoActionBar, TextView tvTema1, TextView tvTema2, TextView tvTema3) {
+    @Override
+    public void setupTheme(int appTheme_NoActionBar) {
         preferencesManagerBase.setTheme(appTheme_NoActionBar);
-        ToastHelper.message("Apague el equipo y vuelva a encenderlo para cambiar el tema",R.layout.item_customtoast,mainActivity);
-        tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
-        tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
-        tvTema3.setBackgroundResource(R.drawable.stylekeycor3);
     }
-
 
     @Override
     public void setRemoteFix() {

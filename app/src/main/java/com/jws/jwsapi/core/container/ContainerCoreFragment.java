@@ -34,7 +34,6 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
 
     private MainActivity mainActivity;
     private JwsManager jwsManager;
-    private Fragment fragmentActual;
     Boolean stoped=false;
     public static Runnable runnable;
     int iconflag=-1;
@@ -53,10 +52,6 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
         return fragment;
     }
 
-    public void setFragmentActual(Fragment fragmentActual) {
-        this.fragmentActual = fragmentActual;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,20 +60,27 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         super.onViewCreated(view,savedInstanceState);
-        mainActivity=(MainActivity)getActivity();
-        jwsManager= JwsManager.create(requireActivity());
+
+        initInstances();
 
         binding.btGrabando.setVisibility(View.INVISIBLE);
         binding.lnalarma.setVisibility(View.INVISIBLE);
 
+        handleClickListeners();
+        openFragment();
+        startRunnable();
+    }
+
+    private void handleClickListeners() {
         binding.lnMenu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
         binding.lnUsuario.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
         binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this,mainActivity).showDialog());
+    }
 
-        openFragment();
-        startRunnable();
+    private void initInstances() {
+        mainActivity=(MainActivity)getActivity();
+        jwsManager= JwsManager.create(requireActivity());
     }
 
     private void openFragment() {

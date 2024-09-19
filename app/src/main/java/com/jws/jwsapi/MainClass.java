@@ -54,9 +54,7 @@ public class MainClass implements OnFragmentChangeListener {
     public void openFragmentPrincipal() {
         Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-        Fragment fragmentoActual = new ContainerCoreFragment();
         ContainerCoreFragment containerFragment = ContainerCoreFragment.newInstance(fragment.getClass());
-        containerFragment.setFragmentActual(fragmentoActual);
         fragmentManager.beginTransaction()
                 .replace(R.id.container_fragment, containerFragment)
                 .commit();
@@ -65,7 +63,6 @@ public class MainClass implements OnFragmentChangeListener {
     public void openFragment(Fragment fragment) {
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
         ContainerFragment containerFragment = ContainerFragment.newInstance(fragment.getClass());
-        containerFragment.setFragmentActual();
         fragmentManager.beginTransaction()
                 .replace(R.id.container_fragment, containerFragment)
                 .commit();
@@ -77,7 +74,6 @@ public class MainClass implements OnFragmentChangeListener {
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             boolean programador= userManager.getLevelUser() > ROLE_ADMINISTRATOR;
             ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(),arg,programador);
-            containerFragment.setFragmentActual();
             fragmentManager.beginTransaction()
                     .replace(R.id.container_fragment, containerFragment)
                     .commit();

@@ -62,32 +62,36 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
         return fragment;
     }
 
-    public void setFragmentActual() {
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = ContainFragmentBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         super.onViewCreated(view,savedInstanceState);
-        mainActivity=(MainActivity)getActivity();
-        jwsManager= JwsManager.create(requireActivity());
+
+        initInstances();
 
         binding.btGrabando.setVisibility(View.INVISIBLE);
         binding.lnalarma.setVisibility(View.INVISIBLE);
 
+        handleClickListeners();
+        openFragment();
+        startRunnable();
+    }
+
+    private void initInstances() {
+        mainActivity=(MainActivity)getActivity();
+        jwsManager= JwsManager.create(requireActivity());
+    }
+
+    private void handleClickListeners() {
         binding.lnMenu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
         binding.lnUsuario.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
         binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this,mainActivity).showDialog());
-
-        openFragment();
-        startRunnable();
     }
 
     private void openFragment() {
@@ -121,30 +125,33 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
         runnable = new Runnable() {
             @Override
             public void run() {
-                setupIconProgrammer(4, R.drawable.icono_programador);
-                setupIconProgrammer(3, R.drawable.icono_administrador);
-                setupIconProgrammer(2, R.drawable.icono_supervisor);
-                setupIconProgrammer(1, R.drawable.icon_user);
-                setupIconProgrammer(0, R.drawable.icono_nologin);
-
-                binding.btUsb.setVisibility(storageService.getState()? View.VISIBLE : View.INVISIBLE);
-
-                handleNetworkUi();
-
-                binding.tvFecha.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
-                binding.tvUsuario.setText(userManager.getCurrentUser());
-
+                updateUserUi();
+                updateNetworkUi();
+                updateDate();
                 if(!stoped){
                     handler.postDelayed(this, 100);
                 }
-
             }
         };
 
         handler.post(runnable);
     }
 
-    private void handleNetworkUi() {
+    private void updateDate() {
+        binding.btUsb.setVisibility(storageService.getState()? View.VISIBLE : View.INVISIBLE);
+        binding.tvFecha.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
+    }
+
+    private void updateUserUi() {
+        setupIconProgrammer(4, R.drawable.icono_programador);
+        setupIconProgrammer(3, R.drawable.icono_administrador);
+        setupIconProgrammer(2, R.drawable.icono_supervisor);
+        setupIconProgrammer(1, R.drawable.icon_user);
+        setupIconProgrammer(0, R.drawable.icono_nologin);
+        binding.tvUsuario.setText(userManager.getCurrentUser());
+    }
+
+    private void updateNetworkUi() {
         String tipo = jwsManager.jwsGetCurrentNetType();
         if (tipo == null)tipo = "";
         switch (tipo) {

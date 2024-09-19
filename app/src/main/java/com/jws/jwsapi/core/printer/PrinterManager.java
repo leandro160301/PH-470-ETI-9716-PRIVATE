@@ -39,7 +39,7 @@ public class PrinterManager {
         }
         if(modo==1){
 
-            if (Utils.isIP(printerPreferences.getIp())) {
+            if (Utils.isValidIp(printerPreferences.getIp())) {
                 NetworkPrinter networkPrinter = new NetworkPrinter();
                 networkPrinter.Imprimir(printerPreferences.getIp(),etiqueta(numetiqueta));
             }else {
@@ -70,7 +70,7 @@ public class PrinterManager {
             usbPrinter.Imprimir(printerPreferences.getLastLabel(),context,false,null);
         }
         if(modo==1){
-            if (Utils.isIP(printerPreferences.getIp())) {
+            if (Utils.isValidIp(printerPreferences.getIp())) {
                 NetworkPrinter networkPrinter = new NetworkPrinter();
                 networkPrinter.Imprimir(printerPreferences.getIp(), printerPreferences.getLastLabel());
             }else {
@@ -98,7 +98,7 @@ public class PrinterManager {
             usbPrinter.Imprimir(etiqueta,context,false,null);
         }
         if(modo==1){
-            if (Utils.isIP(printerPreferences.getIp())) {
+            if (Utils.isValidIp(printerPreferences.getIp())) {
                 NetworkPrinter networkPrinter = new NetworkPrinter();
                 networkPrinter.Imprimir(printerPreferences.getIp(),etiqueta);
             }else {

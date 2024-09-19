@@ -29,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class PrinterFragment extends Fragment{
+
     @Inject
     PrinterPreferences printerPreferences;
     @Inject
@@ -66,14 +67,14 @@ public class PrinterFragment extends Fragment{
     }
 
     private void initTextView() {
-        binding.tvIpimpresora.setText(printerPreferences.getIp());
-        binding.tvIpimpresora.setOnClickListener(v -> keyboardIpAdress(binding.tvIpimpresora, "Ingrese IP de Impresora", requireContext(), this::setupIpHandler));
+        binding.tvPrinterIp.setText(printerPreferences.getIp());
+        binding.tvPrinterIp.setOnClickListener(v -> keyboardIpAdress(binding.tvPrinterIp, "Ingrese IP de Impresora", requireContext(), this::setupIpHandler));
     }
 
     private void initSpinner() {
-        setupSpinner(binding.spImpresora, requireContext(), Arrays.asList(getResources().getStringArray(R.array.ImpresoraModo)));
-        binding.spImpresora.setSelection(printerPreferences.getMode());
-        binding.spImpresora.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        setupSpinner(binding.spPrinter, requireContext(), Arrays.asList(getResources().getStringArray(R.array.ImpresoraModo)));
+        binding.spPrinter.setSelection(printerPreferences.getMode());
+        binding.spPrinter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i!=2){
@@ -89,11 +90,11 @@ public class PrinterFragment extends Fragment{
     }
 
     private void setupIpHandler(String ip) {
-        if(Utils.isIP(ip)) {
+        if(Utils.isValidIp(ip)) {
             printerPreferences.setIp(ip);
         } else {
             ToastHelper.message(getString(R.string.error_ip_adress_invalid),R.layout.item_customtoasterror,requireContext());
-            binding.tvIpimpresora.setText("");
+            binding.tvPrinterIp.setText("");
         }
     }
 

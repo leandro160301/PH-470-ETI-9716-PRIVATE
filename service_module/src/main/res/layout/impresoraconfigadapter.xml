@@ -75,7 +75,7 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/sp_impresora"
+                        android:id="@+id/sp_printer"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/style_spinner"

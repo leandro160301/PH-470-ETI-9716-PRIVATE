@@ -380,6 +380,9 @@
     <string name="dialog_wifi_password">Ingrese contraseña</string>
     <string name="title_fragment_menu">MENU</string>
     <string name="title_fragment_label">CONFIGURACION ETIQUETAS</string>
+    <string name="toast_login_error_delete_cache">Debe ingresar la clave para acceder a esta configuracion</string>
+    <string name="dialog_delete_cache">¿Esta seguro de volver a los valores de fabrica del equipo?</string>
+    <string name="dialog_button_text_delete_cache">RESET</string>
 
 
 </resources>

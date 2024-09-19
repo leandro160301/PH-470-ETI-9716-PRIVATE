@@ -83,7 +83,7 @@
                                     android:orientation="horizontal">
 
                                     <Spinner
-                                        android:id="@+id/sp_impresora"
+                                        android:id="@+id/sp_printer"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:background="@drawable/style_spinner"
@@ -122,7 +122,7 @@
                                     android:textSize="30sp" />
 
                                 <TextView
-                                    android:id="@+id/tv_ipimpresora"
+                                    android:id="@+id/tv_printer_ip"
                                     android:layout_width="536dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"

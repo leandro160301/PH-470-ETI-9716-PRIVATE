@@ -1,19 +1,11 @@
 package com.jws.jwsapi.core.container;
 
-
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,11 +14,12 @@ import androidx.fragment.app.Fragment;
 
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.storage.StorageService;
-import com.jws.jwsapi.core.storage.StorageDialogHandler;
-import com.jws.jwsapi.core.navigation.NavigationFragment;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.core.navigation.NavigationFragment;
+import com.jws.jwsapi.core.storage.StorageDialogHandler;
+import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.databinding.ContainFragmentBinding;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -36,24 +29,14 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ContainerFragment extends Fragment implements ButtonProvider {
+public class ContainerFragment extends Fragment implements ButtonProvider, ContainerData {
 
-    Button bt_home,bt_1,bt_2,bt_3,bt_4,bt_5,bt_6,bt_arriba;
-    LinearLayout bt_wifi,bt_usb,bt_grabando,ln_alarmas;
     MainActivity mainActivity;
     JwsManager jwsManager;
-    TextView tv_usuario,tv_fecha,tv_alarmas,tv_titulo;
-    LinearLayout lr_botonera;
-    LinearLayout lr_usuario;
-    int DURACION_ANIMACION=400;
-    LinearLayout ln_nav,ln_menu;
-    private Fragment fragmentActual;
     Boolean stoped=false;
     public static Runnable runnable;
-    String Ip="",Tipo="";
-    int bandera=0;
-    Animation blinkAnimation;
-    ImageView imuser;
+    ContainFragmentBinding binding;
+
     int iconflag=-1;
     @Inject
     UserManager userManager;
@@ -67,6 +50,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         fragment.setArguments(args);
         return fragment;
     }
+
     public static ContainerFragment newInstanceService(Class<? extends Fragment> fragmentClass, Bundle arg,Boolean programador) {
         ContainerFragment fragment = new ContainerFragment();
         Bundle args = new Bundle();
@@ -78,16 +62,15 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         return fragment;
     }
 
-    public void setFragmentActual(Fragment fragmentActual) {
-        this.fragmentActual = fragmentActual;
+    public void setFragmentActual() {
     }
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.contain_fragment,container,false);
-        return view;
+        binding = ContainFragmentBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -95,51 +78,21 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         jwsManager= JwsManager.create(requireActivity());
-        bt_home=view.findViewById(R.id.bt_home);
-        bt_1=view.findViewById(R.id.bt_1);
-        bt_2=view.findViewById(R.id.bt_2);
-        bt_3=view.findViewById(R.id.bt_3);
-        bt_4=view.findViewById(R.id.bt_4);
-        bt_5=view.findViewById(R.id.bt_5);
-        bt_6=view.findViewById(R.id.bt_6);
-        bt_arriba=view.findViewById(R.id.bt_arriba);
-        ln_nav=view.findViewById(R.id.ln_nav);
-        tv_titulo=view.findViewById(R.id.tv_titulo);
-        imuser=view.findViewById(R.id.imuser);
-        lr_botonera=view.findViewById(R.id.lr_botonera);
 
-        bt_wifi=view.findViewById(R.id.bt_wifi);
-        bt_usb=view.findViewById(R.id.bt_usb);
-        tv_fecha=view.findViewById(R.id.tv_fecha);
-        tv_usuario=view.findViewById(R.id.tv_usuario);
-        lr_usuario=view.findViewById(R.id.tvUsuario);
-        bt_grabando=view.findViewById(R.id.bt_grabando);
-        ln_alarmas=view.findViewById(R.id.lnalarma);
-        tv_alarmas= view.findViewById(R.id.tvalarmas);
-        ln_menu=view.findViewById(R.id.ln_menu);
+        binding.btGrabando.setVisibility(View.INVISIBLE);
+        binding.lnalarma.setVisibility(View.INVISIBLE);
 
-        bt_grabando.setVisibility(View.INVISIBLE);
-        ln_alarmas.setVisibility(View.INVISIBLE);
-        blinkAnimation = new AlphaAnimation(1, 0);
-        blinkAnimation.setDuration(500);
-        blinkAnimation.setRepeatMode(Animation.REVERSE);
-        blinkAnimation.setRepeatCount(Animation.INFINITE);
+        binding.lnMenu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
+        binding.lnUsuario.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
+        binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this,mainActivity).showDialog());
 
-        bt_arriba.setOnClickListener(view14 -> {
-            if(ln_nav.getVisibility()==View.GONE){
-                AnimacionBotoneraInvisible ();
-            }else{
-                AnimacionBotoneraVisible ();
-            }
-        });
+        openFragment();
+        startRunnable();
+    }
 
-        ln_menu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
-        lr_usuario.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
-        bt_wifi.setOnClickListener(view12 -> DialogoInformacion());
-
+    private void openFragment() {
         ButtonProvider buttonProvider = this;
         ButtonProviderSingleton.getInstance().setButtonProvider(buttonProvider);
-
 
         if (getArguments() != null) {
             String fragmentClassName = getArguments().getString("FRAGMENT_CLASS");
@@ -155,44 +108,12 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.nuevofragment, fragment)
                             .commit();
-                } catch (ClassNotFoundException | java.lang.InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
+                } catch (ClassNotFoundException | java.lang.InstantiationException |
+                         IllegalAccessException | InstantiationException e) {
                     e.printStackTrace();
                 }
             }
         }
-        startRunnable();
-    }
-
-    public void DialogoInformacion(){
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialogCustom);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_informacion, null);
-
-
-        Button Guardar =  mView.findViewById(R.id.buttons);
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        TextView tvIP = mView.findViewById(R.id.tvIP);
-        TextView tvVersion = mView.findViewById(R.id.tvVersion);
-        if(!storageService.getState()){
-            Guardar.setVisibility(View.INVISIBLE);
-        }
-        tvIP.setText(Utils.getIPAddress(true));
-        tvVersion.setText(MainActivity.VERSION);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-        Cancelar.setOnClickListener(view -> dialog.cancel());
-        Guardar.setOnClickListener(view -> {
-            StorageDialogHandler storageDialogHandler = new StorageDialogHandler(mainActivity);
-            storageDialogHandler.showDialog();
-            dialog.cancel();
-        });
-
-
-
     }
 
     private void startRunnable() {
@@ -200,77 +121,22 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         runnable = new Runnable() {
             @Override
             public void run() {
-                if(userManager.getLevelUser()==4&&iconflag!=4){
-                    imuser.setImageResource(R.drawable.icono_programador);
-                    iconflag=4;
-                }
-                if(userManager.getLevelUser()==3&&iconflag!=3){
-                    imuser.setImageResource(R.drawable.icono_administrador);
-                    iconflag=3;
-                }
-                if(userManager.getLevelUser()==2&&iconflag!=2){
-                    imuser.setImageResource(R.drawable.icono_supervisor);
-                    iconflag=2;
-                }
-                if(userManager.getLevelUser()==1&&iconflag!=1){
-                    imuser.setImageResource(R.drawable.icon_user);
-                    iconflag=1;
-                }
-                if(userManager.getLevelUser()==0&&iconflag!=0){
-                    imuser.setImageResource(R.drawable.icono_nologin);
-                    iconflag=0;
-                }
-                /*int cant=0;
-                for(int i=0;i<mainActivity.mainClass.alarmas.size();i++){
-                    if(mainActivity.mainClass.alarmas.get(i).estado){
-                        cant++;
-                    }
-                }
-                tv_alarmas.setText(String.valueOf(cant));
-                if(cant>0&&bandera!=1){
-                    bandera=1;
-                    tv_alarmas.setVisibility(View.VISIBLE);
-                    ln_alarmas.setVisibility(View.VISIBLE);
-                    ln_alarmas.startAnimation(blinkAnimation);
-                }
-                if(cant==0&&bandera!=2){
-                    bandera=2;
-                    tv_alarmas.setVisibility(View.INVISIBLE);
-                    ln_alarmas.setVisibility(View.INVISIBLE);
-                    ln_alarmas.clearAnimation();
-                }*/
+                setupIconProgrammer(4, R.drawable.icono_programador);
+                setupIconProgrammer(3, R.drawable.icono_administrador);
+                setupIconProgrammer(2, R.drawable.icono_supervisor);
+                setupIconProgrammer(1, R.drawable.icon_user);
+                setupIconProgrammer(0, R.drawable.icono_nologin);
 
+                binding.btUsb.setVisibility(storageService.getState()? View.VISIBLE : View.INVISIBLE);
 
-                Ip= Utils.getIPAddress(true);
-                if(jwsManager.jwsGetCurrentNetType()!=null){
-                    Tipo=jwsManager.jwsGetCurrentNetType();
-                }else{
-                    bandera=0;
-                    Tipo="";
-                }
-                if(storageService.getState()){
-                    bt_usb.setVisibility(View.VISIBLE);
-                }else{
-                    bt_usb.setVisibility(View.INVISIBLE);
-                }
+                handleNetworkUi();
 
-                if(Tipo.equals("ETH")){
-                    bt_wifi.setBackgroundResource(R.drawable.icono_ethernet_white);
-                }
-                if(Tipo.equals("WIFI")){
-                    bt_wifi.setBackgroundResource(R.drawable.wifi_white);
-                }
-                if(Tipo.equals("")){
-                    bandera=0;
-                    bt_wifi.setBackgroundResource(R.color.transparente);
-                }
-                tv_fecha.setText(Utils.getFecha()+" "+ Utils.getHora());
-                tv_usuario.setText(userManager.getCurrentUser());
+                binding.tvFecha.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
+                binding.tvUsuario.setText(userManager.getCurrentUser());
 
                 if(!stoped){
-                    handler.postDelayed(this, 50);
+                    handler.postDelayed(this, 100);
                 }
-
 
             }
         };
@@ -278,118 +144,67 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         handler.post(runnable);
     }
 
+    private void handleNetworkUi() {
+        String tipo = jwsManager.jwsGetCurrentNetType();
+        if (tipo == null)tipo = "";
+        switch (tipo) {
+            case "ETH":
+                binding.btWifi.setBackgroundResource(R.drawable.icono_ethernet_white);
+                break;
+            case "WIFI":
+                binding.btWifi.setBackgroundResource(R.drawable.wifi_white);
+                break;
+            default:
+                binding.btWifi.setBackgroundResource(R.color.transparente);
+                break;
+        }
+    }
 
-
-    @Override
-    public Button getButtonHome() {
-        return bt_home;
+    private void setupIconProgrammer(int x, int icono_programador) {
+        if(userManager.getLevelUser()== x &&iconflag!= x){
+            binding.imuser.setImageResource(icono_programador);
+            iconflag= x;
+        }
     }
 
     @Override
     public Button getButton1() {
-        return bt_1;
+        return binding.bt1;
     }
 
     @Override
     public Button getButton2() {
-        return bt_2;
+        return binding.bt2;
     }
 
     @Override
     public Button getButton3() {
-        return bt_3;
+        return binding.bt3;
     }
 
     @Override
     public Button getButton4() {
-        return bt_4;
+        return binding.bt4;
     }
 
     @Override
     public Button getButton5() {
-        return bt_5;
+        return binding.bt5;
     }
 
     @Override
     public Button getButton6() {
-        return bt_6;
+        return binding.bt6;
     }
 
     @Override
     public TextView getTitulo() {
-        return tv_titulo;
+        return binding.tvTitulo;
     }
 
-
-    public void AnimacionBotoneraInvisible (){
-        Animation translateAnimation = new TranslateAnimation(0, 0, 0, lr_botonera.getHeight());
-        Animation translateAnimation1 = new TranslateAnimation(0, 0, 0, -ln_nav.getHeight());
-
-        translateAnimation.setDuration(DURACION_ANIMACION);
-        translateAnimation1.setDuration(DURACION_ANIMACION);
-        Animation alphaAnimation = new AlphaAnimation(1, 0);
-        alphaAnimation.setDuration(DURACION_ANIMACION);
-        AnimationSet animationSet = new AnimationSet(true);
-        AnimationSet animationSet1 = new AnimationSet(true);
-        animationSet.addAnimation(translateAnimation);
-        animationSet.addAnimation(alphaAnimation);
-        animationSet1.addAnimation(translateAnimation1);
-        animationSet1.addAnimation(alphaAnimation);
-        animationSet.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                lr_botonera.setVisibility(View.GONE);
-                ln_nav.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-
-        lr_botonera.startAnimation(animationSet);
-        ln_nav.startAnimation(animationSet1);
-
-    }
-
-    public void AnimacionBotoneraVisible (){
-        int botoneraHeight = lr_botonera.getHeight();
-        int navHeight= ln_nav.getHeight();
-        Animation translateAnimation = new TranslateAnimation(0, 0, botoneraHeight, 0);
-        Animation translateAnimation1 = new TranslateAnimation(0, 0, -navHeight, 0);
-        translateAnimation.setDuration(DURACION_ANIMACION);
-        translateAnimation1.setDuration(DURACION_ANIMACION);
-        Animation alphaAnimation = new AlphaAnimation(0, 1);
-        alphaAnimation.setDuration(DURACION_ANIMACION);
-        AnimationSet animationSet = new AnimationSet(true);
-        AnimationSet animationSet1 = new AnimationSet(true);
-        animationSet.addAnimation(translateAnimation);
-        animationSet.addAnimation(alphaAnimation);
-        animationSet1.addAnimation(translateAnimation1);
-        animationSet1.addAnimation(alphaAnimation);
-
-        animationSet.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                lr_botonera.setVisibility(View.VISIBLE);
-                ln_nav.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-
-        lr_botonera.startAnimation(animationSet);
-        ln_nav.startAnimation(animationSet1);
+    @Override
+    public Button getButtonHome() {
+        return binding.btHome;
     }
 
     @Override
@@ -398,4 +213,24 @@ public class ContainerFragment extends Fragment implements ButtonProvider {
         super.onDestroyView();
     }
 
+    @Override
+    public String getIp() {
+        return Utils.getIPAddress(true);
+    }
+
+    @Override
+    public String getVersion() {
+        return MainActivity.VERSION;
+    }
+
+    @Override
+    public void openStorage() {
+        StorageDialogHandler storageDialogHandler = new StorageDialogHandler(getContext());
+        storageDialogHandler.showDialog();
+    }
+
+    @Override
+    public boolean getStorageState() {
+        return storageService.getState();
+    }
 }

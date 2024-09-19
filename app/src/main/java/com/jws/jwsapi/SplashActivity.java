@@ -28,54 +28,54 @@ public class SplashActivity extends AppCompatActivity {
         getApplication().setTheme(R.style.AppTheme_NoActionBar);
         setContentView(R.layout.activity_splashscreen);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        hidenav = new Intent("android.intent.action.HIDE_NAVIGATION_BAR");
-        this.getApplicationContext().sendBroadcast(hidenav);
+        hideNav();
+
         imageView=findViewById(R.id.imageView);
         tvVersion=findViewById(R.id.tvVersion);
         tvVersion.setText(Version);
-       Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        imageView.startAnimation(fadeIn);
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) { }
 
-       imageView.startAnimation(fadeIn);
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                imageView.setVisibility(View.VISIBLE);
+            }
 
-       // Hacer que el TextView sea visible cuando la animación termine
-       fadeIn.setAnimationListener(new Animation.AnimationListener() {
-           @Override
-           public void onAnimationStart(Animation animation) { }
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+        });
 
-           @Override
-           public void onAnimationEnd(Animation animation) {
-               imageView.setVisibility(View.VISIBLE);
-           }
+        Animation slide = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
+        tvVersion.startAnimation(slide);
+        slide.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) { }
 
-           @Override
-           public void onAnimationRepeat(Animation animation) { }
-       });
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                tvVersion.setVisibility(View.VISIBLE);
+            }
 
-       Animation slide = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+        });
 
-       tvVersion.startAnimation(slide);
-       slide.setAnimationListener(new Animation.AnimationListener() {
-           @Override
-           public void onAnimationStart(Animation animation) { }
-
-           @Override
-           public void onAnimationEnd(Animation animation) {
-               tvVersion.setVisibility(View.VISIBLE);
-           }
-
-           @Override
-           public void onAnimationRepeat(Animation animation) { }
-       });
-
-       new Handler().postDelayed(() -> {
-           Intent i = new Intent(SplashActivity.this, MainActivity.class);
-           startActivity(i);
-           finish();
-       }, 3000);
-
+        new Handler().postDelayed(() -> {
+            Intent i = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(i);
+            finish();
+        }, 3000);
 
    }
+
+    private void hideNav() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        hidenav = new Intent("android.intent.action.HIDE_NAVIGATION_BAR");
+        this.getApplicationContext().sendBroadcast(hidenav);
+    }
 
 }
 

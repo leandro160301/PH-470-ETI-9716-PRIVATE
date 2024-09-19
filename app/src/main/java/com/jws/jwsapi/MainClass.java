@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.jws.jwsapi.core.container.ContainerContainerFragment;
+import com.jws.jwsapi.core.container.ContainerCoreFragment;
 import com.jws.jwsapi.core.container.ContainerFragment;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.home.HomeFragment;
@@ -54,8 +54,8 @@ public class MainClass implements OnFragmentChangeListener {
     public void openFragmentPrincipal() {
         Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-        Fragment fragmentoActual = new ContainerContainerFragment();
-        ContainerContainerFragment containerFragment = ContainerContainerFragment.newInstance(fragment.getClass());
+        Fragment fragmentoActual = new ContainerCoreFragment();
+        ContainerCoreFragment containerFragment = ContainerCoreFragment.newInstance(fragment.getClass());
         containerFragment.setFragmentActual(fragmentoActual);
         fragmentManager.beginTransaction()
                 .replace(R.id.container_fragment, containerFragment)
@@ -64,10 +64,8 @@ public class MainClass implements OnFragmentChangeListener {
 
     public void openFragment(Fragment fragment) {
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-        Fragment fragmentoActual = new ContainerFragment();
-
         ContainerFragment containerFragment = ContainerFragment.newInstance(fragment.getClass());
-        containerFragment.setFragmentActual(fragmentoActual);
+        containerFragment.setFragmentActual();
         fragmentManager.beginTransaction()
                 .replace(R.id.container_fragment, containerFragment)
                 .commit();
@@ -77,10 +75,9 @@ public class MainClass implements OnFragmentChangeListener {
     public void openFragmentService(Fragment fragment, Bundle arg) {
         if(clickEnable){
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-            Fragment fragmentoActual = new ContainerFragment();
             boolean programador= userManager.getLevelUser() > ROLE_ADMINISTRATOR;
             ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(),arg,programador);
-            containerFragment.setFragmentActual(fragmentoActual);
+            containerFragment.setFragmentActual();
             fragmentManager.beginTransaction()
                     .replace(R.id.container_fragment, containerFragment)
                     .commit();

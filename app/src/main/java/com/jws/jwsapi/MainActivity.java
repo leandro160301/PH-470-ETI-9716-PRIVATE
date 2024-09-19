@@ -34,7 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity{
-    public static String VERSION ="PH 470 BZA 1.00";
+    public static final String VERSION ="PH 470 BZA 1.00";
     public JwsManager jwsObject;
     public MainClass mainClass;
     private InitServer initServer;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity{
         updateViews();
         createMemoryDirectory();
         hideNav();
-        initFtpWebRTC();
+        initService();
         initMainClass();
         initPendrive();
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity{
         storageService.initService(this);
     }
 
-    private void initFtpWebRTC() {
+    private void initService() {
         try {
             FtpInit ftpInit= new FtpInit(getApplicationContext(), userManager.getUsers(), preferencesManager);
             ftpInit.ftpServer();
@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity{
             e.printStackTrace();
         }
     }
-
 
     private void initJwsObject() {
         jwsObject = new JwsManager(getApplicationContext());
@@ -119,16 +118,14 @@ public class MainActivity extends AppCompatActivity{
     public void clearCache(){
         Context context=getApplicationContext();
         if(userManager.getLevelUser()>ROLE_SUPERVISOR){
-            dialogText(this, "¿Esta seguro de volver a los valores de fabrica del equipo?", "RESER", () -> {
-                // Elimina la caché de la aplicación
+            dialogText(this, getString(R.string.dialog_delete_cache), getString(R.string.dialog_button_text_delete_cache), () -> {
                 deleteCache(context);
-                // Puedes agregar más código para eliminar otros datos específicos de tu aplicación si es necesario
                 deleteDatabase(MainClass.DB_NAME);
                 deleteDatabase("bza-database");
                 jwsObject.jwsReboot("");
             });
         }else{
-            ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,this);
+            ToastHelper.message(getString(R.string.toast_login_error_delete_cache),R.layout.item_customtoasterror,this);
         }
     }
 

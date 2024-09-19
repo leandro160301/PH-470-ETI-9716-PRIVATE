@@ -45,7 +45,7 @@ public class Utils {
         return true;
     }
 
-    public static boolean isIP(String ip){
+    public static boolean isValidIp(String ip){
         String patronIP = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
                 + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
                 + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."

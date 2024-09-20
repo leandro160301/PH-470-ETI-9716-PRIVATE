@@ -1,5 +1,6 @@
 package com.jws.jwsapi.core.storage;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -31,7 +32,6 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_list_black_tex2t, parent, false);
-
         return new ViewHolder(view);
     }
 
@@ -87,6 +87,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
         void onItemClick(View view, int position);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filterList(ArrayList<String> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();

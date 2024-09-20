@@ -304,12 +304,10 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
 
     @Override
     public boolean setupPin(String newPin, String pinFromTv) {
-        if (!pinFromTv.equals("error")) {
-            if (pinFromTv.equals(newPin)) {
-                preferencesManagerBase.setPin(newPin);
-                ToastHelper.message("PIN CORRECTO", R.layout.item_customtoastok, mainActivity);
-                return true;
-            }
+        if (pinFromTv!=null&&pinFromTv.equals(newPin)) {
+            preferencesManagerBase.setPin(newPin);
+            ToastHelper.message(getString(R.string.toast_navigation_new_pin_ok), R.layout.item_customtoastok, mainActivity);
+            return true;
         }
         return false;
     }

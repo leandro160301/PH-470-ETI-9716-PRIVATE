@@ -437,6 +437,7 @@
     <string name="dialog_theme_negro">Tema Negro (actual)</string>
     <string name="toast_navigation_login_error">Debe ingresar la clave para acceder a esta configuracion</string>
     <string name="toast_ethernet_ip_not_valid">IP no valida</string>
+    <string name="toast_navigation_new_pin_ok">PIN CORRECTO</string>
 
 
 </resources>

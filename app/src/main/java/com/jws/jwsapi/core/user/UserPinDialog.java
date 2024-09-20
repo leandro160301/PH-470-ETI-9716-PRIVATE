@@ -21,7 +21,7 @@ public class UserPinDialog {
     }
 
     public void showDialog() {
-        final String[] newPin = {"error"};
+        final String[] newPin = {null};
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         DialogoPinBinding binding = DialogoPinBinding.inflate(LayoutInflater.from(context));
 

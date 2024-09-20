@@ -9,6 +9,4 @@ public interface ContainerButtonProvider {
     Button getButton3();
     Button getButton4();
     Button getButton5();
-    LinearLayout getButtonMenu();
-    LinearLayout getBotonera();
 }

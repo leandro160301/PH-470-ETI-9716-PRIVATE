@@ -91,7 +91,7 @@
                                         </LinearLayout>
 
                                         <TextView
-                                            android:id="@+id/tv_fecha"
+                                            android:id="@+id/tv_date"
                                             android:layout_width="match_parent"
                                             android:layout_height="60dp"
                                             android:layout_gravity="center"
@@ -105,7 +105,7 @@
                                     </LinearLayout>
 
                                     <LinearLayout
-                                        android:id="@+id/ln_usuario"
+                                        android:id="@+id/ln_user"
                                         android:layout_width="716dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="1"
@@ -123,7 +123,7 @@
                                             android:src="@drawable/icon_user" />
 
                                         <TextView
-                                            android:id="@+id/tv_usuario"
+                                            android:id="@+id/tv_user"
                                             android:layout_width="189dp"
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"

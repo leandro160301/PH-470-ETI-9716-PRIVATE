@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,7 +69,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
 
     private void handleClickListeners() {
         binding.lnMenu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
-        binding.lnUsuario.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
+        binding.lnUser.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
         binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this,mainActivity).showDialog());
     }
 
@@ -112,8 +111,8 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
                 setupIconProgrammer(0, R.drawable.icono_nologin);
                 binding.btUsb.setVisibility(storageService.getState()? View.VISIBLE : View.INVISIBLE);
                 handleNetworkUi();
-                binding.tvFecha.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
-                binding.tvUsuario.setText(userManager.getCurrentUser());
+                binding.tvDate.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
+                binding.tvUser.setText(userManager.getCurrentUser());
                 if(!stoped){
                     handler.postDelayed(this, 100);
                 }
@@ -171,16 +170,6 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     @Override
     public Button getButton5() {
         return binding.bt5;
-    }
-
-    @Override
-    public LinearLayout getButtonMenu() {
-        return binding.lnMenu;
-    }
-
-    @Override
-    public LinearLayout getBotonera() {
-        return binding.botones;
     }
 
 

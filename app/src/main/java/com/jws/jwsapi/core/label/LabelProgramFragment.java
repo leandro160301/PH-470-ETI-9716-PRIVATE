@@ -56,7 +56,7 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
         List<String> nombreetiquetas=labelManager.nameLabelList;
         lista_ingredientes= new ArrayList<>();
         for(int i=0;i<nombreetiquetas.size();i++){
-            lista_ingredientes.add(new LabelProgramModel(nombreetiquetas.get(i), printerPreferences.getEtiqueta(i)));
+            lista_ingredientes.add(new LabelProgramModel(nombreetiquetas.get(i), printerPreferences.getLabel(i)));
         }
         configuracionBotones();
         cargarRecyclerView();

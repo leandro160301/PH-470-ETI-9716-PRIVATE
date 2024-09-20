@@ -51,14 +51,14 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
         int posi=position;
         holder.tv_campo.setText(mData.get(position).getName());
         setupSpinner(holder.spCampo,context,etiquetas);
-        int index= etiquetas.indexOf(printerPreferences.getEtiqueta(posi));
+        int index= etiquetas.indexOf(printerPreferences.getLabel(posi));
         if (index>-1){
             holder.spCampo.setSelection(index);
         }
         holder.spCampo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                printerPreferences.setEtiqueta(etiquetas.get(i),posi);
+                printerPreferences.setLabel(etiquetas.get(i),posi);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}

@@ -188,7 +188,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
                  if(i ==labelManager.constantPrinterList.size()-1){
                      ListElementsInternalConcat= printerPreferences.getListConcat(etiqueta, posi);
                      String concat="";
-                     String sepa= printerPreferences.getSeparador(etiqueta, posi);
+                     String sepa= printerPreferences.getSeparator(etiqueta, posi);
                      if(ListElementsInternalConcat!=null){
                          for(int j=0;j<ListElementsInternalConcat.size();j++){
                              if(listaVariables.size()>ListElementsInternalConcat.get(j)){
@@ -270,7 +270,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
 
 
         Selected=0;
-        String separacion= printerPreferences.getSeparador(etiqueta,posicion);
+        String separacion= printerPreferences.getSeparator(etiqueta,posicion);
         if(Objects.equals(separacion, bt_coma.getText().toString())){
             bt_coma.setBackgroundResource(R.drawable.botoneraprincipal_selectorgris);
             bt_coma.setTextColor(Color.WHITE);
@@ -308,22 +308,22 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelAdapter.ViewHolder> 
         dialog.show();
 
         Guardar.setOnClickListener(view -> {
-            printerPreferences.saveListConcat(ListElementsArrayConcatFormat,etiqueta,posicion);
+            printerPreferences.setListConcat(ListElementsArrayConcatFormat,etiqueta,posicion);
             String separated="";
             if(Selected==1){
-                printerPreferences.setSeparador(",",etiqueta,posicion);
+                printerPreferences.setSeparator(",",etiqueta,posicion);
                 separated=",";
             }
             if(Selected==2){
-                printerPreferences.setSeparador(":",etiqueta,posicion);
+                printerPreferences.setSeparator(":",etiqueta,posicion);
                 separated=":";
             }
             if(Selected==3){
-                printerPreferences.setSeparador(";",etiqueta,posicion);
+                printerPreferences.setSeparator(";",etiqueta,posicion);
                 separated=";";
             }
             if(Selected==4){
-                printerPreferences.setSeparador("|",etiqueta,posicion);
+                printerPreferences.setSeparator("|",etiqueta,posicion);
                 separated="|";
             }
 

@@ -98,10 +98,10 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     private void saveSettings() {
         if(fieldAdapter !=null){
             if(fieldAdapter.ListElementsInt!=null){
-                printerPreferences.saveListSpinner(fieldAdapter.ListElementsInternaInt, fieldAdapter.etiqueta);
+                printerPreferences.setListSpinner(fieldAdapter.ListElementsInternaInt, fieldAdapter.etiqueta);
             }
             if(fieldAdapter.ListElementsInternaFijo!=null){
-                printerPreferences.saveListFijo(fieldAdapter.ListElementsInternaFijo, fieldAdapter.etiqueta);
+                printerPreferences.setListFijo(fieldAdapter.ListElementsInternaFijo, fieldAdapter.etiqueta);
             }
         }
     }

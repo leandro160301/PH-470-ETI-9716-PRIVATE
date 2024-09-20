@@ -19,19 +19,19 @@ public class PrinterPreferences {
         return preferencesHelper.getIntegerList(etiqueta);
     }
 
-    public void saveListSpinner(List<Integer> stringList, String etiqueta) {
+    public void setListSpinner(List<Integer> stringList, String etiqueta) {
         preferencesHelper.putIntegerList(etiqueta,stringList);
     }
 
-    public String getSeparador(String etiqueta, int posicion) {
+    public String getSeparator(String etiqueta, int posicion) {
         return preferencesHelper.getString(etiqueta+"_concat_separador_" + posicion, ",");
     }
 
-    public void setSeparador(String separador, String etiqueta, int posicion) {
+    public void setSeparator(String separador, String etiqueta, int posicion) {
         preferencesHelper.putString(etiqueta + "_concat_separador_" + posicion, separador);
     }
 
-    public void saveListConcat(List<Integer> intList, String etiqueta, int posicion) {
+    public void setListConcat(List<Integer> intList, String etiqueta, int posicion) {
         preferencesHelper.putIntegerList(etiqueta + "_concat_" + posicion, intList);
     }
 
@@ -39,7 +39,7 @@ public class PrinterPreferences {
         return preferencesHelper.getIntegerList(etiqueta + "_concat_" + posicion);
     }
 
-    public void saveListFijo(List<String> stringList, String etiqueta) {
+    public void setListFijo(List<String> stringList, String etiqueta) {
         preferencesHelper.putStringList(etiqueta + "_fijo",stringList);
     }
 
@@ -47,11 +47,11 @@ public class PrinterPreferences {
         return preferencesHelper.getStringList(etiqueta + "_fijo");
     }
     
-    public String getEtiqueta(int etiqueta) {
+    public String getLabel(int etiqueta) {
         return preferencesHelper.getString("etiqueta_actual_"+ etiqueta,"");
     }
 
-    public void setEtiqueta(String etiqueta,int numetiqueta){
+    public void setLabel(String etiqueta, int numetiqueta){
         preferencesHelper.putString("etiqueta_actual_"+ numetiqueta,etiqueta);
     }
 

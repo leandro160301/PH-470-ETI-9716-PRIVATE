@@ -66,17 +66,15 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class NavigationFragment extends Fragment implements AdapterCommon.ItemClickListener, DateInterface, UserPinInterface, ThemeInterface {
 
-    private int currentMenu =0;
-    private int currentItem =0;
-    AdapterCommon adapter;
-    MainActivity mainActivity;
-    private ButtonProvider buttonProvider;
-    StandarMenuBinding binding;
-
     @Inject
     UserManager userManager;
     @Inject
     PreferencesManager preferencesManagerBase;
+    private int currentMenu = 0;
+    private int currentItem = 0;
+    private MainActivity mainActivity;
+    private ButtonProvider buttonProvider;
+    StandarMenuBinding binding;
 
     @Nullable
     @Override
@@ -130,7 +128,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
 
     private void setupMenuRecycler() {
         binding.recycler1.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AdapterCommon(getContext(), Arrays.asList(getResources().getStringArray(R.array.menu)));
+        AdapterCommon adapter = new AdapterCommon(getContext(), Arrays.asList(getResources().getStringArray(R.array.menu)));
         adapter.setClickListener(this);
         binding.recycler1.setAdapter(adapter);
     }
@@ -153,7 +151,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
         },ROLE_OPERATOR);
     }
 
-    public void setupItems(List<String> list){
+    private void setupItems(List<String> list){
         binding.lrDinamico1.setVisibility(View.VISIBLE);
         setupSubItems(new ArrayList<>());
         NavigationAdapter adapter=setupItemRecycler(binding.recycler2, list);
@@ -176,7 +174,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
         });
     }
 
-    public void setupSubItems(List<String> lista){
+    private void setupSubItems(List<String> lista){
         binding.lrDinamico2.setVisibility(View.VISIBLE);
         NavigationAdapter adapter = setupItemRecycler(binding.recycler3, lista);
         adapter.setClickListener((view, position) -> {

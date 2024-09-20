@@ -38,13 +38,8 @@ public class MainClass implements OnFragmentChangeListener {
         service = new BalanzaService(mainActivity,this);
         service.init();
         Runnable myRunnable = () -> {
-            try {
-                Thread.sleep(2000);
-                bza =BalanzaService.Balanzas;
-                mainActivity.runOnUiThread(this::openFragmentPrincipal);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            bza =BalanzaService.Balanzas;
+            mainActivity.runOnUiThread(this::openFragmentPrincipal);
         };
         Thread myThread = new Thread(myRunnable);
         myThread.start();

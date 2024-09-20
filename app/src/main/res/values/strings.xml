@@ -313,6 +313,54 @@
         <item>USB</item>
     </string-array>
 
+
+    <!--menu feature-->
+    <string-array name="menu">
+        <item>Menu service</item>
+        <item>Menu configuracion</item>
+        <item>Comunicacion</item>
+        <item>Usuarios</item>
+        <item>Indicador</item>
+        <item>Dispositivos</item>
+        <item>Manuales/archivos</item>
+        <item>RESET</item>
+        <item>Nueva clave administrador</item>
+    </string-array>
+    <!--menu feature-->
+
+
+    <!--menu items feature-->
+    <string-array name="menu_items_dispositivos">
+        <item>Impresora</item>
+        <item>Escaner</item>
+    </string-array>
+
+    <string-array name="menu_items_comunicacion">
+        <item>Wifi</item>
+        <item>Ethernet</item>
+    </string-array>
+
+    <string-array name="menu_items_scale">
+        <item>Fecha y hora</item>
+        <item>Tema</item>
+    </string-array>
+
+    <string-array name="menu_items_settings">
+        <item>Programa</item>
+        <item>Balanzas</item>
+        <item>Turno</item>
+        <item>Datos</item>
+        <item>Etiquetas</item>
+    </string-array>
+    <!--menu items feature-->
+
+    <!--menu subitems feature-->
+    <string-array name="menu_subitems_printer">
+        <item>Configuracion</item>
+        <item>Etiquetas</item>
+    </string-array>
+    <!--menu subitems feature-->
+
     <!--pallet feature-->
     <string name="toast_message_pallet_created">Pallet creado</string>
     <string name="toast_message_pallet_closed">Pallet cerrado</string>
@@ -387,6 +435,7 @@
     <string name="dialog_theme_rojo">Tema Rojo (actual)</string>
     <string name="dialog_theme_azul">Tema Azul (actual)</string>
     <string name="dialog_theme_negro">Tema Negro (actual)</string>
+    <string name="toast_navigation_login_error">Debe ingresar la clave para acceder a esta configuracion</string>
 
 
 </resources>

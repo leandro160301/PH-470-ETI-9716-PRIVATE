@@ -141,6 +141,11 @@ public class MainActivity extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         initServer.handleActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }
 
 

@@ -292,7 +292,7 @@ public class HttpServer extends NanoWSD {
             return newFixedLengthResponse("Hecho");
         }
         else if(uri.endsWith("INSTALLAPK")){
-            installApk(mainActivity);
+            installApk(mainActivity,mainActivity);
             return newFixedLengthResponse("Hecho");
         }
         else if(uri.endsWith("CONFIGURACION")){

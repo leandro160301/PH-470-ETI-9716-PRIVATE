@@ -1,12 +1,30 @@
 package com.jws.jwsapi.core.navigation;
 
+import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_ETHERNET;
+import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_ETIQUETAS;
+import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_FECHA_Y_HORA;
+import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_IMPRESORA;
+import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_TEMA;
+import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_WIFI;
+import static com.jws.jwsapi.core.navigation.NavigationMenu.MENU_COMMUNICATION;
+import static com.jws.jwsapi.core.navigation.NavigationMenu.MENU_DEVICES;
+import static com.jws.jwsapi.core.navigation.NavigationMenu.MENU_RESET;
+import static com.jws.jwsapi.core.navigation.NavigationMenu.MENU_SERVICE;
+import static com.jws.jwsapi.core.navigation.NavigationMenu.MENU_SETTINGS;
+import static com.jws.jwsapi.core.navigation.NavigationMenu.MENU_NEW_PIN;
+import static com.jws.jwsapi.core.navigation.NavigationMenu.MENU_SCALE;
+import static com.jws.jwsapi.core.navigation.NavigationMenu.MENU_STORAGE;
+import static com.jws.jwsapi.core.navigation.NavigationMenu.MENU_USERS;
+import static com.jws.jwsapi.core.navigation.NavigationSubItems.SUBITEM_LABEL;
+import static com.jws.jwsapi.core.navigation.NavigationSubItems.SUBITEM_SETTINGS;
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_OPERATOR;
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
 import static com.jws.jwsapi.utils.Utils.isNumeric;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +46,7 @@ import com.jws.jwsapi.core.user.UserFragment;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.core.user.UserPinDialog;
 import com.jws.jwsapi.core.user.UserPinInterface;
+import com.jws.jwsapi.databinding.StandarMenuBinding;
 import com.jws.jwsapi.utils.AdapterCommon;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.date.DateDialog;
@@ -37,6 +56,7 @@ import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,20 +66,13 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class NavigationFragment extends Fragment implements AdapterCommon.ItemClickListener, DateInterface, UserPinInterface, ThemeInterface {
 
-    RecyclerView recycler1,recycler2,recycler3;
-    LinearLayout lr_dinamico1,lr_dinamico2;
-    private int menuElegido =0;
-    private int menuElegido2 =2;
+    private int currentMenu =0;
+    private int currentItem =0;
     AdapterCommon adapter;
-    JwsManager jwsManager;
-    NavigationAdapter adapterDinamicos1, adapterDinamicos2;
-
-    List<String> ListElementsArrayList=new ArrayList<>();
-    List<String> ListElementsArrayListdinamicos1=new ArrayList<>();
-    List<String> ListElementsArrayListdinamicos2=new ArrayList<>();
     MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    int num=0;
+    StandarMenuBinding binding;
+
     @Inject
     UserManager userManager;
     @Inject
@@ -68,107 +81,187 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.standar_menu,container,false);
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
-        return view;
+        binding = StandarMenuBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
     @Override
     public void onItemClick(View view, int position) {
-        menuElegido =position;
-        if(position==0){
-            if(userManager.getLevelUser()>1){
-                ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.service);
-                Bundle args = new Bundle();
-                args.putSerializable("instanceService", mainActivity.mainClass.service);
-                mainActivity.mainClass.openFragmentService(fragment,args);
-            }else{
-                toastLoginError();
-            }
-
+        currentMenu =position;
+        switch (position) {
+            case MENU_SERVICE:
+                handleService();
+                break;
+            case MENU_SETTINGS:
+                loadItem(R.array.menu_items_settings);
+                break;
+            case MENU_COMMUNICATION:
+                loadItem(R.array.menu_items_comunicacion);
+                break;
+            case MENU_USERS:
+                handleUsers();
+                break;
+            case MENU_SCALE:
+                loadItem(R.array.menu_items_scale);
+                break;
+            case MENU_DEVICES:
+                loadItem(R.array.menu_items_dispositivos);
+                break;
+            case MENU_STORAGE:
+                mainActivity.mainClass.openFragment(new StorageFragment());
+                break;
+            case MENU_RESET:
+                mainActivity.clearCache();
+                break;
+            case MENU_NEW_PIN:
+                new UserPinDialog(requireContext(),this);
+                break;
         }
-        if(position==1){
-            ListElementsArrayListdinamicos1=new ArrayList<>();
-            ListElementsArrayListdinamicos1.add("Programa");
-            ListElementsArrayListdinamicos1.add("Balanzas");
-            ListElementsArrayListdinamicos1.add("Turnos");
-            ListElementsArrayListdinamicos1.add("Datos");
-            ListElementsArrayListdinamicos1.add("Etiquetas");
-            CargarDatosADinamico(ListElementsArrayListdinamicos1);
-        }
-        if(position==2){
-            ListElementsArrayListdinamicos1=new ArrayList<>();
-            ListElementsArrayListdinamicos1.add("Wifi");
-            ListElementsArrayListdinamicos1.add("Ethernet");
-            CargarDatosADinamico(ListElementsArrayListdinamicos1);
-        }
-        if(position==3){
-            if(userManager.getLevelUser()>2){
-                mainActivity.mainClass.openFragment(new UserFragment());
-            }else{
-                toastLoginError();
-            }
-        }
-        if(position==4){
-            ListElementsArrayListdinamicos1=new ArrayList<>();
-            ListElementsArrayListdinamicos1.add("Fecha y Hora");
-            ListElementsArrayListdinamicos1.add("Tema");
-            CargarDatosADinamico(ListElementsArrayListdinamicos1);
-        }
-        if(position==5){
-            ListElementsArrayListdinamicos1=new ArrayList<>();
-            ListElementsArrayListdinamicos1.add("Impresora");
-            ListElementsArrayListdinamicos1.add("Escaner");
-            CargarDatosADinamico(ListElementsArrayListdinamicos1);
-        }
-        if(position==6){
-            mainActivity.mainClass.openFragment(new StorageFragment());
-        }
-        if(position==7){
-            mainActivity.clearCache();
-        }
-        if(position==8){
-            new UserPinDialog(requireContext(),this);
-        }
-
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         setupButtons();
-        initializeViews(view);
+        setupMenuRecycler();
 
     }
 
-
-    private void initializeViews(View view) {
-        recycler1=view.findViewById(R.id.recycler1);
-        recycler2=view.findViewById(R.id.recycler2);
-        recycler3=view.findViewById(R.id.recycler3);
-        lr_dinamico1=view.findViewById(R.id.lr_dinamico1);
-        lr_dinamico2=view.findViewById(R.id.lr_dinamico2);
-
-        lr_dinamico1.setVisibility(View.INVISIBLE);
-        lr_dinamico2.setVisibility(View.INVISIBLE);
-        jwsManager= JwsManager.create(requireActivity());
-
-        ListElementsArrayList=new ArrayList<>();
-        ListElementsArrayList.add("Menu service");
-        ListElementsArrayList.add("Menu configuracion");
-        ListElementsArrayList.add("Comunicacion");
-        ListElementsArrayList.add("Usuarios");
-        ListElementsArrayList.add("Indicador");
-        ListElementsArrayList.add("Dispositivos");
-        ListElementsArrayList.add("Manuales/archivos");
-        ListElementsArrayList.add("RESET");
-        ListElementsArrayList.add("Nueva clave administrador");
-
-        recycler1.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AdapterCommon(getContext(), ListElementsArrayList);
+    private void setupMenuRecycler() {
+        binding.recycler1.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new AdapterCommon(getContext(), Arrays.asList(getResources().getStringArray(R.array.menu)));
         adapter.setClickListener(this);
-        recycler1.setAdapter(adapter);
+        binding.recycler1.setAdapter(adapter);
+    }
 
 
+    private void loadItem(int menu) {
+        setupItems(Arrays.asList(getResources().getStringArray(menu)));
+    }
+
+    private void handleUsers() {
+        handleUserAction(() -> mainActivity.mainClass.openFragment(new UserFragment()),ROLE_SUPERVISOR);
+    }
+
+    private void handleService() {
+        handleUserAction(() -> {
+            ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.service);
+            Bundle args = new Bundle();
+            args.putSerializable("instanceService", mainActivity.mainClass.service);
+            mainActivity.mainClass.openFragmentService(fragment,args);
+        },ROLE_OPERATOR);
+    }
+
+    public void setupItems(List<String> list){
+        binding.lrDinamico1.setVisibility(View.VISIBLE);
+        setupSubItems(new ArrayList<>());
+        NavigationAdapter adapter=setupItemRecycler(binding.recycler2, list);
+        adapter.setClickListener((view, position) -> {
+            currentItem =position;
+            switch (currentMenu) {
+                case MENU_SETTINGS:
+                    handleSettingsMenu(position);
+                    break;
+                case MENU_COMMUNICATION:
+                    handleCommunicationMenu(position);
+                    break;
+                case MENU_SCALE:
+                    handleScaleMenu(position);
+                    break;
+                case MENU_DEVICES:
+                    handleDevicesMenu(position);
+                    break;
+            }
+        });
+    }
+
+    public void setupSubItems(List<String> lista){
+        binding.lrDinamico2.setVisibility(View.VISIBLE);
+        NavigationAdapter adapter = setupItemRecycler(binding.recycler3, lista);
+        adapter.setClickListener((view, position) -> {
+            if(currentMenu==MENU_DEVICES){
+                handleUserAction(() -> {
+                    if(currentItem==ITEM_IMPRESORA){
+                        switch (position) {
+                            case SUBITEM_SETTINGS:
+                                mainActivity.mainClass.openFragment(new PrinterFragment());
+                                break;
+                            case SUBITEM_LABEL:
+                                mainActivity.mainClass.openFragment(new LabelFragment());
+                                break;
+                        }
+                    }
+                },ROLE_OPERATOR);
+            }
+
+        });
+
+    }
+
+    private void handleDevicesMenu(int position) {
+        switch (position) {
+            case ITEM_IMPRESORA:
+                setupSubItems(Arrays.asList(getResources().getStringArray(R.array.menu_subitems_printer)));
+                break;
+        }
+    }
+
+    private void handleScaleMenu(int position) {
+        switch (position) {
+            case ITEM_FECHA_Y_HORA:
+                handleUserAction(() -> new DateDialog(this,getContext()).showDialog(),ROLE_OPERATOR);
+                break;
+            case ITEM_TEMA:
+                handleUserAction(() -> new ThemeDialog(requireContext(),this).showDialog(),ROLE_OPERATOR);
+                break;
+        }
+    }
+
+    private void handleCommunicationMenu(int position) {
+        switch (position) {
+            case ITEM_WIFI:
+                mainActivity.mainClass.openFragment(new WifiFragment());
+                break;
+            case ITEM_ETHERNET:
+                mainActivity.mainClass.openFragment(new EthernetFragment());
+                break;
+        }
+    }
+
+    private void handleSettingsMenu(int position) {
+        switch (position) {
+            case ITEM_ETIQUETAS:
+                handleLabelItem();
+                break;
+        }
+    }
+
+    private void handleLabelItem() {
+        handleUserAction(() -> mainActivity.mainClass.openFragment(new LabelProgramFragment()),ROLE_OPERATOR);
+    }
+
+    private NavigationAdapter setupItemRecycler(RecyclerView recyclerView, List<String> list) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        NavigationAdapter adapter = new NavigationAdapter(getContext(), list);
+        recyclerView.setAdapter(adapter);
+        return adapter;
+    }
+
+    private boolean hasPermission(int requiredLevel) {
+        return userManager.getLevelUser() > requiredLevel;
+    }
+
+    private void handleUserAction(Runnable action, int requiredLevel) {
+        if (hasPermission(requiredLevel)) {
+            action.run();
+        } else {
+            toastLoginError();
+        }
+    }
+
+    private void toastLoginError() {
+        ToastHelper.message(getString(R.string.toast_navigation_login_error),R.layout.item_customtoasterror,mainActivity);
     }
 
     private void setupButtons() {
@@ -184,137 +277,6 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
             buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
         }
     }
-
-    public void CargarDatosADinamico(List<String> lista){
-        lr_dinamico1.setVisibility(View.VISIBLE);
-        ListElementsArrayListdinamicos2=new ArrayList<>();
-        CargarDatosADinamico2(ListElementsArrayListdinamicos2);
-        recycler2.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterDinamicos1 = new NavigationAdapter(getContext(), lista);
-        recycler2.setAdapter(adapterDinamicos1);
-        adapterDinamicos1.setClickListener((view, position) -> {
-            menuElegido2=position;
-            if(menuElegido ==1){
-                if(userManager.getLevelUser()>1){
-                    if(position==0){
-//                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionPrograma());
-                    }
-                    if(position==1){
-//                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionBalanza());
-                    }
-                    if(position==2){
-//                        mainActivity.mainClass.openFragment(new FormFragmentConfiguracionTurnos());
-                    }
-                    if(position==3){
-//                        mainActivity.mainClass.openFragment(new FormFragmentDatos());
-                    }
-                    if(position==4){
-                        mainActivity.mainClass.openFragment(new LabelProgramFragment());
-                    }
-                }else{
-                    toastLoginError();
-                }
-
-            }
-            if(menuElegido ==2){
-                if(position==0){
-                    mainActivity.mainClass.openFragment(new WifiFragment());
-                }
-                if(position==1){
-                    mainActivity.mainClass.openFragment(new EthernetFragment());
-                }
-            }
-
-            if(menuElegido ==4){
-                if(position==0){
-                    if(userManager.getLevelUser()>1){
-                        new DateDialog(this,getContext()).showDialog();
-                    }
-                    else{
-                        toastLoginError();
-                    }
-                }
-                if(position==1){
-                    if(userManager.getLevelUser()>1){
-                        new ThemeDialog(requireContext(),this).showDialog();
-                    }
-                    else{
-                        toastLoginError();
-                    }
-                }
-            }
-            if(menuElegido ==5){
-                if(position==0){
-                    ListElementsArrayListdinamicos2=new ArrayList<>();
-                    ListElementsArrayListdinamicos2.add("Configuracion");
-                    ListElementsArrayListdinamicos2.add("Etiquetas");
-                    CargarDatosADinamico2(ListElementsArrayListdinamicos2);
-
-                }
-                if(position==1){
-                    ListElementsArrayListdinamicos2=new ArrayList<>();
-                    CargarDatosADinamico2(ListElementsArrayListdinamicos2);
-
-                }
-                if(position==2){
-
-                }
-
-            }
-
-        });
-
-    }
-
-    private void toastLoginError() {
-        ToastHelper.message("Debe ingresar la clave para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
-    }
-
-    public void CargarDatosADinamico2(List<String> lista){
-        lr_dinamico2.setVisibility(View.VISIBLE);
-        if(lista.size()<4){
-            lr_dinamico2.setBackgroundResource(R.drawable.banner_menu_con_trasparencia_);
-        }
-        recycler3.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterDinamicos2 = new NavigationAdapter(getContext(), lista);
-        recycler3.setAdapter(adapterDinamicos2);
-        adapterDinamicos2.setClickListener((view, position) -> {
-            if(menuElegido ==5){
-                if(userManager.getLevelUser()>1){
-                    if(menuElegido2==0){
-                        if(position==0){
-                            mainActivity.mainClass.openFragment(new PrinterFragment());
-                        }
-                        if(position==1){
-                            mainActivity.mainClass.openFragment(new LabelFragment());
-                        }
-                    }
-                }
-                else{
-                    toastLoginError();
-                }
-
-            }
-             if(menuElegido ==1&&menuElegido2==1){
-                if(position==0){
-                    mainActivity.mainClass.openFragment(new WifiFragment());
-                }
-                if(position==1){
-
-                    if(userManager.getCurrentUser().equals("*Programador*")){
-                        mainActivity.mainClass.openFragment(new EthernetFragment());
-                    }
-                    else{
-                        ToastHelper.message("Debe ingresar la clave de programador para acceder a esta configuracion",R.layout.item_customtoasterror,mainActivity);
-                    }
-
-                }
-            }
-
-        });
-
-    }
-
 
     @Override
     public int getPreferencesManagerBaseTheme() {
@@ -334,13 +296,13 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     @Override
     public boolean setDate(String day, String hour, String minutes, String month, String year) {
         if(isNumeric(day)&&isNumeric(hour)&&isNumeric(minutes)&&isNumeric(month)&&isNumeric(year)){
+            JwsManager jwsManager= JwsManager.create(requireActivity());
             jwsManager.jwsSetTime(getContext(),Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day)
                     ,Integer.parseInt(hour),Integer.parseInt(minutes));
             return true;
         }
         return false;
     }
-
 
     @Override
     public boolean setupPin(String newPin, String pinFromTv) {

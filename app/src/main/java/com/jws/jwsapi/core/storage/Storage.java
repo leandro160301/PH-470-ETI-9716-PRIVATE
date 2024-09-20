@@ -51,12 +51,15 @@ public class Storage {
         }
     }
 
-    public static void installApk(Context context) {
+    public static void installApk(Context context, MainActivity mainActivity) {
         if (isPackageExisted("com.android.documentsui", context)) {
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.android.documentsui");
             if (launchIntent != null) {
                 launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  // Añadido por si el contexto no es una actividad
                 context.startActivity(launchIntent);
+                mainActivity.finish();
+                System.exit(0);
+                mainActivity.onDestroy();
             }
         }
     }

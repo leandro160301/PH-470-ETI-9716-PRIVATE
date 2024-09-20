@@ -9,6 +9,8 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jws.jwsapi.MainActivity;
+
 import java.io.File;
 
 import javax.inject.Singleton;
@@ -16,7 +18,7 @@ import javax.inject.Singleton;
 @Singleton
 public class StorageService {
     private final Context context;
-    private AppCompatActivity appCompatActivity;
+    private MainActivity appCompatActivity;
     private static final Handler mHandler= new Handler();
     private int state = USB_NOT_AVAIBLE;
 
@@ -24,7 +26,7 @@ public class StorageService {
         this.context = context;
     }
 
-    public void initService(AppCompatActivity appCompatActivity) {
+    public void initService(MainActivity appCompatActivity) {
         this.appCompatActivity = appCompatActivity;
         startUsbRead.run();
     }
@@ -41,7 +43,7 @@ public class StorageService {
         if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory)) {
             for(File apk: StoragePaths.FILE_APKS){
                 if(apk.exists()){
-                    installApk(context);
+                    installApk(context,appCompatActivity);
                 }
             }
             if(StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory)&& state == USB_NOT_AVAIBLE){

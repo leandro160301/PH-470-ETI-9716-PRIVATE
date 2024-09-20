@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import android_serialport_api.SerialPort;
 
@@ -246,6 +248,7 @@ public class BalanzaService implements Serializable {
         public void initializateBalanza(){
             SettingsDef();
             ArrayList<serviceDevice> balanzasList = get_arrayServiceDevices();
+            CountDownLatch latch = new CountDownLatch(balanzasList.size());
        //     if(balanzasList.size()==0){
          //       balanzasList.
                 //setBalanzas(balanzasList);
@@ -313,12 +316,14 @@ public class BalanzaService implements Serializable {
                        // bza.init(balanzalenght + 1);
                        // balanzas.put(balanzalenght + 1, bza);
                     }
+                    latch.countDown();
                 }
                 if (balanzasList.get(i).getModelo()  == 1) {
                     System.out.println("MINIMA");
                     Struct BZA =new MINIMA_I(serialPort,  balanzasList.get(i).getID(),activity,Service,fragmentChangeListener);
                     BZA.init(balanzalenght+1);
                     balanzas.put(balanzalenght + 1, BZA);
+                    latch.countDown();
                 }
                 if (balanzasList.get(i).getModelo()  == 2) {
 
@@ -326,6 +331,7 @@ public class BalanzaService implements Serializable {
                     Struct BZA =new R31P30_I(serialPort,  balanzasList.get(i).getID(),activity,fragmentChangeListener);
                     BZA.init(balanzalenght+1);
                     balanzas.put(balanzalenght + 1, BZA);
+                    latch.countDown();
                 }
                 if(balanzasList.get(i).getModelo() ==3){ // 3
                     System.out.println("ITW410");
@@ -383,8 +389,14 @@ public class BalanzaService implements Serializable {
                         }
                     } catch(Exception e) {
                    }
+                    latch.countDown();
                 }
 
+            }
+            try {
+                latch.await(10000, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
         public ArrayList<Integer> getBalanzas() {

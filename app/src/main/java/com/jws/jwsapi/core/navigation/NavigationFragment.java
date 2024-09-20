@@ -112,7 +112,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
                 mainActivity.clearCache();
                 break;
             case MENU_NEW_PIN:
-                new UserPinDialog(requireContext(),this);
+                new UserPinDialog(requireContext(),this).showDialog();
                 break;
         }
     }

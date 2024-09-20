@@ -92,7 +92,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="NETO"
+                            android:text="NETO TOTAL"
                             android:textAlignment="viewEnd"
                             android:textColor="@color/negro"
                             android:textSize="24sp" />

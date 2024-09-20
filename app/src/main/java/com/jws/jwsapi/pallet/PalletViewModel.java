@@ -84,7 +84,9 @@ public class PalletViewModel extends ViewModel {
 
     public void createPallet() {
         if(isValidPallet()){
-            PalletRequest palletRequest = new PalletRequest(scale.getValue(), palletDestination.getValue() , palletOrigin.getValue());
+            PalletRequest palletRequest = new PalletRequest(scale.getValue(),
+                    palletDestination.getValue() ,
+                    palletOrigin.getValue());
             createPalletRequest(palletRequest);
         }else {
             error.setValue("Complete los datos");

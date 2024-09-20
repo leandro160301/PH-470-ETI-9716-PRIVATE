@@ -100,7 +100,7 @@ public class PrinterFragment extends Fragment{
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            buttonProvider.getTitulo().setText(R.string.title_fragment_printer);
+            buttonProvider.getTitle().setText(R.string.title_fragment_printer);
 
             buttonProvider.getButton1().setVisibility(View.INVISIBLE);
             buttonProvider.getButton2().setVisibility(View.INVISIBLE);

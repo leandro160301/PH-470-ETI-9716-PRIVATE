@@ -75,7 +75,7 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
 
     private void configuracionBotones() {
         if (buttonProvider != null) {
-            buttonProvider.getTitulo().setText(R.string.title_label_program_fragment);
+            buttonProvider.getTitle().setText(R.string.title_label_program_fragment);
             buttonProvider.getButton1().setVisibility(View.INVISIBLE);
             buttonProvider.getButton2().setVisibility(View.INVISIBLE);
             buttonProvider.getButton1().setBackgroundResource(R.drawable.boton_buscar_i);

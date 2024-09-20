@@ -266,7 +266,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            buttonProvider.getTitulo().setText(R.string.title_fragment_menu);
+            buttonProvider.getTitle().setText(R.string.title_fragment_menu);
             buttonProvider.getButton1().setVisibility(View.INVISIBLE);
             buttonProvider.getButton2().setVisibility(View.INVISIBLE);
             buttonProvider.getButton3().setVisibility(View.INVISIBLE);

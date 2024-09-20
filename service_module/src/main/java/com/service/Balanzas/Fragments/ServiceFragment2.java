@@ -665,7 +665,7 @@ public  class ServiceFragment2 extends Fragment {
             bt_4 = buttonProvider.getButton4();
             bt_5 = buttonProvider.getButton5();
             bt_6 = buttonProvider.getButton6();
-            buttonProvider.getTitulo().setText("CONFIGURACION SERVICE");
+            buttonProvider.getTitle().setText("CONFIGURACION SERVICE");
 
             bt_1.setBackgroundResource(R.drawable.boton_editar_i);
             if(!programador){

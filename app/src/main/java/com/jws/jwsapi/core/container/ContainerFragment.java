@@ -204,7 +204,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     }
 
     @Override
-    public TextView getTitulo() {
+    public TextView getTitle() {
         return binding.tvTitulo;
     }
 

@@ -71,7 +71,7 @@ public class StorageFragment extends Fragment implements AdapterCommon.ItemClick
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            buttonProvider.getTitulo().setText(R.string.title_file_fragment);
+            buttonProvider.getTitle().setText(R.string.title_file_fragment);
             handleButtonProvider(buttonProvider.getButton1(),R.drawable.boton_pendrive_on_i,View.INVISIBLE,null);
             handleButtonProvider(buttonProvider.getButton2(),R.drawable.boton_impresora_i,View.INVISIBLE,null);
             handleButtonProvider(buttonProvider.getButton3(),R.drawable.boton_pdf_i,View.INVISIBLE,view -> setupAsPdf());

@@ -65,7 +65,7 @@ public class WeighingFragment extends Fragment {
             buttonProvider.getButton4().setVisibility(View.INVISIBLE);
             buttonProvider.getButton5().setVisibility(View.INVISIBLE);
             buttonProvider.getButton6().setVisibility(View.INVISIBLE);
-            buttonProvider.getTitulo().setText(requireContext().getString(R.string.title_weighings));
+            buttonProvider.getTitle().setText(requireContext().getString(R.string.title_weighings));
         }
     }
     

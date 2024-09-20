@@ -75,7 +75,7 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            buttonProvider.getTitulo().setText(R.string.title_fragment_label);
+            buttonProvider.getTitle().setText(R.string.title_fragment_label);
 
             buttonProvider.getButton1().setBackgroundResource(R.drawable.boton_guardado_i);
             buttonProvider.getButton2().setBackgroundResource(R.drawable.boton_impresora_i);

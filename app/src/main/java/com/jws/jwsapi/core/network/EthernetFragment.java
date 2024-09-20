@@ -144,7 +144,7 @@ public class EthernetFragment extends Fragment  {
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            buttonProvider.getTitulo().setText(R.string.title_fragment_ethernet);
+            buttonProvider.getTitle().setText(R.string.title_fragment_ethernet);
             buttonProvider.getButton1().setBackgroundResource(R.drawable.boton_atras_i);
             buttonProvider.getButton1().setVisibility(View.INVISIBLE);
             buttonProvider.getButton2().setVisibility(View.INVISIBLE);

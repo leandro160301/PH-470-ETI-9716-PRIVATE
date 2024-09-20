@@ -11,7 +11,5 @@ public interface ButtonProvider {
     Button getButton4();
     Button getButton5();
     Button getButton6();
-    TextView getTitulo();
-   // Button getButton7();
-   // Button getButtonArriba();
+    TextView getTitle();
 }

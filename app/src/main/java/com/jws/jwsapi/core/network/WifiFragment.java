@@ -218,7 +218,7 @@ public class WifiFragment extends Fragment {
     private void setupButtons() {
         if (buttonProvider != null) {
             bt_1 = buttonProvider.getButton1();
-            buttonProvider.getTitulo().setText(R.string.title_fragment_wifi);
+            buttonProvider.getTitle().setText(R.string.title_fragment_wifi);
 
             bt_1.setBackgroundResource(R.drawable.boton_atras_i);
             bt_1.setVisibility(View.INVISIBLE);

@@ -70,7 +70,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener {
 
     private void configuracionBotones() {
         if (buttonProvider != null) {
-            buttonProvider.getTitulo().setText(getString(R.string.users_title));
+            buttonProvider.getTitle().setText(getString(R.string.users_title));
             buttonProvider.getButton1().setBackgroundResource(R.drawable.boton_add_i);
             buttonProvider.getButton2().setVisibility(View.INVISIBLE);
             buttonProvider.getButton3().setVisibility(View.INVISIBLE);

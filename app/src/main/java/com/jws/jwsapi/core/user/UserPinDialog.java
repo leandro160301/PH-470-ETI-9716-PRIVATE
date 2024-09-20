@@ -8,8 +8,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 
-import androidx.annotation.NonNull;
-
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.DialogoPinBinding;
 
@@ -44,7 +42,4 @@ public class UserPinDialog {
             if(userPinInterface.setupPin(newPin[0], pinFromTv)) dialog.cancel();
         });
     }
-
-
-
 }

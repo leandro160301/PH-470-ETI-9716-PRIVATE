@@ -1,6 +1,8 @@
 package com.jws.jwsapi.core.network;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboardIpAdress;
+import static com.jws.jwsapi.utils.Utils.isValidIp;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.databinding.StandarEthernetBinding;
+import com.jws.jwsapi.utils.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import javax.inject.Inject;
@@ -85,30 +88,30 @@ public class EthernetFragment extends Fragment  {
     }
 
     private void setOnClickListeners() {
-        binding.tvip.setOnClickListener(v -> keyboardIpAdress(binding.tvip, getString(R.string.dialog_ethernet_ip), requireContext(), ip -> {
+        binding.tvip.setOnClickListener(v -> keyboardIpAdress(binding.tvip, getString(R.string.dialog_ethernet_ip), requireContext(), ip -> handleUserAction(() -> {
             preferencesManagerBase.setIpStatic(ip);
             setupStaticNetwork();
-        }));
+        },ip)));
 
-        binding.tvsubnet.setOnClickListener(v -> keyboardIpAdress(binding.tvip, getString(R.string.dialog_ethernet_subnet), requireContext(), subnet -> {
+        binding.tvsubnet.setOnClickListener(v -> keyboardIpAdress(binding.tvip, getString(R.string.dialog_ethernet_subnet), requireContext(), subnet -> handleUserAction(() -> {
             preferencesManagerBase.setSubnet(subnet);
             setupStaticNetwork();
-        }));
+        },subnet)));
 
-        binding.tvgateway.setOnClickListener(v -> keyboardIpAdress(binding.tvgateway, getString(R.string.dialog_ethernet_gateway), requireContext(), gateway -> {
+        binding.tvgateway.setOnClickListener(v -> keyboardIpAdress(binding.tvgateway, getString(R.string.dialog_ethernet_gateway), requireContext(), gateway -> handleUserAction(() -> {
             preferencesManagerBase.setGateway(gateway);
             setupStaticNetwork();
-        }));
+        },gateway)));
 
-        binding.tvdns1.setOnClickListener(v -> keyboardIpAdress(binding.tvdns1, getString(R.string.dialog_ethernet_dns1), requireContext(), dns1 -> {
+        binding.tvdns1.setOnClickListener(v -> keyboardIpAdress(binding.tvdns1, getString(R.string.dialog_ethernet_dns1), requireContext(), dns1 -> handleUserAction(() -> {
             preferencesManagerBase.setDns1(dns1);
             setupStaticNetwork();
-        }));
+        },dns1)));
 
-        binding.tvdns2.setOnClickListener(v -> keyboardIpAdress(binding.tvdns1, getString(R.string.dialog_ethernet_dns2), requireContext(), dns2 -> {
+        binding.tvdns2.setOnClickListener(v -> keyboardIpAdress(binding.tvdns1, getString(R.string.dialog_ethernet_dns2), requireContext(), dns2 -> handleUserAction(() -> {
             preferencesManagerBase.setDns2(dns2);
             setupStaticNetwork();
-        }));
+        },dns2)));
     }
 
     private void setupTextView() {
@@ -142,6 +145,18 @@ public class EthernetFragment extends Fragment  {
                 binding.tvdns1.getText().toString(),binding.tvdns2.getText().toString());
     }
 
+    private void handleUserAction(Runnable action, String ip) {
+        if (isValidIp(ip)) {
+            action.run();
+        } else {
+            toastIpError();
+        }
+    }
+
+    private void toastIpError() {
+        ToastHelper.message(getString(R.string.toast_ethernet_ip_not_valid),R.layout.item_customtoasterror,requireContext());
+    }
+
     private void setupButtons() {
         if (buttonProvider != null) {
             buttonProvider.getTitle().setText(R.string.title_fragment_ethernet);
@@ -158,5 +173,3 @@ public class EthernetFragment extends Fragment  {
     }
 
 }
-
-

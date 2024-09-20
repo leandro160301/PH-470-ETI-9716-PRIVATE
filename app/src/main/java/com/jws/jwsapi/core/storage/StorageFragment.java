@@ -39,11 +39,11 @@ public class StorageFragment extends Fragment implements AdapterCommon.ItemClick
     }
 
     private void fileSelected(int position) {
-        String archivocompleto = MEMORY_PATH.concat(adapter.getItem(position));
+        String filePath = MEMORY_PATH.concat(adapter.getItem(position));
         if (!extension.equals(".csv")) {
-            loadFile(archivocompleto);
+            loadFile(filePath);
         } else {
-            file = new File(archivocompleto);
+            file = new File(filePath);
         }
     }
 

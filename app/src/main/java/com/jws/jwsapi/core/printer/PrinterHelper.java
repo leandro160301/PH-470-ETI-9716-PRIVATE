@@ -45,9 +45,9 @@ public class PrinterHelper {
             if(areElementsMatching(elementsInt, elementsFijo, arr)) {
                 return showErrorMessage("Error, faltan campos por configurar");
             }
-            List<String> ListElementsFinales = getFinalElements(currentLabel, elementsInt, elementsFijo, arr);
-            if(ListElementsFinales.size()== arr.length-1){
-                return labelResult(labelCode, ListElementsFinales);
+            List<String> finalElements = getFinalElements(currentLabel, elementsInt, elementsFijo, arr);
+            if(finalElements.size()== arr.length-1){
+                return labelResult(labelCode, finalElements);
             }
             return "";
         } catch (Exception e) {
@@ -221,28 +221,27 @@ public class PrinterHelper {
         String[] dfeCommandList = labelCode.split("\\^DFE");
         String delete="";
         if(dfeCommandList.length>1){
-            String []array= dfeCommandList[1].split("\\^FS");
-            if(array.length>1){
-                delete="^DFE"+array[0]+"^FS\n";
+            String []arrFs= dfeCommandList[1].split("\\^FS");
+            if(arrFs.length>1){
+                delete="^DFE"+arrFs[0]+"^FS\n";
             }
         }
         return delete;
     }
 
-    public static List<LabelModel> getFieldsFromLabel(String etiqueta){
-        List<LabelModel> listaCampos = new ArrayList<>();
-        String[] arr = etiqueta.split("\\^FN");
-        for(int i=1;i<arr.length;i++){
-            String []arr2= arr[i].split("\\^FS");
-            if(arr2.length>1){
-                System.out.println("var campo:"+arr2[0]);//este string luego debemos reemplazar por FS+valorvariable con el .replace
-                String []arr3= arr2[0].split("\"");
-                if(arr3.length>1){
-                    listaCampos.add(new LabelModel(arr3[1],0));
+    public static List<LabelModel> getFieldsFromLabel(String label){
+        List<LabelModel> fieldList = new ArrayList<>();
+        String[] arrFn = label.split("\\^FN");
+        for(int i=1;i<arrFn.length;i++){
+            String []arrFs= arrFn[i].split("\\^FS");
+            if(arrFs.length>1){
+                String []arrSplit= arrFs[0].split("\"");
+                if(arrSplit.length>1){
+                    fieldList.add(new LabelModel(arrSplit[1],0));
                 }
             }
         }
-        return listaCampos;
+        return fieldList;
     }
 
 }

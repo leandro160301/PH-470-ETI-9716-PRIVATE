@@ -14,18 +14,18 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.databinding.HomeFragmentBinding;
 import com.jws.jwsapi.core.container.ContainerButtonProvider;
 import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
 import com.jws.jwsapi.core.user.UserManager;
-import com.jws.jwsapi.databinding.HomeFragmentBinding;
+import com.jws.jwsapi.service.ServiceViewModel;
+import com.jws.jwsapi.service.ServiceViewModelFactory;
+import com.jws.jwsapi.utils.ToastHelper;
+import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.pallet.PalletCreateFragment;
 import com.jws.jwsapi.pallet.PalletFragment;
-import com.jws.jwsapi.service.ServiceViewModel;
-import com.jws.jwsapi.service.ServiceViewModelFactory;
 import com.jws.jwsapi.shared.WeighRepository;
-import com.jws.jwsapi.utils.ToastHelper;
-import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.weighing.WeighingFragment;
 import com.jws.jwsapi.weighing.WeighingResponse;
 import com.jws.jwsapi.weighing.WeighingViewModel;
@@ -42,12 +42,15 @@ public class HomeFragment extends Fragment{
     MainActivity mainActivity;
     WeighingViewModel weighingViewModel;
     ServiceViewModel serviceViewModel;
-    HomeViewModel homeViewModel;
 
     @Inject
     UserManager userManager;
     @Inject
     WeighRepository repository;
+    @Inject
+    HomeService homeService;
+
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +64,6 @@ public class HomeFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         ServiceViewModelFactory factory = new ServiceViewModelFactory(mainActivity.mainClass.bza, repository);
         serviceViewModel = new ViewModelProvider(requireActivity(), factory).get(ServiceViewModel.class);
 
@@ -107,7 +109,7 @@ public class HomeFragment extends Fragment{
         if(weighingResponse !=null){
             if(weighingResponse.getStatus()){
                 ToastHelper.message(requireContext().getString(R.string.toast_message_weighing_created),R.layout.item_customtoastok,getContext());
-                homeViewModel.print(mainActivity,serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
+                homeService.print(mainActivity, serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
             }else{
                 ToastHelper.message(weighingResponse.getError(),R.layout.item_customtoasterror,getContext());
             }

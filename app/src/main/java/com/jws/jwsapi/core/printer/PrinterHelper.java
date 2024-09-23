@@ -35,22 +35,19 @@ public class PrinterHelper {
 
             if(!isValidLabel(currentLabel, labelCode))return "";
 
-            List<Integer> ListElementsInt= printerPreferences.getListSpinner(currentLabel);
-            List<String> ListElementsFijo= printerPreferences.getListFijo(currentLabel);
+            List<Integer> elementsInt= printerPreferences.getListSpinner(currentLabel);
+            List<String> elementsFijo= printerPreferences.getListFijo(currentLabel);
 
-            if(ListElementsInt==null&&ListElementsFijo==null){
+            if(elementsInt==null&&elementsFijo==null){
                 return showErrorMessage("Error, la etiqueta no esta configurada");
             }
             String[] arr = labelCode.split("\\^FN");
-            assert ListElementsInt != null;
-            if(areElementsMatching(ListElementsInt, ListElementsFijo, arr)) {
+            if(areElementsMatching(elementsInt, elementsFijo, arr)) {
                 return showErrorMessage("Error, faltan campos por configurar");
             }
-            List<String> ListElementsFinales = getFinalElements(currentLabel, ListElementsInt, ListElementsFijo, arr);
+            List<String> ListElementsFinales = getFinalElements(currentLabel, elementsInt, elementsFijo, arr);
             if(ListElementsFinales.size()== arr.length-1){
-                String etique= replaceLabelFields(ListElementsFinales,labelCode).replace("Ñ","\\A5").replace("ñ","\\A4").replace("á","\\A0").replace("é","\\82").replace("í","\\A1").replace("ó","\\A2").replace("Á","\\B5").replace("É","\\90").replace("Í","\\D6").replace("Ó","\\E3") ;
-                printerPreferences.setLastLabel(etique);
-                return etique;
+                return labelResult(labelCode, ListElementsFinales);
             }
             return "";
         } catch (Exception e) {
@@ -60,25 +57,44 @@ public class PrinterHelper {
     }
 
     @NonNull
-    private List<String> getFinalElements(String currentLabel, List<Integer> ListElementsInt, List<String> ListElementsFijo, String[] arr) {
-        List<String>ListElementsFinales=new ArrayList<>();
+    private String labelResult(String labelCode, List<String> ListElementsFinales) {
+        String labelResult= replaceLabelFields(ListElementsFinales, labelCode).replace("Ñ","\\A5").replace("ñ","\\A4").replace("á","\\A0").replace("é","\\82").replace("í","\\A1").replace("ó","\\A2").replace("Á","\\B5").replace("É","\\90").replace("Í","\\D6").replace("Ó","\\E3") ;
+        printerPreferences.setLastLabel(labelResult);
+        return labelResult;
+    }
+
+    @NonNull
+    private List<String> getFinalElements(String currentLabel, List<Integer> elementsInt, List<String> elementsFijo, String[] arr) {
+        List<String> finalElements = new ArrayList<>();
+        int constantListSize = labelManager.constantPrinterList.size();
+        int variableListSize = labelManager.varPrinterList.size();
         for(int i = 0; i< arr.length-1; i++){
-            String []arr2= arr[i+1].split("\\^FS");
-            if(arr2.length>1){
-                if(ListElementsInt.get(i)<labelManager.constantPrinterList.size()){
-                    String finalElement = getFinalElementValue(currentLabel, ListElementsInt, ListElementsFijo, i);
-                    if(finalElement!=null)ListElementsFinales.add(finalElement);
-                }else if(ListElementsInt.get(i)<labelManager.varPrinterList.size()+labelManager.constantPrinterList.size()){
-                    for(int j = 0; j<labelManager.varPrinterList.size(); j++){
-                        if(ListElementsInt.get(i)-labelManager.constantPrinterList.size()==j){
-                            ListElementsFinales.add(labelManager.varPrinterList.get(j).value());
-                        }
-                    }
+            String []arrSplit = arr[i+1].split("\\^FS");
+
+            if(arrSplit.length>1){
+                int elementIndex = elementsInt.get(i);
+
+                if(elementIndex < constantListSize){
+                    String finalElement = getFinalElementValue(currentLabel, elementsInt, elementsFijo, i);
+                    addIfNotNull(finalElements, finalElement);
+                }else if(elementIndex < variableListSize+constantListSize){
+                    int variableIndex = elementIndex-constantListSize;
+                    addVariableElement(finalElements, variableIndex);
                 }
             }
 
         }
-        return ListElementsFinales;
+        return finalElements;
+    }
+
+    private void addVariableElement(List<String> finalElements, int varIndex) {
+        if (varIndex >= 0 && varIndex < labelManager.varPrinterList.size()) {
+            finalElements.add(labelManager.varPrinterList.get(varIndex).value());
+        }
+    }
+
+    private static void addIfNotNull(List<String> finalElements, String finalElement) {
+        if(finalElement !=null) finalElements.add(finalElement);
     }
 
     private String getFinalElementValue(String currentLabel, List<Integer> ListElementsInt, List<String> ListElementsFijo, int i) {

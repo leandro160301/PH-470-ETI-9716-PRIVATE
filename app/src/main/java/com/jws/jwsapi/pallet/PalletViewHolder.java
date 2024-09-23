@@ -31,6 +31,8 @@ public class PalletViewHolder extends RecyclerView.ViewHolder {
 
         binding.tvPalletCode.setText(pallet.getCode());
         binding.tvPalletName.setText(pallet.getName());
+        binding.tvOrigin.setText(pallet.getOriginPallet());
+        binding.tvDestination.setText(pallet.getDestinationPallet());
         String totalNet = String.format(Locale.US, "%s%s", pallet.getTotalNet(), unit);
         binding.tvPalletTotal.setText(totalNet);
         String done = String.format(Locale.US, "%d/%d", pallet.getDone(), pallet.getQuantity());

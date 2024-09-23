@@ -199,6 +199,66 @@
                     android:textAlignment="viewStart"
                     android:textColor="@color/negro"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:padding="5dp"
+                    android:text="ORIGEN"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/negro"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_origin"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:padding="5dp"
+                    android:text="PA"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/negro"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:padding="5dp"
+                    android:text="DESTINO"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/negro"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_destination"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:padding="5dp"
+                    android:text="PX"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/negro"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>

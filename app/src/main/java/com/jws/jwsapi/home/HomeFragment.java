@@ -50,8 +50,6 @@ public class HomeFragment extends Fragment{
     @Inject
     HomeService homeService;
 
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         buttonProvider = ContainerButtonProviderSingleton.getInstance().getButtonProvider();

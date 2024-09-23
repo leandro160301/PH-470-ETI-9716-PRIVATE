@@ -18,6 +18,8 @@ import com.jws.jwsapi.databinding.HomeFragmentBinding;
 import com.jws.jwsapi.core.container.ContainerButtonProvider;
 import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
 import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.service.ServiceViewModel;
+import com.jws.jwsapi.service.ServiceViewModelFactory;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.pallet.Pallet;
@@ -39,12 +41,16 @@ public class HomeFragment extends Fragment{
     private ContainerButtonProvider buttonProvider;
     MainActivity mainActivity;
     WeighingViewModel weighingViewModel;
+    ServiceViewModel serviceViewModel;
     HomeViewModel homeViewModel;
 
     @Inject
     UserManager userManager;
     @Inject
     WeighRepository repository;
+
+
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,8 +64,9 @@ public class HomeFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         mainActivity=(MainActivity)getActivity();
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
-        HomeViewModelFactory factory = new HomeViewModelFactory(mainActivity.mainClass.bza, repository);
-        homeViewModel = new ViewModelProvider(requireActivity(), factory).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        ServiceViewModelFactory factory = new ServiceViewModelFactory(mainActivity.mainClass.bza, repository);
+        serviceViewModel = new ViewModelProvider(requireActivity(), factory).get(ServiceViewModel.class);
 
         setupButtons();
 
@@ -78,15 +85,15 @@ public class HomeFragment extends Fragment{
 
         weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), this::handleWeighingResponse);
 
-        homeViewModel.getNet().observe(getViewLifecycleOwner(), net -> handleWeighUpdate(net, binding.tvNet));
+        repository.getNet().observe(getViewLifecycleOwner(), net -> handleWeighUpdate(net, binding.tvNet));
 
-        homeViewModel.getGross().observe(getViewLifecycleOwner(), gross -> handleWeighUpdate(gross, binding.tvGross));
+        repository.getGross().observe(getViewLifecycleOwner(), gross -> handleWeighUpdate(gross, binding.tvGross));
 
-        homeViewModel.getStable().observe(getViewLifecycleOwner(), stable -> binding.imEstable.setVisibility(stable ? View.VISIBLE : View.INVISIBLE));
+        repository.getStable().observe(getViewLifecycleOwner(), stable -> binding.imEstable.setVisibility(stable ? View.VISIBLE : View.INVISIBLE));
 
-        homeViewModel.getTare().observe(getViewLifecycleOwner(), tare -> binding.imTare.setVisibility(Utils.isNumeric(tare) && Float.parseFloat(tare) > 0 ? View.VISIBLE : View.INVISIBLE));
+        repository.getTare().observe(getViewLifecycleOwner(), tare -> binding.imTare.setVisibility(Utils.isNumeric(tare) && Float.parseFloat(tare) > 0 ? View.VISIBLE : View.INVISIBLE));
 
-        homeViewModel.getUnit().observe(getViewLifecycleOwner(), unit -> {
+        repository.getUnit().observe(getViewLifecycleOwner(), unit -> {
             binding.tvTotalNetUnit.setText(unit);
             binding.tvGrossUnit.setText(unit);
             binding.tvNetUnit.setText(unit);
@@ -103,6 +110,7 @@ public class HomeFragment extends Fragment{
         if(weighingResponse !=null){
             if(weighingResponse.getStatus()){
                 ToastHelper.message(requireContext().getString(R.string.toast_message_weighing_created),R.layout.item_customtoastok,getContext());
+                homeViewModel.print(mainActivity,serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
             }else{
                 ToastHelper.message(weighingResponse.getError(),R.layout.item_customtoasterror,getContext());
             }
@@ -139,7 +147,7 @@ public class HomeFragment extends Fragment{
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            setupButton(buttonProvider.getButton1(), R.string.button_text_1, null);
+            setupButton(buttonProvider.getButton1(), R.string.button_text_1,null);
             setupButton(buttonProvider.getButton2(), R.string.button_text_2,
                     v -> btCreateWeighing());
             setupButton(buttonProvider.getButton3(), R.string.button_text_3,

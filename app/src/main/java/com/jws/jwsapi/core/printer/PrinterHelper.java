@@ -42,7 +42,7 @@ public class PrinterHelper {
                 return showErrorMessage("Error, la etiqueta no esta configurada");
             }
             String[] arr = labelCode.split("\\^FN");
-            if(areElementsMatching(elementsInt, elementsFijo, arr)) {
+            if(!areElementsMatching(elementsInt, elementsFijo, arr)) {
                 return showErrorMessage("Error, faltan campos por configurar");
             }
             List<String> finalElements = getFinalElements(currentLabel, elementsInt, elementsFijo, arr);

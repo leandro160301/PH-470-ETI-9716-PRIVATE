@@ -164,7 +164,6 @@ public class PrinterHelper {
         return labelCode != null && !labelCode.isEmpty() && !currentLabel.isEmpty();
     }
 
-
     public String replaceLabelFields(List<String> newList, String labelCode){
         try {
             String[] fnCommandsArray = labelCode.split("\\^FN");

@@ -38,7 +38,7 @@ public class UsbPrinter {
     }
 
 
-    public void Imprimir(String Etiqueta,Context context,Boolean Memoria,List<String> ListaMemoria){
+    public void print(String label, Context context, Boolean memory, List<String> memoryList){
         Runnable myRunnable = () -> {
             try {
                 discoveredPrinterListAdapter = new DiscoveredPrinterListAdapter(context);
@@ -56,7 +56,7 @@ public class UsbPrinter {
                     DiscoveredPrinter printer = discoveredPrinterListAdapter.getPrinter(0);
                     SelectedPrinterManager.setSelectedPrinter(printer);
                     DiscoveredPrinter formatPrinter;
-                    Print(Etiqueta,Memoria,ListaMemoria);
+                    Print(label,memory,memoryList);
                 }
 
             } catch (InterruptedException e) {

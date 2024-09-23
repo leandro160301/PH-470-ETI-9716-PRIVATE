@@ -1,8 +1,8 @@
 package com.jws.jwsapi.core.label;
 
+import static com.jws.jwsapi.core.printer.PrinterHelper.getFieldsFromLabel;
 import static com.jws.jwsapi.core.storage.Storage.getFilesExtension;
 import static com.jws.jwsapi.core.storage.Storage.openAndReadFile;
-import static com.jws.jwsapi.utils.PrinterHelper.getFieldsFromLabel;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

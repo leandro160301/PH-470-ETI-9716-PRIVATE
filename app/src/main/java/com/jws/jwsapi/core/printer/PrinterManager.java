@@ -1,11 +1,9 @@
 package com.jws.jwsapi.core.printer;
 
-import static com.jws.jwsapi.core.storage.Storage.openAndReadFile;
-
+import static com.jws.jwsapi.core.printer.PrinterMode.MODE_NETWORK;
+import static com.jws.jwsapi.core.printer.PrinterMode.MODE_RS232;
+import static com.jws.jwsapi.core.printer.PrinterMode.MODE_USB;
 import android.content.Context;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.core.user.UserManager;
@@ -15,16 +13,13 @@ import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.R;
 import com.service.PuertosSerie.PuertosSerie2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PrinterManager {
     private final Context context;
     private final MainActivity mainActivity;
     UserManager userManager;
     PrinterPreferences printerPreferences;
     LabelManager labelManager;
-    PrinterCode printerCode;
+    PrinterHelper printerHelper;
 
     public PrinterManager(Context context, MainActivity activity, UserManager userManager, PrinterPreferences printerPreferences, LabelManager labelManager) {
         this.context = context;
@@ -32,88 +27,47 @@ public class PrinterManager {
         this.printerPreferences = printerPreferences;
         this.labelManager=labelManager;
         this.userManager = userManager;
-        printerCode = new PrinterCode(activity,printerPreferences,labelManager,userManager);
+        printerHelper = new PrinterHelper(activity,printerPreferences,labelManager,userManager);
     }
 
-    public void EnviarEtiqueta(PuertosSerie2 serialPort, int numetiqueta){
-        int modo= printerPreferences.getMode();
-        if(modo==0){
-            UsbPrinter usbPrinter = new UsbPrinter(mainActivity);
-            usbPrinter.Imprimir(printerCode.getLabelCode(numetiqueta),context,false,null);
-        }
-        if(modo==1){
+    public void printLabelInMemory(PuertosSerie2 serialPort, int numetiqueta){
+        printLabelFromCode(serialPort,printerHelper.getLabelCode(numetiqueta));
+    }
 
-            if (Utils.isValidIp(printerPreferences.getIp())) {
-                NetworkPrinter networkPrinter = new NetworkPrinter();
-                networkPrinter.Imprimir(printerPreferences.getIp(), printerCode.getLabelCode(numetiqueta));
-            }else {
-                ToastHelper.message("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
-            }
+    public void printLastLabel(PuertosSerie2 serialPort){
+        printLabelFromCode(serialPort,printerPreferences.getLastLabel());
+    }
 
-        }
-        if(modo==2){
-            if(serialPort!=null){
-                SerialPortPrinter serialPortPrinter = new SerialPortPrinter(serialPort);
-                serialPortPrinter.Imprimir(printerCode.getLabelCode(numetiqueta));
-            }else {
-                ToastHelper.message("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
-            }
+    public void printLabelFromCode(PuertosSerie2 serialPort, String label){
+        int modeOutput = printerPreferences.getMode();
+        switch (modeOutput) {
+            case MODE_USB:usbPrint(label);
+            case MODE_NETWORK:networkPrint(label);
+            case MODE_RS232:rs232Print(serialPort, label);
         }
     }
 
-    public void EnviarUltimaEtiqueta(PuertosSerie2 serialPort){
-        int modo= printerPreferences.getMode();
-        if(modo==0){
-            UsbPrinter usbPrinter = new UsbPrinter(mainActivity);
-            usbPrinter.Imprimir(printerPreferences.getLastLabel(),context,false,null);
+    private void rs232Print(PuertosSerie2 serialPort, String label) {
+        if(serialPort !=null) {
+            SerialPortPrinter serialPortPrinter = new SerialPortPrinter(serialPort);
+            serialPortPrinter.print(label);
+        }else {
+            ToastHelper.message(context.getString(R.string.toast_printer_rs232_error), R.layout.item_customtoasterror,mainActivity);
         }
-        if(modo==1){
-            if (Utils.isValidIp(printerPreferences.getIp())) {
-                NetworkPrinter networkPrinter = new NetworkPrinter();
-                networkPrinter.Imprimir(printerPreferences.getIp(), printerPreferences.getLastLabel());
-            }else {
-                ToastHelper.message("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
-            }
-
-        }
-        if(modo==2){
-            if(serialPort!=null){
-                SerialPortPrinter serialPortPrinter = new SerialPortPrinter(serialPort);
-                serialPortPrinter.Imprimir(printerPreferences.getLastLabel());
-            }else {
-                ToastHelper.message("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
-            }
-
-        }
-
     }
 
-    public void EnviarEtiquetaManual(PuertosSerie2 serialPort,String etiqueta){
-        int modo= printerPreferences.getMode();
-
-        if(modo==0){
-            UsbPrinter usbPrinter = new UsbPrinter(mainActivity);
-            usbPrinter.Imprimir(etiqueta,context,false,null);
+    private void networkPrint(String label) {
+        if (Utils.isValidIp(printerPreferences.getIp())) {
+            NetworkPrinter networkPrinter = new NetworkPrinter();
+            networkPrinter.print(printerPreferences.getIp(), label);
+        }else {
+            ToastHelper.message(context.getString(R.string.toast_printer_network_error), R.layout.item_customtoasterror,mainActivity);
         }
-        if(modo==1){
-            if (Utils.isValidIp(printerPreferences.getIp())) {
-                NetworkPrinter networkPrinter = new NetworkPrinter();
-                networkPrinter.Imprimir(printerPreferences.getIp(),etiqueta);
-            }else {
-                ToastHelper.message("Error para imprimir, IP no valida", R.layout.item_customtoasterror,mainActivity);
-            }
+    }
 
-        }
-        if(modo==2){
-            if(serialPort!=null){
-                SerialPortPrinter serialPortPrinter = new SerialPortPrinter(serialPort);
-                serialPortPrinter.Imprimir(etiqueta);
-            }else {
-                ToastHelper.message("Error para imprimir por puerto serie B", R.layout.item_customtoasterror,mainActivity);
-            }
-
-        }
-
+    private void usbPrint(String label) {
+        UsbPrinter usbPrinter = new UsbPrinter(mainActivity);
+        usbPrinter.print(label,context,false,null);
     }
 
 }

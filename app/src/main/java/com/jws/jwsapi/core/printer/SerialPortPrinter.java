@@ -8,7 +8,7 @@ public class SerialPortPrinter {
     public SerialPortPrinter(PuertosSerie2 serialPort) {
         this.serialPort = serialPort;
     }
-    public void Imprimir(String etiqueta){
+    public void print(String etiqueta){
         serialPort.write(etiqueta);
     }
 

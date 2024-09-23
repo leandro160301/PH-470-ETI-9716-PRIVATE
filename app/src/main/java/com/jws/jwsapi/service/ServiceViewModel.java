@@ -1,6 +1,5 @@
 package com.jws.jwsapi.service;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.jws.jwsapi.shared.WeighRepository;

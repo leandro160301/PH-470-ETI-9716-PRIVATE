@@ -34,10 +34,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class UserFragment extends Fragment implements UserButtonClickListener, UserCreateInterface {
 
-    MainActivity mainActivity;
+    private MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    RecyclerView recycler;
-    UserAdapter adapter;
+    private UserAdapter adapter;
     @Inject
     UserManager userManager;
 
@@ -56,7 +55,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
     }
 
     private void setupRecycler(@NonNull View view) {
-        recycler = view.findViewById(R.id.listausuarios);
+        RecyclerView recycler = view.findViewById(R.id.listausuarios);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new UserAdapter(userManager.getUsers(),this);
         recycler.setAdapter(adapter);

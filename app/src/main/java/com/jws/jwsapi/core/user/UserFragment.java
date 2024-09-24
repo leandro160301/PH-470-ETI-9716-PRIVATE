@@ -53,7 +53,6 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
         mainActivity=(MainActivity)getActivity();
         setupButtons();
         setupRecycler(view);
-
     }
 
     private void setupRecycler(@NonNull View view) {
@@ -149,7 +148,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
             dbHelper.deleteUser(mData.get(position).getUser());
         }
     }
-    
+
     private void showMessage(int user_error_create) {
         ToastHelper.message(getString(user_error_create),R.layout.item_customtoasterror,requireContext());
     }

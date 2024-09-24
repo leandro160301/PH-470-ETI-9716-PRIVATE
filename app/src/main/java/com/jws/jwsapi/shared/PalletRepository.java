@@ -27,7 +27,7 @@ public class PalletRepository {
     }
 
     public void setCurrentPallet(int palletId) {
-        currentPallet = palletDao.getPalletById(palletId);
+        currentPallet = palletDao.getPalletById(palletId, false);
         currentPalletId = palletId;
     }
 

@@ -16,8 +16,8 @@ public interface PalletDao {
     @Query("SELECT * FROM pallet WHERE is_closed = :open ORDER BY id DESC")
     LiveData<List<Pallet>> getAllPalletsAvaible(Boolean open);
 
-    @Query("SELECT * FROM pallet WHERE id = :id")
-    LiveData<Pallet> getPalletById(int id);
+    @Query("SELECT * FROM pallet WHERE id = :id and is_closed = :open")
+    LiveData<Pallet> getPalletById(int id, Boolean open);
 
     @Query("DELETE FROM pallet")
     void deleteAllPallets();

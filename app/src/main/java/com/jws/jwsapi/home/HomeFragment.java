@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment{
     }
 
     private void handleObserveWeighing() {
-        weighingViewModel.getCurrentPallet().observe(getViewLifecycleOwner(), this::handlePalletUpdate);
+        weighingViewModel.getCurrentPallet().observe(getViewLifecycleOwner(), this::updateUi);
 
         weighingViewModel.getLoading().observe(getViewLifecycleOwner(), this::handleLoadingUpdate);
 
@@ -107,6 +107,7 @@ public class HomeFragment extends Fragment{
         weighingViewModel.getErrorRequest().observe(getViewLifecycleOwner(), this::messageError);
 
         weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), this::handleWeighingResponse);
+
     }
 
     private void handleObservePallet() {
@@ -114,7 +115,7 @@ public class HomeFragment extends Fragment{
             if (palletCloseResponse == null) return;
             int toastLayout = palletCloseResponse.getStatus() ? R.layout.item_customtoastok : R.layout.item_customtoasterror;
             String message = palletCloseResponse.getStatus() ? requireContext().getString(R.string.toast_message_pallet_closed) : palletCloseResponse.getError();
-            ToastHelper.message(message, toastLayout, getContext());
+            showMessage(message, toastLayout);
         });
 
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
@@ -122,6 +123,17 @@ public class HomeFragment extends Fragment{
                 binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             }
         });
+        palletViewModel.getError().observe(getViewLifecycleOwner(), this::handleErrorPallet);
+    }
+
+    private void handleErrorPallet(String error) {
+        if (error != null) {
+            showMessage(error, R.layout.item_customtoasterror);
+        }
+    }
+
+    private void showMessage(String error, int item_customtoastok) {
+        ToastHelper.message(error, item_customtoastok,getContext());
     }
 
     private void handleWeighUpdate(String net, TextView binding) {
@@ -133,10 +145,10 @@ public class HomeFragment extends Fragment{
     private void handleWeighingResponse(WeighingResponse weighingResponse) {
         if(weighingResponse !=null){
             if(weighingResponse.getStatus()){
-                ToastHelper.message(requireContext().getString(R.string.toast_message_weighing_created),R.layout.item_customtoastok,getContext());
+                showMessage(requireContext().getString(R.string.toast_message_weighing_created), R.layout.item_customtoastok);
                 homeService.print(mainActivity, serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
             }else{
-                ToastHelper.message(weighingResponse.getError(),R.layout.item_customtoasterror,getContext());
+                showMessage(weighingResponse.getError(), R.layout.item_customtoasterror);
             }
         }
     }
@@ -147,26 +159,20 @@ public class HomeFragment extends Fragment{
         }
     }
 
-    private void handlePalletUpdate(Pallet pallet) {
-        if (pallet !=null) {
-            updateUi(pallet);
-        }
-    }
-
     private void messageError(String error) {
         if(error !=null){
-            ToastHelper.message(error,R.layout.item_customtoasterror,getContext());
+            showMessage(error, R.layout.item_customtoasterror);
         }
     }
 
     private void updateUi(Pallet pallet) {
-        binding.tvCantidad.setText(String.valueOf(pallet.getQuantity()));
-        binding.tvDone.setText(String.valueOf(pallet.getDone()));
-        binding.tvProduct.setText(pallet.getName());
-        binding.tvPalletOrigin.setText(pallet.getOriginPallet());
-        binding.tvPalletDestination.setText(pallet.getDestinationPallet());
-        binding.tvScale.setText(String.valueOf(pallet.getScaleNumber()));
-        binding.tvTotalNet.setText(pallet.getTotalNet());
+        binding.tvCantidad.setText(pallet!=null ? String.valueOf(pallet.getQuantity()) : "");
+        binding.tvDone.setText(pallet!=null ? String.valueOf(pallet.getDone()) : "");
+        binding.tvProduct.setText(pallet!=null ? pallet.getName() : "");
+        binding.tvPalletOrigin.setText(pallet!=null ? pallet.getOriginPallet() : "");
+        binding.tvPalletDestination.setText(pallet!=null ? pallet.getDestinationPallet() : "");
+        binding.tvScale.setText(pallet!=null ? String.valueOf(pallet.getScaleNumber()) : "");
+        binding.tvTotalNet.setText(pallet!=null ? pallet.getTotalNet() : "");
     }
 
     private void setupButtons() {

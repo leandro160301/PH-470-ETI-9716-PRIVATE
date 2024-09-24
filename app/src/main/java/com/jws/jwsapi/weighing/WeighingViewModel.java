@@ -84,7 +84,7 @@ public class WeighingViewModel extends ViewModel {
             WeighingRequest weighingRequest = new WeighingRequest(weighing.getSerialNumber(),weighing.getCode(), weighing.getName(), weighing.getNet(), weighing.getGross(), weighing.getTare());
             createWeighingRequest(weighingRequest,weighing);
         }else{
-            error.setValue("pallet null");
+            error.setValue("Error de pallet");
         }
     }
 

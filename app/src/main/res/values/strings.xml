@@ -440,6 +440,8 @@
     <string name="toast_navigation_new_pin_ok">PIN CORRECTO</string>
     <string name="toast_printer_rs232_error">Error para imprimir por puerto serie B</string>
     <string name="toast_printer_network_error">Error para imprimir, IP no valida</string>
+    <string name="button_text_6">CERRAR PALLET</string>
+    <string name="toast_error_close_pallet">Error de pallet</string>
 
 
 </resources>

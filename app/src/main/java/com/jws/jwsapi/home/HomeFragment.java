@@ -18,8 +18,10 @@ import com.jws.jwsapi.databinding.HomeFragmentBinding;
 import com.jws.jwsapi.core.container.ContainerButtonProvider;
 import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
 import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.pallet.PalletViewModel;
 import com.jws.jwsapi.service.ServiceViewModel;
 import com.jws.jwsapi.service.ServiceViewModelFactory;
+import com.jws.jwsapi.shared.PalletRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.pallet.Pallet;
@@ -39,9 +41,10 @@ public class HomeFragment extends Fragment{
 
     private HomeFragmentBinding binding;
     private ContainerButtonProvider buttonProvider;
-    MainActivity mainActivity;
-    WeighingViewModel weighingViewModel;
-    ServiceViewModel serviceViewModel;
+    private MainActivity mainActivity;
+    private WeighingViewModel weighingViewModel;
+    private ServiceViewModel serviceViewModel;
+    private PalletViewModel palletViewModel;
 
     @Inject
     UserManager userManager;
@@ -49,6 +52,8 @@ public class HomeFragment extends Fragment{
     WeighRepository repository;
     @Inject
     HomeService homeService;
+    @Inject
+    PalletRepository palletRepository;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +69,7 @@ public class HomeFragment extends Fragment{
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
         ServiceViewModelFactory factory = new ServiceViewModelFactory(mainActivity.mainClass.bza, repository);
         serviceViewModel = new ViewModelProvider(requireActivity(), factory).get(ServiceViewModel.class);
+        palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
 
         setupButtons();
 
@@ -72,16 +78,6 @@ public class HomeFragment extends Fragment{
     }
 
     private void observeViewModels() {
-        weighingViewModel.getCurrentPallet().observe(getViewLifecycleOwner(), this::handlePalletUpdate);
-
-        weighingViewModel.getLoading().observe(getViewLifecycleOwner(), this::handleLoadingUpdate);
-
-        weighingViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
-
-        weighingViewModel.getErrorRequest().observe(getViewLifecycleOwner(), this::messageError);
-
-        weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), this::handleWeighingResponse);
-
         repository.getNet().observe(getViewLifecycleOwner(), net -> handleWeighUpdate(net, binding.tvNet));
 
         repository.getGross().observe(getViewLifecycleOwner(), gross -> handleWeighUpdate(gross, binding.tvGross));
@@ -94,6 +90,37 @@ public class HomeFragment extends Fragment{
             binding.tvTotalNetUnit.setText(unit);
             binding.tvGrossUnit.setText(unit);
             binding.tvNetUnit.setText(unit);
+        });
+
+        handleObservePallet();
+
+        handleObserveWeighing();
+    }
+
+    private void handleObserveWeighing() {
+        weighingViewModel.getCurrentPallet().observe(getViewLifecycleOwner(), this::handlePalletUpdate);
+
+        weighingViewModel.getLoading().observe(getViewLifecycleOwner(), this::handleLoadingUpdate);
+
+        weighingViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
+
+        weighingViewModel.getErrorRequest().observe(getViewLifecycleOwner(), this::messageError);
+
+        weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), this::handleWeighingResponse);
+    }
+
+    private void handleObservePallet() {
+        palletViewModel.getPalletCloseResponse().observe(getViewLifecycleOwner(), palletCloseResponse -> {
+            if (palletCloseResponse == null) return;
+            int toastLayout = palletCloseResponse.getStatus() ? R.layout.item_customtoastok : R.layout.item_customtoasterror;
+            String message = palletCloseResponse.getStatus() ? requireContext().getString(R.string.toast_message_pallet_closed) : palletCloseResponse.getError();
+            ToastHelper.message(message, toastLayout, getContext());
+        });
+
+        palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading!=null){
+                binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            }
         });
     }
 
@@ -144,19 +171,29 @@ public class HomeFragment extends Fragment{
 
     private void setupButtons() {
         if (buttonProvider != null) {
-            setupButton(buttonProvider.getButton1(), R.string.button_text_1,null);
-            setupButton(buttonProvider.getButton2(), R.string.button_text_2,
-                    v -> btCreateWeighing());
-            setupButton(buttonProvider.getButton3(), R.string.button_text_3,
+            setupButton(buttonProvider.getButton1(), R.string.button_text_2,
+                    v -> createWeighing());
+            setupButton(buttonProvider.getButton2(), R.string.button_text_3,
                     v -> mainActivity.mainClass.openFragment(new PalletFragment()));
-            setupButton(buttonProvider.getButton4(), R.string.button_text_4,
+            setupButton(buttonProvider.getButton3(), R.string.button_text_4,
                     v -> mainActivity.mainClass.openFragment(new WeighingFragment()));
-            setupButton(buttonProvider.getButton5(), R.string.button_text_5,
-                    v -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
+            setupButton(buttonProvider.getButton4(), R.string.button_text_6, v -> closePallet());
+                    setupButton(buttonProvider.getButton5(), R.string.button_text_5,
+                            v -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
         }
     }
 
-    private void btCreateWeighing() {
+    private void closePallet() {
+        Pallet currentPallet = palletRepository.getCurrentPallet().getValue();
+        if (currentPallet != null) {
+            palletViewModel.closePallet(currentPallet.getSerialNumber());
+        } else {
+            messageError(getString(R.string.toast_error_close_pallet));
+        }
+
+    }
+
+    private void createWeighing() {
         String unit = repository.getUnit().getValue();
         String tare = repository.getTare().getValue();
         String net = repository.getNet().getValue();

@@ -96,14 +96,6 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
         }
     }
 
-    private static boolean isStaticPosition(Integer positionsElements, int x) {
-        return positionsElements == x;
-    }
-
-    private boolean isConcatenatedPosition(int position) {
-        return isStaticPosition(positionsElements.get(position), 2);
-    }
-
     private void handleInputText(int posi, String texto) {
         if(staticInternalElements ==null|| staticInternalElements.size()<= posi) return;
         staticInternalElements.set(posi, texto);
@@ -143,6 +135,22 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
         return isStaticPosition(selectedItem, constantsSize - 1);
     }
 
+    private boolean isStaticText(int i) {
+        return isStaticTextOption(i, labelManager.constantPrinterList.size());
+    }
+
+    private boolean isConcatenatedValue(int i) {
+        return isConcatenatedOption(i, labelManager.constantPrinterList.size());
+    }
+
+    private static boolean isStaticPosition(Integer positionsElements, int x) {
+        return positionsElements == x;
+    }
+
+    private boolean isConcatenatedPosition(int position) {
+        return isStaticPosition(positionsElements.get(position), 2);
+    }
+
     @Override
     public void spinnerSelection(int i, int position, LabelViewHolder holder) {
         try {
@@ -167,14 +175,6 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
             e.printStackTrace();
             ToastHelper.message("Ocurrió un error:"+e.getMessage(), R.layout.item_customtoasterror,context);
         }
-    }
-
-    private boolean isStaticText(int i) {
-        return isStaticTextOption(i, labelManager.constantPrinterList.size());
-    }
-
-    private boolean isConcatenatedValue(int i) {
-        return isConcatenatedOption(i, labelManager.constantPrinterList.size());
     }
 
     @NonNull

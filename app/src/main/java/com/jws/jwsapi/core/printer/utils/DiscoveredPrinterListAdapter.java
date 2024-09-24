@@ -1,18 +1,6 @@
-/***********************************************
- * CONFIDENTIAL AND PROPRIETARY 
- * 
- * The source code and other information contained herein is the confidential and the exclusive property of
- * ZIH Corp. and is subject to the terms and conditions in your end user license agreement.
- * This source code, and any other information contained herein, shall not be copied, reproduced, published, 
- * displayed or distributed, in whole or in part, in any medium, by any means, for any purpose except as
- * expressly permitted under such license agreement.
- * 
- * Copyright ZIH Corp. 2012
- * 
- * ALL RIGHTS RESERVED
- ***********************************************/
 package com.jws.jwsapi.core.printer.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -46,7 +34,7 @@ public class DiscoveredPrinterListAdapter extends BaseAdapter {
 
         mInflater = LayoutInflater.from(context);
 
-        discoveredPrinters = new ArrayList<DiscoveredPrinter>();
+        discoveredPrinters = new ArrayList<>();
 
         bluetoothIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.bt);
         networkIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.bt);
@@ -70,7 +58,7 @@ public class DiscoveredPrinterListAdapter extends BaseAdapter {
         TextView secondLine;
         ImageView icon;
 
-        View retVal = mInflater.inflate(R.layout.item_list_item_with_image_and_two_lines, null);
+        @SuppressLint({"ViewHolder", "InflateParams"}) View retVal = mInflater.inflate(R.layout.item_list_item_with_image_and_two_lines, null);
 
         firstLine = retVal.findViewById(R.id.list_item_text_1);
         firstLine.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -102,8 +90,5 @@ public class DiscoveredPrinterListAdapter extends BaseAdapter {
 	public DiscoveredPrinter getPrinter(int index) {
 		return discoveredPrinters.get(index);
 	}
-	
-	public void clearPrinters() {
-		discoveredPrinters.clear();
-	}
+
 }

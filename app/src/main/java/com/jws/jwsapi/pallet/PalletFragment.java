@@ -36,6 +36,8 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
     private FragmentPalletBinding binding;
     private PalletViewModel palletViewModel;
     private ButtonProvider buttonProvider;
+    private static final int PALLET_OPEN = 0;
+    private static final int PALLET_CLOSED = 1;
     MainActivity mainActivity;
     @Inject
     WeighRepository repository;
@@ -89,10 +91,10 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
             public void onTabSelected(@NonNull TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 switch (position) {
-                    case 0:
+                    case PALLET_OPEN:
                         palletViewModel.setupPalletOpen();
                         break;
-                    case 1:
+                    case PALLET_CLOSED:
                         palletViewModel.setupPalletClose();
                         break;
                 }

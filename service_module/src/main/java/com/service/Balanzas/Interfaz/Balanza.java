@@ -5,12 +5,12 @@ import java.util.concurrent.CountDownLatch;
 public interface Balanza {
     interface Struct{
         void setID(int numID,int numBza);
-        int getID(int numBza);
-        float getNeto(int numBza);
+        Integer getID(int numBza);
+        Float getNeto(int numBza);
         String getNetoStr(int numBza);
-        float getBruto(int numBza);
+        Float getBruto(int numBza);
         String getBrutoStr(int numBza);
-        float getTara(int numBza);
+        Float getTara(int numBza);
         String getTaraStr(int numBza);
         void setTara(int numBza);
         void setCero(int numBza);
@@ -18,13 +18,13 @@ public interface Balanza {
         String getTaraDigital(int numBza);
         Boolean getBandaCero(int numBza);
         void setBandaCero(int numBza, Boolean bandaCeroi);
-        float getBandaCeroValue(int numBza);
+        Float getBandaCeroValue(int numBza);
         void setBandaCeroValue(int numBza, float bandaCeroValue);
         Boolean getEstable(int numBza);
         String format(int numero, String peso);
         String getUnidad(int numBza);
         String getPicoStr(int numBza);
-        float getPico(int numBza);
+        Float getPico(int numBza);
         void init(int numBza);
         void escribir(String msj,int numBza);
         void stop(int numBza);
@@ -58,11 +58,11 @@ public interface Balanza {
         void onEvent();
         Boolean Itw410FrmSetear(int numero,String setPoint, int Salida);//void Itw410FrmSetear(int numero,String setPoint, int Salida);
         String Itw410FrmGetSetPoint(int numero);
-        int Itw410FrmGetSalida(int numero);
+        Integer Itw410FrmGetSalida(int numero);
         void Itw410FrmStart(int numero);
-        int Itw410FrmGetEstado(int numero);
+        Integer Itw410FrmGetEstado(int numero);
         String Itw410FrmGetUltimoPeso(int numero);
-        int Itw410FrmGetUltimoIndice(int numero);
+        Integer Itw410FrmGetUltimoIndice(int numero);
         void itw410FrmPause(int numero);
         void itw410FrmStop(int numero);
         void Itw410FrmSetTiempoEstabilizacion(int numero, int Tiempo);

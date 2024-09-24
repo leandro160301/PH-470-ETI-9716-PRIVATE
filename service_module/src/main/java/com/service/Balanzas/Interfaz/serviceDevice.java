@@ -10,11 +10,16 @@ public class serviceDevice {
         private ArrayList<String> Direccion;
         private int Numerobza;
         private Boolean Seteado;
+        private int NumBorrados=0;
 
+    public void setNumborrados(int numborrados) {this.NumBorrados=numborrados;}
+    public int getNumborrados() {
+        return NumBorrados;
+    }
     public int getNB() {
         return Numerobza;
     }
-    public void setSeteo(Boolean set) {Seteado=set;}
+    public void setSeteo(Boolean set) {this.Seteado=set;}
     public Boolean getSeteo() {
         return Seteado;
     }

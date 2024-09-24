@@ -1109,8 +1109,8 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     }
 
     @Override
-    public int Itw410FrmGetSalida(int numero) {
-        return -1;
+    public Integer Itw410FrmGetSalida(int numero) {
+        return null;
     }
 
     @Override
@@ -1119,8 +1119,8 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     }
 
     @Override
-    public int Itw410FrmGetEstado(int numero) {
-        return -1;
+    public Integer Itw410FrmGetEstado(int numero) {
+        return null;
     }
 
     @Override
@@ -1129,8 +1129,8 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     }
 
     @Override
-    public int Itw410FrmGetUltimoIndice(int numero) {
-        return -1;
+    public Integer Itw410FrmGetUltimoIndice(int numero) {
+        return null;
     }
 
     @Override
@@ -1154,7 +1154,7 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     }
 
     @Override
-    public float getPico(int numBza) {
+    public Float getPico(int numBza) {
         return pico;
     }
 
@@ -1254,11 +1254,11 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     }
 
     @Override
-    public int getID(int numBza) {
+    public Integer getID(int numBza) {
         return numeroid;
     }
 
-    public float getNeto(int numBza) {
+    public Float getNeto(int numBza) {
         return Neto;
     }
 
@@ -1268,7 +1268,7 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     }
 
     @Override
-    public float getBruto(int numBza) {
+    public Float getBruto(int numBza) {
         return Bruto;
     }
 
@@ -1278,8 +1278,8 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     }
 
     @Override
-    public float getTara(int numBza) {
-        return 0;
+    public Float getTara(int numBza) {
+        return null;
     }
 
     @Override
@@ -1324,7 +1324,7 @@ public class MINIMA_I implements Balanza.Struct, Serializable {
     }
 
     @Override
-    public float getBandaCeroValue(int numBza) {
+    public Float getBandaCeroValue(int numBza) {
         SharedPreferences preferences=mainActivity.getSharedPreferences(NOMBRE, Context.MODE_PRIVATE);
         return (preferences.getFloat(String.valueOf(numBza)+"_"+"pbandacero",5.0F));
     }

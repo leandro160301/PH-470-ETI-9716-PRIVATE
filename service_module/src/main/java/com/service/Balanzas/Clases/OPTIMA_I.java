@@ -16,6 +16,7 @@ import com.service.Balanzas.Interfaz.Balanza;
 import com.service.Comunicacion.OnFragmentChangeListener;
 import com.service.PuertosSerie.PuertosSerie;
 import com.service.PuertosSerie.PuertosSerie2;
+import com.service.R;
 import com.service.Utils;
 
 import java.io.IOException;
@@ -25,6 +26,8 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import kotlin.text.Regex;
 
 public class OPTIMA_I implements Balanza.Struct, Serializable {
 
@@ -42,7 +45,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
 
     public OnFragmentChangeListener fragmentChangeListener;
     public AppCompatActivity mainActivity;
-    Boolean estableBoo=false;
+
 
     Boolean PorDemandaBool=false;
     public PuertosSerie2 serialPort=null;
@@ -75,6 +78,8 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
     public String brutoStr="0",netoStr="0",taraStr="0",taraDigitalStr="0",picoStr="0";
     public int acumulador=0;
     public int numero=1;
+    private Boolean Establebool=false;
+    private Boolean SobrecargaBool=false;
 
 
     private OPTIMA_I context =null;
@@ -101,7 +106,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
         receiver = new PuertosSerie2.PuertosSerie2Listener() {
             @Override
             public void onMsjPort(String data) {
-                    System.out.println("OPTIMA DATA: "+ data);
+                    System.out.println("OPTIMA DATA: "+data);
                 String[] array= new ArrayList<>().toArray(new String[0]);
                 if(estado==M_MODO_BALANZA) {
                     String data2 = "";
@@ -129,6 +134,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
                             estadoNeto = (arrbin[5] == '1');
                             estadoPesoNeg = (arrbin[4] == '1');
                             estadoBajoCero = (arrbin[3] == '1');
+                            estadoBzaEnCero = (arrbin[2] == '1');
                             estadoBzaEnCero = (arrbin[2] == '1');
                             estadoBajaBat = (arrbin[1] == '1');
                             estadoEstable = (arrbin[0] == '1');
@@ -212,109 +218,126 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
                         acumulador++;
 
                     }else{
-                    if (data.toLowerCase().contains(filtro.toLowerCase())) {
+//                        System.out.println("OLA?");
 
-                        if (data.toLowerCase().contains("E".toLowerCase())) {
-                            estable = "E";
-                            estableBoo= true;
-                        } else if (data.toLowerCase().contains("S".toLowerCase())) {
-                            estable = "S";
-                            estableBoo= false;
-                        } else {
-                            estable = "";
-                            estableBoo= false;
-                        }
-                        array = data.split(filtro);
+                            if (!data.toLowerCase().contains(filtro.toLowerCase())) {
+                                data2 = data;
+                                 if (data2.toLowerCase().contains("E".toLowerCase()) && !data2.matches("kg")) {
+//                                    System.out.println("Q TAL"+"??????????????????????????"+ data2);
+                                    estable = "E";
+                                    Establebool = true;
+                                    SobrecargaBool = false;
 
-                       // System.out.println("ESTAMO EN OPTIMA arrlenght"+array.length);
-                        if (array.length > 0) {
-                            data2 = array[0];
-                            data2 = data2.replace(" ", "");
-                            data2 = data2.replace("\r\n", "");
-                            data2 = data2.replace("\r", "");
-                            data2 = data2.replace("\n", "");
-                            data2 = data2.replace("\\u0007", "");
-                            data2 = data2.replace("O", "");
-                            data2 = data2.replace("E", "");
-                            data2 = data2.replace("kg", "");
-                            data = data2.replace(".", "");
+                                } else if (data2.toLowerCase().contains("S".toLowerCase()) && !data2.matches("kg")) {
+//                                    System.out.println("PARA EL ORTO Y VOS?"+"?????????????????????????? "+ data2);
 
-                         //   System.out.println("ESTAMO EN OPTIMA data"+ data);
-
-
-                            if (Utils.isNumeric(data2)) {
-
-                                System.out.println("ESTAMO EN OPTIMA num"+ data2);
-
-                                int index = data2.indexOf('.'); // Busca el índice del primer punto en la cadena
-                                puntoDecimal = data.length() - index;
-                                // uso bigdecimal porque si restaba me daba numeros raros detras de la coma
-                                brutoStr = data2;
-                                BigDecimal number = new BigDecimal(brutoStr);
-                                brutoStr = removeLeadingZeros(number);
-
-                                System.out.println("ESTAMO EN OPTIMA brutostr"+ brutoStr);
-
-                                Bruto = Float.parseFloat(data2);
-
-                                //Bruto= redondear(Bruto);
-                                //muestreoinstantaneo= bbruto.floatValue();
-                                if (taraDigital == 0) {
-                                    Neto = Bruto - Tara;
-                                    //Neto= redondear(Neto);
-                                    netoStr = String.valueOf(Neto);
-                                    if (index == -1) {
-                                        netoStr = netoStr.replace(".0", "");
-                                    }
+                                    estable = "S";
+                                    Establebool = false;
+                                    SobrecargaBool = true;
                                 } else {
-                                    Neto = Bruto - taraDigital;
-                                    //Neto= redondear(Neto);
-                                    netoStr = String.valueOf(Neto);
+                                    if(!data2.matches("kg")) {
 
-                                    System.out.println("ESTAMO EN OPTIMA indice"+ index);
-
-                                    if (index == -1) {
-                                        netoStr = netoStr.replace(".0", "");
-
-                                        System.out.println("ESTAMO EN OPTIMA netostr"+ netoStr);
+//                                        System.out.println("????????????? TMB!   " + data2);
+                                        estable = "";
+                                        Establebool = false;
+                                        SobrecargaBool = false;
                                     }
                                 }
-                                if (index != -1 && puntoDecimal > 0) {
-                                    String formato = "0.";
+                            }
 
-                                    StringBuilder capacidadBuilder = new StringBuilder(formato);
-                                    for (int i = 0; i < puntoDecimal; i++) {
-                                        capacidadBuilder.append("0");
+                            array = data.split(filtro);
+
+                            // System.out.println("ESTAMO EN OPTIMA arrlenght"+array.length);
+                            if (array.length > 0) {
+
+//                            System.out.println(" LOL TRANQUI");
+                                data2 = array[0];
+                                data2 = data2.replace(" ", "");
+                                data2 = data2.replace("\r\n", "");
+                                data2 = data2.replace("\r", "");
+                                data2 = data2.replace("\n", "");
+                                data2 = data2.replace("\\u0007", "");
+                                data2 = data2.replace("O", "");
+                                data2 = data2.replace("E", "");
+                                data2 = data2.replace("kg", "");
+                                data = data2.replace(".", "");
+
+                                //   System.out.println("ESTAMO EN OPTIMA data"+ data);
+
+
+                                if (Utils.isNumeric(data2)) {
+
+                                    System.out.println("ESTAMO EN OPTIMA num" + data2);
+
+                                    int index = data2.indexOf('.'); // Busca el índice del primer punto en la cadena
+                                    puntoDecimal = data.length() - index;
+                                    // uso bigdecimal porque si restaba me daba numeros raros detras de la coma
+                                    brutoStr = data2;
+                                    BigDecimal number = new BigDecimal(brutoStr);
+                                    brutoStr = removeLeadingZeros(number);
+
+                                    System.out.println("ESTAMO EN OPTIMA brutostr" + brutoStr);
+
+                                    Bruto = Float.parseFloat(data2);
+
+                                    //Bruto= redondear(Bruto);
+                                    //muestreoinstantaneo= bbruto.floatValue();
+                                    if (taraDigital == 0) {
+                                        Neto = Bruto - Tara;
+                                        //Neto= redondear(Neto);
+                                        netoStr = String.valueOf(Neto);
+                                        if (index == -1) {
+                                            netoStr = netoStr.replace(".0", "");
+                                        }
+                                    } else {
+                                        Neto = Bruto - taraDigital;
+                                        //Neto= redondear(Neto);
+                                        netoStr = String.valueOf(Neto);
+
+                                        System.out.println("ESTAMO EN OPTIMA indice" + index);
+
+                                        if (index == -1) {
+                                            netoStr = netoStr.replace(".0", "");
+
+                                            System.out.println("ESTAMO EN OPTIMA netostr" + netoStr);
+                                        }
                                     }
-                                    formato = capacidadBuilder.toString();
-                                    DecimalFormat df = new DecimalFormat(formato);
-                                    netoStr = df.format(Neto);
-                                    taraDigitalStr = df.format(taraDigital);
-                                    System.out.println("ESTAMO EN OPTIMA tarastr"+ taraDigitalStr);
+                                    if (index != -1 && puntoDecimal > 0) {
+                                        String formato = "0.";
 
-                                    //taraStr = df.format(ta);
-                                }
-                                if (Neto > pico) {
-                                    pico = Neto;
-                                    picoStr = netoStr;
-                                }
-                                System.out.println("BANDA CERO: "+ Bruto+  pesoBandaCero);
-                                if (Bruto < pesoBandaCero) {
-                                    bandaCero = true;
-                                } else {
-                                    if (inicioBandaPeso) {
-                                        bandaCero = false;
+                                        StringBuilder capacidadBuilder = new StringBuilder(formato);
+                                        for (int i = 0; i < puntoDecimal; i++) {
+                                            capacidadBuilder.append("0");
+                                        }
+                                        formato = capacidadBuilder.toString();
+                                        DecimalFormat df = new DecimalFormat(formato);
+                                        netoStr = df.format(Neto);
+                                        taraDigitalStr = df.format(taraDigital);
+                                        System.out.println("ESTAMO EN OPTIMA tarastr" + taraDigitalStr);
+
+                                        //taraStr = df.format(ta);
                                     }
+                                    if (Neto > pico) {
+                                        pico = Neto;
+                                        picoStr = netoStr;
+                                    }
+                                    System.out.println("BANDA CERO: " + Bruto + pesoBandaCero);
+                                    if (Bruto < pesoBandaCero) {
+                                        bandaCero = true;
+                                    } else {
+                                        if (inicioBandaPeso) {
+                                            bandaCero = false;
+                                        }
+
+                                    }
+                                    acumulador++;
 
                                 }
-                                acumulador++;
+                                //    System.out.println("OPTIMA:jijiji"+read);
+                                data = "";
 
                             }
-                            //    System.out.println("OPTIMA:jijiji"+read);
-                            data = "";
 
-                        }
-                    }
                     }
 
                 if(PorDemandaBool){
@@ -324,9 +347,12 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
         }
         };
 
-
+        try{
         readers = new PuertosSerie2.SerialPortReader(serialPort.getInputStream(), receiver);
-
+        }catch (Exception e){
+            //+"ERROR AL INICIALIZAR SERIALPORT"
+            Utils.Mensaje(e.getMessage(), R.layout.item_customtoasterror,mainActivity);
+        }
     }
     @Override
     public void init(int numBza){
@@ -393,7 +419,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
         //String binario = "10000101"; // Número binario
         Integer decimal = Integer.parseInt(str, 2); // Convertir binario a decimal
         String hexadecimal = Integer.toHexString(decimal).toUpperCase(); // Convertir decimal a hexadecimal
-        System.out.println("OPTIMA ERRRR"+hexadecimal);
+//        System.out.println("OPTIMA ERRRR"+hexadecimal);
         while(hexadecimal.length()<2){
             hexadecimal="0"+hexadecimal;
         }
@@ -415,6 +441,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
         Parametros+="0";//#005P820000000500F0#013 1382000027100172E0001C3F81090000000500F0 reg
         Parametros+="0";//#005P8200000005000F#013 1382000027100172E0001C3F810900000005000F bot
         Parametros+="\r";
+        // 00000110
         System.out.println("OPTIMA:"+Parametros.toString());
 
         return  Parametros;
@@ -469,7 +496,7 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
 
                             if(listErr!=null){
                                 for (int i = 0; i < listErr.size(); i++) {
-                                    System.out.println("OPTIMA EERRRR"+listErr.get(i));
+//                                    System.out.println("OPTIMA EERRRR"+listErr.get(i));
                                     //Mensaje(listErr.get(i), R.layout.item_customtoasterror);
                                 }
                             }
@@ -500,8 +527,8 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
             }
 
 
-    public String Guardar_cal(){
-        return "\u0005S\r";
+    public void Guardar_cal(){
+        serialPort.write("\u0005S\r");
     }
     public String reset(){
         return "\u0005T\r";
@@ -1027,7 +1054,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public int Itw410FrmGetSalida(int numero) {
+    public Integer Itw410FrmGetSalida(int numero) {
         return -1;
     }
 
@@ -1037,7 +1064,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public int Itw410FrmGetEstado(int numero) {
+    public Integer Itw410FrmGetEstado(int numero) {
         return -1;
     }
 
@@ -1047,7 +1074,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public int Itw410FrmGetUltimoIndice(int numero) {
+    public Integer Itw410FrmGetUltimoIndice(int numero) {
         return -1;
     }
 
@@ -1196,7 +1223,13 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
                             System.out.println("OPTIMA:CALIBRACION");
                             System.out.println("OPTIMA:Cali");
                             estado = M_MODO_CALIBRACION;
-                            openCalibracion(numero);
+
+                            try {
+                                Thread.sleep(500);
+                                openCalibracion(numero);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                         contador = 16;
                     }
@@ -1204,15 +1237,25 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
 
                     if (read.toLowerCase().contains(filtro.toLowerCase())) {
-                        System.out.println("MODO BZA active");
+//                        System.out.println("MODO BZA active");
                         estado = M_MODO_BALANZA;
                         readers.startReading();
                         if (read.toLowerCase().contains("E".toLowerCase())) {
                             estable = "E";
+                            Establebool = true;
+                            SobrecargaBool=false;
+
+//                            System.out.println("Q TAL");
+
                         } else if (read.toLowerCase().contains("S".toLowerCase())) {
+
                             estable = "S";
+                            Establebool=false;
+                            SobrecargaBool=true;
                         } else {
                             estable = "";
+                            Establebool = false;
+                            SobrecargaBool=false;
                         }
 
 
@@ -1225,12 +1268,12 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
                         }
 
                     }else{
-                        if(contador<50) {
-                            System.out.println("buscando no activamente"+ contador);
-                            mHandler.postDelayed(GET_PESO_cal_bza, 1000);
-                        }else{
-                            contador++;
-                        }
+//                        if(contador<30) {
+//                            System.out.println("buscando no activamente"+ contador);
+//                            contador++;
+//                            mHandler.postDelayed(GET_PESO_cal_bza, 1000);
+//
+//                        }
                     }
 
 
@@ -1248,12 +1291,12 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public int getID( int numBza) {
+    public Integer getID( int numBza) {
         return numeroid;
     }
 
     @Override
-    public float getNeto(int numBza) {
+    public Float getNeto(int numBza) {
         return Neto;
     }
 
@@ -1263,7 +1306,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public float getBruto(int numBza) {
+    public Float getBruto(int numBza) {
         return Bruto;
     }
 
@@ -1273,7 +1316,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public float getTara(int numBza) {
+    public Float getTara(int numBza) {
         return Tara;
     }
 
@@ -1319,7 +1362,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public float getBandaCeroValue(int numBza) {
+    public Float getBandaCeroValue(int numBza) {
         SharedPreferences preferences=mainActivity.getSharedPreferences(NOMBRE, Context.MODE_PRIVATE);
         return (preferences.getFloat(String.valueOf(numBza)+"_"+"pbandacero",5.0F));
     }
@@ -1334,8 +1377,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
     @Override
     public Boolean getEstable(int numBza) {
-
-        return estableBoo;
+        return Establebool;
     }
 
     public String format(String numero) {
@@ -1388,7 +1430,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public float getPico(int numBza) {
+    public Float getPico(int numBza) {
         return pico;
     }
 
@@ -1432,7 +1474,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
     @Override
     public Boolean getSobrecarga(int numBza) {
-        return null;
+        return SobrecargaBool;
     }
 
     @Override

@@ -60,23 +60,23 @@ public class UserManager implements UserLoginInterface {
 
     @Override
     public boolean login(String password, String user) {
-        boolean logeo=false;
+        boolean login=false;
         if(!password.isEmpty() && !user.isEmpty()){
             if((password.equals(preferencesManagerBase.getPin())) && user.equals("ADMINISTRADOR")){
                 userLevel = ROLE_ADMINISTRATOR;
-                logeo=true;
+                login=true;
                 userName ="ADMINISTRADOR";
             }
             if((password.equals("3031")) && user.equals("PROGRAMADOR")){
                 userLevel = ROLE_PROGRAMMER;
-                logeo=true;
+                login=true;
                 userName ="PROGRAMADOR";
             }
-            if(!logeo){
+            if(!login){
                 searchUser(user, password);
             }
         }
-        return logeo;
+        return login;
     }
 
     @Override

@@ -97,7 +97,7 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
     }
 
     @Override
-    public int Itw410FrmGetSalida(int numero) {
+    public Integer Itw410FrmGetSalida(int numero) {
         return -1;
     }
 
@@ -107,7 +107,7 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
     }
 
     @Override
-    public int Itw410FrmGetEstado(int numero) {
+    public Integer Itw410FrmGetEstado(int numero) {
         return -1;
     }
 
@@ -117,7 +117,7 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
     }
 
     @Override
-    public int Itw410FrmGetUltimoIndice(int numero) {
+    public Integer Itw410FrmGetUltimoIndice(int numero) {
         return -1;
     }
 
@@ -203,13 +203,13 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
     }
 
     @Override
-    public int getID(int numBza) {
+    public Integer getID(int numBza) {
         return numeroid;
     }
 
     @Override
-    public float getNeto(int numBza) {
-        return 0;
+    public Float getNeto(int numBza) {
+        return null;
     }
 
     @Override
@@ -218,8 +218,8 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
     }
 
     @Override
-    public float getBruto(int numBza) {
-        return 0;
+    public Float getBruto(int numBza) {
+        return null;
     }
 
     @Override
@@ -228,8 +228,8 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
     }
 
     @Override
-    public float getTara(int numBza) {
-        return 0;
+    public Float getTara(int numBza) {
+        return null;
     }
 
     @Override
@@ -268,8 +268,8 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
     }
 
     @Override
-    public float getBandaCeroValue(int numBza) {
-        return 0;
+    public Float getBandaCeroValue(int numBza) {
+        return null;
     }
 
     @Override
@@ -298,8 +298,8 @@ public class SPIDER3 implements Balanza, Balanza.Struct {
     }
 
     @Override
-    public float getPico(int numBza) {
-        return 0;
+    public Float getPico(int numBza) {
+        return null;
     }
 
     @Override

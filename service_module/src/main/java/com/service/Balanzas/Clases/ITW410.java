@@ -12,6 +12,7 @@ import com.service.Comunicacion.OnFragmentChangeListener;
 import com.service.Modbus.ModbusMasterRtu;
 import com.service.Modbus.Req.ModbusReqRtuMaster;
 import com.service.PuertosSerie.PuertosSerie2;
+import com.zgkxzx.modbus4And.requset.ModbusReq;
 import com.zgkxzx.modbus4And.requset.OnRequestBack;
 
 import java.io.Serializable;
@@ -75,26 +76,26 @@ public class ITW410 implements Balanza.Struct, Serializable {
 
     @Override
     public void init(int numBza) {
-
+        System.out.println("INICIADO EL ITW EN "+numBza);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ModbusReqRtuMaster Modbus;
+//                ModbusReqRtuMaster Modbus;
                 try {
-                    ModbusMasterRtu modbusmasterinit= new ModbusMasterRtu();
+//                    ModbusMasterRtu modbusmasterinit= new ModbusMasterRtu();
 
                     // Modbus = modbusmasterinit.init(finalPort,modbus.getBaud(),modbus.getDatabit(),modbus.getStopbit(),modbus.getParity());
 
-                    Modbus =modbusmasterinit.init(Service.PUERTO_A, Integer.parseInt(configuracionModbus.get(1)),Integer.parseInt(configuracionModbus.get(2)),Integer.parseInt(configuracionModbus.get(1)),Integer.parseInt(configuracionModbus.get(4))); //<configuracionModbus>
-                    System.out.println("INITIALIZATING");
-                    if (Modbus != null) {
-                        ModbusRtuMaster = Modbus;
+//                    Modbus =modbusmasterinit.init(Service.PUERTO_A, Integer.parseInt(configuracionModbus.get(1)),Integer.parseInt(configuracionModbus.get(2)),Integer.parseInt(configuracionModbus.get(1)),Integer.parseInt(configuracionModbus.get(4))); //<configuracionModbus>
+//                    System.out.println("INITIALIZATING");
+//                    if (Modbus != null) {
+//                        ModbusRtuMaster = Modbus;
                         estado=M_MODO_BALANZA;
                         GET_PESO_cal_bza.run();
                         pesoBandaCero= getBandaCeroValue(numBza);
                         puntoDecimal=get_PuntoDecimal();
                         ultimaCalibracion=get_UltimaCalibracion();
-                    }
+//                    }
 
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -308,12 +309,13 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     public  int subnombre;
     private int numerobza= 0;
 
-    public ITW410( int numBza, BalanzaService activity, OnFragmentChangeListener fragmentChangeListener, int numbza410,ArrayList<String> configuracionModbus) {
+    public ITW410(int numBza, BalanzaService activity, OnFragmentChangeListener fragmentChangeListener, int numbza410, ModbusReqRtuMaster modbus) {
         this.numerobza = numBza;
         this.Service = activity;
         this.fragmentChangeListener=fragmentChangeListener;
         context=this;
-        this.configuracionModbus = configuracionModbus;
+        this.ModbusRtuMaster = modbus;
+//        this.configuracionModbus = configuracionModbus;
         this.subnombre =numbza410;
 
     }
@@ -732,7 +734,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
         return Preferencias.getInt(String.valueOf(numeroSlave)+"_"+"div",0);
 
     }
-    public int get_PuntoDecimal(){
+    public Integer get_PuntoDecimal(){
         SharedPreferences Preferencias=Service.activity.getSharedPreferences("ITW410",Context.MODE_PRIVATE);
         int lea=Preferencias.getInt(String.valueOf(numeroSlave)+"_"+"pdecimal", 1);
         System.out.println("MINIMA CALIBRACION PUNTO DECIMAL: "+String.valueOf(lea));
@@ -912,7 +914,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
 
     @Override
-    public int Itw410FrmGetSalida(int numero) {
+    public Integer Itw410FrmGetSalida(int numero) {
         final short[][] res = {new short[0]};
         final int[] response = {-1};
         CountDownLatch latch = new CountDownLatch(1);
@@ -968,7 +970,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
 
     @Override
-    public int Itw410FrmGetEstado(int numero) {
+    public Integer Itw410FrmGetEstado(int numero) {
         return estado410;
     }
 
@@ -1011,7 +1013,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
         Service.openServiceFragment2();
     }
     @Override
-    public int Itw410FrmGetUltimoIndice(int numero) {
+    public Integer Itw410FrmGetUltimoIndice(int numero) {
         final short[][] res = {new short[0]};
         final int[] response = {-1};
         final CountDownLatch latch = new CountDownLatch(1);
@@ -1105,7 +1107,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
 
     @Override
-    public float getPico(int numBza) {
+    public Float getPico(int numBza) {
         return pico;
     }
 
@@ -1115,11 +1117,11 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
 
     @Override
-    public int getID(int numBza) {
+    public Integer getID(int numBza) {
         return this.numeroSlave;
     }
 
-    public float getNeto(int numBza) {
+    public Float getNeto(int numBza) {
         return Neto;
     }
     @Override
@@ -1128,7 +1130,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
 
     @Override
-    public float getBruto(int numBza) {return Bruto;
+    public Float getBruto(int numBza) {return Bruto;
     }
 
     @Override
@@ -1137,8 +1139,8 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
 
     @Override
-    public float getTara(int numBza) {
-        return 0;
+    public Float getTara(int numBza) {
+        return null;
     }
 
     @Override
@@ -1424,7 +1426,7 @@ Runnable GET_PESO_cal_bza = new Runnable() {
     }
 
     @Override
-    public float getBandaCeroValue(int numBza) {
+    public Float getBandaCeroValue(int numBza) {
         SharedPreferences preferences=Service.activity.getSharedPreferences(NOMBRE, Context.MODE_PRIVATE);
         return (preferences.getFloat(String.valueOf(numBza)+"_"+"pbandacero",5.0F));
     }

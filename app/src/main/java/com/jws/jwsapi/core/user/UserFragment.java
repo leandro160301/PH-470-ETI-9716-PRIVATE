@@ -64,7 +64,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener {
     private void setupRecycler(@NonNull View view) {
         recycler = view.findViewById(R.id.listausuarios);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new UserAdapter(getContext(), userManager.getUsers(),this);
+        adapter = new UserAdapter(userManager.getUsers(),this);
         recycler.setAdapter(adapter);
     }
 

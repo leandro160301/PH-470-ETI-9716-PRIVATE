@@ -159,7 +159,7 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public int Itw410FrmGetSalida(int numero) {
+    public Integer Itw410FrmGetSalida(int numero) {
         return -1;
     }
 
@@ -169,7 +169,7 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public int Itw410FrmGetEstado(int numero) {
+    public Integer Itw410FrmGetEstado(int numero) {
         return -1;
     }
 
@@ -179,7 +179,7 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public int Itw410FrmGetUltimoIndice(int numero) {
+    public Integer Itw410FrmGetUltimoIndice(int numero) {
         return -1;
     }
 
@@ -744,12 +744,12 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public int getID( int numBza) {
+    public Integer getID( int numBza) {
         return numeroid;
     }
 
     @Override
-    public float getNeto(int numBza) {
+    public Float getNeto(int numBza) {
         return Neto;
     }
 
@@ -759,7 +759,7 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public float getBruto(int numBza) {
+    public Float getBruto(int numBza) {
         return Bruto;
     }
 
@@ -769,8 +769,8 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public float getTara(int numBza) {
-        return 0;
+    public Float getTara(int numBza) {
+        return null;
     }
 
     @Override
@@ -816,7 +816,7 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public float getBandaCeroValue(int numBza) {
+    public Float getBandaCeroValue(int numBza) {
         SharedPreferences preferences=activity.getSharedPreferences(NOMBRE, Context.MODE_PRIVATE);
         return (preferences.getFloat(String.valueOf(numBza)+"_"+"pbandacero",5.0F));
     }
@@ -866,7 +866,7 @@ public class R31P30_I implements Balanza, Balanza.Struct{
     }
 
     @Override
-    public float getPico(int numBza) {
+    public Float getPico(int numBza) {
         return pico;
     }
 

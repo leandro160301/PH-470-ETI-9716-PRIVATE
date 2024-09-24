@@ -8,6 +8,7 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.label.LabelModel;
+import com.jws.jwsapi.core.label.LabelVariables;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
@@ -75,7 +76,7 @@ public class PrinterHelper {
                 int elementIndex = elementsInt.get(i);
 
                 if(elementIndex < constantListSize){
-                    String finalElement = getFinalElementValue(currentLabel, elementsInt, elementsFijo, i);
+                    String finalElement = getFinalElementValue(elementsInt.get(i), currentLabel, elementsFijo, i,true);
                     addIfNotNull(finalElements, finalElement);
                 }else if(elementIndex < variableListSize+constantListSize){
                     int variableIndex = elementIndex-constantListSize;
@@ -97,8 +98,8 @@ public class PrinterHelper {
         if(finalElement !=null) finalElements.add(finalElement);
     }
 
-    private String getFinalElementValue(String currentLabel, List<Integer> ListElementsInt, List<String> ListElementsFijo, int i) {
-        switch (ListElementsInt.get(i)){
+    private String getFinalElementValue(Integer concatValue, String currentLabel,  List<String> ListElementsFijo, Integer i, boolean isFinalElement) {
+        switch (concatValue){
             case 0: return "";
             case 1: return mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
             case 2: return mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
@@ -107,10 +108,10 @@ public class PrinterHelper {
             case 5: return Utils.getFecha();
             case 6: return Utils.getHora();
             default:
-                if(ListElementsInt.get(i)==labelManager.constantPrinterList.size()-1){
+                if(isFinalElement && concatValue==labelManager.constantPrinterList.size()-1) {
                     return getConcatenatedValue(currentLabel, i);
                 }
-                if(ListElementsInt.get(i)==labelManager.constantPrinterList.size()-2){
+                if(isFinalElement && concatValue==labelManager.constantPrinterList.size()-2){
                     return ListElementsFijo.get(i);
                 }
             break;
@@ -127,7 +128,7 @@ public class PrinterHelper {
     @NonNull
     private String getConcatenatedValue(String currentLabel, int i) {
         List<Integer> listElementsConcat = printerPreferences.getListConcat(currentLabel, i);
-        String separador = printerPreferences.getSeparator(currentLabel, i);
+        String separator = printerPreferences.getSeparator(currentLabel, i);
         StringBuilder concat = new StringBuilder();
 
         if (listElementsConcat != null) {
@@ -138,38 +139,26 @@ public class PrinterHelper {
             for (Integer concatValue : listElementsConcat) {
                 if (concatValue < totalSize) {
                     if (concatValue < constSize) {
-                        concat.append(getConcatValue(concat.toString(), concatValue)).append(separador);
+                        String concatElement = getFinalElementValue(concatValue,null,null,null,false);
+                        if(concatElement!=null) {
+                            concat.append(concatElement).append(separator);
+                        }
                     } else {
                         int varIndex = concatValue - constSize;
-                        concat.append(labelManager.varPrinterList.get(varIndex).value()).append(separador);
+                        concat.append(labelManager.varPrinterList.get(varIndex).value()).append(separator);
                     }
                 }
             }
         }
-        return deleteLastSeparator(separador, concat.toString());
-    }
-
-    private String getConcatValue(String concat, Integer concatValue) {
-        switch (concatValue){
-            case 0:return "";
-            case 1:return mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza);
-            case 2:return mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza);
-            case 3:return mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza);
-            case 4:return userManager.getCurrentUser();
-            case 5:return Utils.getFecha();
-            case 6:return Utils.getHora();
-        }
-        return concat;
+        return removeLastSeparator(separator, concat.toString());
     }
 
     @NonNull
-    private static String deleteLastSeparator(String separador, String concat) {
-        StringBuilder stringBuilder = new StringBuilder(concat);
-        int lastCommaIndex = stringBuilder.lastIndexOf(separador);
-        if (lastCommaIndex >= 0) {
-            stringBuilder.deleteCharAt(lastCommaIndex);
+    public static String removeLastSeparator(String separated, String concat) {
+        if (concat.endsWith(separated)) {
+            return concat.substring(0, concat.length() - separated.length());
         }
-        return stringBuilder.toString();
+        return concat;
     }
 
     private static boolean areElementsMatching(List<Integer> ListElementsInt, List<String> ListElementsFijo, String[] arr) {

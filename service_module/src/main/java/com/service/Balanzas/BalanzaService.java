@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.service.Balanzas.Clases.ITW410;
 import com.service.Balanzas.Clases.MINIMA_I;
-import com.service.Balanzas.Fragments.ServiceFragment2;
+import com.service.Balanzas.Fragments.ServiceFragment;
 import com.service.Balanzas.Interfaz.Balanza;
 import com.service.Balanzas.Clases.OPTIMA_I;
 import com.service.Balanzas.Interfaz.modbus;
@@ -24,6 +24,7 @@ import com.service.Modbus.Req.ModbusReqRtuMaster;
 import com.service.PuertosSerie.PuertosSerie2;
 import com.service.R;
 import com.service.Utils;
+import com.zgkxzx.modbus4And.requset.ModbusReq;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class BalanzaService implements Serializable {
     public ArrayList<ModbusMasterRtu> ModbusList;
     private PuertosSerie2 serialPortA;
     private PuertosSerie2 serialPortB;
-    ServiceFragment2 ServiceFragment2= new ServiceFragment2();
+    ServiceFragment ServiceFragment= new ServiceFragment();
 
     private PuertosSerie2 serialPortC;
     public static Impresoras Impresoras;
@@ -65,45 +66,108 @@ public class BalanzaService implements Serializable {
 
     public Boolean initializateSerialPort(int baudrate_A,int stopbit_A,int databits_A,int parity_A,int flowcon_A,int flags_A,int baudrate_B,int stopbit_B,int databits_B,int parity_B,int flowcon_B,int flags_B,int baudrate_C,int stopbit_C,int databits_C,int parity_C,int flowcon_C,int flags_C){
         //Inicia los puertos de la pantalla
-
+        CountDownLatch latch = new CountDownLatch(1);
          A = new PuertosSerie2();
         SerialPort AS=A.open(PUERTO_A,baudrate_A,stopbit_A,databits_A,parity_A,flowcon_A,flags_A);
          B= new PuertosSerie2();
         SerialPort BS=B.open(PUERTO_B,baudrate_B,stopbit_B,databits_B,parity_B,flowcon_B,flags_B);
          C= new PuertosSerie2();
         SerialPort CS=C.open(PUERTO_C,baudrate_C,stopbit_C,databits_C,parity_C,flowcon_C,flags_C);
+        Boolean res=false;
         if (AS!=null&&BS!=null&&CS!=null){
             serialPortA=A;
             serialPortB=B;
             serialPortC=C;
-            return false;
+            latch.countDown();
+            res= false;
         }else{
             Mensaje("ERROR_PUERTOS",R.layout.item_customtoasterror,activity);
-            return true;
+            res = true;
         }
+        try {
+            latch.await(1000,TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return res;
     }
 
     public void init() {
+    Utils.clearCache(activity.getApplicationContext());
 
-        try{
-            Utils.clearCache(activity.getApplicationContext());
-            initializateSerialPort(
-                    baudA, stopBitA, dataBitsA, parityA, 0, 0,
-                    baudB, stopBitB, dataBitsB, parityB, 0, 0,
-                    baudC, stopBitC, dataBitsC, parityC, 0, 0);
-            Thread.sleep(1000);
-        }catch (Exception e){
-        }
+        System.out.println("SYSTEMOUTADOWN");
+        SettingsDef();
          Impresoras  = new Impresoras();
          Balanzas = new Balanzas();
-         Balanzas.initializateBalanza();
+        ArrayList<serviceDevice> balanzasList =Balanzas.get_balanzalistglob();
+        System.out.println("SIZE DEBUG AAAAAA"+balanzasList.size());
+
+        if(balanzasList.size()>=1 && balanzasList.get(0).getSeteo()){
+
+            Balanzas.initializateBalanza(balanzasList);
+        }else{
+            initializateSerialPort(baudA,stopBitA,dataBitsA,parityA,0,0,baudB,stopBitB,dataBitsB,parityB,0,0,baudC,stopBitC,dataBitsC,parityC,0,0);
+        }
+
     }
     public void openServiceFragment2(){
-        ServiceFragment2 fragment = ServiceFragment2.newInstance(Service);
+        ServiceFragment fragment = ServiceFragment.newInstance(Service);
         Bundle args = new Bundle();
         args.putSerializable("instanceService", Service);
         fragmentChangeListener.openFragmentService( fragment,args);
     }
+    private void SettingsDef(){
+        String tipo="";
+        int num=0;int numbza=0;
+        SharedPreferences Preferencias=activity.getSharedPreferences("devicesService",Context.MODE_PRIVATE);
+        ArrayList<serviceDevice> Arraydevicesaux= new ArrayList<serviceDevice>();
+        while(num<5){
+            serviceDevice x=new serviceDevice();
+            tipo= Preferencias.getString("Tipo_"+num,"fin");
+            if(tipo.equals("fin")&&num==0){
+                tipo="Balanza";
+            }
+            Boolean seteo=false;
+            seteo= Preferencias.getBoolean("seteo_"+num,false);
+            switch (num){
+                case 0:{
+                    if(!seteo && tipo.equals("Balanza")){
+                        ArrayList<String> arrayList=new ArrayList<>();
+                        arrayList.add(OPTIMA_I.Bauddef);arrayList.add(OPTIMA_I.DataBdef);arrayList.add(OPTIMA_I.StopBdef);arrayList.add(OPTIMA_I.Paritydef);
+                        x.setTipo(0);
+                        x.setNB(0);
+                        x.setDireccion(arrayList);
+                        x.setSeteo(true);
+                        x.setNumborrados(0);
+                        x.setSalida("PuertoSerie 1");
+                        x.setID(0);
+                        System.out.println("SETTING DEFAULT ");
+                        addDevice(x);
+                    }
+                    break;
+                }
+                case 1:{
+
+                    break;
+                }
+                case 2:{
+
+                    break;
+                }
+                case 3:{
+
+                    break;
+                }
+                case 4:{
+
+                    break;
+                }
+            }
+            num++;
+        }
+        ;
+    }
+
     public class Impresoras {
         public void setModo(int Modo,Integer num) {
             SharedPreferences Preferencias=activity.getSharedPreferences("Impresoras",Context.MODE_PRIVATE);
@@ -184,7 +248,7 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 return balanza.getEstado(numBza);
             }
-            return "";
+            return null;
         }
         @Override
         public void setEstado(int numBza, String estadoBZA) {
@@ -193,212 +257,177 @@ public class BalanzaService implements Serializable {
                 balanza.setEstado(numBza,estadoBZA);
             }
         }
-
-        private void SettingsDef(){
+        private int get_numeroSalidasBZA(){
+            SharedPreferences Preferencias = activity.getSharedPreferences("devicesService", Context.MODE_PRIVATE);
             String tipo="";
             int num=0;
-            int numbza=0;
-            SharedPreferences Preferencias=activity.getSharedPreferences("devicesService",Context.MODE_PRIVATE);
-            ArrayList<serviceDevice> Arraydevicesaux= new ArrayList<serviceDevice>();
-            while(num<5){
-                serviceDevice x=new serviceDevice();
-                tipo= Preferencias.getString("Tipo_"+num,"fin");
-                if(tipo.equals("fin")&&num==0){
+            int numeroSalidas=0;
+            boolean[] array = new boolean[6];
+            while(tipo!="fin") {
+                tipo = Preferencias.getString("Tipo_" + num, "fin");
+                if(tipo.contains("fin") && num==0){
                     tipo="Balanza";
                 }
-                Boolean seteo=false;
-                seteo= Preferencias.getBoolean("seteo_"+num,false);
-                switch (num){
-                    case 0:{
-                        if(!seteo){
 
-                            ArrayList<String> arrayList=new ArrayList<>();
-                            arrayList.add("9600");arrayList.add("8");arrayList.add("1");arrayList.add("0");
-                            x.setTipo(0);
-                            x.setNB(0);
-                            x.setDireccion(arrayList);
-                            x.setSeteo(true);
-                            x.setSalida("PuertoSerie 1");
-                            x.setID(0);
-                            addDevice(x,false);
+                if(tipo.equals("Balanza")) {
+                    String Salida = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
+                    switch (Salida) {
+                        case "PuertoSerie 1": {
+                            if(!array[0]){
+                                array[0]=true;
+                                numeroSalidas++;
+                            }
+                            break;
                         }
-                        break;
-                    }
-                    case 1:{
+                        case "PuertoSerie 2": {
+                            if(!array[1]){
 
-                        break;
-                    }
-                    case 2:{
+                                array[1]=true;
+                                numeroSalidas++;
+                            }
+                            break;
+                        }
+                        case "PuertoSerie 3": {
+                            if(!array[2]){
 
-                        break;
-                    }
-                    case 3:{
+                                array[2]=true;
+                                numeroSalidas++;
+                            }
+                            break;
+                        }
+                        case "USB": {
+                            if(!array[3]){
 
-                        break;
-                    }
-                    case 4:{
+                                array[3]=true;
+                                numeroSalidas++;
+                            }
+                            break;
+                        }
+                        case "TCP/IP": {
+                            if(!array[4]){
 
-                        break;
+                                array[4]=true;
+                                numeroSalidas++;
+                            }
+                            break;
+                        }
+                        case "MAC": {
+                            if(!array[5]){
+                                array[5]=true;
+                                numeroSalidas++;
+                            }
+                            break;
+                        }
                     }
+                    num++;
                 }
-                num++;
             }
-            ;
+
+            return numeroSalidas;
         }
-        public void initializateBalanza(){
-            SettingsDef();
-            ArrayList<serviceDevice> balanzasList = get_arrayServiceDevices();
-            CountDownLatch latch = new CountDownLatch(balanzasList.size());
-       //     if(balanzasList.size()==0){
-         //       balanzasList.
-                //setBalanzas(balanzasList);
-          //  }
-          //  PuertosSerie2 serialPort=serialPortA;
+        public PuertosSerie2 initPuertoSerie(String Puerto,int baudrate,int databits,int stopbit,int parity,int flowcon,int flags){
+               PuertosSerie2 serialPort= new PuertosSerie2();
+                SerialPort Puerto_A_OPEN=serialPort.open(Puerto,baudrate,stopbit,databits,parity,flowcon,flags);
+            if(Puerto_A_OPEN!=null){
+                System.out.println( Puerto+" INICIALIZADO PUERTO WOWOWO");
+            }
+                return serialPort;
+        }
+        public void initializateBalanza(ArrayList<serviceDevice> balanzasList){
+            int numeroSalidas= get_numeroSalidasBZA();
+            CountDownLatch latch=new CountDownLatch(balanzasList.size());
             for (int i = 0; i< balanzasList.size(); i++) {
-                String puerto="";
-                int balanzalenght=balanzasList.size();
-                switch (balanzasList.get(i).getSalida()){
-                    case "PuertoSerie 1":{
-                        puerto=PUERTO_A;
+                String puerto = "";
+                PuertosSerie2 port = null;
+                switch (balanzasList.get(i).getSalida()) {
+                    case "PuertoSerie 1": {
+                        puerto = PUERTO_A;
+                        serialPortA = initPuertoSerie(puerto, Integer.parseInt(balanzasList.get(i).getDireccion().get(0)), Integer.parseInt(balanzasList.get(i).getDireccion().get(1)), Integer.parseInt(balanzasList.get(i).getDireccion().get(2)), Integer.parseInt(balanzasList.get(i).getDireccion().get(3)), 0, 0);
+                        port=serialPortA;
 
                         break;
                     }
-                    case "PuertoSerie 2":{
-                        puerto=PUERTO_B;
+                    case "PuertoSerie 2": {
+                        puerto = PUERTO_B;
+                        serialPortB = initPuertoSerie(puerto, Integer.parseInt(balanzasList.get(i).getDireccion().get(0)), Integer.parseInt(balanzasList.get(i).getDireccion().get(1)), Integer.parseInt(balanzasList.get(i).getDireccion().get(2)), Integer.parseInt(balanzasList.get(i).getDireccion().get(3)), 0, 0);
+                        port=serialPortB;
+                        break;
+                    }
+                    case "PuertoSerie 3": {
+                        puerto = PUERTO_C;
+                        serialPortC = initPuertoSerie(puerto, Integer.parseInt(balanzasList.get(i).getDireccion().get(0)), Integer.parseInt(balanzasList.get(i).getDireccion().get(1)), Integer.parseInt(balanzasList.get(i).getDireccion().get(2)), Integer.parseInt(balanzasList.get(i).getDireccion().get(3)), 0, 0);
+                        port=serialPortC;
+                        break;
+                    }
+                    case "USB": {
 
                         break;
                     }
-                    case "PuertoSerie 3":{
-                        puerto=PUERTO_C;
+                    case "TCP/IP": {
 
                         break;
                     }
-                    case "USB":{
+                    case "MAC": {
 
-                        break;
-                    }
-                    case "TCP/IP":{
-
-                        break;
-                    }
-                    case "MAC":{
-
-                        break;
-                    }
-                }
-                System.out.println("OPTIMA "+puerto);
-                PuertosSerie2 serialPort = new PuertosSerie2();
-                switch (puerto){
-                    case PUERTO_A:{
-                        serialPort=serialPortA;
-                        break;
-                    }
-
-                    case PUERTO_B:{
-                        serialPort=serialPortB;
-                        break;
-                    }
-
-                    case PUERTO_C:{
-                        serialPort=serialPortC;
                         break;
                     }
                 }
                 if (balanzasList.get(i).getModelo() == 0) { // 0
                     System.out.println("OPTIMA");
-                    //seria ideal inicializar el puerto aca___
-                    if(balanzasList.get(i).getID()==0) {
-                        Struct bza = new OPTIMA_I(serialPortA,balanzasList.get(i).getID(), activity, Service, fragmentChangeListener);
-                        bza.init(1);
-                        balanzas.put(1, bza);
-                    }else{
-                       // Struct bza = new OPTIMA_ID_I(serialPort, balanzasList.get(i).getID(), activity, Service, fragmentChangeListener);
-                       // bza.init(balanzalenght + 1);
-                       // balanzas.put(balanzalenght + 1, bza);
+                    if(port!=null) {
+                        Struct bza = new OPTIMA_I(port, balanzasList.get(i).getID(), activity, Service, fragmentChangeListener);
+                        bza.init(i + 1);
+                        balanzas.put(i + 1, bza);
+                    }
+                        latch.countDown();
+
+                }
+                if (balanzasList.get(i).getModelo() == 1) {
+                    System.out.println("MINIMA");
+                    if(port!=null){
+                        Struct BZA = new MINIMA_I(port, balanzasList.get(i).getID(), activity, Service, fragmentChangeListener);
+                        BZA.init(i + 1);
+                        balanzas.put(i + 1, BZA);
                     }
                     latch.countDown();
                 }
-                if (balanzasList.get(i).getModelo()  == 1) {
-                    System.out.println("MINIMA");
-                    Struct BZA =new MINIMA_I(serialPort,  balanzasList.get(i).getID(),activity,Service,fragmentChangeListener);
-                    BZA.init(balanzalenght+1);
-                    balanzas.put(balanzalenght + 1, BZA);
-                    latch.countDown();
-                }
-                if (balanzasList.get(i).getModelo()  == 2) {
-
+                if (balanzasList.get(i).getModelo() == 2) {
                     System.out.println("R31P30");
-                    Struct BZA =new R31P30_I(serialPort,  balanzasList.get(i).getID(),activity,fragmentChangeListener);
-                    BZA.init(balanzalenght+1);
-                    balanzas.put(balanzalenght + 1, BZA);
+                    if(port!=null){
+                        Struct BZA = new R31P30_I(port, balanzasList.get(i).getID(), activity, fragmentChangeListener);
+                        BZA.init(i + 1);
+                        balanzas.put(i + 1, BZA);
+                    }
                     latch.countDown();
                 }
-                if(balanzasList.get(i).getModelo() ==3){ // 3
+                if (balanzasList.get(i).getModelo() == 3) { // 3
                     System.out.println("ITW410");
                     int finalI2 = i;
-                   // pasar adentro  el modbusconfig finalPort,modbus.getBaud(),modbus.getDatabit(),modbus.getStopbit(),modbus.getParity()
-                     System.out.println("position bza"+finalI2+1);
-                   ArrayList<modbus> modbuslistconfig= new ArrayList<>();//= getConfigModbus();
                     try {
-                        for (modbus modbus : modbuslistconfig) {
-                            if (modbus.getPortselected()!=-1) { // 20 es error
-                             //   ModbusMasterRtu modbusmasterinit= new ModbusMasterRtu();
-                                if(modbus.getPortselected()!=4) { // 4 seria "RED" o TCP
-                                    String finalPort = puerto;
-                                    int finalI1 = balanzalenght;
-                                    int finalI3 = i;
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ModbusReqRtuMaster Modbus = null;
-                                            try {
-                                                ITW410 bza1 = new ITW410(balanzasList.get(finalI3).getID(), Service, fragmentChangeListener, 1,balanzasList.get(finalI3).getDireccion());
-                                                bza1.init(finalI2+1);
-                                                balanzas.put(finalI2+1,bza1);
-                                            } catch (Exception e) {
-                                                throw new RuntimeException(e);
-                                            }
-                                        }
-                                    });
-                                    int finalI = balanzalenght+1;
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ModbusReqRtuMaster Modbus = null;
-                                            try {
-
-                                                ITW410 bza2 = new ITW410(balanzasList.get(finalI3).getID(), Service, fragmentChangeListener, 2,balanzasList.get(finalI3).getDireccion());
-                                                bza2.init(finalI2+1);
-
-                                                balanzas.put(finalI2+1,bza2); // tengo que mantener la posicion de la lista balanzalist pero aca tengo que correr 1 posicion. como no hay add()
-                                            } catch (Exception e) {
-                                                throw new RuntimeException(e);
-                                            }
-
-
-                                        }
-                                    });
-
-
-
-                                    //   initializateModbus();
-                                }else{
-                                    //MODBUSTCP
-                                }
-                            }
+                        String finalPort = puerto;
+                        int finalI1 = i;
+                        int finalI3 = i;
+                        try {
+                            ModbusReqRtuMaster Modbus = initializatemodbus(puerto, Integer.parseInt(balanzasList.get(i).getDireccion().get(0)), Integer.parseInt(balanzasList.get(i).getDireccion().get(1)), Integer.parseInt(balanzasList.get(i).getDireccion().get(2)), Integer.parseInt(balanzasList.get(i).getDireccion().get(3)));
+                            ITW410 bza1 = new ITW410(finalI2 + 1, Service, fragmentChangeListener, 1, Modbus);
+                            bza1.init(finalI2 + 1);
+                            balanzas.put(finalI2 + 1, bza1);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
-                    } catch(Exception e) {
-                   }
+                        // FALTA BZA 2 ,PODRIA SER CON UNA VARIABLE CONTADOR QUE VAYA SUMANDOSE . Y LUEGO QUE EN INIT Y PUT SEA por ejm: bza1.init(finalI2+CONTADOR+ 1);   balanzas.put(finalI2 +CONTADOR+ 1, bza1); EMPIEZA EN 0 Y VA SUMANDOSE A MEDIDA QUE HAY DOBLES BALANZAS
+                    } catch (Exception e) {
+                    }
                     latch.countDown();
-                }
+                    try {
+                        latch.await(numeroSalidas * 2000, TimeUnit.MILLISECONDS);
+                    } catch (Exception e) {
 
+                    }
+                }
             }
-            try {
-                latch.await(10000, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
-        }
+
         public ArrayList<Integer> getBalanzas() {
             SharedPreferences Preferencias = activity.getSharedPreferences("devicesService", Context.MODE_PRIVATE);
             String tipo="";
@@ -411,6 +440,8 @@ public class BalanzaService implements Serializable {
                 }
                 if(tipo.contains("Balanza")){
                     String Modelobza = Preferencias.getString("Modelo_"+num,"Optima");
+
+                    System.out.println("DEBUG "+tipo+ Modelobza+ num);
                      switch (Modelobza){
                         case "Optima":{
                             balanzas.add(0);
@@ -466,28 +497,57 @@ public class BalanzaService implements Serializable {
             return serialPortA;
 
         }
+        public ModbusReqRtuMaster initializatemodbus(String Port,int Baud,int databit,int Stopbit,int Parity){
+            CountDownLatch latch = new CountDownLatch(1);
+            ModbusReqRtuMaster Modbus = null;
+            try {
+                ModbusMasterRtu modbusMasterRtu= new ModbusMasterRtu();
+                Modbus= modbusMasterRtu.init(Port,Baud,databit,Stopbit,Parity);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } finally {
+                System.out.println("SETEADO MODBUS");
+                latch.countDown();
+            }
+            try {
+                latch.await(2000,TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+              e.getMessage();
+            }
+            return Modbus;
+        }
         public ArrayList<serviceDevice> get_balanzalistglob(){
+
             ArrayList<serviceDevice> ArrayBalanzas = new ArrayList<serviceDevice>();
             SharedPreferences Preferencias = activity.getSharedPreferences("devicesService", Context.MODE_PRIVATE);
             String tipo="";
-            serviceDevice balanza= new serviceDevice();
             int num=0;
             int numbza=0;
+            int countborrados=0;
             while(tipo!="fin") {
+                serviceDevice balanza= new serviceDevice();
                 tipo = Preferencias.getString("Tipo_" + num, "fin");
                 if(tipo.contains("fin") && num==0){
                     tipo="Balanza";
                 }
+                if(tipo.equals("Borrado")){
+                   numbza++;
+                   countborrados++;
+               }
                 if(tipo.equals("Balanza")) {
+//                  balanza.setNB(numbza);
                     balanza.setNB(numbza);
                     numbza++;
-                    String Modelobza = Preferencias.getString("Modelo_" + num, "Optima");
-                    String Salida = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
-                    int NumeroID = Preferencias.getInt("ID_" + num, 1);
+                    //numbza++;
                     Boolean seteo = Preferencias.getBoolean("seteo_" + num, false);
+                    String Modelobza="";
+                    String Salida = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
+                    Modelobza = Preferencias.getString("Modelo_" + num, "Optima");
+                    int NumeroID = Preferencias.getInt("ID_" + num, 1);
+                    //System.out.println("NumeroID "+NumeroID);
                     ArrayList<String> listaux = new ArrayList<String>();
                     if (Salida.contains("PuertoSerie")) {
-                         String baud = Preferencias.getString("Baud_" + num, "9600");
+                        String baud = Preferencias.getString("Baud_" + num, "9600");
                         String dataB = Preferencias.getString("DataB_" + num, "8");
                         String stopB = Preferencias.getString("StopB_" + num, "1");
                         String parity = Preferencias.getString("Parity_" + num, "0");
@@ -495,7 +555,6 @@ public class BalanzaService implements Serializable {
                         listaux.add(dataB);
                         listaux.add(stopB);
                         listaux.add(parity);
-                        tipo = "fin";
                     }else if(Salida.contains("IP")){
                         String Direccion = Preferencias.getString("Direccion_" + num, "1.1.1.1");
                         listaux.add(Direccion);
@@ -508,42 +567,144 @@ public class BalanzaService implements Serializable {
                         listaux.add("");
 
                     }
-                    int Modelo =-1;
-                    switch (Modelobza){
-                        case "Optima":{
-                            Modelo =0;
-                            break;
+
+                        switch (Modelobza){
+                            case "Optima":{
+                                balanza.setModelo(0);
+                                break;
+                            }
+                            case "Minima":{
+                                balanza.setModelo(1);
+                                break;
+                            }
+                            case "R31P30":{
+                                balanza.setModelo(2);
+                                break;
+                            }
+                            case "ITW410":{
+                                balanza.setModelo(3);
+                                break;
+                            }
+                            default:{
+                                balanza.setModelo(-1);
+                            }
                         }
-                        case "Minima":{
-                            Modelo =1;
-                            break;
-                        }
-                        case "R31P30":{
-                            Modelo =2;
-                            break;
-                        }
-                        case "ITW410":{
-                            Modelo =3;
-                            break;
-                        }
-                        default: {
-                            Modelo =-1;
-                            break;
-                        }
-                    }
                         balanza.setID(NumeroID);
-                        balanza.setModelo(Modelo);
                         balanza.setSalida(Salida);
                         balanza.setDireccion(listaux);
                         balanza.setTipo(0);
+                        balanza.setNumborrados(countborrados);
                         balanza.setSeteo(seteo);
                         ArrayBalanzas.add(balanza);
+                    }
+                if(tipo == "fin" && ArrayBalanzas.size()<1){
+                    serviceDevice balanx = new serviceDevice();
+                    balanx.setID(-1);
+                    balanx.setSalida("-1");
+                    ArrayList<String> diraux= new ArrayList<String>();
+                    balanx.setDireccion(diraux);
+                    balanx.setTipo(0);
+                    balanx.setNB(numbza-1);
+                    balanx.setNumborrados(countborrados);
+                    balanx.setSeteo(false);
+                    ArrayBalanzas.add(balanx);
                 }
+                num++;
+            }
+
+            return ArrayBalanzas;
+        }
+//         tablayout.addTab(Balanzas);
+//        tablayout.addTab(Impresoras);
+//        tablayout.addTab(IO);
+//        tablayout.addTab(Escaneres);
+//        tablayout.addTab(Dispositivos)
+        public ArrayList<serviceDevice> get_listglobindex(int TipoDevice){
+            String tipodevicestr="";
+            switch (TipoDevice){
+                case 0:{
+                    tipodevicestr="Balanza";
+                    break;
+                }
+                case 1:{
+                    tipodevicestr="Impresoras";
+                    break;
+                }
+                case 2:{
+                    tipodevicestr="IO";
+                    break;
+                }
+                case 3:{
+                    tipodevicestr="Escaner";
+                    break;
+                }
+                case 4:{
+                    tipodevicestr="Dispositivo";
+                    break;
+                } default:{
+                    tipodevicestr="Borrado";
+                    break;
+                }
+            }
+            ArrayList<serviceDevice> ArrayBalanzas = new ArrayList<serviceDevice>();
+            SharedPreferences Preferencias = activity.getSharedPreferences("devicesService", Context.MODE_PRIVATE);
+            String tipo="";
+            int num=0;
+            int numbza=0;
+            int countborrados=0;
+            while(tipo!="fin") {
+                serviceDevice balanza= new serviceDevice();
+                tipo = Preferencias.getString("Tipo_" + num, "fin");
+                if(tipo.contains("fin") && num==0){
+                    tipo="Balanza";
+                }
+                if(tipo.equals("Borrado")){ // es probable que sea mejor (!tipo.equals(tipodevicestr))
+                    numbza++;
+                    countborrados++;
+                }
+                if(tipo.equals(tipodevicestr)) {
+                    balanza.setNB(numbza);
+                    numbza++;
+                    balanza.setNumborrados(countborrados);
+                    ArrayBalanzas.add(balanza);
+                }
+//                if(tipo == "fin" && ArrayBalanzas.size()<1){
+//                    serviceDevice balanx = new serviceDevice();
+//                    balanx.setNB(numbza-1);
+//                    balanx.setNumborrados(countborrados);
+//                    ArrayBalanzas.add(balanx);
+//                }
                 num++;
             }
             return ArrayBalanzas;
         }
-        public ArrayList<serviceDevice> get_balanzalistPerPort(String Salida){
+        public ArrayList<serviceDevice> get_listPerPort(String Salida,int TipoDevice){
+            String tipodevicestr="";
+            switch (TipoDevice){
+                case 0:{
+                    tipodevicestr="Balanza";
+                    break;
+                }
+                case 1:{
+                    tipodevicestr="Impresoras";
+                    break;
+                }
+                case 2:{
+                    tipodevicestr="IO";
+                    break;
+                }
+                case 3:{
+                    tipodevicestr="Escaner";
+                    break;
+                }
+                case 4:{
+                    tipodevicestr="Dispositivo";
+                    break;
+                } default:{
+                    tipodevicestr="Borrado";
+                    break;
+                }
+            }
             String  Salidastr="";
             switch (Salida){
                 case "Puerto Serie 1":{
@@ -568,13 +729,18 @@ public class BalanzaService implements Serializable {
             String tipo="";
             int num=0;
             int numbza=0;
+            int countborrados=0;
             while(tipo!="fin") {
                 serviceDevice balanza= new serviceDevice();
                 tipo = Preferencias.getString("Tipo_" + num, "fin");
                 if(tipo.contains("fin") && num==0){
                     tipo="Balanza";
                 }
-                if(tipo.equals("Balanza")) {
+                if(tipo.equals("Borrado")){ // es probable que sea mejor (!tipo.equals(tipodevicestr))
+                    numbza++;
+                    countborrados++;
+                }
+                if(tipo.equals(tipodevicestr)) {
 //                    balanza.setNB(numbza);
                     balanza.setNB(numbza);
                     numbza++;
@@ -587,7 +753,7 @@ public class BalanzaService implements Serializable {
 
                     String Salidaaux = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
                     int NumeroID = Preferencias.getInt("ID_" + num, 1);
-                    System.out.println("NumeroID "+NumeroID);
+                    //System.out.println("NumeroID "+NumeroID);
                     ArrayList<String> listaux = new ArrayList<String>();
                     if (Salidastr.contains("PuertoSerie")) {
                         String baud = Preferencias.getString("Baud_" + num, "9600");
@@ -636,6 +802,7 @@ public class BalanzaService implements Serializable {
                         balanza.setSalida(Salida);
                         balanza.setDireccion(listaux);
                         balanza.setTipo(0);
+                        balanza.setNumborrados(countborrados);
                         balanza.setSeteo(seteo);
                         ArrayBalanzas.add(balanza);
                     }
@@ -715,7 +882,7 @@ public class BalanzaService implements Serializable {
                     }
                     String Salida = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
                     int NumeroID = Preferencias.getInt("ID_" + num, 1);
-                    System.out.println("NumeroID "+NumeroID);
+                   // System.out.println("NumeroID "+NumeroID);
                     ArrayList<String> listaux = new ArrayList<String>();
                     if (Salida.contains("PuertoSerie")) {
                         String baud = Preferencias.getString("Baud_" + num, "9600");
@@ -745,7 +912,7 @@ public class BalanzaService implements Serializable {
                         balanza.setDireccion(listaux);
                         balanza.setTipo(0);
                         balanza.setSeteo(seteo);
-
+                        // ESTO ESTA MAL POR QUE TODAVIA NO CONTEMPLO countborrados
                         ArrayBalanzas.add(balanza);
                     }
 
@@ -768,6 +935,7 @@ public class BalanzaService implements Serializable {
             String tipo="";
             int num=0;
             int numbza=0;
+            int countborrados=0;
             String Modelostr="";
             switch (Modelo){
                 case 0:{
@@ -798,11 +966,15 @@ public class BalanzaService implements Serializable {
                  if(tipo.contains("fin") && num==0){
                     tipo="Balanza";
                 }
+                 if(tipo.equals("Borrado")){
+                     countborrados++;
+                     numbza++;
+                 }
                 if(tipo.equals("Balanza")) {
 //                    balanza.setNB(numbza);
                     balanza.setNB(numbza);
                     numbza++;
-                    //numbza++;
+                    //
                     Boolean seteo = Preferencias.getBoolean("seteo_" + num, false);
                     String Modelobza="";
                     if(seteo){
@@ -813,7 +985,7 @@ public class BalanzaService implements Serializable {
 
                     String Salida = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
                     int NumeroID = Preferencias.getInt("ID_" + num, 1);
-                    System.out.println("NumeroID "+NumeroID);
+                   // System.out.println("NumeroID "+NumeroID);
                     ArrayList<String> listaux = new ArrayList<String>();
                     if (Salida.contains("PuertoSerie")) {
                         String baud = Preferencias.getString("Baud_" + num, "9600");
@@ -843,7 +1015,7 @@ public class BalanzaService implements Serializable {
                         balanza.setDireccion(listaux);
                         balanza.setTipo(0);
                         balanza.setSeteo(seteo);
-
+                            balanza.setNumborrados(countborrados);
                         ArrayBalanzas.add(balanza);
                     }
 
@@ -931,20 +1103,7 @@ public class BalanzaService implements Serializable {
 
         }*/
 
-        public Boolean initializateSerialPort(int baudrate_A,int stopbit_A,int databits_A,int parity_A,int flowcon_A,int flags_A,int baudrate_B,int stopbit_B,int databits_B,int parity_B,int flowcon_B,int flags_B,int baudrate_C,int stopbit_C,int databits_C,int parity_C,int flowcon_C,int flags_C){
-            serialPortA= new PuertosSerie2();
-            SerialPort Puerto_A_OPEN=serialPortA.open(PUERTO_A,baudrate_A,stopbit_A,databits_A,parity_A,flowcon_A,flags_A);
-            serialPortB= new PuertosSerie2();
-            SerialPort Puerto_B_OPEN=serialPortB.open(PUERTO_B,baudrate_B,stopbit_B,databits_B,parity_B,flowcon_B,flags_B);
-            serialPortC= new PuertosSerie2();
-            SerialPort Puerto_C_OPEN=serialPortC.open(PUERTO_C,baudrate_C,stopbit_C,databits_C,parity_C,flowcon_C,flags_C);
-            if (Puerto_A_OPEN!=null&&Puerto_B_OPEN!=null&&Puerto_C_OPEN!=null){
-                return false;
-            }else{
-                Mensaje("ERROR PUERTOS", R.layout.item_customtoasterror,activity);
-                return true;
-            }
-        }
+
         @Override
         public void Itw410FrmSetTiempoEstabilizacion(int numero, int Tiempo) {
            Struct balanza = balanzas.get(numero);
@@ -970,23 +1129,23 @@ public class BalanzaService implements Serializable {
         }
 
         @Override
-        public int getID(int numBza) {
+        public Integer getID(int numBza) {
             Struct balanza = balanzas.get(numBza);
             if (balanza != null) {
                 return balanza.getID(numBza);
             }else{
-                return 0;
+                return null;
             }
 
         }
 
         @Override
-        public float getNeto(int numBza) {
+        public Float getNeto(int numBza) {
             Struct balanza = balanzas.get(numBza);
             if (balanza != null) {
                 return balanza.getNeto(numBza);
             }
-            return 0;
+            return  null;
         }
 
         @Override
@@ -995,16 +1154,16 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 return balanza.getNetoStr(numBza);
             }
-            return "0";
+            return null;
         }
 
         @Override
-        public float getBruto(int numBza) {
+        public Float getBruto(int numBza) {
             Struct balanza = balanzas.get(numBza);
             if (balanza != null) {
                 return balanza.getBruto(numBza);
             }
-            return 0;
+            return null;
         }
 
         @Override
@@ -1013,16 +1172,16 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 return balanza.getBrutoStr(numBza);
             }
-            return "0";
+            return null;
         }
 
         @Override
-        public float getTara(int numBza) {
+        public Float getTara(int numBza) {
             Struct balanza = balanzas.get(numBza);
             if (balanza != null) {
                 return balanza.getTara(numBza);
             }
-            return 0;
+            return null;
         }
 
         @Override
@@ -1031,7 +1190,7 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 return balanza.getTaraStr(numBza);
             }
-            return "0";
+            return null;
         }
 
         @Override
@@ -1064,7 +1223,7 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 return balanza.getTaraDigital(numBza);
             }
-            return "0";
+            return null;
         }
 
         @Override
@@ -1073,7 +1232,7 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 return balanza.getBandaCero(numBza);
             }
-            return false;
+            return null;
         }
 
         @Override
@@ -1085,12 +1244,12 @@ public class BalanzaService implements Serializable {
         }
 
         @Override
-        public float getBandaCeroValue(int numBza) {
+        public Float getBandaCeroValue(int numBza) {
             Struct balanza = balanzas.get(numBza);
             if (balanza != null) {
                 return balanza.getBandaCeroValue(numBza);
             }
-            return 0;
+            return null;
         }
 
         @Override
@@ -1107,7 +1266,7 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 return balanza.getEstable(numBza);
             }
-            return false;
+            return null;
         }
 
         @Override
@@ -1116,7 +1275,7 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 return balanza.format(numero,peso);
             }
-            return "null";
+            return null;
         }
 
         @Override
@@ -1130,7 +1289,7 @@ public class BalanzaService implements Serializable {
             } catch (IllegalArgumentException e) {
                 //mainActivity.Mensaje("Error:"+e.getMessage(), R.layout.item_customtoasterror);
             }
-            return "error";
+            return null;
 
         }
 
@@ -1140,16 +1299,16 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 return balanza.getPicoStr(numBza);
             }
-        return "null";
+        return null;
         }
 
         @Override
-        public float getPico(int numBza) {
+        public Float getPico(int numBza) {
             Struct balanza = balanzas.get(numBza);
             if (balanza != null) {
                 return balanza.getPico(numBza);
             }
-            return -1;
+            return null;
         }
         @Override
         public void init(int numBza) {
@@ -1178,7 +1337,7 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 balanza.calibracionHabilitada(numBza);
             }
-            return false;
+            return null;
         }
         @Override
         public void openCalibracion(int numBza) {
@@ -1193,62 +1352,62 @@ public class BalanzaService implements Serializable {
             if (balanza != null) {
                 balanza.getSobrecarga(numBza);
             }
-            return false;
+            return null;
         }
         @Override
         public Boolean getEstadoCentroCero(int numBza) {
-            return false;
+            return null;
         }
         @Override
         public Boolean getEstadoSobrecarga(int numBza) {
-            return false;
+            return null;
         }
         @Override
         public Boolean getEstadoNeto(int numBza) {
-            return false;
+            return null;
         }
         @Override
         public Boolean getEstadoPesoNeg(int numBza) {
-            return false;
+            return null;
         }
         @Override
         public Boolean getEstadoBajoCero(int numBza) {
-            return false;
+            return null;
         }
         @Override
         public Boolean getEstadoBzaEnCero(int numBza) {
-            return false;
+            return null;
         }
         @Override
         public Boolean getEstadoBajaBateria(int numBza) {
-            return false;
+            return null;
         }
         @Override
         public String getFiltro1(int numBza) {
-            return "null";
+            return null;
         }
         @Override
         public String getFiltro2(int numBza) {
-            return "null";
+            return null;
         }
         @Override
         public String getFiltro3(int numBza) {
-            return "null";
+            return null;
         }
         @Override
         public String getFiltro4(int numBza) {
-            return "null";
+            return null;
         }
         @Override
         public Boolean getEstadoEstable(int numBza) {
-            return false;
+            return null;
         }
         @Override
         public void onEvent() {
         }
         @Override
         public Boolean Itw410FrmSetear(int numero, String setPoint, int Salida) {
-            Boolean a=false;
+            Boolean a=null;
             Struct balanza = balanzas.get(numero);
             if(balanza!=null) {
               a =  balanza.Itw410FrmSetear(numero,setPoint,Salida);
@@ -1257,7 +1416,7 @@ public class BalanzaService implements Serializable {
         }
         @Override
         public String Itw410FrmGetSetPoint(int numero) { // Creas el CountDownLatch con un contador de 1
-            String a = "null";
+            String a = null;
             Struct balanza = balanzas.get(numero);
             if(balanza!=null) {
                 a = balanza.Itw410FrmGetSetPoint(numero);
@@ -1266,8 +1425,8 @@ public class BalanzaService implements Serializable {
             return a;
         }
         @Override
-        public int Itw410FrmGetSalida(int numero) {
-            int a = -1;
+        public Integer Itw410FrmGetSalida(int numero) {
+            Integer a = null;
             Struct balanza = balanzas.get(numero);
             if(balanza!=null) {
                 a = balanza.Itw410FrmGetSalida(numero);
@@ -1284,8 +1443,8 @@ public class BalanzaService implements Serializable {
 
         }
         @Override
-        public int Itw410FrmGetEstado(int numero) {
-            int a=-1;
+        public Integer Itw410FrmGetEstado(int numero) {
+            Integer a=null;
             Struct balanza = balanzas.get(numero);
             if(balanza!=null) {
                a= balanza.Itw410FrmGetEstado(numero);
@@ -1304,8 +1463,8 @@ public class BalanzaService implements Serializable {
             return a;
         }
         @Override
-        public int Itw410FrmGetUltimoIndice(int numero) {
-            int a=-1;
+        public Integer Itw410FrmGetUltimoIndice(int numero) {
+            Integer a=null;
             Struct balanza = balanzas.get(numero);
             if(balanza!=null) {
                 a= balanza.Itw410FrmGetUltimoIndice(numero);
@@ -1445,17 +1604,19 @@ public class BalanzaService implements Serializable {
         }
     }*/
 // actualizacion :
-    /**
-     *  INCOMPLETO
-     * @param x INCOMPLETO
-     */
-    public static void addDevice(serviceDevice x,boolean replacebool){
-       // ArrayList<serviceDevice> List = get_arrayServiceDevices();
-
-        int balanzalenght= x.getNB(); //pos;//List.size();
-
+      public static void addDevice(serviceDevice x){
+//        ArrayList<serviceDevice> listaglob = BalanzaService.Balanzas.get_balanzalistglob();
+        int cont =0; //get_nborrados();
         int count=0;
-
+        int size=0;
+//        for (int i=0;i<listaglob.size();i++) {
+//            serviceDevice j =listaglob.get(i);
+//            if(j.getSalida().equals(x.getSalida())&&j.getSeteo()==x.getSeteo()&&j.getTipo()==x.getTipo()&&j.getNB()==x.getNB()&&j.getID()==x.getID()&&j.getDireccion().equals(x.getDireccion())&&j.getModelo()==x.getModelo()){
+//                System.out.println("REMOVE"+i+" IN "+listaglob.size());
+//               size=i;
+//                System.out.println("SIZE ACTUALIZATE"+listaglob.size());
+//            }
+//        }
      /*ArrayList<String> direccion= x.getDireccion();
         for (serviceDevice y :List) {
             if(y.getModelo()==x.getModelo()&&count==0){
@@ -1465,8 +1626,9 @@ public class BalanzaService implements Serializable {
 
         }*/
 
-        System.out.println("NUMBER BZA"+x.getNB());
+       // System.out.println("NUMBER BZA"+x.getNB());
         String Tipo="";
+
         switch (x.getTipo()) {
             case -1: {
                 Tipo="Borrado";
@@ -1521,9 +1683,27 @@ public class BalanzaService implements Serializable {
                break;
             }
         }
-        System.out.println("NB set device "+ balanzalenght);
+
+        int balanzalenght= (x.getNB()+cont); //pos;//List.size();
+       System.out.println("limite cambiado"+x.getNB());
+        //  System.out.println("NB set device "+ balanzalenght);
         SharedPreferences Preferencias=Service.activity.getSharedPreferences("devicesService",Context.MODE_PRIVATE);
         SharedPreferences.Editor ObjEditor=Preferencias.edit();
+        /*String tipo="";
+        int num=0;
+        while(num<=limite+1) {
+            tipo = Preferencias.getString("Tipo_" + num,"fin");
+            System.out.println(num);
+            if (tipo=="Borrado"){
+                System.out.println("cambiado BORRADO");
+                cont++;
+            }
+            num++;
+        }*/
+        balanzalenght= (x.getNB()); //pos;//List.size();
+        System.out.println("NB dato cambiado "+balanzalenght);
+        System.out.println("tipo :( "+Tipo+ "   "
+                +x.getSalida());
         ObjEditor.putBoolean(String.valueOf("seteo_"+balanzalenght), x.getSeteo());
         if(Tipo.contains("Borrado")){
             ObjEditor.putString(String.valueOf("Baud_"+balanzalenght), x.getDireccion().get(0));
@@ -1643,7 +1823,7 @@ public class BalanzaService implements Serializable {
                 }
             }
             ArrayList<String> listaux=new ArrayList<String>();
-           x.setSalida(salida);  System.out.println("salida"+salida);
+           x.setSalida(salida); // System.out.println("salida"+salida);
 
            if(salida.contains("PuertoSerie")){
 
@@ -1666,8 +1846,9 @@ public class BalanzaService implements Serializable {
             x.setDireccion(listaux);
             x.setID(NumeroID);
             x.setSeteo(seteo);
-            if(tipo!="fin"){
+            if(tipo!="fin"&& tipo!="Borrado"){
                 Arraydevicesaux.add(x);
+                System.out.println("NB listglob "+ x.getNB());
             }
            num++;
         }

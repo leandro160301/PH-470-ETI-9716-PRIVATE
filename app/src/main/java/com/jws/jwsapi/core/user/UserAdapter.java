@@ -1,7 +1,6 @@
 package com.jws.jwsapi.core.user;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -14,11 +13,11 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
-    List<UserModel> ListElementsArrayList2;
+    List<UserModel> userElements;
     UserButtonClickListener userButtonClickListener;
 
-    public UserAdapter(Context context, List<UserModel> data, UserButtonClickListener userButtonClickListener) {
-        this.ListElementsArrayList2 = data;
+    public UserAdapter(List<UserModel> data, UserButtonClickListener userButtonClickListener) {
+        this.userElements = data;
         this.userButtonClickListener = userButtonClickListener;
     }
 
@@ -32,15 +31,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-
-        UserModel user = ListElementsArrayList2.get(position);
-        holder.bind(user,ListElementsArrayList2,position);
+        UserModel user = userElements.get(position);
+        holder.bind(user, userElements,position);
 
     }
 
     @Override
     public int getItemCount() {
-        return ListElementsArrayList2.size();
+        return userElements.size();
     }
 
     @Override
@@ -55,7 +53,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
     @SuppressLint("NotifyDataSetChanged")
     public void filterList(List<UserModel> filteredList) {
-        ListElementsArrayList2 = filteredList;
+        userElements = filteredList;
         notifyDataSetChanged();
     }
 }

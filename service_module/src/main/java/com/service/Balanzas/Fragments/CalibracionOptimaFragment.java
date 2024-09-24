@@ -6,6 +6,7 @@ import static com.service.Utils.getHora;
 
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
+import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -89,6 +90,7 @@ public class CalibracionOptimaFragment extends Fragment {
     public String brutoStr="0",netoStr="0",taraStr="0",taraDigitalStr="0",picoStr="0";
     public int acumulador=0;
     public int numero=1;
+    boolean BooleanRESET=false;
 
 
     ImageView animbutton,imgseteo,imgCal;
@@ -120,6 +122,7 @@ public class CalibracionOptimaFragment extends Fragment {
     ConstraintLayout table_parametrosPrincipales;
     String read;
     View viewMang=null;
+    BalanzaService Service;
 
     Boolean stoped=false;
     private boolean isCollapsed = false;
@@ -150,6 +153,7 @@ public class CalibracionOptimaFragment extends Fragment {
         estado=M_MODO_CALIBRACION;
         if (getArguments() != null) {
             BZA = (OPTIMA_I) getArguments().getSerializable("instance");
+            Service = (BalanzaService) getArguments().getSerializable("instanceService");
             mainActivity = BZA.mainActivity;
         }
         return viewMang;
@@ -181,11 +185,16 @@ public class CalibracionOptimaFragment extends Fragment {
             RadioButton bton= view.findViewById(R.id.btON4);
             RadioButton btoff = view.findViewById(R.id.btOFF4);
             if(toggle4.getCheckedRadioButtonId()==R.id.btON4){
-                btoff.setText("");
-                bton.setText("SI");
-            } else {
                 btoff.setText("NO");
-                bton.setText("");
+                bton.setText("SI");
+                btoff.setTextColor(getResources().getColor(R.color.negro));
+                bton.setTextColor(getResources().getColor(R.color.blanco));
+            } else {
+
+                bton.setTextColor(getResources().getColor(R.color.negro));
+                btoff.setTextColor(getResources().getColor(R.color.blanco));
+                btoff.setText("NO");
+                bton.setText("SI");
 
             }
         });
@@ -193,12 +202,15 @@ public class CalibracionOptimaFragment extends Fragment {
             RadioButton bton= view.findViewById(R.id.btON2);
             RadioButton btoff = view.findViewById(R.id.btOFF2);
             if(toggle2.getCheckedRadioButtonId()==R.id.btON2){
-
-                btoff.setText("");
+                btoff.setTextColor(getResources().getColor(R.color.negro));
+                bton.setTextColor(getResources().getColor(R.color.blanco));
+                btoff.setText("NO");
                 bton.setText("SI");
             } else {
                 btoff.setText("NO");
-                bton.setText("");
+                bton.setText("SI");
+                bton.setTextColor(getResources().getColor(R.color.negro));
+                btoff.setTextColor(getResources().getColor(R.color.blanco));
             }
 
         });
@@ -206,11 +218,17 @@ public class CalibracionOptimaFragment extends Fragment {
             RadioButton bton= view.findViewById(R.id.btON8);
             RadioButton btoff = view.findViewById(R.id.btOFF8);
             if (toggle8.getCheckedRadioButtonId() == R.id.btON8) {
-                btoff.setText("");
+                btoff.setText("NO");
                 bton.setText("SI");
+
+                btoff.setTextColor(getResources().getColor(R.color.negro));
+                bton.setTextColor(getResources().getColor(R.color.blanco));
             } else {
                 btoff.setText("NO");
-                bton.setText("");
+                bton.setText("SI");
+
+                bton.setTextColor(getResources().getColor(R.color.negro));
+                btoff.setTextColor(getResources().getColor(R.color.blanco));
                     }
         });
 
@@ -384,11 +402,8 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                         @Override
                         public void run() {
                             try {
-                                estado= BZA.M_MODO_BALANZA;
-                                //Thread.sleep(1000);
-                                reader.stopReading();
-                                BZA.readers.startReading();
-                                BZA.Guardar_cal();
+
+//                                BZA.Guardar_cal();
                                 //mainActivity.Puerto_A().write(mainActivity.MainClass.BZA1.Guardar_cal());
                                 //      procesarerror(8,null,null);
                                 getActivity().runOnUiThread(new Runnable() {
@@ -426,9 +441,16 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                                             BZA.estado =  BZA.M_MODO_BALANZA;
 
                                             // method.invoke(activity);
-                                            //mainActivity.MainClass.openFragmentPrincipal();
-                                            bt_homebool=true;
-                                            dialog.cancel();
+                                            try {
+                                                estado= BZA.M_MODO_BALANZA;
+                                                BZA.setPesoUnitario( BZA.getPesoUnitario());
+                                                BZA.estado =  BZA.M_MODO_BALANZA;
+                                                Service.fragmentChangeListener.openFragmentPrincipal();
+                                                bt_homebool=true;
+                                                dialog.cancel();
+                                            }catch (Exception e){
+
+                                            }
 
                                         }
                                     });
@@ -477,21 +499,91 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
         return Fecha;
     }
     public void procesarMensajePrueba(String Mensaje) {
+        if(Mensaje.contains("9kg")){
+            System.out.println("CICLOS");
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+//                long count = Mensaje.chars().filter(ch -> ch == '9').count();
+                int count=0;
+                for (char ch : Mensaje.toCharArray()) {
+                    if (ch == '9') {
+                        count++;
+                    }
+                }
 
+                System.out.println("CICLOS count "+ count);
+                if(count==5){
+                    try {
+                        BZA.readers.startReading();
+                        estado= BZA.M_MODO_BALANZA;
+                        BZA.setPesoUnitario( BZA.getPesoUnitario());
+                        BZA.estado =  BZA.M_MODO_BALANZA;
+                        Service.fragmentChangeListener.openFragmentPrincipal();
+                        bt_homebool=true;
+                        reader.stopReading();
+                        dialog.cancel();
+                    }catch (Exception e){
+
+                    }
+                }
+            }
+
+        }
+        if(Mensaje.contains("\u0006E")){
+            Thread s = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(12000);
+                        System.out.println("CICLOS timeoutxxxxx " );
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                BZA.readers.startReading();
+                                estado= BZA.M_MODO_BALANZA;
+                                BZA.setPesoUnitario( BZA.getPesoUnitario());
+                                BZA.estado =  BZA.M_MODO_BALANZA;
+                                Service.fragmentChangeListener.openFragmentPrincipal();
+                                bt_homebool=true;
+                                reader.stopReading();
+                                dialog.cancel();
+                            }
+                        });
+                    } catch (InterruptedException e) {
+
+                    }
+                }
+            });
+            s.start();
+
+          }
         if(Mensaje.contains("\u0006D")){
-            BZA.Guardar_cal();
+//            BZA.Guardar_cal();
         }
         if(Mensaje.contains("\u0006T")){
             bt_resetbool=true;
+            BZA.Pedirparam();
+            BooleanRESET=true;
 
         }
+
         if(Mensaje.contains("\u0006P")){
             BZA.Guardar_cal();
+            enviarparambool=true;
+            if( BooleanRESET){
+                bt_resetbool = true;
+                BooleanRESET=false;
+                dialog1.cancel();
+            }else{
+            dialog.cancel();
+            }
         }
         if(Mensaje.contains("\u0006M ")){
-            BZA.Guardar_cal();
+//            BZA.Guardar_cal();
             // mainActivity.Puerto_A().write(mainActivity.MainClass.BZA1.Guardar_cal());
             mainActivity.runOnUiThread(() -> {
+                BZA.Guardar_cal();
                 btReajusteCerobool=true;
                 dialog.cancel();
             });
@@ -563,7 +655,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                         bt_iniciarCalibracionbool=true;
                         indiceCalibracion = 1;
                         Thread.sleep(1000);
-                        BZA.Guardar_cal();
+//                        BZA.Guardar_cal();
                     }catch (Exception e) {
 
                     }
@@ -574,181 +666,237 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
 
         }
         if(Mensaje.contains("\u0006Z ")){
-            //System.out.println("RECEROK");
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    tv_ultimaCalibracion.setText(DevuelveFecha()+" "+DevuelveHora());
-                    BZA.set_UltimaCalibracion(DevuelveFecha()+" "+DevuelveHora());
+            if(lasttanque || indiceCalibracion==4){
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv_ultimaCalibracion.setText(DevuelveFecha()+" "+DevuelveHora());
+                        BZA.set_UltimaCalibracion(DevuelveFecha()+" "+DevuelveHora());
+                    }
+                });
+                if(!stoped ){
+                    try {
+                        Thread.sleep(1000);
+                        getActivity().runOnUiThread(() -> {
+                            BZA.Guardar_cal();
+
+                            bt_iniciarCalibracionbool=true;
+                            indiceCalibracion = 1;
+                            if(dialog1!=null){
+
+                                dialog1.setCancelable(true);
+                                dialog1.cancel();
+                            }
+                        });
+                    }catch (Exception e){
+
+                    }
+
+
                 }
-            });
-            if(!stoped ){
-                try {
-                    Thread.sleep(1000);
-                    getActivity().runOnUiThread(() -> {
-                        BZA.Guardar_cal();
-                        bt_iniciarCalibracionbool=true;
-                        indiceCalibracion = 1;
-                        /*tv_capacidad.setAlpha(1f);
-                        tv_capacidad.setClickable(true);
-                        animbutton.setAlpha(1f);
-                        animbutton.setClickable(true);
-                        sp_divisionMinima.setAlpha(1f);
-                        sp_divisionMinima.setEnabled(true);
-
-                        sp_puntoDecimal.setEnabled(true);
-                        sp_puntoDecimal.setAlpha(1f);
-                        sp_unidad.setAlpha(1f);
-                        sp_unidad.setEnabled(true);
-                        btReajusteCero.setAlpha(1f);
-                        btReajusteCero.setClickable(true);*/
-                        if(dialog1!=null){
-
-                            dialog1.setCancelable(true);
-                            dialog1.cancel();
+            }else{
+                try{
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            titulo.setText("Coloque el recero y luego presione \"SIGUIENTE\"");
+                            loadingPanel.setVisibility(View.INVISIBLE);
+                            tvCarga.setVisibility(View.INVISIBLE);
+                            tv_ultimaCalibracion.setText(DevuelveFecha()+" "+DevuelveHora());
+                            BZA.set_UltimaCalibracion(DevuelveFecha()+" "+DevuelveHora());
                         }
                     });
                 }catch (Exception e){
 
                 }
-
-
-        }
+            }
         }
 
-        if (Mensaje.contains("\u0006O 13")) {
-            mainActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String strbin = "";
-                    int promvar = 0;
-                    int offvar = 0;
-                    int acuvar = 0;
-                    int pdvar = 0;
-                    int divmvar = 0;
-                    String pd="0";
-                    String divm="0";
-                    String promvars = "0";
-                    String offvars = "0";
-                    String acuvars = "0";
-                    String binario = "";
-                    String hex = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 5, Mensaje.indexOf("\u0006O 13") + 7);
-                    //           System.out.println("optimaiai" + hex);
-                    promvars = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 34, Mensaje.indexOf("\u0006O 13") + 35);
-                    //             System.out.println("optimaiai" + promvars); // 3
-                    offvars = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 33, Mensaje.indexOf("\u0006O 13") + 34);
-                    //               System.out.println("optimaiai" + offvars); // 4
-                    acuvars = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 35, Mensaje.indexOf("\u0006O 13") + 36);
-                    pd= Mensaje.substring(Mensaje.indexOf("\u0006O 13")+25,Mensaje.indexOf("\u0006O 13")+26);
-                    divm= Mensaje.substring(Mensaje.indexOf("\u0006O 13")+26,Mensaje.indexOf("\u0006O 13")+27);
-                    System.out.println("OPTIMA pddivmin:"+pd+divm);// necesito leer de la pos 2 sin contar el #006  asta pos 4
+        if (Mensaje.contains("\u0006O ")) {
+            try {
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        try {
+                            String strbin = "";
+                            int promvar = 0;
+                            int offvar = 0;
+                            int acuvar = 0;
+                            int pdvar = 0;
+                            int divmvar = 0;
+                            String pd = "0";
+                            String divm = "0";
+                            String promvars = "0";
+                            String offvars = "0";
+                            String acuvars = "0";
+                            String binario = "";
+                            System.out.println(Mensaje);
+                            String hex = Mensaje.substring(Mensaje.indexOf("\u0006O ") + 5, Mensaje.indexOf("\u0006O ") + 7);
+                            System.out.println("optimaiai1" + hex);
+                            promvars = Mensaje.substring(Mensaje.indexOf("\u0006O ") + 38, Mensaje.indexOf("\u0006O ") + 39);
+                            System.out.println("optimaiai2" + promvars); // 3
+                            offvars = Mensaje.substring(Mensaje.indexOf("\u0006O ") + 37, Mensaje.indexOf("\u0006O ") + 38);
+                            System.out.println("optimaiai3" + offvars); // 4
+                            acuvars = Mensaje.substring(Mensaje.indexOf("\u0006O ") + 39, Mensaje.indexOf("\u0006O ") + 40);
+                            System.out.println("optimaiai4" + acuvars); // 4
+                            pd = Mensaje.substring(Mensaje.indexOf("\u0006O ") + 27, Mensaje.indexOf("\u0006O ") + 28);
+                            divm = Mensaje.substring(Mensaje.indexOf("\u0006O ") + 28, Mensaje.indexOf("\u0006O ") + 29);
+                            System.out.println("OPTIMA pddivmin:" + pd + divm);// necesito leer de la pos 2 sin contar el #006  asta pos 4
 
-                    //                 System.out.println("optimaiai" + acuvars); // 5
-                    //                   System.out.println("optimaiai procesado" + hex+ " "+promvars+" "+offvars+" "+acuvars);
+                            //14 == 24
+                            //                 System.out.println("optimaiai" + acuvars); // 5
+                            //                   System.out.println("optimaiai procesado" + hex+ " "+promvars+" "+offvars+" "+acuvars);
 
-                    //System.out.println("OPTIMA ayuwoki:" + hex + " " + promvar);// necesito leer de la pos 2 sin contar el #006  asta pos 4
-                    int decimal = Integer.parseInt(hex, 16); // Convertir hexadecimal a decimal
-                    binario = Integer.toBinaryString(decimal); // Convertir decimal a binario
-                    while (binario.length() < 8) {
-                        binario = "0" + binario;
-                    }
+                            //System.out.println("OPTIMA ayuwoki:" + hex + " " + promvar);// necesito leer de la pos 2 sin contar el #006  asta pos 4
+                            int decimal = Integer.parseInt(hex, 16); // Convertir hexadecimal a decimal
+                            binario = Integer.toBinaryString(decimal); // Convertir decimal a binario
+                            while (binario.length() < 8) {
+                                binario = "0" + binario;
+                            }
 
-                    strbin = binario + " " + promvars + offvars + acuvars + pd + divm;
+                            strbin = binario + " " + promvars + offvars + acuvars + pd + divm;
 
-                    promvar = Integer.parseInt(strbin.substring(9, 10), 16);
-                    offvar = Integer.parseInt(strbin.substring(10, 11), 16);
-                    acuvar = Integer.parseInt(strbin.substring(11, 12), 16);
-                    pdvar = Integer.parseInt(strbin.substring(12, 13), 16);
-                    divmvar = Integer.parseInt(strbin.substring(13, 14), 16);
-                    //    procesarerror(8,null,null);
-                    strbin = strbin.substring(0, 8);
-                    char[] charstr = strbin.toCharArray();
-                    // System.out.println("OPTIMA" + strbin);
-                    if (charstr[0] == '0') {
-                        toggle1.check(OFF1.getId());
-                    }else{
-                        toggle1.check(ON1.getId());
-                    }
-                    //inittoggle(toggle1,ON1,OFF1);
-                    /*
-                     */
-                    if (charstr[1] == '0') {
-                        //System.out.println(toggle2 + "" + OFF2 + "" + R.id.btOFF2);
-                        toggle2.check(OFF2.getId());
+                            promvar = Integer.parseInt(strbin.substring(9, 10), 16);
+                            offvar = Integer.parseInt(strbin.substring(10, 11), 16);
+                            acuvar = Integer.parseInt(strbin.substring(11, 12), 16);
+                            pdvar = Integer.parseInt(strbin.substring(12, 13), 16);
+                            divmvar = Integer.parseInt(strbin.substring(13, 14), 16);
+                            //    procesarerror(8,null,null);
+                            strbin = strbin.substring(0, 8);
+                            char[] charstr = strbin.toCharArray();
+                            // System.out.println("OPTIMA" + strbin);
+                            if (charstr[0] == '0') {
+                                ON1.setTextColor(getResources().getColor(R.color.negro));
+                                OFF1.setTextColor(getResources().getColor(R.color.blanco));
+                                toggle1.check(OFF1.getId());
+                            } else {
+                                toggle1.check(ON1.getId());
 
-                    }else{
-                        toggle2.check(ON2.getId());
-                    }
+                                OFF1.setTextColor(getResources().getColor(R.color.negro));
+                                ON1.setTextColor(getResources().getColor(R.color.blanco));
+                            }
+                            //inittoggle(toggle1,ON1,OFF1);
+                            /*
+                             */
+                            if (charstr[1] == '0') {
+                                //System.out.println(toggle2 + "" + OFF2 + "" + R.id.btOFF2);
+                                toggle2.check(OFF2.getId());
+                                ON2.setTextColor(getResources().getColor(R.color.negro));
+                                OFF2.setTextColor(getResources().getColor(R.color.blanco));
 
-                    // inittoggle(toggle2,ON2,OFF2);
-                    if (charstr[2] == '0') {
-                        toggle3.check(OFF3.getId());
-                    }else{
-                        toggle3.check(ON3.getId());
-                    }
-                    lasttanque = charstr[2] == '1';
+                            } else {
+                                toggle2.check(ON2.getId());
+                                OFF2.setTextColor(getResources().getColor(R.color.negro));
+                                ON2.setTextColor(getResources().getColor(R.color.blanco));
 
-                    //inittoggle(toggle3,ON3,OFF3);
-                    if (charstr[3] == '0') {
-                        toggle4.check(OFF4.getId());
-                    }else{
-                        toggle4.check(ON4.getId());
-                    }
+                            }
 
-                    //inittoggle(toggle4,ON4,OFF4);
-                    /*
-                    if (charstr[4]=='0') {
-                        toggle5.check(R.id.btOFF5);
-                    }
-                    if (charstr[5]=='0') {
-                        toggle6.check(R.id.btOFF6);
-                    }
-                    if (charstr[6]=='0') {
-                        toggle7.check(R.id.btOFF7);
-                    }
-                    */
-                    if (charstr[7] == '0') {
-                        toggle8.check(OFF8.getId());
-                    }else{
-                        toggle8.check(ON8.getId());
-                    }
-                    //inittoggle(toggle8,ON8,OFF8);
+                            // inittoggle(toggle2,ON2,OFF2);
+                            if (charstr[2] == '0') {
+                                toggle3.check(OFF3.getId());
+                                ON3.setTextColor(getResources().getColor(R.color.negro));
+                                OFF3.setTextColor(getResources().getColor(R.color.blanco));
+                            } else {
+                                toggle3.check(ON3.getId());
+                                OFF3.setTextColor(getResources().getColor(R.color.negro));
+                                ON3.setTextColor(getResources().getColor(R.color.blanco));
+                            }
+                            lasttanque = charstr[2] == '1';
 
+                            //inittoggle(toggle3,ON3,OFF3);
+                            if (charstr[3] == '0') {
+                                toggle4.check(OFF4.getId());
+                                ON4.setTextColor(getResources().getColor(R.color.negro));
+                                OFF4.setTextColor(getResources().getColor(R.color.blanco));
 
-                        //  System.out.println("OPTIMA" + promvar);
-                        sp_pro.setSelection(promvar);
-                        // System.out.println("OPTIMA" + offvar);
-                        sp_off.setSelection(offvar);
-                        //System.out.println("OPTIMA" + acuvar);
-                        sp_acu.setSelection(acuvar);
+                            } else {
 
-                       // System.out.println("PDDIVM"+pdvar+" "+ divmvar );
-                        if(pdvar == 12){
-                            sp_puntoDecimal.setSelection(0);
+                                OFF4.setTextColor(getResources().getColor(R.color.negro));
+                                ON4.setTextColor(getResources().getColor(R.color.blanco));
+                                toggle4.check(ON4.getId());
+                            }
+
+                            //inittoggle(toggle4,ON4,OFF4);
+                        /*
+                        if (charstr[4]=='0') {
+                            toggle5.check(R.id.btOFF5);
                         }
-                        if(pdvar==0){
-                            sp_puntoDecimal.setSelection(1);
+                        if (charstr[5]=='0') {
+                            toggle6.check(R.id.btOFF6);
                         }
-                        if(pdvar==4){
+                        if (charstr[6]=='0') {
+                            toggle7.check(R.id.btOFF7);
+                        }
+                        */
+                            if (charstr[7] == '0') {
+                                toggle8.check(OFF8.getId());
 
-                            sp_puntoDecimal.setSelection(2);
-                        }
-                        if(pdvar==8){
-                            sp_puntoDecimal.setSelection(3);
-                        }
-                        if(divmvar==1){
-                            sp_divisionMinima.setSelection(0);
-                        }
-                        if(divmvar==2){
+                                ON8.setTextColor(getResources().getColor(R.color.negro));
+                                OFF8.setTextColor(getResources().getColor(R.color.blanco));
+                            } else {
+                                toggle8.check(ON8.getId());
 
-                            sp_divisionMinima.setSelection(1);
-                        }
-                        if(divmvar==5){
-                            sp_divisionMinima.setSelection(2);
-                        }
+                                OFF8.setTextColor(getResources().getColor(R.color.negro));
+                                ON8.setTextColor(getResources().getColor(R.color.blanco));
+                            }
+                            //inittoggle(toggle8,ON8,OFF8);
+
+
+                            //  System.out.println("OPTIMA" + promvar);
+                            sp_pro.setSelection(promvar);
+                            // System.out.println("OPTIMA" + offvar);
+                            sp_off.setSelection(offvar);
+                            //System.out.println("OPTIMA" + acuvar);
+                            sp_acu.setSelection(acuvar);
+
+                            // System.out.println("PDDIVM"+pdvar+" "+ divmvar );
+                            if (pdvar == 12) {
+                                sp_puntoDecimal.setSelection(0);
+                            }
+                            if (pdvar == 0) {
+                                sp_puntoDecimal.setSelection(1);
+                            }
+                            if (pdvar == 4) {
+
+                                sp_puntoDecimal.setSelection(2);
+                            }
+                            if (pdvar == 8) {
+                                sp_puntoDecimal.setSelection(3);
+                            }
+                            if (divmvar == 1) {
+                                sp_divisionMinima.setSelection(0);
+                            }
+                            if (divmvar == 2) {
+
+                                sp_divisionMinima.setSelection(1);
+                            }
+                            if (divmvar == 5) {
+                                sp_divisionMinima.setSelection(2);
+                            }
+//                        } catch (Exception e) {
+//                            Mensaje("Error al momento de leer parametros",R.layout.item_customtoasterror,mainActivity);
+//                        }
+                    if(BooleanRESET){
+                        String param1 = "";
+                        param1 += leertoggles(toggle1, R.id.btON1);
+                        param1 += leertoggles(toggle2, R.id.btON2);// "0";
+                        param1 += leertoggles(toggle3, R.id.btON3);
+                        lasttanque= (leertoggles(toggle3, R.id.btON3).equals("1"));
+                        param1 += leertoggles(toggle4, R.id.btON4); //"0";
+                        param1 += "0";// leertoggles(toggle5,R.id.btON5);
+                        param1 += "1";// leertoggles(toggle6,R.id.btON6); // ESTE NECESITA ESTAR EN 0
+                        param1 += "1";// leertoggles(toggle7,R.id.btON7);
+                        param1 += leertoggles(toggle8, R.id.btON8); // "0";
+                        String param2 = "00000000";
+                        BZA.serialPort.write(BZA.EnviarParametros(param1, param2, sp_pro.getSelectedItem().toString(), sp_off.getSelectedItem().toString(), sp_acu.getSelectedItem().toString()));
+                    }
                     }
 
-            });
+                    });
+            } catch (Exception e) {
+
+            }
         }
         ArrayList<String> Listerr = new ArrayList<>();
         Listerr = BZA.Errores2(Mensaje);//Errores2(Mensaje);//
@@ -778,63 +926,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                         }
                     });
 
-                            //String msj=mainActivity.MainClass.BZA1.Peso_conocido(tv_pesoConocido.getText().toString(),String.valueOf(sp_puntoDecimal.getSelectedItemPosition()),tv_capacidad.getText().toString());
-                         //   if(Mensaje!=null && Mensaje!="NADA"){
-                             //   if(msj!=null){
-                             //       inicioCalibracion(finalStr);
-                           //     }else{
-                             //       mainActivity.Mensaje("Error, peso conocido fuera de rango de acuerdo a Capacidad/punto decimal elegida", R.layout.item_customtoasterror);
-                             //   }
 
-                              //  mainActivity.Mensaje("Revisa la capacidad, division minima y  el punto decimal",R.layout.item_customtoasterror);
-
-
-/*                    if (Listerr.get(i).contains("U_")) {
-                        indiceCalibracion = 1;
-
-
-                    }
-                    if (Listerr.get(i).contains("L_")) {
-                       // indiceCalibracion = 2;
-
-                        indiceCalibracion = 1;
-                    }
-                    if (Listerr.get(i).contains("Z_")) {
-                   //     indiceCalibracion = 3;
-                        indiceCalibracion = 2;
-
-                    }
-                    String str = "ERRCONTROL";
-                    if (Listerr.get(i).contains("D_")) {
-                        indiceCalibracion = 1;
-                        str="NADA";
-                        //str = mainActivity.MainClass.BZA1.CapacidadMax_DivMin_PDecimal(tv_capacidad.getText().toString(), sp_divisionMinima.getSelectedItem().toString(), String.valueOf(sp_puntoDecimal.getSelectedItemPosition()));
-                    }
-                    if(!Listerr.get(i).contains(("L_"))){
-
-                    String finalStr = str;
-
-                    });
-                }else {
-                        mainActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                dialog1.cancel();
-                                tv_capacidad.setAlpha(0.5f);
-                                tv_capacidad.setClickable(false);
-                                animbutton.setAlpha(0.5f);
-                                animbutton.setClickable(false);
-                                sp_divisionMinima.setAlpha(0.5f);
-                                sp_divisionMinima.setClickable(false);
-                                sp_puntoDecimal.setEnabled(false);
-                                sp_puntoDecimal.setAlpha(0.5f);
-                                sp_unidad.setAlpha(0.5f);
-                                sp_unidad.setEnabled(false);
-                                btReajusteCero.setAlpha(0.5f);
-                                btReajusteCero.setEnabled(false);
-                            }
-                        });
-                    }*/
 
                 int finalI = i;
                 ArrayList<String> finalListerr = Listerr;
@@ -912,6 +1004,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
             };
             reader = new PuertosSerie2.SerialPortReader( BZA.serialPort.getInputStream(), receiver);
 
+            System.out.println("BZASERIAL  LISTENER SETEADO");
             // Iniciar la lectura
             reader.startReading();
 
@@ -930,7 +1023,6 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                     Runnable myRunnable = () -> {
                         try {
                             BZA.Pedirparam();
-
                             Thread.sleep(500);
                             mainActivity.runOnUiThread(new Runnable() {
                                 @Override
@@ -944,84 +1036,6 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                                     btSeteobool=true;
                                 }
                             });
-
-
-
-
-
-
-
-
-
-
-                   /* String strbin = mainActivity.MainClass.BZA1.LeerParam1();
-
-                    int promvar = Integer.parseInt(strbin.substring(9,10),16);
-                    int offvar = Integer.parseInt(strbin.substring(10,11),16);
-                    int acuvar = Integer.parseInt(strbin.substring(11,12),16);
-                 //   procesarerror(8,null,null);
-                    strbin=strbin.substring(0,8);
-
-
-                    char[] charstr =  strbin.toCharArray();
-                        getActivity().runOnUiThread(() -> {
-                            //if (charstr[0] == '0') {
-                            //    toggle1.check(R.id.btOFF1);
-                           // }
-
-                            if (charstr[1] == '0') {
-                                toggle2.check(R.id.btOFF2);
-                            }
-                            if (charstr[2] == '0') {
-                                toggle3.check(R.id.btOFF3);
-                            }
-                            lasttanque=charstr[2] == '1';
-                            if (charstr[3] == '0') {
-                                toggle4.check(R.id.btOFF4);
-                            }
-
-                    //if (charstr[4]=='0') {
-                      //  toggle5.check(R.id.btOFF5);
-                    //}
-                    //if (charstr[5]=='0') {
-                      //  toggle6.check(R.id.btOFF6);
-                    //}
-                    //if (charstr[6]=='0') {
-                      //  toggle7.check(R.id.btOFF7);
-                    //}
-
-                            if (charstr[7] == '0') {
-                                toggle8.check(R.id.btOFF8);
-                            }
-                            if (promvar != 0) {
-
-                                int finalPromvar = promvar;
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        System.out.println("OPTIMA" + finalPromvar);
-                                        sp_pro.setSelection(finalPromvar);
-                                    }
-                                });
-                                int finaloffvar = offvar;
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        System.out.println("OPTIMA" + finaloffvar);
-                                        sp_off.setSelection(finaloffvar);
-                                    }
-                                });
-                                int finalacuvar = acuvar;
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        System.out.println("OPTIMA" + finalacuvar);
-                                        sp_acu.setSelection(finalacuvar);
-                                    }
-                                });
-                            } */
-
-                            //});*/
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
@@ -1048,7 +1062,6 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                             collapseLinearLayout(table_parametrosPrincipales);
                             animbutton.setRotation(0);
                             btCalibracionbool = true;
-
                         }
                     });
 
@@ -1083,12 +1096,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
 
                         try {
                             ejecutarenviodeparametros();
-                            Thread.sleep(3000);
 
-                            BZA.Guardar_cal();
-                            Thread.sleep(1000);
-                            enviarparambool=true;
-                            dialog.cancel();
                         } catch (Exception e) {
 
                         }
@@ -1204,11 +1212,17 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
             RadioButton bton= view.findViewById(R.id.btON1);
             RadioButton btoff = view.findViewById(R.id.btOFF1);
             if(toggle1.getCheckedRadioButtonId()==R.id.btON1) {
-               btoff.setText("");
+               btoff.setText("NO");
+               btoff.setTextColor(getResources().getColor(R.color.negro));
+               bton.setTextColor(getResources().getColor(R.color.blanco));
+
                 bton.setText("SI");
             } else {
+                bton.setTextColor(getResources().getColor(R.color.negro));
+                btoff.setTextColor(getResources().getColor(R.color.blanco));
+
                 btoff.setText("NO");
-                bton.setText("");
+                bton.setText("SI");
             }
         });
         /*
@@ -1249,11 +1263,16 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
             RadioButton btoff = view.findViewById(R.id.btOFF3);
 
             if(toggle3.getCheckedRadioButtonId()==R.id.btON3){
-                btoff.setText("");
+                btoff.setText("NO");
                 bton.setText("SI");
+                btoff.setTextColor(getResources().getColor(R.color.negro));
+                bton.setTextColor(getResources().getColor(R.color.blanco));
             } else {
                 btoff.setText("NO");
-                bton.setText("");
+                bton.setText("SI");
+
+                bton.setTextColor(getResources().getColor(R.color.negro));
+                btoff.setTextColor(getResources().getColor(R.color.blanco));
 
             }
 
@@ -1353,123 +1372,9 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                     dialog.cancel();
                     dialog1 = mBuilder1.create();
                     dialog1.show();
-                    BZA.serialPort.write( BZA.reset());
 
 
-                    Runnable myRunnable1 = () -> {
-                        //if(imgseteo.getVisibility()==View.VISIBLE){
-                        try {
-                            Thread.sleep(1000);
-                            BZA.Pedirparam();
-
-                            Thread.sleep(500);
-                            String param1 = "";
-                            param1 += leertoggles(toggle1, R.id.btON1);
-                            param1 += leertoggles(toggle2, R.id.btON2);// "0";
-                            param1 += leertoggles(toggle3, R.id.btON3);
-                            lasttanque= (leertoggles(toggle3, R.id.btON3).equals("1"));
-                            param1 += leertoggles(toggle4, R.id.btON4); //"0";
-                            param1 += "0";// leertoggles(toggle5,R.id.btON5);
-                            param1 += "1";// leertoggles(toggle6,R.id.btON6); // ESTE NECESITA ESTAR EN 0
-                            param1 += "1";// leertoggles(toggle7,R.id.btON7);
-                            param1 += leertoggles(toggle8, R.id.btON8); // "0";
-                            String param2 = "00000000";
-                            BZA.serialPort.write( BZA.EnviarParametros(param1, param2, sp_pro.getSelectedItem().toString(), sp_off.getSelectedItem().toString(), sp_acu.getSelectedItem().toString()));
-
-                            // String strbin = mainActivity.MainClass.BZA1.LeerParam1();
-
-                               /* int promvar = Integer.parseInt(strbin.substring(9,10),16);
-                                int offvar = Integer.parseInt(strbin.substring(10,11),16);
-                                int acuvar = Integer.parseInt(strbin.substring(11,12),16);
-                             //   procesarerror(8,null,null);
-                                strbin=strbin.substring(0,8);
-
-
-                                char[] charstr =  strbin.toCharArray();
-                                getActivity().runOnUiThread(() -> {
-                                    if (charstr[0] == '0') {
-                                        toggle1.check(R.id.btOFF1);
-                                    }
-
-                                    if (charstr[1] == '0') {
-                                        toggle2.check(R.id.btOFF2);
-                                    }
-                                    if (charstr[2] == '0') {
-                                        toggle3.check(R.id.btOFF3);
-                                    }
-                                    lasttanque=charstr[2] == '1';
-                                    if (charstr[3] == '0') {
-                                        toggle4.check(R.id.btOFF4);
-                                    }*/
-                    /*
-                    if (charstr[4]=='0') {
-                        toggle5.check(R.id.btOFF5);
-                    }
-                    if (charstr[5]=='0') {
-                        toggle6.check(R.id.btOFF6);
-                    }
-                    if (charstr[6]=='0') {
-                        toggle7.check(R.id.btOFF7);
-                    }
-                    */
-                        /*            if (charstr[7] == '0') {
-                                        toggle8.check(R.id.btOFF8);
-                                    }
-                                    if (promvar != 0) {
-
-                                        int finalPromvar = promvar;
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                System.out.println("OPTIMA" + finalPromvar);
-                                                sp_pro.setSelection(finalPromvar);
-                                            }
-                                        });
-                                        int finaloffvar = offvar;
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                System.out.println("OPTIMA" + finaloffvar);
-                                                sp_off.setSelection(finaloffvar);
-                                            }
-                                        });
-                                        int finalacuvar = acuvar;
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                System.out.println("OPTIMA" + finalacuvar);
-                                                sp_acu.setSelection(finalacuvar);
-                                            }
-                                        });
-                                    }
-                                });*/
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        /*}else{
-                                lasttanque=false;
-                            }*/
-                    };
-                    Runnable myRunnable = () -> {
-                        try {
-                            // procesarerror(8,null,null);
-
-
-                            Thread myThread = new Thread(myRunnable1);
-                            myThread.start();
-                            Thread.sleep(3000);
-                            bt_resetbool = true;
-                            dialog1.cancel();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-
-
-                    };
-                    Thread myThread2 = new Thread(myRunnable);
-                    myThread2.start();
-
+                    BZA.serialPort.write(BZA.reset());
                 });
 
                 Cancelar.setOnClickListener(view1 -> {
@@ -1635,7 +1540,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                 //Thread.sleep(2000);
                 enviarpddiv(CapDivPDecimal);
                 Thread.sleep(1000);
-                    BZA.Guardar_cal();
+//                BZA.Guardar_cal();
             }
                 //System.out.println("OPTIMA ERR"+CapDivPDecimal);
 
@@ -2124,11 +2029,8 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
 
                 if(Texto.equals("Peso Conocido")){
                     if(BZA.Peso_conocido(userInput.getText().toString(),String.valueOf(sp_puntoDecimal.getSelectedItemPosition()))!=null){ // ,tv_capacidad.getText().toString()
-                        //mainActivity.Puerto_A().write(mainActivity.MainClass.BZA1.Peso_conocido(userInput.getText().toString(),String.valueOf(sp_puntoDecimal.getSelectedItemPosition())));
-                       // procesarerror(2,dialog);
-                        textView.setText(userInput.getText().toString());
-                      //  System.out.println("SETTEXT WOW1");
-                    }else{
+                     textView.setText(userInput.getText().toString());
+                   }else{
                         Mensaje("Error, peso conocido fuera de rango de acuerdo a Capacidad/punto decimal elegida", R.layout.item_customtoasterror, BZA.mainActivity);
                     }
                 } else{

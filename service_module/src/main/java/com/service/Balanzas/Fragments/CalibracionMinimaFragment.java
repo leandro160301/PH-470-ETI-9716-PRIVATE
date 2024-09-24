@@ -546,7 +546,7 @@ public class CalibracionMinimaFragment extends Fragment {
 
               }
           }
-          if (Mensaje.contains("\u0006O 13") && viewMang!=null){
+          if (Mensaje.contains("\u0006O") && viewMang!=null){
               mainActivity.runOnUiThread(new Runnable() {
                   @Override
                   public void run() {
@@ -563,16 +563,16 @@ public class CalibracionMinimaFragment extends Fragment {
                       String offvars = "0";
                       String acuvars = "0";
                       String binario = "";
-                      String hex = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 5, Mensaje.indexOf("\u0006O 13") + 7);
+                      String hex = Mensaje.substring(Mensaje.indexOf("\u0006O") + 5, Mensaje.indexOf("\u0006O") + 7);
                       //           System.out.println("MINIMAiai" + hex);
-                      promvars = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 34, Mensaje.indexOf("\u0006O 13") + 35);
+                      promvars = Mensaje.substring(Mensaje.indexOf("\u0006O") + 34, Mensaje.indexOf("\u0006O") + 35);
                       //             System.out.println("MINIMAiai" + promvars); // 3
-                      offvars = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 33, Mensaje.indexOf("\u0006O 13") + 34);
+                      offvars = Mensaje.substring(Mensaje.indexOf("\u0006O") + 33, Mensaje.indexOf("\u0006O") + 34);
                       //               System.out.println("MINIMAiai" + offvars); // 4
-                      acuvars = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 35, Mensaje.indexOf("\u0006O 13") + 36);
+                      acuvars = Mensaje.substring(Mensaje.indexOf("\u0006O") + 35, Mensaje.indexOf("\u0006O") + 36);
                       System.out.println("MINIMA pddivmin:"+pd+divm);
-                      pd= Mensaje.substring(Mensaje.indexOf("\u0006O 13")+29,Mensaje.indexOf("\u0006O 13")+30);
-                      divm= Mensaje.substring(Mensaje.indexOf("\u0006O 13")+30,Mensaje.indexOf("\u0006O 13")+31);
+                      pd= Mensaje.substring(Mensaje.indexOf("\u0006O")+29,Mensaje.indexOf("\u0006O")+30);
+                      divm= Mensaje.substring(Mensaje.indexOf("\u0006O")+30,Mensaje.indexOf("\u0006O")+31);
                       System.out.println("MINIMA pddivmin:"+pd+divm);// necesito leer de la pos 2 sin contar el #006  asta pos 4
                        int decimal = Integer.parseInt(hex, 16); // Convertir hexadecimal a decimal
                       binario = Integer.toBinaryString(decimal); // Convertir decimal a binario
@@ -722,7 +722,7 @@ public class CalibracionMinimaFragment extends Fragment {
       }*/
     public void procesarMensaje(String Mensaje) {
         if(Mensaje.contains("\u0006D")){
-           BZA.Guardar_cal();
+            BZA.serialPort.write( BZA.Guardar_cal());
 
         }
         if(Mensaje.contains("\u0006T")){
@@ -730,7 +730,7 @@ public class CalibracionMinimaFragment extends Fragment {
 
         }
         if(Mensaje.contains("\u0006P")){
-           BZA.Guardar_cal();
+          BZA.serialPort.write( BZA.Guardar_cal());
         }
         if(Mensaje.contains("\u0006M ")){
             guardar(8, null, null);
@@ -792,7 +792,7 @@ public class CalibracionMinimaFragment extends Fragment {
         }
 
 
-        if (Mensaje.contains("\u0006O 13")) {
+        if (Mensaje.contains("\u0006O")) {
             mainActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -808,15 +808,15 @@ public class CalibracionMinimaFragment extends Fragment {
                     String offvars = "0";
                     String acuvars = "0";
                     String binario = "";
-                    String hex = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 5, Mensaje.indexOf("\u0006O 13") + 7);
+                    String hex = Mensaje.substring(Mensaje.indexOf("\u0006O") + 5, Mensaje.indexOf("\u0006O") + 7);
                     //           System.out.println("MINIMAiai" + hex);
-                    promvars = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 34, Mensaje.indexOf("\u0006O 13") + 35);
+                    promvars = Mensaje.substring(Mensaje.indexOf("\u0006O") + 34, Mensaje.indexOf("\u0006O") + 35);
                     //             System.out.println("MINIMAiai" + promvars); // 3
-                    offvars = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 33, Mensaje.indexOf("\u0006O 13") + 34);
+                    offvars = Mensaje.substring(Mensaje.indexOf("\u0006O") + 33, Mensaje.indexOf("\u0006O") + 34);
                     //               System.out.println("MINIMAiai" + offvars); // 4
-                    acuvars = Mensaje.substring(Mensaje.indexOf("\u0006O 13") + 35, Mensaje.indexOf("\u0006O 13") + 36);
-                    pd= Mensaje.substring(Mensaje.indexOf("\u0006O 13")+27,Mensaje.indexOf("\u0006O 13")+28);
-                    divm= Mensaje.substring(Mensaje.indexOf("\u0006O 13")+28,Mensaje.indexOf("\u0006O 13")+29);
+                    acuvars = Mensaje.substring(Mensaje.indexOf("\u0006O") + 35, Mensaje.indexOf("\u0006O") + 36);
+                    pd= Mensaje.substring(Mensaje.indexOf("\u0006O")+27,Mensaje.indexOf("\u0006O")+28);
+                    divm= Mensaje.substring(Mensaje.indexOf("\u0006O")+28,Mensaje.indexOf("\u0006O")+29);
                     System.out.println("MINIMA pddivmin:"+pd+divm);// necesito leer de la pos 2 sin contar el #006  asta pos 4
                     //                 System.out.println("MINIMAiai" + acuvars); // 5
                     //                   System.out.println("MINIMAiai procesado" + hex+ " "+promvars+" "+offvars+" "+acuvars);

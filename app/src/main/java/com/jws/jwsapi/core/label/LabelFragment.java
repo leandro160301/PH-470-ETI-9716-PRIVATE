@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,7 +51,7 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     private void handleItemClick(int position) {
         String label =openAndReadFile(labelList.get(position),mainActivity);
         if(label!=null&& !label.isEmpty()){
-            setupFieldRecycler(getFieldsFromLabel(label), position, labelList.get(position));
+            setupFieldRecycler(getFieldsFromLabel(label), labelList.get(position));
         }
     }
 
@@ -76,33 +77,32 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     private void setupButtons() {
         if (buttonProvider != null) {
             buttonProvider.getTitle().setText(R.string.title_fragment_label);
-
-            buttonProvider.getButton1().setBackgroundResource(R.drawable.boton_guardado_i);
-            buttonProvider.getButton2().setBackgroundResource(R.drawable.boton_impresora_i);
-            buttonProvider.getButton3().setBackgroundResource(R.drawable.boton_pdf_i);
-            buttonProvider.getButton4().setBackgroundResource(R.drawable.boton_video_i);
-            buttonProvider.getButton5().setBackgroundResource(R.drawable.boton_camara_i);
-
-            buttonProvider.getButton2().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton3().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton4().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton5().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton6().setVisibility(View.INVISIBLE);
-
             buttonProvider.getButton1().setOnClickListener(view -> saveSettings());
+            setupButton(buttonProvider.getButton1(), R.drawable.boton_guardado_i, View.VISIBLE);
+            setupButton(buttonProvider.getButton2(), R.drawable.boton_impresora_i, View.INVISIBLE);
+            setupButton(buttonProvider.getButton3(), R.drawable.boton_pdf_i, View.INVISIBLE);
+            setupButton(buttonProvider.getButton4(), R.drawable.boton_video_i, View.INVISIBLE);
+            setupButton(buttonProvider.getButton5(), R.drawable.boton_camara_i, View.INVISIBLE);
+            setupButton(buttonProvider.getButton6(), null, View.INVISIBLE);
+
             buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
 
         }
     }
 
+    private void setupButton(Button button, Integer resid, Integer visibility) {
+        if(resid!=null)button.setBackgroundResource(resid);
+        if(visibility!=null)button.setVisibility(visibility);
+    }
+
     private void saveSettings() {
-        if(fieldAdapter !=null){
-            if(fieldAdapter.ListElementsInt!=null){
-                printerPreferences.setListSpinner(fieldAdapter.ListElementsInternaInt, fieldAdapter.etiqueta);
-            }
-            if(fieldAdapter.ListElementsInternaFijo!=null){
-                printerPreferences.setListFijo(fieldAdapter.ListElementsInternaFijo, fieldAdapter.etiqueta);
-            }
+        if(fieldAdapter ==null) return;
+
+        if(fieldAdapter.intElements !=null){
+            printerPreferences.setListSpinner(fieldAdapter.intInternalElements, fieldAdapter.label);
+        }
+        if(fieldAdapter.staticInternalElements !=null){
+            printerPreferences.setListFijo(fieldAdapter.staticInternalElements, fieldAdapter.label);
         }
     }
 
@@ -113,9 +113,10 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
         binding.recyclerLabel.setAdapter(labelAdapter);
 
     }
-    private void setupFieldRecycler(List<LabelModel> lista, int posi, String name) {
+
+    private void setupFieldRecycler(List<LabelModel> lista, String name) {
         binding.recyclerField.setLayoutManager(new LinearLayoutManager(getContext()));
-        fieldAdapter = new LabelAdapter(getContext(), lista,mainActivity, name,posi,labelManager, printerPreferences);
+        fieldAdapter = new LabelAdapter(getContext(), lista, name, labelManager, printerPreferences);
         binding.recyclerField.setAdapter(fieldAdapter);
     }
 

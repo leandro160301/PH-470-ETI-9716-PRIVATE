@@ -10,7 +10,6 @@ import com.jws.jwsapi.databinding.ItemUsuariosRecyclerBinding;
 import java.util.List;
 import java.util.Objects;
 
-
 public class UserViewHolder extends RecyclerView.ViewHolder {
     final ItemUsuariosRecyclerBinding binding;
     UserButtonClickListener userButtonClickListener;

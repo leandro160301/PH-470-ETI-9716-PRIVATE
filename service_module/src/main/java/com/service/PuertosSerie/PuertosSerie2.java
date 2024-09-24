@@ -44,9 +44,8 @@ public class PuertosSerie2 {
                             int size = mInputStream.read(buffer);
                             if (size > 0) {
                                 String str = new String(buffer, 0, size,StandardCharsets.ISO_8859_1);
-                                //System.out.println("MENSAJE INTERNO "+str);
+//                                System.out.println("MENSAJE INTERNO "+str.toString());
                                 if(str!=null ) {
-
                                     PuertosSerie2Listener.onMsjPort(str);
                                 }
                             }
@@ -83,7 +82,7 @@ public class PuertosSerie2 {
                     serialPort = new SerialPort(archivo, baudrate, stopBits, dataBits, parity, flowCon, flags);
                     mOutputStream = serialPort.getOutputStream();
                     mInputStream = serialPort.getInputStream();
-                    System.out.println("SERIALPORT LAUNCH"+ archivo);
+//                    System.out.println("SERIALPORT LAUNCH"+ archivo);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
@@ -94,7 +93,7 @@ public class PuertosSerie2 {
                 latch.await(333, TimeUnit.MILLISECONDS); // Espera a que se complete la inicialización
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                System.out.println("SERIALPORT  NO LAUNCH"+ archivo);
+//                System.out.println("SERIALPORT  NO LAUNCH"+ archivo);
             }
             return serialPort;
         } else {
@@ -141,7 +140,7 @@ public class PuertosSerie2 {
 
     public boolean HabilitadoLectura() throws IOException {
         if(serialPort!=null){
-            System.out.println("HABILITADO ¿? "+ serialPort.getInputStream().available());
+//            System.out.println("HABILITADO ¿? "+ serialPort.getInputStream().available());
             return serialPort.getInputStream().available() > 0;
         }else {
             return false;

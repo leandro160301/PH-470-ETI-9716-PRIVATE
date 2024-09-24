@@ -21,7 +21,7 @@ public class ANDGF3000 implements Balanza, Balanza.Struct{
      *
      *
      */
-    public int numeroid=0;
+    public Integer numeroid=0;
     private final Context context;
     private final PuertosSerie serialPort;
     Handler mHandler= new Handler();
@@ -38,11 +38,11 @@ public class ANDGF3000 implements Balanza, Balanza.Struct{
     float pesoBandaCero=0F;
     public Boolean bandaCero =true;
     public Boolean inicioBandaPeso=false;
-    public int puntoDecimal=1;
+    public Integer puntoDecimal=1;
     public String ultimaCalibracion="";
     public String brutoStr="0",netoStr="0",taraStr="0",taraDigitalStr="0",picoStr="0";
-    public int acumulador=0;
-    public int numeroBZA=1;
+    public Integer acumulador=0;
+    public Integer numeroBZA=1;
     public String unidad="gr";
 
     public ANDGF3000(Context context, PuertosSerie serialPort, int numeroBZA) {
@@ -81,7 +81,7 @@ public class ANDGF3000 implements Balanza, Balanza.Struct{
         ObjEditor.apply();
     }
 
-    public float getPesoBandaCero() {
+    public Float getPesoBandaCero() {
         SharedPreferences preferences=context.getSharedPreferences(nombre, Context.MODE_PRIVATE);
         return (preferences.getFloat(String.valueOf(numeroBZA)+"_"+"pbandacero",5.0F));
     }
@@ -141,7 +141,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public int Itw410FrmGetSalida(int numero) {
+    public Integer Itw410FrmGetSalida(int numero) {
         return -1;
     }
 
@@ -151,7 +151,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public int Itw410FrmGetEstado(int numero) {
+    public Integer Itw410FrmGetEstado(int numero) {
         return -1;
     }
 
@@ -161,7 +161,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public int Itw410FrmGetUltimoIndice(int numero) {
+    public Integer Itw410FrmGetUltimoIndice(int numero) {
         return -1;
     }
 
@@ -351,7 +351,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
         ObjEditor.apply();
     }
 
-    public float getPesoUnitario() {
+    public Float getPesoUnitario() {
         SharedPreferences preferences=context.getSharedPreferences(nombre, Context.MODE_PRIVATE);
         return (preferences.getFloat(String.valueOf(numeroBZA)+"_"+"punitario",0.5F));
     }
@@ -415,12 +415,12 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
 
     }
 
-    public int get_DivisionMinima(){
+    public Integer get_DivisionMinima(){
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
         return Preferencias.getInt(String.valueOf(numeroBZA)+"_"+"div",0);
 
     }
-    public int get_PuntoDecimal(){
+    public Integer get_PuntoDecimal(){
         SharedPreferences Preferencias=context.getSharedPreferences(nombre,Context.MODE_PRIVATE);
         int lea=Preferencias.getInt(String.valueOf(numeroBZA)+"_"+"pdecimal",1);
         System.out.println("OPTIMA CALIBRACION PUNTO DECIMAL: "+String.valueOf(lea));
@@ -443,7 +443,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
         estado=M_MODO_BALANZA;
     }
 
-    public float redondear(float numero) {
+    public Float redondear(float numero) {
         float factor = (float) Math.pow(10, puntoDecimal);
         return Math.round(numero * factor) / factor;
     }
@@ -646,33 +646,33 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public int getID( int numBza) {
+    public Integer getID( int numBza) {
         return numeroid;
     }
 
     @Override
-    public float getNeto(int numBza) {
-        return 0;
+    public Float getNeto(int numBza) {
+        return null;
     }
 
     @Override
     public String getNetoStr(int numBza) {
-        return "";
+        return null;
     }
 
     @Override
-    public float getBruto(int numBza) {
-        return 0;
+    public Float getBruto(int numBza) {
+        return null;
     }
 
     @Override
     public String getBrutoStr(int numBza) {
-        return "";
+        return null;
     }
 
     @Override
-    public float getTara(int numBza) {
-        return 0;
+    public Float getTara(int numBza) {
+        return null;
     }
 
     @Override
@@ -711,8 +711,8 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public float getBandaCeroValue(int numBza) {
-        return 0;
+    public Float getBandaCeroValue(int numBza) {
+        return null;
     }
 
     @Override
@@ -741,8 +741,8 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     }
 
     @Override
-    public float getPico(int numBza) {
-        return 0;
+    public Float getPico(int numBza) {
+        return null;
     }
 
     @Override

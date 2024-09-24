@@ -8,7 +8,6 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.label.LabelModel;
-import com.jws.jwsapi.core.label.LabelVariables;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;

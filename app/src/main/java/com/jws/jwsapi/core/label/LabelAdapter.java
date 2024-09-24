@@ -4,15 +4,19 @@ import static com.jws.jwsapi.core.label.LabelViewHolder.handleVisibility;
 import static com.jws.jwsapi.core.label.LabelViewHolder.handleVisibilityElements;
 import static com.jws.jwsapi.core.printer.PrinterHelper.removeLastSeparator;
 import static com.jws.jwsapi.dialog.DialogUtil.keyboard;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.jws.jwsapi.utils.ToastHelper;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -2,6 +2,7 @@ package com.jws.jwsapi.core.label;
 
 import static com.jws.jwsapi.core.printer.PrinterHelper.removeLastSeparator;
 import static com.jws.jwsapi.utils.SpinnerHelper.setupSpinner;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,12 +11,15 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.jws.jwsapi.databinding.DialogoEtiquetaconcatenarBinding;
 import com.jws.jwsapi.utils.AdapterCommon;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

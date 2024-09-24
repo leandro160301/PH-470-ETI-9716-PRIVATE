@@ -2,11 +2,13 @@ package com.jws.jwsapi.core.user;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboardPassword;
 import static com.jws.jwsapi.utils.SpinnerHelper.setupSpinner;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.widget.TextView;
+
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.DialogoLogeoBinding;
 

@@ -3,14 +3,15 @@ package com.jws.jwsapi.core.printer;
 import static com.jws.jwsapi.core.printer.PrinterMode.MODE_NETWORK;
 import static com.jws.jwsapi.core.printer.PrinterMode.MODE_RS232;
 import static com.jws.jwsapi.core.printer.PrinterMode.MODE_USB;
+
 import android.content.Context;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
+import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
-import com.jws.jwsapi.R;
 import com.service.PuertosSerie.PuertosSerie2;
 
 public class PrinterManager {

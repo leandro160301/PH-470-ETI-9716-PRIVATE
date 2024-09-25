@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
-import com.jws.jwsapi.utils.FileUtils;
+import com.jws.jwsapi.utils.file.FileExtensionUtils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -66,7 +66,7 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
 
     private void cargarRecyclerView() {
         rc_lista_ingredientes.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LabelProgramAdapter(getContext(), lista_ingredientes, FileUtils.getFilesExtension(".prn"), printerPreferences);
+        adapter = new LabelProgramAdapter(getContext(), lista_ingredientes, FileExtensionUtils.getFilesExtension(".prn"), printerPreferences);
         adapter.setClickListener(this);
         rc_lista_ingredientes.setAdapter(adapter);
 

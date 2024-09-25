@@ -1,6 +1,5 @@
 package com.jws.jwsapi;
 
-import static com.jws.jwsapi.core.storage.Storage.createMemoryDirectory;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
 import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
 
@@ -26,6 +25,7 @@ import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.CacheUtils;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
+import com.jws.jwsapi.utils.file.FileUtils;
 
 import java.io.IOException;
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setTheme();
         initJwsObject();
         updateViews();
-        createMemoryDirectory();
+        FileUtils.createMemoryDirectory();
         hideNav();
         initService();
         initMainClass();

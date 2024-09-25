@@ -1,5 +1,7 @@
 package com.jws.jwsapi.utils;
 
+import com.jws.jwsapi.utils.file.FileUtils;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;

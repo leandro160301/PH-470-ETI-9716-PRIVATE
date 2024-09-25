@@ -5,53 +5,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class JsonUtils {
-    public static String jsonFiles() throws JSONException {
-        List<String> guardado = FileUtils.getAllFiles();
-        JSONArray jsonArray = new JSONArray();
-
-        Map<String, String> tipoPorExtension = new HashMap<>();
-        tipoPorExtension.put(".pdf", "pdf");
-        tipoPorExtension.put(".png", "png");
-        tipoPorExtension.put(".xls", "xls");
-        tipoPorExtension.put(".csv", "csv");
-        tipoPorExtension.put(".jpg", "jpg");
-        tipoPorExtension.put(".prn", "prn");
-        tipoPorExtension.put(".lbl", "lbl");
-        tipoPorExtension.put(".nlbl", "nlbl");
-
-        try {
-            for (String archivo : guardado) {
-                JSONObject usuario = new JSONObject();
-                String nombre = archivo;
-                String tipo = "";
-
-                for (Map.Entry<String, String> entry : tipoPorExtension.entrySet()) {
-                    if (archivo.endsWith(entry.getKey())) {
-                        nombre = archivo.replace(entry.getKey(), "");
-                        tipo = entry.getValue();
-                        break;
-                    }
-                }
-                usuario.put("Nombre", nombre);
-                usuario.put("Tipo", tipo);
-                usuario.put("Fecha", "");
-                jsonArray.put(usuario);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonArray.toString();
-    }
 
     public static List<String> getFieldFromJson(String campo, String JSON) {
         List<String> resultados = new ArrayList<>();

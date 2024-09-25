@@ -1,6 +1,5 @@
 package com.jws.jwsapi.core.printer;
 
-import static com.jws.jwsapi.core.storage.Storage.openAndReadFile;
 
 import androidx.annotation.NonNull;
 
@@ -11,6 +10,7 @@ import com.jws.jwsapi.core.label.LabelModel;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.date.DateUtils;
+import com.jws.jwsapi.utils.file.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +103,7 @@ public class PrinterHelper {
     public String getLabelCode(int numetiqueta) {
         try {
             String currentLabel = printerPreferences.getLabel(numetiqueta);
-            String labelCode = openAndReadFile(currentLabel, mainActivity);
+            String labelCode = FileUtils.openAndReadFile(currentLabel, mainActivity);
 
             if (!isValidLabel(currentLabel, labelCode)) return "";
 

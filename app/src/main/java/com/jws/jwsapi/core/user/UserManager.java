@@ -12,10 +12,6 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.shared.UserRepository;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,14 +31,6 @@ public class UserManager implements UserLoginInterface {
         this.application = application;
         this.preferencesManagerBase = preferencesManagerBase;
         this.repository = repository;
-    }
-
-    private static void putUserToJson(String user, JSONArray jsonArray) throws JSONException {
-        JSONObject userJson = new JSONObject();
-        userJson.put("Id", "-");
-        userJson.put("Nombre", user);
-        userJson.put("Usuario", user);
-        jsonArray.put(userJson);
     }
 
     @Override
@@ -75,30 +63,6 @@ public class UserManager implements UserLoginInterface {
             userElements.forEach(userModel -> userNames.add(userModel.getUser()));
             return userNames;
         }
-    }
-
-    public String jsonUsers() throws JSONException {
-        List<UserModel> userElements;
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
-            userElements = dbHelper.getAllUsers();
-        }
-        JSONArray jsonArray = new JSONArray();
-        putUserToJson("ADMINISTRADOR", jsonArray);
-        putUserToJson("PROGRAMADOR", jsonArray);
-
-        userElements.forEach(userModel -> {
-            JSONObject userJson = new JSONObject();
-            try {
-                userJson.put("Id", userModel.getId());
-                userJson.put("Nombre", userModel.getName());
-                userJson.put("Usuario", userModel.getUser());
-                jsonArray.put(userJson);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        });
-
-        return jsonArray.toString();
     }
 
     public void loginDialog(MainActivity mainActivity) {

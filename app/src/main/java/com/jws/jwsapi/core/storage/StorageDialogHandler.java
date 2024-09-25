@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.DialogoUsbBinding;
-import com.jws.jwsapi.utils.FileUtils;
 import com.jws.jwsapi.utils.ToastHelper;
+import com.jws.jwsapi.utils.file.FileExtensionUtils;
+import com.jws.jwsapi.utils.file.FileUIUtils;
 
 import java.io.File;
 
@@ -23,6 +24,13 @@ public class StorageDialogHandler {
 
     public StorageDialogHandler(Context context) {
         this.context = context;
+    }
+
+    private static StorageAdapter setupRecyclerExtension(String extension, RecyclerView recyclerView, Context context) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        StorageAdapter adapter = new StorageAdapter(context, FileExtensionUtils.getFilesExtension(extension));
+        recyclerView.setAdapter(adapter);
+        return adapter;
     }
 
     public void showDialog() {
@@ -67,7 +75,7 @@ public class StorageDialogHandler {
 
         for (File dir : StoragePaths.DIRECTORY_MEMORY_PATHS) {
             if (dir.isDirectory()) {
-                Storage.copyFileProgress(file, dir, context);
+                FileUIUtils.copyFileProgress(file, dir, context);
             }
         }
         if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().noneMatch(File::isDirectory)) {
@@ -85,13 +93,6 @@ public class StorageDialogHandler {
             String archivoPath = MEMORY_PATH.concat(adapter.getItem(position));
             file = new File(archivoPath);
         });
-    }
-
-    private static StorageAdapter setupRecyclerExtension(String extension, RecyclerView recyclerView, Context context) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        StorageAdapter adapter = new StorageAdapter(context, FileUtils.getFilesExtension(extension));
-        recyclerView.setAdapter(adapter);
-        return adapter;
     }
 
     private void resetRecyclerView(RecyclerView recyclerView, String extension) {

@@ -8,8 +8,9 @@ import androidx.annotation.NonNull;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.MainClass;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.core.storage.StorageJsonUtils;
+import com.jws.jwsapi.core.user.UserJsonUtils;
 import com.jws.jwsapi.core.user.UserManager;
-import com.jws.jwsapi.utils.JsonUtils;
 import com.jws.jwsapi.utils.PackageUtils;
 
 import org.apache.poi.util.IOUtils;
@@ -249,7 +250,7 @@ public class HttpServer extends NanoWSD {
 
         if (uri.endsWith("getArchivos")) {
             try {
-                Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, JsonUtils.jsonFiles());
+                Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, StorageJsonUtils.jsonFiles());
                 response.addHeader("Access-Control-Allow-Origin", "*");
                 return response;
             } catch (JSONException e) {
@@ -265,7 +266,7 @@ public class HttpServer extends NanoWSD {
 
         }
         if (uri.endsWith("GetUsuarios")) {
-            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, userManager.jsonUsers());
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, new UserJsonUtils().jsonUsers(context));
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
         }

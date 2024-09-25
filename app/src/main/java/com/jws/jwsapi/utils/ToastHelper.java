@@ -12,7 +12,7 @@ import com.jws.jwsapi.R;
 public class ToastHelper {
     private static Toast currentToast;
 
-    public static void message(String texto, int layoutResId, Context context) {
+    public static void message(String text, int layoutResId, Context context) {
         if (currentToast != null) {
             currentToast.cancel();
         }
@@ -20,8 +20,8 @@ public class ToastHelper {
         LayoutInflater inflater = LayoutInflater.from(context);
         View layout = inflater.inflate(layoutResId, null);
 
-        TextView text = layout.findViewById(R.id.text);
-        text.setText(texto);
+        TextView textView = layout.findViewById(R.id.text);
+        textView.setText(text);
         currentToast = new android.widget.Toast(context);
         currentToast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         currentToast.setDuration(android.widget.Toast.LENGTH_LONG);

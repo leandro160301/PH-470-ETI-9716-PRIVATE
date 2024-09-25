@@ -203,6 +203,16 @@ public class MouseAccessibilityService extends AccessibilityService {
     public void homeButtonClick() {
         Log.d(TAG, "Home button pressed");
         instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
+    }
+
+    public void recentButtonClick() {
+        Log.d(TAG, "Recent button pressed");
+        instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+    }
+
+    public void powerButtonClick() {
+        Log.d(TAG, "Power button pressed");
+        instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_POWER_DIALOG);
     }    private final GestureResultCallback gestureResultCallback =
             new GestureResultCallback() {
                 @Override
@@ -226,16 +236,6 @@ public class MouseAccessibilityService extends AccessibilityService {
                     }
                 }
             };
-
-    public void recentButtonClick() {
-        Log.d(TAG, "Recent button pressed");
-        instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
-    }
-
-    public void powerButtonClick() {
-        Log.d(TAG, "Power button pressed");
-        instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_POWER_DIALOG);
-    }
 
     public void lockButtonClick() {
         Log.d(TAG, "Lock button pressed");

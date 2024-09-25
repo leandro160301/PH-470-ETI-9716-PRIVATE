@@ -44,16 +44,13 @@ public class UserManager implements UserLoginInterface {
         if (password.equals(preferencesManagerBase.getPin()) && user.equals("ADMINISTRADOR")) {
             repository.setUserLevel(ROLE_ADMINISTRATOR);
             repository.setUserName("ADMINISTRADOR");
-            return true;
         } else if ((password.equals("3031")) && user.equals("PROGRAMADOR")) {
             repository.setUserLevel(ROLE_PROGRAMMER);
             repository.setUserName("PROGRAMADOR");
-            return true;
         } else {
             repository.searchUser(user, password);
-            return false;
         }
-
+        return true;
     }
 
     @Override

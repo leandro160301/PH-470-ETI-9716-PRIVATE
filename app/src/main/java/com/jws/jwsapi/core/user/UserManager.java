@@ -1,7 +1,6 @@
 package com.jws.jwsapi.core.user;
 
 import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_NAME;
-import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_VERSION;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_ADMINISTRATOR;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_NOT_LOGGED;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_PROGRAMMER;
@@ -68,7 +67,7 @@ public class UserManager implements UserLoginInterface {
     @Override
     public List<String> getUsersSpinner(){
         List<UserModel> lista;
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
             lista=dbHelper.getAllUsers();
         }
         List<String> listElementsArrayList = new ArrayList<>(Arrays.asList(USERS_LIST));
@@ -84,7 +83,7 @@ public class UserManager implements UserLoginInterface {
 
     public String JSONusuarios() throws JSONException {
         List<UserModel> userElements;
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
             userElements=dbHelper.getAllUsers();
         }
         JSONArray jsonArray = new JSONArray();

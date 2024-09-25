@@ -442,6 +442,8 @@
     <string name="toast_printer_network_error">Error para imprimir, IP no valida</string>
     <string name="button_text_6">CERRAR PALLET</string>
     <string name="toast_error_close_pallet">Error de pallet</string>
+    <string name="dialog_user_button_delete">ELIMINAR</string>
+    <string name="dialog_delete_user_question">"Quiere eliminar el usuario "</string>
 
 
 </resources>

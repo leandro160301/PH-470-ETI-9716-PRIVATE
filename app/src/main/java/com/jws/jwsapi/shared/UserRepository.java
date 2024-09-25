@@ -1,7 +1,6 @@
 package com.jws.jwsapi.shared;
 
 import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_NAME;
-import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_VERSION;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_OPERATOR;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
 
@@ -29,7 +28,7 @@ public class UserRepository {
     }
 
     public List<UserModel> getUsers(){
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
             return dbHelper.getAllUsers();
         }
     }
@@ -41,7 +40,7 @@ public class UserRepository {
     }
 
     public void searchUser(String user, String password){
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
             List<UserModel> userElements=dbHelper.searchUsers(user);
             if(userElements.isEmpty()){
                 showMessage(R.string.toast_user_not_exist, R.layout.item_customtoasterror);
@@ -73,7 +72,7 @@ public class UserRepository {
     }
 
     public boolean isEnabled() {
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
             int quantity = dbHelper.getQuantity();
             return quantity == 0 || getLevelUser() > ROLE_OPERATOR;
         }

@@ -1,7 +1,6 @@
 package com.jws.jwsapi.core.user;
 
 import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_NAME;
-import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_VERSION;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
 import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
 
@@ -103,7 +102,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
 
     private long insertUserFromDatabase(DialogoUsuarioBinding binding, String name, String user, String password, String code) {
         long id;
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), DB_USERS_NAME, null, DB_USERS_VERSION)) {
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), DB_USERS_NAME, null)) {
             id = dbHelper.createUser(name, user, password, code, binding.spinnertipo.getSelectedItem().toString(), "SI", "SI", "SI");
         }
         return id;
@@ -119,7 +118,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
 
     @Override
     public boolean searchUserOrCode(Predicate<UserModel> predicate) {
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), DB_USERS_NAME, null, DB_USERS_VERSION)) {
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(getContext(), DB_USERS_NAME, null)) {
             return dbHelper.getAllUsers().stream().anyMatch(predicate);
         }
     }
@@ -135,7 +134,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
             return;
         }
         if(!userList.get(position).getName().equals(userRepository.getCurrentUser())){
-            dialogText(getContext(), "Quiere eliminar el usuario " + userList.get(position).getName() + "?", "ELIMINAR", () -> {
+            dialogText(getContext(), String.format("%s%s?", getString(R.string.dialog_delete_user_question), userList.get(position).getName()), getString(R.string.dialog_user_button_delete), () -> {
                 deleteUserFromDatabase(userList, position);
                 userList.remove(position);
                 adapter.filterList(userList);
@@ -146,7 +145,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
     }
 
     private void deleteUserFromDatabase(List<UserModel> mData, int position) {
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(mainActivity, DB_USERS_NAME, null, DB_USERS_VERSION)) {
+        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(mainActivity, DB_USERS_NAME, null)) {
             dbHelper.deleteUser(mData.get(position).getUser());
         }
     }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class UserDatabaseHelper extends  SQLiteOpenHelper {
 
-    public UserDatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public UserDatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory, 3);
     }
 

@@ -9,6 +9,7 @@ import com.jws.jwsapi.shared.PalletRepository;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.service.PuertosSerie.PuertosSerie2;
+
 import javax.inject.Inject;
 
 public class HomeService {

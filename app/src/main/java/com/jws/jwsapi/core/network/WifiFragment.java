@@ -3,6 +3,7 @@ package com.jws.jwsapi.core.network;
 import static android.content.Context.WIFI_SERVICE;
 import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
 import static com.jws.jwsapi.dialog.DialogUtil.keyboardPassword;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -23,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
@@ -31,6 +33,7 @@ import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
+
 import java.util.List;
 import java.util.Objects;
 

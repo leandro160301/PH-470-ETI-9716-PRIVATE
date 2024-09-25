@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
-import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.StandarImpresorasBinding;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.ToastHelper;

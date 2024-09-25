@@ -4,18 +4,14 @@ import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_NAME;
 import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_VERSION;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_ADMINISTRATOR;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_NOT_LOGGED;
-import static com.jws.jwsapi.core.user.UserConstants.ROLE_OPERATOR;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_PROGRAMMER;
-import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
 import static com.jws.jwsapi.core.user.UserConstants.USERS_LIST;
 
 import android.app.Application;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.shared.UserRepository;
-import com.jws.jwsapi.utils.ToastHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,8 +20,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

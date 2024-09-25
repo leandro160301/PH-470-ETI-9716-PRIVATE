@@ -3,10 +3,9 @@ package com.jws.jwsapi.core.printer;
 import android.content.Context;
 import android.hardware.usb.UsbManager;
 
-import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.printer.utils.DiscoveredPrinterListAdapter;
 import com.jws.jwsapi.core.printer.utils.SelectedPrinterManager;
-import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.zebra.sdk.comm.Connection;
 import com.zebra.sdk.comm.ConnectionException;

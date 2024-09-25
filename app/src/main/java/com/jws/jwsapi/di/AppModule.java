@@ -6,23 +6,25 @@ import android.content.SharedPreferences;
 
 import androidx.room.Room;
 
+import com.jws.jwsapi.AppDatabase;
 import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
-import com.jws.jwsapi.AppDatabase;
 import com.jws.jwsapi.pallet.PalletApi;
 import com.jws.jwsapi.pallet.PalletDao;
 import com.jws.jwsapi.pallet.PalletService;
-import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.shared.PalletRepository;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.weighing.WeighingApi;
 import com.jws.jwsapi.weighing.WeighingDao;
 import com.jws.jwsapi.weighing.WeighingService;
+
 import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;

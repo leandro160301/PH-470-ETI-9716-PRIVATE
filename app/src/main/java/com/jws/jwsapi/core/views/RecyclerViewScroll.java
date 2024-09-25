@@ -3,6 +3,7 @@ package com.jws.jwsapi.core.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerViewScroll extends RecyclerView {

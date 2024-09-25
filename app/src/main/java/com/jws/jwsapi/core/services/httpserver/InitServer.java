@@ -8,7 +8,9 @@ import android.content.ServiceConnection;
 import android.media.projection.MediaProjectionManager;
 import android.os.IBinder;
 import android.provider.Settings;
+
 import androidx.core.content.ContextCompat;
+
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.user.UserManager;

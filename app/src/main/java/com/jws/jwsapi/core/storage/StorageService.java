@@ -1,13 +1,11 @@
 package com.jws.jwsapi.core.storage;
 
 import static com.jws.jwsapi.core.storage.Storage.installApk;
-import static com.jws.jwsapi.core.storage.StoragePaths.USB_NOT_AVAIBLE;
 import static com.jws.jwsapi.core.storage.StoragePaths.USB_CONNECTED;
+import static com.jws.jwsapi.core.storage.StoragePaths.USB_NOT_AVAIBLE;
 
 import android.content.Context;
 import android.os.Handler;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.jws.jwsapi.MainActivity;
 

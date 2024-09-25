@@ -3,7 +3,9 @@ package com.jws.jwsapi.utils;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
 import com.jws.jwsapi.R;
+
 import java.util.List;
 
 public class SpinnerHelper {

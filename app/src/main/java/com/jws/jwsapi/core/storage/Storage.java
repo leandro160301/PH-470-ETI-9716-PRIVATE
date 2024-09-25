@@ -1,7 +1,7 @@
 package com.jws.jwsapi.core.storage;
 
-import static com.jws.jwsapi.dialog.DialogUtil.dialogLoading;
 import static com.jws.jwsapi.core.storage.StoragePaths.MEMORY_PATH;
+import static com.jws.jwsapi.dialog.DialogUtil.dialogLoading;
 
 import android.app.AlertDialog;
 import android.content.Context;

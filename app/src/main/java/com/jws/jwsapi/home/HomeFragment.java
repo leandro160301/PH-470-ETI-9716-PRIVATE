@@ -66,15 +66,20 @@ public class HomeFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mainActivity=(MainActivity)getActivity();
-        weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
-        ServiceViewModelFactory factory = new ServiceViewModelFactory(mainActivity.mainClass.bza, repository);
-        serviceViewModel = new ViewModelProvider(requireActivity(), factory).get(ServiceViewModel.class);
-        palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
+
+        initViewModels();
 
         setupButtons();
 
         observeViewModels();
 
+    }
+
+    private void initViewModels() {
+        weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
+        ServiceViewModelFactory factory = new ServiceViewModelFactory(mainActivity.mainClass.bza, repository);
+        serviceViewModel = new ViewModelProvider(requireActivity(), factory).get(ServiceViewModel.class);
+        palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
     }
 
     private void observeViewModels() {

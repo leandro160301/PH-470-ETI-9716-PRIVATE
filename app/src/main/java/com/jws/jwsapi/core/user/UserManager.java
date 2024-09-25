@@ -39,7 +39,7 @@ public class UserManager implements UserLoginInterface {
 
     @Override
     public boolean login(String password, String user) {
-        if (!password.isEmpty() && !user.isEmpty()) return false;
+        if (password.isEmpty() || user.isEmpty()) return false;
 
         if (password.equals(preferencesManagerBase.getPin()) && user.equals("ADMINISTRADOR")) {
             repository.setUserLevel(ROLE_ADMINISTRATOR);

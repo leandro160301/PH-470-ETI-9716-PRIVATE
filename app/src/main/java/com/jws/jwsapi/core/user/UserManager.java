@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -39,23 +40,21 @@ public class UserManager implements UserLoginInterface {
 
     @Override
     public boolean login(String password, String user) {
-        boolean login=false;
-        if(!password.isEmpty() && !user.isEmpty()){
-            if((password.equals(preferencesManagerBase.getPin())) && user.equals("ADMINISTRADOR")){
-                repository.setUserLevel(ROLE_ADMINISTRATOR);
-                login=true;
-                repository.setUserName("ADMINISTRADOR");
-            }
-            if((password.equals("3031")) && user.equals("PROGRAMADOR")){
-                repository.setUserLevel(ROLE_PROGRAMMER);
-                login=true;
-                repository.setUserName("PROGRAMADOR");
-            }
-            if(!login){
-                repository.searchUser(user, password);
-            }
+        if(!password.isEmpty() && !user.isEmpty())return false;
+
+        if(password.equals(preferencesManagerBase.getPin()) && user.equals("ADMINISTRADOR")){
+            repository.setUserLevel(ROLE_ADMINISTRATOR);
+            repository.setUserName("ADMINISTRADOR");
+            return true;
+        } else if ((password.equals("3031")) && user.equals("PROGRAMADOR")){
+            repository.setUserLevel(ROLE_PROGRAMMER);
+            repository.setUserName("PROGRAMADOR");
+            return true;
+        } else {
+            repository.searchUser(user, password);
+            return false;
         }
-        return login;
+
     }
 
     @Override
@@ -66,18 +65,11 @@ public class UserManager implements UserLoginInterface {
 
     @Override
     public List<String> getUsersSpinner(){
-        List<UserModel> lista;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
-            lista=dbHelper.getAllUsers();
-        }
-        List<String> listElementsArrayList = new ArrayList<>(Arrays.asList(USERS_LIST));
-        for(int i=0;i<lista.size();i++){
-            listElementsArrayList.add(lista.get(i).getUser());
-        }
-        if(listElementsArrayList.size()>0){
-            return listElementsArrayList;
-        }else{
-            return new ArrayList<>();
+            List<UserModel> userElements=dbHelper.getAllUsers();
+            List<String> userNames = new ArrayList<>(Arrays.asList(USERS_LIST));
+            userElements.forEach(userModel -> userNames.add(userModel.getUser()));
+            return userNames;
         }
     }
 

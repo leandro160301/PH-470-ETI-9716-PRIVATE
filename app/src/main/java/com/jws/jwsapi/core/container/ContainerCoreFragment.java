@@ -62,9 +62,6 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
 
         initInstances();
 
-        binding.btGrabando.setVisibility(View.INVISIBLE);
-        binding.lnalarma.setVisibility(View.INVISIBLE);
-
         handleClickListeners();
         openFragment();
         startRunnable();
@@ -82,22 +79,21 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     }
 
     private void openFragment() {
-        ContainerButtonProvider buttonProvider = this;
-        ContainerButtonProviderSingleton.getInstance().setButtonProvider(buttonProvider);
+        ContainerButtonProviderSingleton.getInstance().setButtonProvider(this);
 
-        if (getArguments() != null) {
-            String fragmentClassName = getArguments().getString("FRAGMENT_CLASS");
-            if (fragmentClassName != null) {
-                try {
-                    Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
-                    Fragment fragment = fragmentClass.newInstance();
-                    getChildFragmentManager().beginTransaction()
-                            .replace(R.id.nuevofragment, fragment)
-                            .commit();
-                } catch (ClassNotFoundException | java.lang.InstantiationException |
-                         IllegalAccessException | InstantiationException e) {
-                    e.printStackTrace();
-                }
+        if (getArguments() != null) return;
+
+        String fragmentClassName = getArguments().getString("FRAGMENT_CLASS");
+        if (fragmentClassName != null) {
+            try {
+                Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
+                Fragment fragment = fragmentClass.newInstance();
+                getChildFragmentManager().beginTransaction()
+                        .replace(R.id.nuevofragment, fragment)
+                        .commit();
+            } catch (ClassNotFoundException | java.lang.InstantiationException |
+                     IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
             }
         }
     }

@@ -161,7 +161,8 @@
                                             android:layout_marginStart="5dp"
                                             android:layout_weight="1"
                                             android:background="@drawable/grabando"
-                                            android:orientation="horizontal"></LinearLayout>
+                                            android:orientation="horizontal"
+                                            android:visibility="invisible"></LinearLayout>
 
                                         <LinearLayout
                                             android:id="@+id/bt_usb"

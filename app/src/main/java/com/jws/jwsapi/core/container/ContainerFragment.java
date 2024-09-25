@@ -37,7 +37,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     private boolean stoped=false;
     ContainFragmentBinding binding;
 
-    int iconflag=-1;
+    int iconFlag = -1;
     @Inject
     UserManager userManager;
     @Inject
@@ -77,9 +77,6 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
 
         initInstances();
 
-        binding.btGrabando.setVisibility(View.INVISIBLE);
-        binding.lnalarma.setVisibility(View.INVISIBLE);
-
         handleClickListeners();
         openFragment();
         startRunnable();
@@ -97,27 +94,26 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     }
 
     private void openFragment() {
-        ButtonProvider buttonProvider = this;
-        ButtonProviderSingleton.getInstance().setButtonProvider(buttonProvider);
+        ButtonProviderSingleton.getInstance().setButtonProvider(this);
 
-        if (getArguments() != null) {
-            String fragmentClassName = getArguments().getString("FRAGMENT_CLASS");
-            if (fragmentClassName != null) {
-                try {
-                    Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
-                    Fragment fragment = fragmentClass.newInstance();
-                    if (getArguments()!=null) {
-                        Bundle args = getArguments();
-                        fragment.setArguments(args);
-                    }
+        if (getArguments() == null)  return;
 
-                    getChildFragmentManager().beginTransaction()
-                            .replace(R.id.nuevofragment, fragment)
-                            .commit();
-                } catch (ClassNotFoundException | java.lang.InstantiationException |
-                         IllegalAccessException | InstantiationException e) {
-                    e.printStackTrace();
+        String fragmentClassName = getArguments().getString("FRAGMENT_CLASS");
+        if (fragmentClassName != null) {
+            try {
+                Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
+                Fragment fragment = fragmentClass.newInstance();
+                if (getArguments()!=null) {
+                    Bundle args = getArguments();
+                    fragment.setArguments(args);
                 }
+
+                getChildFragmentManager().beginTransaction()
+                        .replace(R.id.nuevofragment, fragment)
+                        .commit();
+            } catch (ClassNotFoundException | java.lang.InstantiationException |
+                     IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -170,9 +166,9 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     }
 
     private void setupIconProgrammer(int x, int icono_programador) {
-        if(userRepository.getLevelUser()== x &&iconflag!= x){
+        if(userRepository.getLevelUser()== x && iconFlag != x){
             binding.imuser.setImageResource(icono_programador);
-            iconflag= x;
+            iconFlag = x;
         }
     }
 

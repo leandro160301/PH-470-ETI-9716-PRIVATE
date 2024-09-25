@@ -81,23 +81,22 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
         jwsManager= JwsManager.create(requireActivity());
     }
 
+    @SuppressWarnings("unchecked")
     private void openFragment() {
         ContainerButtonProviderSingleton.getInstance().setButtonProvider(this);
-
         if (getArguments() == null) return;
-
         String fragmentClassName = getArguments().getString("FRAGMENT_CLASS");
-        if (fragmentClassName != null) {
-            try {
-                Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
-                Fragment fragment = fragmentClass.newInstance();
-                getChildFragmentManager().beginTransaction()
-                        .replace(R.id.nuevofragment, fragment)
-                        .commit();
-            } catch (ClassNotFoundException | java.lang.InstantiationException |
-                     IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-            }
+        if (fragmentClassName == null) return;
+
+        try {
+            Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
+            Fragment fragment = fragmentClass.newInstance();
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.nuevofragment, fragment)
+                    .commit();
+        } catch (ClassNotFoundException | java.lang.InstantiationException |
+                 IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
         }
 
     }

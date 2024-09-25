@@ -96,27 +96,26 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
         binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this,mainActivity).showDialog());
     }
 
+    @SuppressWarnings("unchecked")
     private void openFragment() {
         ButtonProviderSingleton.getInstance().setButtonProvider(this);
-
         if (getArguments() == null) return;
         String fragmentClassName = getArguments().getString("FRAGMENT_CLASS");
-        if (fragmentClassName != null) {
-            try {
-                Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
-                Fragment fragment = fragmentClass.newInstance();
-                if (getArguments()!=null) {
-                    Bundle args = getArguments();
-                    fragment.setArguments(args);
-                }
+        if (fragmentClassName == null) return;
 
-                getChildFragmentManager().beginTransaction()
-                        .replace(R.id.nuevofragment, fragment)
-                        .commit();
-            } catch (ClassNotFoundException | java.lang.InstantiationException |
-                     IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
+        try {
+            Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
+            Fragment fragment = fragmentClass.newInstance();
+            if (getArguments()!=null) {
+                Bundle args = getArguments();
+                fragment.setArguments(args);
             }
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.nuevofragment, fragment)
+                    .commit();
+        } catch (ClassNotFoundException | java.lang.InstantiationException |
+                 IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
         }
     }
 

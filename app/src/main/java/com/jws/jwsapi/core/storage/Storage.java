@@ -146,7 +146,7 @@ public class Storage {
         }).start();
     }
 
-    public static String JsonFiles() throws JSONException {
+    public static String jsonFiles() throws JSONException {
         List<String> guardado = getAllFiles();
         JSONArray jsonArray = new JSONArray();
 

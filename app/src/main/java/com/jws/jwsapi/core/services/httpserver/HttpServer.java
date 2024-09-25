@@ -251,7 +251,7 @@ public class HttpServer extends NanoWSD {
 
         if (uri.endsWith("getArchivos")) {
             try {
-                Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, Storage.JsonFiles());
+                Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, Storage.jsonFiles());
                 response.addHeader("Access-Control-Allow-Origin", "*");
                 return response;
             } catch (JSONException e) {
@@ -267,7 +267,7 @@ public class HttpServer extends NanoWSD {
 
         }
         if (uri.endsWith("GetUsuarios")) {
-            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, userManager.JsonUsers());
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, userManager.jsonUsers());
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
         }

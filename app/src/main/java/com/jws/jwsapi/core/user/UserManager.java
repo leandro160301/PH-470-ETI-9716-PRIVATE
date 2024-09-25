@@ -77,7 +77,7 @@ public class UserManager implements UserLoginInterface {
         }
     }
 
-    public String JsonUsers() throws JSONException {
+    public String jsonUsers() throws JSONException {
         List<UserModel> userElements;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
             userElements = dbHelper.getAllUsers();

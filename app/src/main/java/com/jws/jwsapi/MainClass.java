@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.jws.jwsapi.core.container.ContainerCoreFragment;
 import com.jws.jwsapi.core.container.ContainerFragment;
-import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.home.HomeFragment;
 import com.jws.jwsapi.shared.UserRepository;
 import com.service.Balanzas.BalanzaService;

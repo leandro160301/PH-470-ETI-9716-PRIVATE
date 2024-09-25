@@ -1,9 +1,9 @@
 package com.jws.jwsapi;
 
-import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
-import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
 import static com.jws.jwsapi.core.storage.Storage.createMemoryDirectory;
 import static com.jws.jwsapi.core.storage.Storage.deleteCache;
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
+import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
 
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -19,9 +19,9 @@ import androidx.core.content.ContextCompat;
 
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
-import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.services.FtpInit;
 import com.jws.jwsapi.core.services.httpserver.InitServer;
+import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.ToastHelper;

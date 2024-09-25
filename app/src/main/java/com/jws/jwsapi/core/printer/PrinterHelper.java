@@ -1,6 +1,5 @@
 package com.jws.jwsapi.core.printer;
 
-
 import androidx.annotation.NonNull;
 
 import com.jws.jwsapi.MainActivity;

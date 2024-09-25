@@ -213,6 +213,18 @@ public class MouseAccessibilityService extends AccessibilityService {
     public void powerButtonClick() {
         Log.d(TAG, "Power button pressed");
         instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_POWER_DIALOG);
+    }
+
+    public void lockButtonClick() {
+        Log.d(TAG, "Lock button pressed");
+        if (!isScreenOff())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+            } else {
+                //  AdminActivity.lockScreen(instance);
+            }
+        else
+            wakeScreenIfNecessary();
     }    private final GestureResultCallback gestureResultCallback =
             new GestureResultCallback() {
                 @Override
@@ -236,18 +248,6 @@ public class MouseAccessibilityService extends AccessibilityService {
                     }
                 }
             };
-
-    public void lockButtonClick() {
-        Log.d(TAG, "Lock button pressed");
-        if (!isScreenOff())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
-            } else {
-                //  AdminActivity.lockScreen(instance);
-            }
-        else
-            wakeScreenIfNecessary();
-    }
 
     private boolean isScreenOff() {
         PowerManager pm = (PowerManager) instance.getSystemService(Context.POWER_SERVICE);

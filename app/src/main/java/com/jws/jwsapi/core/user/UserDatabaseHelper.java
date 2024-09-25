@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDatabaseHelper extends  SQLiteOpenHelper {
+public class UserDatabaseHelper extends SQLiteOpenHelper {
 
     public UserDatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory, 3);
@@ -40,7 +40,7 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         values.put("password", password);
         values.put("codigo", codigo);
         values.put("tipo", tipo);
-        values.put("Permiso1",Permiso1);
+        values.put("Permiso1", Permiso1);
         values.put("Permiso2", Permiso2);
         values.put("Permiso3", Permiso3);
 
@@ -58,7 +58,7 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
 
     public void deleteUser(String user) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM usuarios WHERE usuario='"+user+"'";
+        String query = "DELETE FROM usuarios WHERE usuario='" + user + "'";
         db.execSQL(query);
         db.close();
     }
@@ -74,12 +74,12 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
             do {
 
                 int id = cursor.getInt(0);
-                String nombre=cursor.getString(1);
-                String usuario=cursor.getString(2);
-                String password=cursor.getString(3);
-                String codigo=cursor.getString(4);
-                String tipo=cursor.getString(5);
-                UserModel fila = new UserModel(id,nombre,usuario,password,codigo,tipo);
+                String nombre = cursor.getString(1);
+                String usuario = cursor.getString(2);
+                String password = cursor.getString(3);
+                String codigo = cursor.getString(4);
+                String tipo = cursor.getString(5);
+                UserModel fila = new UserModel(id, nombre, usuario, password, codigo, tipo);
                 filas.add(fila);
 
             } while (cursor.moveToNext());
@@ -95,20 +95,20 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         List<UserModel> filas = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = " SELECT * FROM " + "usuarios" + " WHERE usuario='"+user+"'";
+        String query = " SELECT * FROM " + "usuarios" + " WHERE usuario='" + user + "'";
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
 
                 int id = cursor.getInt(0);
-                String nombre=cursor.getString(1);
-                String usuario=cursor.getString(2);
-                String password=cursor.getString(3);
-                String codigo=cursor.getString(4);
-                String tipo=cursor.getString(5);
+                String nombre = cursor.getString(1);
+                String usuario = cursor.getString(2);
+                String password = cursor.getString(3);
+                String codigo = cursor.getString(4);
+                String tipo = cursor.getString(5);
 
-                UserModel fila = new UserModel(id,nombre,usuario,password,codigo,tipo);
+                UserModel fila = new UserModel(id, nombre, usuario, password, codigo, tipo);
                 filas.add(fila);
 
             } while (cursor.moveToNext());

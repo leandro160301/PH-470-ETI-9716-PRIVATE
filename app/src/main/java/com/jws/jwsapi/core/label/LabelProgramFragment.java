@@ -38,24 +38,25 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
     LabelProgramAdapter adapter;
     public RecyclerView rc_lista_ingredientes;
     List<LabelProgramModel> lista_ingredientes;
-    int posicion_recycler=-1;
+    int posicion_recycler = -1;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.standar_etiquetasdeprograma,container,false);
+        View view = inflater.inflate(R.layout.standar_etiquetasdeprograma, container, false);
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
         return view;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        super.onViewCreated(view,savedInstanceState);
-        mainActivity=(MainActivity)getActivity();
-        rc_lista_ingredientes =view.findViewById(R.id.lista_ingredientes);
-        List<String> nombreetiquetas=labelManager.nameLabelList;
-        lista_ingredientes= new ArrayList<>();
-        for(int i=0;i<nombreetiquetas.size();i++){
+        super.onViewCreated(view, savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
+        rc_lista_ingredientes = view.findViewById(R.id.lista_ingredientes);
+        List<String> nombreetiquetas = labelManager.nameLabelList;
+        lista_ingredientes = new ArrayList<>();
+        for (int i = 0; i < nombreetiquetas.size(); i++) {
             lista_ingredientes.add(new LabelProgramModel(nombreetiquetas.get(i), printerPreferences.getLabel(i)));
         }
         configuracionBotones();
@@ -64,9 +65,9 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
     }
 
 
-    private void cargarRecyclerView(){
+    private void cargarRecyclerView() {
         rc_lista_ingredientes.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LabelProgramAdapter(getContext(),lista_ingredientes, getFilesExtension(".prn"), printerPreferences);
+        adapter = new LabelProgramAdapter(getContext(), lista_ingredientes, getFilesExtension(".prn"), printerPreferences);
         adapter.setClickListener(this);
         rc_lista_ingredientes.setAdapter(adapter);
 
@@ -92,7 +93,7 @@ public class LabelProgramFragment extends Fragment implements LabelProgramAdapte
 
     @Override
     public void onItemClick(View view, int position) {
-        posicion_recycler=position;
+        posicion_recycler = position;
     }
 
 }

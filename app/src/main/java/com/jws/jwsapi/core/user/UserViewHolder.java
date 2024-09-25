@@ -14,13 +14,13 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
     final ItemUsuariosRecyclerBinding binding;
     UserButtonClickListener userButtonClickListener;
 
-    public UserViewHolder(ItemUsuariosRecyclerBinding binding,UserButtonClickListener userButtonClickListener) {
+    public UserViewHolder(ItemUsuariosRecyclerBinding binding, UserButtonClickListener userButtonClickListener) {
         super(binding.getRoot());
         this.binding = binding;
         this.userButtonClickListener = userButtonClickListener;
     }
 
-    public void bind (UserModel user, List<UserModel> userModelList, int position) {
+    public void bind(UserModel user, List<UserModel> userModelList, int position) {
         binding.tvUsuario.setText(user.getName());
         binding.tvTipo.setText(user.getType());
         binding.tvDocumento.setText(String.valueOf(user.getId()));

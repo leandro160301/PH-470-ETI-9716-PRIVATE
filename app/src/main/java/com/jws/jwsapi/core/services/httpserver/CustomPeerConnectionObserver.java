@@ -13,7 +13,7 @@ class CustomPeerConnectionObserver implements PeerConnection.Observer {
 
     public CustomPeerConnectionObserver(String logTag) {
         this.logTag = this.getClass().getCanonicalName();
-        this.logTag = this.logTag + " "+logTag;
+        this.logTag = this.logTag + " " + logTag;
     }
 
     @Override

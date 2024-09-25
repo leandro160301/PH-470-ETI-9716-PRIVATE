@@ -16,12 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
-    public String Version="BZA 1.00";
+    public String Version = "BZA 1.00";
     Intent hidenav;
     ImageView imageView;
     TextView tvVersion;
 
-   @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -30,14 +30,15 @@ public class SplashActivity extends AppCompatActivity {
 
         hideNav();
 
-        imageView=findViewById(R.id.imageView);
-        tvVersion=findViewById(R.id.tvVersion);
+        imageView = findViewById(R.id.imageView);
+        tvVersion = findViewById(R.id.tvVersion);
         tvVersion.setText(Version);
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
         imageView.startAnimation(fadeIn);
         fadeIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) { }
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -45,14 +46,16 @@ public class SplashActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) { }
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
 
         Animation slide = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
         tvVersion.startAnimation(slide);
         slide.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) { }
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -60,7 +63,8 @@ public class SplashActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) { }
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
 
         new Handler().postDelayed(() -> {
@@ -69,10 +73,10 @@ public class SplashActivity extends AppCompatActivity {
             finish();
         }, 3000);
 
-   }
+    }
 
     private void hideNav() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         hidenav = new Intent("android.intent.action.HIDE_NAVIGATION_BAR");
         this.getApplicationContext().sendBroadcast(hidenav);
     }

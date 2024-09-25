@@ -37,29 +37,33 @@ public class UsbPrinter {
     }
 
 
-    public void print(String label, Context context, Boolean memory, List<String> memoryList){
+    public void print(String label, Context context, Boolean memory, List<String> memoryList) {
         Runnable myRunnable = () -> {
             try {
                 discoveredPrinterListAdapter = new DiscoveredPrinterListAdapter(context);
-                UsbManager usbManager = (UsbManager)context.getSystemService(Context.USB_SERVICE);
+                UsbManager usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
 
                 UsbDiscoverer.findPrinters(usbManager, new DiscoveryHandler() {
                     public void foundPrinter(final DiscoveredPrinter printer) {
                         discoveredPrinterListAdapter.addPrinter(printer);
                     }
-                    public void discoveryFinished() { }
-                    public void discoveryError(String message) { }
+
+                    public void discoveryFinished() {
+                    }
+
+                    public void discoveryError(String message) {
+                    }
                 });
                 Thread.sleep(300);
-                if(discoveredPrinterListAdapter.getCount()>0){
+                if (discoveredPrinterListAdapter.getCount() > 0) {
                     DiscoveredPrinter printer = discoveredPrinterListAdapter.getPrinter(0);
                     SelectedPrinterManager.setSelectedPrinter(printer);
                     DiscoveredPrinter formatPrinter;
-                    Print(label,memory,memoryList);
+                    Print(label, memory, memoryList);
                 }
 
             } catch (InterruptedException e) {
-                ToastHelper.message("usb init:"+e.getMessage(),R.layout.item_customtoasterror,context);
+                ToastHelper.message("usb init:" + e.getMessage(), R.layout.item_customtoasterror, context);
             }
         };
 
@@ -67,22 +71,21 @@ public class UsbPrinter {
         myThread.start();
 
 
-
     }
 
-    protected void Print(String Etiqueta,Boolean Memoria,List<String> ListaMemoria) {
+    protected void Print(String Etiqueta, Boolean Memoria, List<String> ListaMemoria) {
 
         try {
             connection = SelectedPrinterManager.getPrinterConnection();
-        }catch (Exception e){
-            ToastHelper.message("usb 0:"+e.getMessage(), R.layout.item_customtoasterror,context);
+        } catch (Exception e) {
+            ToastHelper.message("usb 0:" + e.getMessage(), R.layout.item_customtoasterror, context);
         }
 
 
         if (connection != null) {
             try {
                 connection.open();
-                if(Memoria){
+                if (Memoria) {
                     ZebraPrinter printer = ZebraPrinterFactory.getInstance(connection);
                     String formatContents = new String(printer.retrieveFormatFromPrinter(Etiqueta), StandardCharsets.UTF_8);
 
@@ -98,7 +101,7 @@ public class UsbPrinter {
                     }
                 }
 
-                String quantityString ="1";
+                String quantityString = "1";
 
                 int quantity;
                 try {
@@ -109,36 +112,36 @@ public class UsbPrinter {
                 } catch (NumberFormatException e) {
                     quantity = 1;
                 }
-                ZebraPrinter printer=null;
+                ZebraPrinter printer = null;
 
                 try {
                     printer = ZebraPrinterFactory.getInstance(connection);
-                }catch (Exception e){
-                    ToastHelper.message("usb 1:"+e.getMessage(), R.layout.item_customtoasterror,context);
+                } catch (Exception e) {
+                    ToastHelper.message("usb 1:" + e.getMessage(), R.layout.item_customtoasterror, context);
                 }
 
-                if(printer!=null&&Memoria){
+                if (printer != null && Memoria) {
                     printer.printStoredFormat(Etiqueta, vars);
-                }else{
-                    if(printer!=null){
+                } else {
+                    if (printer != null) {
                         printer.sendCommand(Etiqueta);
-                    }else{
-                        ToastHelper.message("usb 4: printer null", R.layout.item_customtoasterror,context);
+                    } else {
+                        ToastHelper.message("usb 4: printer null", R.layout.item_customtoasterror, context);
                     }
 
                 }
 
             } catch (ConnectionException | ZebraPrinterLanguageUnknownException e) {
-                ToastHelper.message("usb 2:"+e.getMessage(), R.layout.item_customtoasterror,context);
+                ToastHelper.message("usb 2:" + e.getMessage(), R.layout.item_customtoasterror, context);
             } finally {
                 try {
                     connection.close();
                 } catch (ConnectionException e) {
-                    ToastHelper.message("usb 3:"+e.getMessage(), R.layout.item_customtoasterror,context);
+                    ToastHelper.message("usb 3:" + e.getMessage(), R.layout.item_customtoasterror, context);
                 }
             }
-        }else{
-            ToastHelper.message("usb 5: connection null", R.layout.item_customtoasterror,context);
+        } else {
+            ToastHelper.message("usb 5: connection null", R.layout.item_customtoasterror, context);
         }
 
     }

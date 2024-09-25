@@ -20,11 +20,11 @@ public class PrinterPreferences {
     }
 
     public void setListSpinner(List<Integer> stringList, String etiqueta) {
-        preferencesHelper.putIntegerList(etiqueta,stringList);
+        preferencesHelper.putIntegerList(etiqueta, stringList);
     }
 
     public String getSeparator(String etiqueta, int posicion) {
-        return preferencesHelper.getString(etiqueta+"_concat_separador_" + posicion, ",");
+        return preferencesHelper.getString(etiqueta + "_concat_separador_" + posicion, ",");
     }
 
     public void setSeparator(String separador, String etiqueta, int posicion) {
@@ -40,51 +40,51 @@ public class PrinterPreferences {
     }
 
     public void setListFijo(List<String> stringList, String etiqueta) {
-        preferencesHelper.putStringList(etiqueta + "_fijo",stringList);
+        preferencesHelper.putStringList(etiqueta + "_fijo", stringList);
     }
 
     public List<String> getListFijo(String etiqueta) {
         return preferencesHelper.getStringList(etiqueta + "_fijo");
     }
-    
+
     public String getLabel(int etiqueta) {
-        return preferencesHelper.getString("etiqueta_actual_"+ etiqueta,"");
+        return preferencesHelper.getString("etiqueta_actual_" + etiqueta, "");
     }
 
-    public void setLabel(String etiqueta, int numetiqueta){
-        preferencesHelper.putString("etiqueta_actual_"+ numetiqueta,etiqueta);
+    public void setLabel(String etiqueta, int numetiqueta) {
+        preferencesHelper.putString("etiqueta_actual_" + numetiqueta, etiqueta);
     }
 
     public String getLastLabel() {
-        return preferencesHelper.getString("Ultimaetiqueta","");
+        return preferencesHelper.getString("Ultimaetiqueta", "");
     }
 
     public void setLastLabel(String zplCode) {
-        preferencesHelper.putString("Ultimaetiqueta",zplCode);
+        preferencesHelper.putString("Ultimaetiqueta", zplCode);
     }
 
     public int getMode() {
-        return preferencesHelper.getInt("Modo",0);
+        return preferencesHelper.getInt("Modo", 0);
     }
 
     public void setMode(int Modo) {
-        preferencesHelper.putInt("Modo",Modo);
+        preferencesHelper.putInt("Modo", Modo);
     }
 
     public String getIp() {
-        return preferencesHelper.getString("IP","10.41.0.109");
+        return preferencesHelper.getString("IP", "10.41.0.109");
     }
 
     public void setIp(String ip) {
-        preferencesHelper.putString("IP",ip);
+        preferencesHelper.putString("IP", ip);
     }
 
     public String getMac() {
-        return preferencesHelper.getString("MAC","60:95:32:0C:D6:DE");
+        return preferencesHelper.getString("MAC", "60:95:32:0C:D6:DE");
     }
 
     public void setMac(String mac) {
-        preferencesHelper.putString("MAC",mac);
+        preferencesHelper.putString("MAC", mac);
     }
 
 }

@@ -20,6 +20,7 @@ public class RecyclerViewScroll extends RecyclerView {
     public RecyclerViewScroll(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         switch (event.getAction()) {

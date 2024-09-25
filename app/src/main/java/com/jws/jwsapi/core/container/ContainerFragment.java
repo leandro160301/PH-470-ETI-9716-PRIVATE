@@ -34,7 +34,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
 
     private MainActivity mainActivity;
     private JwsManager jwsManager;
-    private boolean stoped=false;
+    private boolean stoped = false;
     ContainFragmentBinding binding;
 
     int iconFlag = -1;
@@ -53,13 +53,13 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
         return fragment;
     }
 
-    public static ContainerFragment newInstanceService(Class<? extends Fragment> fragmentClass, Bundle arg,Boolean programador) {
+    public static ContainerFragment newInstanceService(Class<? extends Fragment> fragmentClass, Bundle arg, Boolean programador) {
         ContainerFragment fragment = new ContainerFragment();
         Bundle args = new Bundle();
         args.putString("FRAGMENT_CLASS", fragmentClass.getName());
         args.putBoolean("NIVEL", programador);
-        args.putSerializable("instance",arg.getSerializable("instance"));
-        args.putSerializable("instanceService",arg.getSerializable("instanceService"));
+        args.putSerializable("instance", arg.getSerializable("instance"));
+        args.putSerializable("instanceService", arg.getSerializable("instanceService"));
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,7 +73,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
 
         initInstances();
 
@@ -86,14 +86,14 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     }
 
     private void initInstances() {
-        mainActivity=(MainActivity)getActivity();
-        jwsManager= JwsManager.create(requireActivity());
+        mainActivity = (MainActivity) getActivity();
+        jwsManager = JwsManager.create(requireActivity());
     }
 
     private void handleClickListeners() {
         binding.lnMenu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
         binding.lnUsuario.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
-        binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this,mainActivity).showDialog());
+        binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this, mainActivity).showDialog());
     }
 
     @SuppressWarnings("unchecked")
@@ -106,7 +106,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
         try {
             Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
             Fragment fragment = fragmentClass.newInstance();
-            if (getArguments()!=null) {
+            if (getArguments() != null) {
                 Bundle args = getArguments();
                 fragment.setArguments(args);
             }
@@ -127,7 +127,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
                 updateUserUi();
                 updateNetworkUi();
                 updateDate();
-                if(!stoped){
+                if (!stoped) {
                     handler.postDelayed(this, 100);
                 }
             }
@@ -137,7 +137,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     }
 
     private void updateDate() {
-        binding.btUsb.setVisibility(storageService.getState()? View.VISIBLE : View.INVISIBLE);
+        binding.btUsb.setVisibility(storageService.getState() ? View.VISIBLE : View.INVISIBLE);
         binding.tvFecha.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
     }
 
@@ -152,7 +152,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
 
     private void updateNetworkUi() {
         String tipo = jwsManager.jwsGetCurrentNetType();
-        if (tipo == null)tipo = "";
+        if (tipo == null) tipo = "";
         switch (tipo) {
             case "ETH":
                 binding.btWifi.setBackgroundResource(R.drawable.icono_ethernet_white);
@@ -167,7 +167,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     }
 
     private void setupIconProgrammer(int x, int icono_programador) {
-        if(userRepository.getLevelUser()== x && iconFlag != x){
+        if (userRepository.getLevelUser() == x && iconFlag != x) {
             binding.imuser.setImageResource(icono_programador);
             iconFlag = x;
         }
@@ -215,7 +215,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
 
     @Override
     public void onDestroyView() {
-        stoped=true;
+        stoped = true;
         super.onDestroyView();
     }
 

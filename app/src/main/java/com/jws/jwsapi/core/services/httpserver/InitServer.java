@@ -29,7 +29,7 @@ public class InitServer {
     public InitServer(Context context, MainActivity mainActivity, UserManager userManager, PreferencesManager preferencesManager) {
         this.context = context;
         this.preferencesManagerBase = preferencesManager;
-        this.mainActivity=mainActivity;
+        this.mainActivity = mainActivity;
         this.permissionHelper = new PermissionHelper((Activity) context, new OnPermissionGrantedListener());
         this.userManager = userManager;
     }
@@ -96,8 +96,8 @@ public class InitServer {
 
         @Override
         public void onAccessNetworkStatePermissionGranted(boolean isGranted) {
-            if (!isGranted)
-                return;
+            if (!isGranted) {
+            }
         }
 
         @Override
@@ -123,10 +123,12 @@ public class InitServer {
         }
 
         @Override
-        public void onRecordAudioPermissionGranted(boolean isGranted) {}
+        public void onRecordAudioPermissionGranted(boolean isGranted) {
+        }
 
         @Override
-        public void onCameraPermissionGranted(boolean isGranted) {}
+        public void onCameraPermissionGranted(boolean isGranted) {
+        }
     }
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {
@@ -136,8 +138,7 @@ public class InitServer {
                     Runnable myRunnable = () -> {
                         if (appService != null) {
                             if (!appService.serverStart(data, 8001,
-                                    isAccessibilityServiceEnabled(), context, mainActivity, userManager,preferencesManagerBase)) {
-                                return;
+                                    isAccessibilityServiceEnabled(), context, mainActivity, userManager, preferencesManagerBase)) {
                             }
                         }
                     };

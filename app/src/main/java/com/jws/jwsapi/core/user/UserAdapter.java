@@ -26,13 +26,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ItemUsuariosRecyclerBinding binding = ItemUsuariosRecyclerBinding.inflate(inflater, parent, false);
-        return new UserViewHolder(binding,userButtonClickListener);
+        return new UserViewHolder(binding, userButtonClickListener);
     }
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
         UserModel user = userElements.get(position);
-        holder.bind(user, userElements,position);
+        holder.bind(user, userElements, position);
 
     }
 

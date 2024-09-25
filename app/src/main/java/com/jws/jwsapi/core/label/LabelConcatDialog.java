@@ -25,29 +25,29 @@ import java.util.List;
 import java.util.Objects;
 
 public class LabelConcatDialog {
-    private int posicionConcat =-1;
+    private int posicionConcat = -1;
     private final Context context;
     private final PrinterPreferences printerPreferences;
     private List<Integer> elementsConcatFormat;
-    private int selected =0;
+    private int selected = 0;
 
     public LabelConcatDialog(Context context, PrinterPreferences printerPreferences) {
         this.context = context;
         this.printerPreferences = printerPreferences;
     }
 
-    public void showDialog(String label, int posicion, TextView textView, List<String> varList){
+    public void showDialog(String label, int posicion, TextView textView, List<String> varList) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         DialogoEtiquetaconcatenarBinding binding = DialogoEtiquetaconcatenarBinding.inflate(LayoutInflater.from(context));
 
-        setupSpinner(binding.spCampo,context.getApplicationContext(),varList);
+        setupSpinner(binding.spCampo, context.getApplicationContext(), varList);
 
-        elementsConcatFormat = printerPreferences.getListConcat(label,posicion);
-        if(elementsConcatFormat ==null) elementsConcatFormat =new ArrayList<>();
+        elementsConcatFormat = printerPreferences.getListConcat(label, posicion);
+        if (elementsConcatFormat == null) elementsConcatFormat = new ArrayList<>();
 
         setupListView(varList, binding);
 
-        String separator= printerPreferences.getSeparator(label,posicion);
+        String separator = printerPreferences.getSeparator(label, posicion);
         setupSeparatorOptions(binding, separator);
         setupOptionsClickListener(binding);
 
@@ -62,7 +62,7 @@ public class LabelConcatDialog {
 
     private void handleCancelButton(String label, int posicion, TextView textView, List<String> varList, AlertDialog dialog) {
         printerPreferences.setListConcat(elementsConcatFormat, label, posicion);
-        String separated="";
+        String separated = "";
         separated = updateSeparator(1, ",", label, posicion, separated);
         separated = updateSeparator(2, ":", label, posicion, separated);
         separated = updateSeparator(3, ";", label, posicion, separated);
@@ -74,11 +74,11 @@ public class LabelConcatDialog {
 
     @NonNull
     private String calculeConcatText(List<String> varList, String separated) {
-        String concat="";
-        if(elementsConcatFormat !=null){
-            for(Integer concatValue : elementsConcatFormat) {
-                if(varList.size()> concatValue){
-                    concat=concat.concat(varList.get(concatValue)+ separated);
+        String concat = "";
+        if (elementsConcatFormat != null) {
+            for (Integer concatValue : elementsConcatFormat) {
+                if (varList.size() > concatValue) {
+                    concat = concat.concat(varList.get(concatValue) + separated);
                 }
             }
         }
@@ -87,10 +87,10 @@ public class LabelConcatDialog {
 
     private void setupOptionsClickListener(DialogoEtiquetaconcatenarBinding binding) {
         Button[] buttons = {binding.btComa, binding.btDospuntos, binding.btPuntoycoma, binding.btBarra};
-        binding.btComa.setOnClickListener(view -> updateButtonStates(1,buttons));
-        binding.btDospuntos.setOnClickListener(view -> updateButtonStates(2,buttons));
-        binding.btPuntoycoma.setOnClickListener(view -> updateButtonStates(3,buttons));
-        binding.btBarra.setOnClickListener(view -> updateButtonStates(4,buttons));
+        binding.btComa.setOnClickListener(view -> updateButtonStates(1, buttons));
+        binding.btDospuntos.setOnClickListener(view -> updateButtonStates(2, buttons));
+        binding.btPuntoycoma.setOnClickListener(view -> updateButtonStates(3, buttons));
+        binding.btBarra.setOnClickListener(view -> updateButtonStates(4, buttons));
     }
 
     private void setupSeparatorOptions(DialogoEtiquetaconcatenarBinding binding, String separator) {
@@ -103,7 +103,7 @@ public class LabelConcatDialog {
     private void setupListView(List<String> varList, DialogoEtiquetaconcatenarBinding binding) {
         List<String> ListElementsArrayConcat = getElementsConcat(varList);
         AdapterCommon adapter = new AdapterCommon(context, ListElementsArrayConcat);
-        adapter.setClickListener((view, position) -> posicionConcat =position);
+        adapter.setClickListener((view, position) -> posicionConcat = position);
         binding.listview.setLayoutManager(new LinearLayoutManager(context));
         binding.listview.setAdapter(adapter);
         binding.btAdd.setOnClickListener(view -> handleAdd(binding.spCampo, adapter, ListElementsArrayConcat, varList));
@@ -112,9 +112,9 @@ public class LabelConcatDialog {
 
     @NonNull
     private List<String> getElementsConcat(List<String> varList) {
-        List<String> ListElementsArrayConcat=new ArrayList<>();
-        for(Integer concatValue : elementsConcatFormat) {
-            if(concatValue < varList.size()){
+        List<String> ListElementsArrayConcat = new ArrayList<>();
+        for (Integer concatValue : elementsConcatFormat) {
+            if (concatValue < varList.size()) {
                 ListElementsArrayConcat.add(varList.get(concatValue));
             }
         }
@@ -123,7 +123,7 @@ public class LabelConcatDialog {
 
 
     private String updateSeparator(int x, String separador, String etiqueta, int posicion, String separated) {
-        if(selected == x){
+        if (selected == x) {
             printerPreferences.setSeparator(separador, etiqueta, posicion);
             separated = separador;
         }
@@ -131,7 +131,7 @@ public class LabelConcatDialog {
     }
 
     private void setupOption(String separacion, Button button, int selected) {
-        if(Objects.equals(separacion, button.getText().toString())){
+        if (Objects.equals(separacion, button.getText().toString())) {
             button.setBackgroundResource(R.drawable.botoneraprincipal_selectorgris);
             button.setTextColor(Color.WHITE);
             this.selected = selected;
@@ -149,29 +149,29 @@ public class LabelConcatDialog {
     }
 
     private void handleDelete(AdapterCommon adapter, List<String> ListElementsArrayConcat) {
-        if(posicionConcat < ListElementsArrayConcat.size()&& posicionConcat !=-1){
+        if (posicionConcat < ListElementsArrayConcat.size() && posicionConcat != -1) {
             elementsConcatFormat.remove(posicionConcat);
             ListElementsArrayConcat.remove(posicionConcat);
             updateAdapter(adapter, ListElementsArrayConcat);
-            posicionConcat =-1;
+            posicionConcat = -1;
         }
     }
 
     private void handleAdd(Spinner spCampo, AdapterCommon adapter, List<String> ListElementsArrayConcat, List<String> listaVariables) {
-        if(spCampo.getSelectedItemPosition()>0&& spCampo.getSelectedItemPosition()< listaVariables.size()){
-            if(elementsConcatFormat !=null){
+        if (spCampo.getSelectedItemPosition() > 0 && spCampo.getSelectedItemPosition() < listaVariables.size()) {
+            if (elementsConcatFormat != null) {
                 elementsConcatFormat.add(spCampo.getSelectedItemPosition());
                 ListElementsArrayConcat.add(listaVariables.get(spCampo.getSelectedItemPosition()));
                 updateAdapter(adapter, ListElementsArrayConcat);
             }
             spCampo.setSelection(0);
-            posicionConcat =-1;
+            posicionConcat = -1;
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private static void updateAdapter(AdapterCommon adapter, List<String> ListElementsArrayConcat) {
-        if(adapter !=null){
+        if (adapter != null) {
             adapter.filterList(ListElementsArrayConcat);
             adapter.notifyDataSetChanged();
         }

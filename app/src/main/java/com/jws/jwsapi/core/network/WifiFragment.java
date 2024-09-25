@@ -183,22 +183,24 @@ public class WifiFragment extends Fragment {
         List<WifiConfiguration> configurationList = getWifiConfigurationList();
         if (configurationList == null) return;
         boolean isConfigurated = false;
-        for ( WifiConfiguration network : configurationList) {
-            if(network.SSID != null && network.SSID.equals("\"" + saveSSI + "\"")){
+        for (WifiConfiguration network : configurationList) {
+            if (network.SSID != null && network.SSID.equals("\"" + saveSSI + "\"")) {
                 isConfigurated = true;
                 wifiManager.getConnectionInfo().getSSID();
                 wifiManager.disconnect();
                 wifiManager.enableNetwork(network.networkId, true);
                 wifiManager.reconnect();
-            }}
-        if(!isConfigurated){
+            }
+        }
+        if (!isConfigurated) {
             keyboardPassword(null, getString(R.string.dialog_wifi_password), requireContext(), false, password -> connectToWifi(saveSSI, password), PasswordTransformationMethod.getInstance());
         }
     }
 
     @Nullable
     private List<WifiConfiguration> getWifiConfigurationList() {
-        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return null;
+        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            return null;
         return wifiManager.getConfiguredNetworks();
     }
 
@@ -235,6 +237,7 @@ public class WifiFragment extends Fragment {
 
         }
     }
+
     private void getWifi() {
         wifiManager.startScan();
     }
@@ -244,16 +247,16 @@ public class WifiFragment extends Fragment {
         return wifiManager != null && wifiManager.isWifiEnabled();
     }
 
-    Runnable mToastRunnable= new Runnable() {
+    Runnable mToastRunnable = new Runnable() {
         @Override
         public void run() {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            String ssid=wifiInfo.getSSID();
+            String ssid = wifiInfo.getSSID();
             try {
-                if(Objects.equals(ssid, "<unknown ssid>")){
+                if (Objects.equals(ssid, "<unknown ssid>")) {
                     binding.tvSSIRED.setText(R.string.fragment_wifi_disconnect);
                     binding.tvSSIconnected.setText(R.string.fragment_wifi_disconnect);
-                }else{
+                } else {
                     binding.tvSSIRED.setText(wifiInfo.getSSID());
                     binding.tvSSIconnected.setText(String.format("%s%s", requireContext().getString(R.string.fragment_wifi_connect_to), wifiInfo.getSSID()));
                 }
@@ -261,15 +264,15 @@ public class WifiFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            if(!stoped){
-                handler.postDelayed(this,1000);
+            if (!stoped) {
+                handler.postDelayed(this, 1000);
             }
         }
     };
 
     @Override
     public void onDestroyView() {
-        stoped=true;
+        stoped = true;
         super.onDestroyView();
     }
 }

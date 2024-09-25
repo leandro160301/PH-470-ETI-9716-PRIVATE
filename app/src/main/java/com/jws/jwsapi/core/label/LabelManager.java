@@ -13,20 +13,20 @@ public class LabelManager {
 
     PrinterPreferences printerPreferences;
     private final PrinterObject<String> name = new PrinterObject<>();
-    private final PrinterObject<String> code= new PrinterObject<>();
-    private final PrinterObject<String> scale= new PrinterObject<>();
-    private final PrinterObject<String> number= new PrinterObject<>();
-    private final PrinterObject<String> origin= new PrinterObject<>();
-    private final PrinterObject<String> destination= new PrinterObject<>();
+    private final PrinterObject<String> code = new PrinterObject<>();
+    private final PrinterObject<String> scale = new PrinterObject<>();
+    private final PrinterObject<String> number = new PrinterObject<>();
+    private final PrinterObject<String> origin = new PrinterObject<>();
+    private final PrinterObject<String> destination = new PrinterObject<>();
 
 
     @Inject
-    public LabelManager(PrinterPreferences printerPreferences){
+    public LabelManager(PrinterPreferences printerPreferences) {
         this.printerPreferences = printerPreferences;
         initPrint();
     }
 
-    public List<String> nameLabelList =new ArrayList<>();
+    public List<String> nameLabelList = new ArrayList<>();
     public List<Printer> varPrinterList;
     public List<String> constantPrinterList;
 
@@ -46,12 +46,12 @@ public class LabelManager {
         nameLabelList.add("PESADA DE PALLET");
 
         varPrinterList = new ArrayList<>();
-        varPrinterList.add(new Printer("",name,"Nombre producto",varPrinterList.size()));
-        varPrinterList.add(new Printer("",code,"Codigo producto",varPrinterList.size()));
-        varPrinterList.add(new Printer("",scale,"Numero de balanza",varPrinterList.size()));
-        varPrinterList.add(new Printer("",number,"Numero de pesada",varPrinterList.size()));
-        varPrinterList.add(new Printer("",origin,"Origen",varPrinterList.size()));
-        varPrinterList.add(new Printer("",destination,"Destino",varPrinterList.size()));
+        varPrinterList.add(new Printer("", name, "Nombre producto", varPrinterList.size()));
+        varPrinterList.add(new Printer("", code, "Codigo producto", varPrinterList.size()));
+        varPrinterList.add(new Printer("", scale, "Numero de balanza", varPrinterList.size()));
+        varPrinterList.add(new Printer("", number, "Numero de pesada", varPrinterList.size()));
+        varPrinterList.add(new Printer("", origin, "Origen", varPrinterList.size()));
+        varPrinterList.add(new Printer("", destination, "Destino", varPrinterList.size()));
 
     }
 

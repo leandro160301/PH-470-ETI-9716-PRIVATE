@@ -14,11 +14,17 @@ public class PermissionHelper {
 
     public interface OnPermissionGrantedListener {
         void onAccessNetworkStatePermissionGranted(boolean isGranted);
+
         void onInternetPermissionGranted(boolean isGranted);
+
         void onReadExternalStoragePermissionGranted(boolean isGranted);
+
         void onWakeLockPermissionGranted(boolean isGranted);
+
         void onForegroundServicePermissionGranted(boolean isGranted);
+
         void onRecordAudioPermissionGranted(boolean isGranted);
+
         void onCameraPermissionGranted(boolean isGranted);
     }
 
@@ -30,8 +36,8 @@ public class PermissionHelper {
     private static final int PERM_RECORD_AUDIO = 5;
     private static final int PERM_CAMERA = 5;
 
-    private Activity activity;
-    private OnPermissionGrantedListener onPermissionGrantedListener;
+    private final Activity activity;
+    private final OnPermissionGrantedListener onPermissionGrantedListener;
 
     public PermissionHelper(Activity a, OnPermissionGrantedListener listener) {
         activity = a;
@@ -47,7 +53,7 @@ public class PermissionHelper {
         }
 
         ActivityCompat.requestPermissions(activity, new String[]{
-                Manifest.permission.ACCESS_NETWORK_STATE }, PERM_ACCESS_NETWORK_STATE);
+                Manifest.permission.ACCESS_NETWORK_STATE}, PERM_ACCESS_NETWORK_STATE);
     }
 
     public void requestInternetPermission() {
@@ -61,7 +67,7 @@ public class PermissionHelper {
             return;
         }
 
-        ActivityCompat.requestPermissions(activity, new String[]{ Manifest.permission.INTERNET },
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.INTERNET},
                 PERM_INTERNET);
     }
 
@@ -74,7 +80,7 @@ public class PermissionHelper {
         }
 
         ActivityCompat.requestPermissions(activity,
-                new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE },
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 PERM_READ_EXTERNAL_STORAGE);
     }
 
@@ -87,7 +93,7 @@ public class PermissionHelper {
         }
 
         ActivityCompat.requestPermissions(activity,
-                new String[]{ Manifest.permission.WAKE_LOCK },
+                new String[]{Manifest.permission.WAKE_LOCK},
                 PERM_WAKE_LOCK);
     }
 
@@ -101,7 +107,7 @@ public class PermissionHelper {
             }
 
             ActivityCompat.requestPermissions(activity,
-                    new String[]{ Manifest.permission.FOREGROUND_SERVICE },
+                    new String[]{Manifest.permission.FOREGROUND_SERVICE},
                     PERM_FOREGROUND_SERVICE);
         } else {
             onPermissionGrantedListener.onForegroundServicePermissionGranted(true);
@@ -118,7 +124,7 @@ public class PermissionHelper {
             }
 
             ActivityCompat.requestPermissions(activity,
-                    new String[]{ Manifest.permission.RECORD_AUDIO },
+                    new String[]{Manifest.permission.RECORD_AUDIO},
                     PERM_RECORD_AUDIO);
         } else {
             onPermissionGrantedListener.onRecordAudioPermissionGranted(true);
@@ -135,7 +141,7 @@ public class PermissionHelper {
             }
 
             ActivityCompat.requestPermissions(activity,
-                    new String[]{ Manifest.permission.CAMERA },
+                    new String[]{Manifest.permission.CAMERA},
                     PERM_CAMERA);
         } else {
             onPermissionGrantedListener.onCameraPermissionGranted(true);

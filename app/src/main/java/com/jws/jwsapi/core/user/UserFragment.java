@@ -44,14 +44,15 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_users,container,false);
+        View view = inflater.inflate(R.layout.fragment_users, container, false);
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
         return view;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
-        mainActivity=(MainActivity)getActivity();
+        super.onViewCreated(view, savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
         setupButtons();
         setupRecycler(view);
     }
@@ -59,7 +60,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
     private void setupRecycler(@NonNull View view) {
         RecyclerView recycler = view.findViewById(R.id.listausuarios);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new UserAdapter(userRepository.getUsers(),this);
+        adapter = new UserAdapter(userRepository.getUsers(), this);
         recycler.setAdapter(adapter);
     }
 
@@ -72,21 +73,21 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
             buttonProvider.getButton4().setVisibility(View.INVISIBLE);
             buttonProvider.getButton5().setVisibility(View.INVISIBLE);
             buttonProvider.getButton6().setVisibility(View.INVISIBLE);
-            buttonProvider.getButton1().setOnClickListener(view -> new UserCreateDialog(requireContext(),this).showDialog());
+            buttonProvider.getButton1().setOnClickListener(view -> new UserCreateDialog(requireContext(), this).showDialog());
             buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());
         }
     }
 
     @Override
     public void handleCreateUserButton(DialogoUsuarioBinding binding, AlertDialog dialog) {
-        if (notEnableToModify()){
+        if (notEnableToModify()) {
             showMessage(R.string.user_error_create_login);
             return;
         }
-        String name= binding.tvnNombre.getText().toString();
-        String user= binding.tvnUsuario.getText().toString();
-        String password= binding.tvnContrasena.getText().toString();
-        String code= binding.tvcodigo.getText().toString();
+        String name = binding.tvnNombre.getText().toString();
+        String user = binding.tvnUsuario.getText().toString();
+        String password = binding.tvnContrasena.getText().toString();
+        String code = binding.tvcodigo.getText().toString();
         if (areFieldsValid(name, user, password, code)) {
             long id;
             id = insertUserFromDatabase(binding, name, user, password, code);
@@ -116,7 +117,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
         return !name.isEmpty() && !user.isEmpty() && !password.isEmpty() && !code.isEmpty();
     }
 
-    public void addElementToList(List<UserModel> userList){
+    public void addElementToList(List<UserModel> userList) {
         adapter.filterList(userList);
     }
 
@@ -129,7 +130,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
 
     @Override
     public void deleteUser(List<UserModel> userList, int position) {
-        if(notEnableToModify()) {
+        if (notEnableToModify()) {
             showMessage(R.string.user_error_create_login);
             return;
         }
@@ -137,7 +138,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
             showMessage(R.string.user_error_create_2);
             return;
         }
-        if(!userList.get(position).getName().equals(userRepository.getCurrentUser())){
+        if (!userList.get(position).getName().equals(userRepository.getCurrentUser())) {
             dialogText(getContext(), String.format("%s%s?", getString(R.string.dialog_delete_user_question), userList.get(position).getName()), getString(R.string.dialog_user_button_delete), () -> {
                 deleteUserFromDatabase(userList, position);
                 userList.remove(position);
@@ -155,7 +156,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
     }
 
     private void showMessage(int user_error_create) {
-        ToastHelper.message(getString(user_error_create),R.layout.item_customtoasterror,requireContext());
+        ToastHelper.message(getString(user_error_create), R.layout.item_customtoasterror, requireContext());
     }
 }
 

@@ -7,13 +7,14 @@ public class Printer {
     private int num;
 
     public Printer(String code, PrinterObject<String> printerVar, String description, int num) {
-        this.code=code;
-        this.printerVar=printerVar;
-        this.description=description;
-        this.num=num;
+        this.code = code;
+        this.printerVar = printerVar;
+        this.description = description;
+        this.num = num;
     }
-    public String value(){
-        return (String) printerVar.value;
+
+    public String value() {
+        return printerVar.value;
     }
 
     public String getDescription() {
@@ -47,7 +48,6 @@ public class Printer {
     public void setNum(int num) {
         this.num = num;
     }
-
 
 
 }

@@ -12,6 +12,7 @@ public class AdapterHelper {
     public static int setAnimationSlideInLeft(View viewToAnimate, int position, int lastPositionAdapter, Context context) {
         return animate(position, lastPositionAdapter, context, android.R.anim.slide_in_left, viewToAnimate);
     }
+
     public static int setAnimationPivot(View viewToAnimate, int position, int lastPositionAdapter, Context context) {
         return animate(position, lastPositionAdapter, context, R.anim.pivot, viewToAnimate);
     }

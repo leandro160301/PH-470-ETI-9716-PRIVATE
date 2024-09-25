@@ -50,7 +50,7 @@ public class PalletViewModel extends ViewModel {
         isClosed.setValue(false);
     }
 
-    public LiveData<List<Pallet>> getPallets(){
+    public LiveData<List<Pallet>> getPallets() {
         return pallets;
     }
 
@@ -78,17 +78,17 @@ public class PalletViewModel extends ViewModel {
         this.palletOrigin.setValue(palletOrigin);
     }
 
-    public void setPalletDestination(String palletDestination){
+    public void setPalletDestination(String palletDestination) {
         this.palletDestination.setValue(palletDestination);
     }
 
     public void createPallet() {
-        if(isValidPallet()){
+        if (isValidPallet()) {
             PalletRequest palletRequest = new PalletRequest(scale.getValue(),
-                    palletDestination.getValue() ,
+                    palletDestination.getValue(),
                     palletOrigin.getValue());
             createPalletRequest(palletRequest);
-        }else {
+        } else {
             error.setValue("Complete los datos");
         }
 

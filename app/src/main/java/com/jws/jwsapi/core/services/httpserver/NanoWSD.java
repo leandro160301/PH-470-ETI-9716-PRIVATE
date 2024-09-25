@@ -8,18 +8,18 @@ package com.jws.jwsapi.core.services.httpserver;
  * %%
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * 3. Neither the name of the nanohttpd nor the names of its contributors
  *    may be used to endorse or promote products derived from this software without
  *    specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -41,6 +41,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -52,7 +53,7 @@ import java.util.logging.Logger;
 
 public abstract class NanoWSD extends NanoHTTPD {
 
-    public static enum State {
+    public enum State {
         UNCONNECTED,
         CONNECTING,
         OPEN,
@@ -74,7 +75,7 @@ public abstract class NanoWSD extends NanoHTTPD {
 
         private final IHTTPSession handshakeRequest;
 
-        private final Response handshakeResponse = new Response(Response.Status.SWITCH_PROTOCOL, null, (InputStream) null, 0) {
+        private final Response handshakeResponse = new Response(Response.Status.SWITCH_PROTOCOL, null, null, 0) {
 
             @Override
             protected void send(OutputStream out) {
@@ -111,9 +112,8 @@ public abstract class NanoWSD extends NanoHTTPD {
 
         /**
          * Debug method. <b>Do not Override unless for debug purposes!</b>
-         * 
-         * @param frame
-         *            The received WebSocket Frame.
+         *
+         * @param frame The received WebSocket Frame.
          */
         protected void debugFrameReceived(WebSocketFrame frame) {
         }
@@ -121,9 +121,8 @@ public abstract class NanoWSD extends NanoHTTPD {
         /**
          * Debug method. <b>Do not Override unless for debug purposes!</b><br>
          * This method is called before actually sending the frame.
-         * 
-         * @param frame
-         *            The sent WebSocket Frame.
+         *
+         * @param frame The sent WebSocket Frame.
          */
         protected void debugFrameSent(WebSocketFrame frame) {
         }
@@ -305,7 +304,7 @@ public abstract class NanoWSD extends NanoHTTPD {
 
     public static class WebSocketFrame {
 
-        public static enum CloseCode {
+        public enum CloseCode {
             NormalClosure(1000),
             GoingAway(1001),
             ProtocolError(1002),
@@ -330,7 +329,7 @@ public abstract class NanoWSD extends NanoHTTPD {
 
             private final int code;
 
-            private CloseCode(int code) {
+            CloseCode(int code) {
                 this.code = code;
             }
 
@@ -380,7 +379,7 @@ public abstract class NanoWSD extends NanoHTTPD {
             }
         }
 
-        public static enum OpCode {
+        public enum OpCode {
             Continuation(0),
             Text(1),
             Binary(2),
@@ -399,7 +398,7 @@ public abstract class NanoWSD extends NanoHTTPD {
 
             private final byte code;
 
-            private OpCode(int code) {
+            OpCode(int code) {
                 this.code = (byte) code;
             }
 
@@ -412,7 +411,7 @@ public abstract class NanoWSD extends NanoHTTPD {
             }
         }
 
-        public static final Charset TEXT_CHARSET = Charset.forName("UTF-8");
+        public static final Charset TEXT_CHARSET = StandardCharsets.UTF_8;
 
         public static String binary2Text(byte[] payload) throws CharacterCodingException {
             return new String(payload, WebSocketFrame.TEXT_CHARSET);
@@ -617,7 +616,7 @@ public abstract class NanoWSD extends NanoHTTPD {
             } else if (this._payloadLength == 127) {
                 long _payloadLength =
                         (long) checkedRead(in.read()) << 56 | (long) checkedRead(in.read()) << 48 | (long) checkedRead(in.read()) << 40 | (long) checkedRead(in.read()) << 32
-                                | checkedRead(in.read()) << 24 | checkedRead(in.read()) << 16 | checkedRead(in.read()) << 8 | checkedRead(in.read());
+                                | (long) checkedRead(in.read()) << 24 | (long) checkedRead(in.read()) << 16 | (long) checkedRead(in.read()) << 8 | checkedRead(in.read());
                 if (_payloadLength < 65536) {
                     throw new WebSocketException(CloseCode.ProtocolError, "Invalid data frame 4byte length. (not using minimal length encoding)");
                 }
@@ -680,13 +679,12 @@ public abstract class NanoWSD extends NanoHTTPD {
 
         @Override
         public String toString() {
-            final StringBuilder sb = new StringBuilder("WS[");
-            sb.append(getOpCode());
-            sb.append(", ").append(isFin() ? "fin" : "inter");
-            sb.append(", ").append(isMasked() ? "masked" : "unmasked");
-            sb.append(", ").append(payloadToString());
-            sb.append(']');
-            return sb.toString();
+            String sb = "WS[" + getOpCode() +
+                    ", " + (isFin() ? "fin" : "inter") +
+                    ", " + (isMasked() ? "masked" : "unmasked") +
+                    ", " + payloadToString() +
+                    ']';
+            return sb;
         }
 
         // ------------------------------------------------------------------------
@@ -709,7 +707,7 @@ public abstract class NanoWSD extends NanoHTTPD {
             } else {
                 out.write(isMasked() ? 0xFF : 127);
                 out.write(this._payloadLength >>> 56 & 0); // integer only
-                                                           // contains
+                // contains
                 // 31 bit
                 out.write(this._payloadLength >>> 48 & 0);
                 out.write(this._payloadLength >>> 40 & 0);
@@ -766,9 +764,8 @@ public abstract class NanoWSD extends NanoHTTPD {
      * hast java.util.Base64, I have this from stackoverflow:
      * http://stackoverflow.com/a/4265472
      * </p>
-     * 
-     * @param buf
-     *            the byte array (not null)
+     *
+     * @param buf the byte array (not null)
      * @return the translated Base64 string (not null)
      */
     private static String encodeBase64(byte[] buf) {

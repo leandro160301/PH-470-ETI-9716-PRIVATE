@@ -83,9 +83,10 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
         binding = StandarMenuBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
     @Override
     public void onItemClick(View view, int position) {
-        currentMenu =position;
+        currentMenu = position;
         switch (position) {
             case MENU_SERVICE:
                 handleService();
@@ -112,15 +113,15 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
                 mainActivity.clearCache();
                 break;
             case MENU_NEW_PIN:
-                new UserPinDialog(requireContext(),this).showDialog();
+                new UserPinDialog(requireContext(), this).showDialog();
                 break;
         }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
-        mainActivity=(MainActivity)getActivity();
+        super.onViewCreated(view, savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
         setupButtons();
         setupMenuRecycler();
 
@@ -139,7 +140,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     }
 
     private void handleUsers() {
-        handleUserAction(() -> mainActivity.mainClass.openFragment(new UserFragment()),ROLE_SUPERVISOR);
+        handleUserAction(() -> mainActivity.mainClass.openFragment(new UserFragment()), ROLE_SUPERVISOR);
     }
 
     private void handleService() {
@@ -147,16 +148,16 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
             ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.service);
             Bundle args = new Bundle();
             args.putSerializable("instanceService", mainActivity.mainClass.service);
-            mainActivity.mainClass.openFragmentService(fragment,args);
-        },ROLE_OPERATOR);
+            mainActivity.mainClass.openFragmentService(fragment, args);
+        }, ROLE_OPERATOR);
     }
 
-    private void setupItems(List<String> list){
+    private void setupItems(List<String> list) {
         binding.lrDinamico1.setVisibility(View.VISIBLE);
         setupSubItems(new ArrayList<>());
-        NavigationAdapter adapter=setupItemRecycler(binding.recycler2, list);
+        NavigationAdapter adapter = setupItemRecycler(binding.recycler2, list);
         adapter.setClickListener((view, position) -> {
-            currentItem =position;
+            currentItem = position;
             switch (currentMenu) {
                 case MENU_SETTINGS:
                     handleSettingsMenu(position);
@@ -174,13 +175,13 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
         });
     }
 
-    private void setupSubItems(List<String> lista){
+    private void setupSubItems(List<String> lista) {
         binding.lrDinamico2.setVisibility(View.VISIBLE);
         NavigationAdapter adapter = setupItemRecycler(binding.recycler3, lista);
         adapter.setClickListener((view, position) -> {
-            if(currentMenu==MENU_DEVICES){
+            if (currentMenu == MENU_DEVICES) {
                 handleUserAction(() -> {
-                    if(currentItem==ITEM_IMPRESORA){
+                    if (currentItem == ITEM_IMPRESORA) {
                         switch (position) {
                             case SUBITEM_SETTINGS:
                                 mainActivity.mainClass.openFragment(new PrinterFragment());
@@ -190,7 +191,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
                                 break;
                         }
                     }
-                },ROLE_OPERATOR);
+                }, ROLE_OPERATOR);
             }
 
         });
@@ -198,20 +199,18 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     }
 
     private void handleDevicesMenu(int position) {
-        switch (position) {
-            case ITEM_IMPRESORA:
-                setupSubItems(Arrays.asList(getResources().getStringArray(R.array.menu_subitems_printer)));
-                break;
+        if (position == ITEM_IMPRESORA) {
+            setupSubItems(Arrays.asList(getResources().getStringArray(R.array.menu_subitems_printer)));
         }
     }
 
     private void handleScaleMenu(int position) {
         switch (position) {
             case ITEM_FECHA_Y_HORA:
-                handleUserAction(() -> new DateDialog(this,getContext()).showDialog(),ROLE_OPERATOR);
+                handleUserAction(() -> new DateDialog(this, getContext()).showDialog(), ROLE_OPERATOR);
                 break;
             case ITEM_TEMA:
-                handleUserAction(() -> new ThemeDialog(requireContext(),this).showDialog(),ROLE_OPERATOR);
+                handleUserAction(() -> new ThemeDialog(requireContext(), this).showDialog(), ROLE_OPERATOR);
                 break;
         }
     }
@@ -228,15 +227,13 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     }
 
     private void handleSettingsMenu(int position) {
-        switch (position) {
-            case ITEM_ETIQUETAS:
-                handleLabelItem();
-                break;
+        if (position == ITEM_ETIQUETAS) {
+            handleLabelItem();
         }
     }
 
     private void handleLabelItem() {
-        handleUserAction(() -> mainActivity.mainClass.openFragment(new LabelProgramFragment()),ROLE_OPERATOR);
+        handleUserAction(() -> mainActivity.mainClass.openFragment(new LabelProgramFragment()), ROLE_OPERATOR);
     }
 
     private NavigationAdapter setupItemRecycler(RecyclerView recyclerView, List<String> list) {
@@ -259,7 +256,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     }
 
     private void toastLoginError() {
-        ToastHelper.message(getString(R.string.toast_navigation_login_error),R.layout.item_customtoasterror,mainActivity);
+        ToastHelper.message(getString(R.string.toast_navigation_login_error), R.layout.item_customtoasterror, mainActivity);
     }
 
     private void setupButtons() {
@@ -293,10 +290,10 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
 
     @Override
     public boolean setDate(String day, String hour, String minutes, String month, String year) {
-        if(isNumeric(day)&&isNumeric(hour)&&isNumeric(minutes)&&isNumeric(month)&&isNumeric(year)){
-            JwsManager jwsManager= JwsManager.create(requireActivity());
-            jwsManager.jwsSetTime(getContext(),Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day)
-                    ,Integer.parseInt(hour),Integer.parseInt(minutes));
+        if (isNumeric(day) && isNumeric(hour) && isNumeric(minutes) && isNumeric(month) && isNumeric(year)) {
+            JwsManager jwsManager = JwsManager.create(requireActivity());
+            jwsManager.jwsSetTime(getContext(), Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)
+                    , Integer.parseInt(hour), Integer.parseInt(minutes));
             return true;
         }
         return false;
@@ -304,7 +301,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
 
     @Override
     public boolean setupPin(String newPin, String pinFromTv) {
-        if (pinFromTv!=null&&pinFromTv.equals(newPin)) {
+        if (pinFromTv != null && pinFromTv.equals(newPin)) {
             preferencesManagerBase.setPin(newPin);
             ToastHelper.message(getString(R.string.toast_navigation_new_pin_ok), R.layout.item_customtoastok, mainActivity);
             return true;

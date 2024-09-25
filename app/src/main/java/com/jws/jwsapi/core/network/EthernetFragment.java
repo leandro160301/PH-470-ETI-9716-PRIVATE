@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class EthernetFragment extends Fragment  {
+public class EthernetFragment extends Fragment {
 
     private static final int DYNAMIC_MODE = 0;
     private static final int STATIC_MODE = 1;
@@ -44,13 +44,14 @@ public class EthernetFragment extends Fragment  {
         binding = StandarEthernetBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
 
         setupButtons();
 
-        mainActivity=(MainActivity)getActivity() ;
+        mainActivity = (MainActivity) getActivity();
 
         jwsObject = JwsManager.create(getContext());
 
@@ -65,57 +66,56 @@ public class EthernetFragment extends Fragment  {
 
     private void handleToggle() {
         binding.toggle.setOnCheckedChangeListener((radioGroup, i) -> {
-            boolean isEthernetOn = binding.toggle.getCheckedRadioButtonId()==R.id.btON;
+            boolean isEthernetOn = binding.toggle.getCheckedRadioButtonId() == R.id.btON;
             jwsObject.jwsSetEthernetState(isEthernetOn);
-            setupLinearVisibility(binding.toggle.getCheckedRadioButtonId()==R.id.btON ? View.VISIBLE : View.INVISIBLE);
+            setupLinearVisibility(binding.toggle.getCheckedRadioButtonId() == R.id.btON ? View.VISIBLE : View.INVISIBLE);
         });
         binding.toggle2.setOnCheckedChangeListener((radioGroup, i) -> {
-            int mode = binding.toggle2.getCheckedRadioButtonId()==R.id.btON2 ? DYNAMIC_MODE : STATIC_MODE;
+            int mode = binding.toggle2.getCheckedRadioButtonId() == R.id.btON2 ? DYNAMIC_MODE : STATIC_MODE;
             preferencesManagerBase.setEthMode(mode);
-            if(mode == DYNAMIC_MODE) {
+            if (mode == DYNAMIC_MODE) {
                 jwsObject.jwsSetEthDHCPAddress();
-            }else{
+            } else {
                 setJwsStatic();
             }
         });
     }
 
     private void setupToggle() {
-        if(jwsObject.jwsGetEthernetState()){
+        if (jwsObject.jwsGetEthernetState()) {
             binding.toggle.check(R.id.btON);
-        }
-        else{
+        } else {
             binding.toggle.check(R.id.btOFF);
             setupLinearVisibility(View.INVISIBLE);
         }
-        binding.toggle2.check(preferencesManagerBase.getEthMode()==DYNAMIC_MODE? R.id.btON2 : R.id.btOFF2);
+        binding.toggle2.check(preferencesManagerBase.getEthMode() == DYNAMIC_MODE ? R.id.btON2 : R.id.btOFF2);
     }
 
     private void setOnClickListeners() {
         binding.tvip.setOnClickListener(v -> keyboardIpAdress(binding.tvip, getString(R.string.dialog_ethernet_ip), requireContext(), ip -> handleUserAction(() -> {
             preferencesManagerBase.setIpStatic(ip);
             setupStaticNetwork();
-        },ip)));
+        }, ip)));
 
         binding.tvsubnet.setOnClickListener(v -> keyboardIpAdress(binding.tvip, getString(R.string.dialog_ethernet_subnet), requireContext(), subnet -> handleUserAction(() -> {
             preferencesManagerBase.setSubnet(subnet);
             setupStaticNetwork();
-        },subnet)));
+        }, subnet)));
 
         binding.tvgateway.setOnClickListener(v -> keyboardIpAdress(binding.tvgateway, getString(R.string.dialog_ethernet_gateway), requireContext(), gateway -> handleUserAction(() -> {
             preferencesManagerBase.setGateway(gateway);
             setupStaticNetwork();
-        },gateway)));
+        }, gateway)));
 
         binding.tvdns1.setOnClickListener(v -> keyboardIpAdress(binding.tvdns1, getString(R.string.dialog_ethernet_dns1), requireContext(), dns1 -> handleUserAction(() -> {
             preferencesManagerBase.setDns1(dns1);
             setupStaticNetwork();
-        },dns1)));
+        }, dns1)));
 
         binding.tvdns2.setOnClickListener(v -> keyboardIpAdress(binding.tvdns1, getString(R.string.dialog_ethernet_dns2), requireContext(), dns2 -> handleUserAction(() -> {
             preferencesManagerBase.setDns2(dns2);
             setupStaticNetwork();
-        },dns2)));
+        }, dns2)));
     }
 
     private void setupTextView() {
@@ -138,15 +138,15 @@ public class EthernetFragment extends Fragment  {
     }
 
     private void setupStaticNetwork() {
-        if(preferencesManagerBase.getEthMode()==STATIC_MODE){
+        if (preferencesManagerBase.getEthMode() == STATIC_MODE) {
             setJwsStatic();
         }
     }
 
     private void setJwsStatic() {
-        jwsObject.jwsSetEthStaticIPAddress(binding.tvip.getText().toString(),binding.
-                        tvsubnet.getText().toString(),binding.tvgateway.getText().toString(),
-                binding.tvdns1.getText().toString(),binding.tvdns2.getText().toString());
+        jwsObject.jwsSetEthStaticIPAddress(binding.tvip.getText().toString(), binding.
+                        tvsubnet.getText().toString(), binding.tvgateway.getText().toString(),
+                binding.tvdns1.getText().toString(), binding.tvdns2.getText().toString());
     }
 
     private void handleUserAction(Runnable action, String ip) {
@@ -158,7 +158,7 @@ public class EthernetFragment extends Fragment  {
     }
 
     private void toastIpError() {
-        ToastHelper.message(getString(R.string.toast_ethernet_ip_not_valid),R.layout.item_customtoasterror,requireContext());
+        ToastHelper.message(getString(R.string.toast_ethernet_ip_not_valid), R.layout.item_customtoasterror, requireContext());
     }
 
     private void setupButtons() {

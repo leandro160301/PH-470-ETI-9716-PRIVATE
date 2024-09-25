@@ -68,27 +68,27 @@ public class DiscoveredPrinterListAdapter extends BaseAdapter {
         DiscoveredPrinter printer = discoveredPrinters.get(position);
         String friendlyField = "";
         if (printer instanceof DiscoveredPrinterUsb) {
-        	friendlyField = "USB Printer";
-        	icon.setImageBitmap(usbIcon);
+            friendlyField = "USB Printer";
+            icon.setImageBitmap(usbIcon);
         } else if (printer instanceof DiscoveredPrinterBluetooth) {
-        	friendlyField = ((DiscoveredPrinterBluetooth) printer).friendlyName;
-        	icon.setImageBitmap(bluetoothIcon);
+            friendlyField = ((DiscoveredPrinterBluetooth) printer).friendlyName;
+            icon.setImageBitmap(bluetoothIcon);
         } else if (printer instanceof DiscoveredPrinterNetwork) {
-        	friendlyField = printer.getDiscoveryDataMap().get("DNS_NAME");
-        	icon.setImageBitmap(networkIcon);
+            friendlyField = printer.getDiscoveryDataMap().get("DNS_NAME");
+            icon.setImageBitmap(networkIcon);
         }
         firstLine.setText(friendlyField);
         secondLine.setText(printer.address);
         return retVal;
     }
 
-	public void addPrinter(DiscoveredPrinter printer) {
-		discoveredPrinters.add(printer);
-		notifyDataSetChanged();
-	}
-	
-	public DiscoveredPrinter getPrinter(int index) {
-		return discoveredPrinters.get(index);
-	}
+    public void addPrinter(DiscoveredPrinter printer) {
+        discoveredPrinters.add(printer);
+        notifyDataSetChanged();
+    }
+
+    public DiscoveredPrinter getPrinter(int index) {
+        return discoveredPrinters.get(index);
+    }
 
 }

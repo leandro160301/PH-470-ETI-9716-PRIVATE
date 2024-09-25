@@ -11,11 +11,11 @@ public class PalletCloseRequest {
         this.serialNumber = serialNumber;
     }
 
-    public String getSerialNumber(){
+    public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerialNumber(String serialNumber){
+    public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 }

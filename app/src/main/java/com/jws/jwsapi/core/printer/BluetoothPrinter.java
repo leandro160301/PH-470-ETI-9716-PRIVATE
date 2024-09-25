@@ -13,7 +13,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class BluetoothPrinter {
-    private MainActivity mainActivity;
+    private final MainActivity mainActivity;
+
     public BluetoothPrinter(MainActivity activity) {
         this.mainActivity = activity;
 
@@ -70,14 +71,14 @@ public class BluetoothPrinter {
     }
 
     private void onMessageSent(String message) {
-        ToastHelper.message("mensaje enviado",R.layout.item_customtoasterror,mainActivity);
+        ToastHelper.message("mensaje enviado", R.layout.item_customtoasterror, mainActivity);
     }
 
     private void onMessageReceived(String message) {
-        ToastHelper.message("llega mensaje",R.layout.item_customtoasterror,mainActivity);
+        ToastHelper.message("llega mensaje", R.layout.item_customtoasterror, mainActivity);
     }
 
     private void onError(Throwable error) {
-        ToastHelper.message("error:"+error.toString(),R.layout.item_customtoasterror,mainActivity);
+        ToastHelper.message("error:" + error.toString(), R.layout.item_customtoasterror, mainActivity);
     }
 }

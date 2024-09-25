@@ -10,9 +10,9 @@ public class UserModel {
     private String type;
 
     public UserModel(int id, String name, String user, String password, String code, String type) {
-        this.id=id;
+        this.id = id;
         this.name = name;
-        this.password=password;
+        this.password = password;
         this.user = user;
         this.code = code;
         this.type = type;

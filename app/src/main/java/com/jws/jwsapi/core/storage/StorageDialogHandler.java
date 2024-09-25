@@ -49,26 +49,26 @@ public class StorageDialogHandler {
 
     private void deleteFile() {
         if (file != null && file.exists()) {
-            boolean eliminacion=file.delete();
-            if(eliminacion){
-                ToastHelper.message(context.getString(R.string.toast_storage_file_deleted), R.layout.item_customtoastok,context);
-            }else{
-                ToastHelper.message(context.getString(R.string.toast_storage_file_not_deleted), R.layout.item_customtoasterror,context);
+            boolean eliminacion = file.delete();
+            if (eliminacion) {
+                ToastHelper.message(context.getString(R.string.toast_storage_file_deleted), R.layout.item_customtoastok, context);
+            } else {
+                ToastHelper.message(context.getString(R.string.toast_storage_file_not_deleted), R.layout.item_customtoasterror, context);
             }
-        }else{
-            ToastHelper.message(context.getString(R.string.toast_storage_file_not_exist), R.layout.item_customtoasterror,context);
+        } else {
+            ToastHelper.message(context.getString(R.string.toast_storage_file_not_exist), R.layout.item_customtoasterror, context);
         }
     }
 
     private void copyFileToUsb() {
         if (file != null && file.exists()) {
-            for(File dir: StoragePaths.DIRECTORY_MEMORY_PATHS){
+            for (File dir : StoragePaths.DIRECTORY_MEMORY_PATHS) {
                 if (dir.isDirectory()) {
-                    Storage.copyFileProgress(file, dir,context);
+                    Storage.copyFileProgress(file, dir, context);
                 }
             }
             if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().noneMatch(File::isDirectory)) {
-                ToastHelper.message(context.getString(R.string.toast_storage_pendrive_not_avaible), R.layout.item_customtoasterror,context);
+                ToastHelper.message(context.getString(R.string.toast_storage_pendrive_not_avaible), R.layout.item_customtoasterror, context);
             }
         }
     }

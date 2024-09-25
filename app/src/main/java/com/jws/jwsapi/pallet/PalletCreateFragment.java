@@ -41,21 +41,21 @@ public class PalletCreateFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mainActivity=(MainActivity)getActivity();
+        mainActivity = (MainActivity) getActivity();
         palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
         setupButtons();
         setOnClickListeners();
 
         palletViewModel.getPalletResponse().observe(getViewLifecycleOwner(), palletResponse -> {
             if (palletResponse != null) {
-                ToastHelper.message(requireContext().getString(R.string.toast_message_pallet_created),R.layout.item_customtoastok,getContext());
+                ToastHelper.message(requireContext().getString(R.string.toast_message_pallet_created), R.layout.item_customtoastok, getContext());
             }
         });
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         palletViewModel.getError().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
-                ToastHelper.message(error,R.layout.item_customtoasterror,getContext());
+                ToastHelper.message(error, R.layout.item_customtoasterror, getContext());
             }
         });
     }

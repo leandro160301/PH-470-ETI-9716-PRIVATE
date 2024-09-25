@@ -24,11 +24,12 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     private ItemClickListener mClickListener;
     private int lastPositionAdapter = -1;
     Context context;
+
     // data is passed into the constructor
     public NavigationAdapter(Context context, List<String> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.context=context;
+        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -38,17 +39,17 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
         return new ViewHolder(view);
     }
+
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String animal = mData.get(position);
         holder.myTextView.setText(animal);
 
-        if (selectedPos == position){
+        if (selectedPos == position) {
             holder.itemView.setBackgroundResource(R.drawable.botoneraprincipal);
             holder.myTextView.setTextColor(Color.WHITE);
-        }
-        else{
+        } else {
             holder.itemView.setBackgroundResource(R.drawable.fondoinfoprincipal);
             holder.myTextView.setTextColor(Color.DKGRAY);
         }
@@ -73,10 +74,10 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     }
 
 
-
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
+
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tvAnimalName);
@@ -105,11 +106,13 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
     public void removeAt(int position) {
         mData.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mData.size());
     }
+
     public void filterList(ArrayList<String> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();

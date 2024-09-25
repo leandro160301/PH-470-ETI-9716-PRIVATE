@@ -10,11 +10,11 @@ public class WeighingResponse {
     @SerializedName("error")
     private String error;
 
-    public Boolean getStatus(){
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status){
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

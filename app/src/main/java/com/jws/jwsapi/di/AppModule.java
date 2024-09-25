@@ -44,7 +44,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public UserManager provideUserManager(Application application, PreferencesManager preferencesManager, UserRepository userRepository){
+    public UserManager provideUserManager(Application application, PreferencesManager preferencesManager, UserRepository userRepository) {
         return new UserManager(application, preferencesManager, userRepository);
     }
 
@@ -62,7 +62,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public LabelManager provideLabelManager(PrinterPreferences printerPreferences){
+    public LabelManager provideLabelManager(PrinterPreferences printerPreferences) {
         return new LabelManager(printerPreferences);
     }
 
@@ -74,7 +74,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public PalletRepository providePalletRepository(PalletDao palletDao){
+    public PalletRepository providePalletRepository(PalletDao palletDao) {
         return new PalletRepository(palletDao);
     }
 
@@ -121,8 +121,8 @@ public class AppModule {
     }
 
     @Provides
-    public WeighingService provideWeighingService(WeighingApi weighingApi, WeighingDao weighingDao,PalletDao palletDao) {
-        return new WeighingService(weighingApi, weighingDao,palletDao);
+    public WeighingService provideWeighingService(WeighingApi weighingApi, WeighingDao weighingDao, PalletDao palletDao) {
+        return new WeighingService(weighingApi, weighingDao, palletDao);
     }
 
     @Provides

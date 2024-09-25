@@ -29,21 +29,21 @@ public class HomeService {
         this.palletRepository = palletRepository;
     }
 
-    public void print(MainActivity mainActivity, PuertosSerie2 serialPort){
+    public void print(MainActivity mainActivity, PuertosSerie2 serialPort) {
         Runnable myRunnable = () -> {
             try {
                 Thread.sleep(500);
                 try {
                     Pallet pallet = palletRepository.getCurrentPallet().getValue();
-                    if(pallet != null) {
+                    if (pallet != null) {
                         labelManager.setDestination(pallet.getDestinationPallet());
                         labelManager.setScale(String.valueOf(weighRepository.getScaleNumber()));
                         labelManager.setCode(pallet.getCode());
                         labelManager.setNumber(String.valueOf(pallet.getDone()));
                         labelManager.setOrigin(pallet.getOriginPallet());
                         labelManager.setName(pallet.getName());
-                        PrinterManager printerManager = new PrinterManager(mainActivity,mainActivity,userRepository, printerPreferences,labelManager);
-                        printerManager.printLabelInMemory(serialPort,0);
+                        PrinterManager printerManager = new PrinterManager(mainActivity, mainActivity, userRepository, printerPreferences, labelManager);
+                        printerManager.printLabelInMemory(serialPort, 0);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

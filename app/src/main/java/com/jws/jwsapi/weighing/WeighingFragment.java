@@ -40,7 +40,7 @@ public class WeighingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mainActivity=(MainActivity)getActivity();
+        mainActivity = (MainActivity) getActivity();
         WeighingViewModel weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
         setupButtons();
 
@@ -49,7 +49,7 @@ public class WeighingFragment extends Fragment {
         binding.recycler.setAdapter(weighingAdapter);
 
         weighingViewModel.getWeighings().observe(getViewLifecycleOwner(), pallets -> {
-            if (pallets!=null) {
+            if (pallets != null) {
                 weighingAdapter.updateData(pallets);
             }
         });
@@ -68,7 +68,7 @@ public class WeighingFragment extends Fragment {
             buttonProvider.getTitle().setText(requireContext().getString(R.string.title_weighings));
         }
     }
-    
+
     private void openHome() {
         mainActivity.mainClass.openFragmentPrincipal();
     }

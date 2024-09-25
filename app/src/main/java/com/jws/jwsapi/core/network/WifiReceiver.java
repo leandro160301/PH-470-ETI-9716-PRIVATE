@@ -34,9 +34,10 @@ public class WifiReceiver extends BroadcastReceiver {
             for (ScanResult scanResult : wifiList) {
                 System.out.println(scanResult.toString());
                 sb.append("\n").append(scanResult.SSID).append(" - ").append(scanResult.capabilities);
-                if(!scanResult.SSID.equals("")&&!deviceList.contains(scanResult.SSID)){
-                deviceList.add(scanResult.SSID);
-            }}
+                if (!scanResult.SSID.equals("") && !deviceList.contains(scanResult.SSID)) {
+                    deviceList.add(scanResult.SSID);
+                }
+            }
 
             ArrayAdapter arrayAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, Objects.requireNonNull(deviceList.toArray()));
 

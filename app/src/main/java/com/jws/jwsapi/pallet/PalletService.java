@@ -34,20 +34,20 @@ public class PalletService {
                 });
     }
 
-    public Single<PalletCloseResponse> closePallet(PalletCloseRequest palletCloseRequest){
+    public Single<PalletCloseResponse> closePallet(PalletCloseRequest palletCloseRequest) {
         return palletApi.closePallet(palletCloseRequest)
                 .doOnSuccess(palletCloseResponse -> {
-                    if(palletCloseResponse.getStatus()) {
-                        palletDao.updatePalletClosedStatus(palletCloseRequest.getSerialNumber(),true);
+                    if (palletCloseResponse.getStatus()) {
+                        palletDao.updatePalletClosedStatus(palletCloseRequest.getSerialNumber(), true);
                     }
 
                 });
     }
 
-    public Single<PalletCloseResponse> deletePallet(PalletCloseRequest palletCloseRequest){
+    public Single<PalletCloseResponse> deletePallet(PalletCloseRequest palletCloseRequest) {
         return palletApi.closePallet(palletCloseRequest)
                 .doOnSuccess(palletCloseResponse -> {
-                    if(palletCloseResponse.getStatus()) {
+                    if (palletCloseResponse.getStatus()) {
                         palletDao.deletePalletBySerialNumber(palletCloseRequest.getSerialNumber());
                     }
                 });

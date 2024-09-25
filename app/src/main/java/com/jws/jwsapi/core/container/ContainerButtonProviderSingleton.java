@@ -4,7 +4,8 @@ public class ContainerButtonProviderSingleton {
     private static ContainerButtonProviderSingleton instance;
     private ContainerButtonProvider buttonProvider;
 
-    private ContainerButtonProviderSingleton() {}
+    private ContainerButtonProviderSingleton() {
+    }
 
     public static ContainerButtonProviderSingleton getInstance() {
         if (instance == null) {

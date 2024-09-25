@@ -37,6 +37,7 @@ import org.webrtc.VideoTrack;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class WebRtcManager {
     private static final int FRAMES_PER_SECOND = 3;
     private static final String SDP_PARAM = "sdp";
     private static final String ICE_PARAM = "ice";
-    private MainActivity mainActivity;
+    private final MainActivity mainActivity;
     private VideoCapturer videoCapturer;
     private EglBase rootEglBase;
     private PeerConnectionFactory peerConnectionFactory;
@@ -65,21 +66,21 @@ public class WebRtcManager {
 
     private PeerConnection localPeer = null;
     private MediaConstraints sdpConstraints;
-    private HttpServer server;
+    private final HttpServer server;
 
     List<PeerConnection.IceServer> peerIceServers = new ArrayList<>();
     private List<IceServer> iceServers = null;
 
-    private Display display;
+    private final Display display;
     private DisplayMetrics screenMetrics = new DisplayMetrics();
     private Thread rotationDetectorThread = null;
-    private PreferencesManager preferencesManagerBase;
+    private final PreferencesManager preferencesManagerBase;
 
     public WebRtcManager(Intent intent, Context context, HttpServer server, MainActivity activity, PreferencesManager preferencesManagerBase) {
         this.server = server;
         this.preferencesManagerBase = preferencesManagerBase;
-        this.mainActivity=activity;
-        WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        this.mainActivity = activity;
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         display = wm.getDefaultDisplay();
         createMediaProjection(intent);
         initWebRTC(context);
@@ -151,15 +152,15 @@ public class WebRtcManager {
         display.getRealMetrics(screenMetrics);
         if (videoCapturer != null) {
 
-            if(preferencesManagerBase.getRemoteFix()){
+            if (preferencesManagerBase.getRemoteFix()) {
                 videoCapturer.startCapture((screenMetrics.widthPixels), (screenMetrics.heightPixels),
                         FRAMES_PER_SECOND);
-            }else{
+            } else {
                 videoCapturer.startCapture((screenMetrics.heightPixels), (screenMetrics.widthPixels),
                         FRAMES_PER_SECOND);
             }
 
-           // startRotationDetector();
+            // startRotationDetector();
         }
 
 
@@ -250,7 +251,6 @@ public class WebRtcManager {
             Log.d(TAG, "Send ICE candidates: " + messageJsonStr);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
@@ -310,7 +310,7 @@ public class WebRtcManager {
             return;
         }
 
-        Log.d(TAG, "Remote SDP received: " + json.toString());
+        Log.d(TAG, "Remote SDP received: " + json);
 
         try {
             localPeer.setRemoteDescription(new CustomSdpObserver("localSetRemote"),
@@ -330,7 +330,7 @@ public class WebRtcManager {
             return;
         }
 
-        Log.d(TAG, "ICE candidate received: " + json.toString());
+        Log.d(TAG, "ICE candidate received: " + json);
 
         try {
             localPeer.addIceCandidate(new IceCandidate(json.getString("id"), json.getInt("label"),
@@ -341,7 +341,8 @@ public class WebRtcManager {
     }
 
     private VideoCapturer createCameraCapturer(CameraEnumerator enumerator) {
-        Log.d(TAG, new Object(){}.getClass().getEnclosingMethod().getName());
+        Log.d(TAG, new Object() {
+        }.getClass().getEnclosingMethod().getName());
         final String[] deviceNames = enumerator.getDeviceNames();
 
         // First, try to find front facing camera
@@ -379,12 +380,7 @@ public class WebRtcManager {
         Log.d(TAG, "getIceServers");
 
         byte[] data = new byte[0];
-        try {
-            data = ("<xirsys_ident>:<xirsys_secret>").getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return;
-        }
+        data = ("<xirsys_ident>:<xirsys_secret>").getBytes(StandardCharsets.UTF_8);
         Log.d(TAG, "getIceServers2");
 
         String authToken = "Basic " + Base64.encodeToString(data, Base64.NO_WRAP);
@@ -471,4 +467,4 @@ public class WebRtcManager {
     private void stopRotationDetector() {
         rotationDetectorThread.interrupt();
     }
- }
+}

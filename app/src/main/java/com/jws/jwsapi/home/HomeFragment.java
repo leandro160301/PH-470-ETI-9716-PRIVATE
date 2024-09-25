@@ -37,7 +37,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment {
 
     private HomeFragmentBinding binding;
     private ContainerButtonProvider buttonProvider;
@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mainActivity=(MainActivity)getActivity();
+        mainActivity = (MainActivity) getActivity();
 
         initViewModels();
 
@@ -124,7 +124,7 @@ public class HomeFragment extends Fragment{
         });
 
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            if (isLoading!=null){
+            if (isLoading != null) {
                 binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             }
         });
@@ -138,46 +138,46 @@ public class HomeFragment extends Fragment{
     }
 
     private void showMessage(String error, int item_customtoastok) {
-        ToastHelper.message(error, item_customtoastok,getContext());
+        ToastHelper.message(error, item_customtoastok, getContext());
     }
 
     private void handleWeighUpdate(String net, TextView binding) {
-        if(net !=null){
+        if (net != null) {
             binding.setText(net);
         }
     }
 
     private void handleWeighingResponse(WeighingResponse weighingResponse) {
-        if(weighingResponse !=null){
-            if(weighingResponse.getStatus()){
+        if (weighingResponse != null) {
+            if (weighingResponse.getStatus()) {
                 showMessage(requireContext().getString(R.string.toast_message_weighing_created), R.layout.item_customtoastok);
                 homeService.print(mainActivity, serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
-            }else{
+            } else {
                 showMessage(weighingResponse.getError(), R.layout.item_customtoasterror);
             }
         }
     }
 
     private void handleLoadingUpdate(Boolean isLoading) {
-        if (isLoading !=null){
+        if (isLoading != null) {
             binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         }
     }
 
     private void messageError(String error) {
-        if(error !=null){
+        if (error != null) {
             showMessage(error, R.layout.item_customtoasterror);
         }
     }
 
     private void updateUi(Pallet pallet) {
-        binding.tvCantidad.setText(pallet!=null ? String.valueOf(pallet.getQuantity()) : "");
-        binding.tvDone.setText(pallet!=null ? String.valueOf(pallet.getDone()) : "");
-        binding.tvProduct.setText(pallet!=null ? pallet.getName() : "");
-        binding.tvPalletOrigin.setText(pallet!=null ? pallet.getOriginPallet() : "");
-        binding.tvPalletDestination.setText(pallet!=null ? pallet.getDestinationPallet() : "");
-        binding.tvScale.setText(pallet!=null ? String.valueOf(pallet.getScaleNumber()) : "");
-        binding.tvTotalNet.setText(pallet!=null ? pallet.getTotalNet() : "");
+        binding.tvCantidad.setText(pallet != null ? String.valueOf(pallet.getQuantity()) : "");
+        binding.tvDone.setText(pallet != null ? String.valueOf(pallet.getDone()) : "");
+        binding.tvProduct.setText(pallet != null ? pallet.getName() : "");
+        binding.tvPalletOrigin.setText(pallet != null ? pallet.getOriginPallet() : "");
+        binding.tvPalletDestination.setText(pallet != null ? pallet.getDestinationPallet() : "");
+        binding.tvScale.setText(pallet != null ? String.valueOf(pallet.getScaleNumber()) : "");
+        binding.tvTotalNet.setText(pallet != null ? pallet.getTotalNet() : "");
     }
 
     private void setupButtons() {
@@ -189,8 +189,8 @@ public class HomeFragment extends Fragment{
             setupButton(buttonProvider.getButton3(), R.string.button_text_4,
                     v -> mainActivity.mainClass.openFragment(new WeighingFragment()));
             setupButton(buttonProvider.getButton4(), R.string.button_text_6, v -> closePallet());
-                    setupButton(buttonProvider.getButton5(), R.string.button_text_5,
-                            v -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
+            setupButton(buttonProvider.getButton5(), R.string.button_text_5,
+                    v -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
         }
     }
 
@@ -209,8 +209,8 @@ public class HomeFragment extends Fragment{
         String tare = repository.getTare().getValue();
         String net = repository.getNet().getValue();
         String gross = repository.getGross().getValue();
-        if(unit!=null&&tare!=null&&net!=null&&gross!=null) {
-            weighingViewModel.createWeighing(gross, net, tare,unit);
+        if (unit != null && tare != null && net != null && gross != null) {
+            weighingViewModel.createWeighing(gross, net, tare, unit);
         }
     }
 

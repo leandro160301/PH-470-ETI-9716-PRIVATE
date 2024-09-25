@@ -27,12 +27,12 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ContainerCoreFragment extends Fragment implements ContainerButtonProvider , ContainerData{
+public class ContainerCoreFragment extends Fragment implements ContainerButtonProvider, ContainerData {
 
     private MainActivity mainActivity;
     private JwsManager jwsManager;
-    Boolean stoped=false;
-    int iconflag=-1;
+    Boolean stoped = false;
+    int iconflag = -1;
     ContainPrincipalBinding binding;
 
     @Inject
@@ -56,9 +56,10 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
         binding = ContainPrincipalBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
 
         initInstances();
 
@@ -73,12 +74,12 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     private void handleClickListeners() {
         binding.lnMenu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
         binding.lnUser.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
-        binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this,mainActivity).showDialog());
+        binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this, mainActivity).showDialog());
     }
 
     private void initInstances() {
-        mainActivity=(MainActivity)getActivity();
-        jwsManager= JwsManager.create(requireActivity());
+        mainActivity = (MainActivity) getActivity();
+        jwsManager = JwsManager.create(requireActivity());
     }
 
     @SuppressWarnings("unchecked")
@@ -111,11 +112,11 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
                 setupIconProgrammer(2, R.drawable.icono_supervisor);
                 setupIconProgrammer(1, R.drawable.icon_user);
                 setupIconProgrammer(0, R.drawable.icono_nologin);
-                binding.btUsb.setVisibility(storageService.getState()? View.VISIBLE : View.INVISIBLE);
+                binding.btUsb.setVisibility(storageService.getState() ? View.VISIBLE : View.INVISIBLE);
                 handleNetworkUi();
                 binding.tvDate.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
                 binding.tvUser.setText(userRepository.getCurrentUser());
-                if(!stoped){
+                if (!stoped) {
                     handler.postDelayed(this, 100);
                 }
 
@@ -127,7 +128,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
 
     private void handleNetworkUi() {
         String tipo = jwsManager.jwsGetCurrentNetType();
-        if (tipo == null)tipo = "";
+        if (tipo == null) tipo = "";
         switch (tipo) {
             case "ETH":
                 binding.btWifi.setBackgroundResource(R.drawable.icono_ethernet_white);
@@ -142,9 +143,9 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     }
 
     private void setupIconProgrammer(int x, int icono_programador) {
-        if(userRepository.getLevelUser()== x &&iconflag!= x){
+        if (userRepository.getLevelUser() == x && iconflag != x) {
             binding.imuser.setImageResource(icono_programador);
-            iconflag= x;
+            iconflag = x;
         }
     }
 
@@ -177,7 +178,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
 
     @Override
     public void onDestroyView() {
-        stoped=true;
+        stoped = true;
         super.onDestroyView();
     }
 

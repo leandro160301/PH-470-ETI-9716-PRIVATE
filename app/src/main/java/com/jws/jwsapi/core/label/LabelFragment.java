@@ -49,8 +49,8 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     }
 
     private void handleItemClick(int position) {
-        String label =openAndReadFile(labelList.get(position),mainActivity);
-        if(label!=null&& !label.isEmpty()){
+        String label = openAndReadFile(labelList.get(position), mainActivity);
+        if (label != null && !label.isEmpty()) {
             setupFieldRecycler(getFieldsFromLabel(label), labelList.get(position));
         }
     }
@@ -62,11 +62,12 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
         binding = StandarImpresorasEtiquetasBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        super.onViewCreated(view,savedInstanceState);
-        mainActivity=(MainActivity)getActivity();
+        super.onViewCreated(view, savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
         setupButtons();
 
         labelList = getFilesExtension(".prn");
@@ -91,17 +92,17 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
     }
 
     private void setupButton(Button button, Integer resid, Integer visibility) {
-        if(resid!=null)button.setBackgroundResource(resid);
-        if(visibility!=null)button.setVisibility(visibility);
+        if (resid != null) button.setBackgroundResource(resid);
+        if (visibility != null) button.setVisibility(visibility);
     }
 
     private void saveSettings() {
-        if(fieldAdapter ==null) return;
+        if (fieldAdapter == null) return;
 
-        if(fieldAdapter.intElements !=null){
+        if (fieldAdapter.intElements != null) {
             printerPreferences.setListSpinner(fieldAdapter.intInternalElements, fieldAdapter.label);
         }
-        if(fieldAdapter.staticInternalElements !=null){
+        if (fieldAdapter.staticInternalElements != null) {
             printerPreferences.setListFijo(fieldAdapter.staticInternalElements, fieldAdapter.label);
         }
     }

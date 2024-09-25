@@ -18,24 +18,25 @@ public class ThemeDialog {
         this.context = context;
         this.themeInterface = themeInterface;
     }
-    public void showDialog(){
+
+    public void showDialog() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context.getApplicationContext(), R.style.AlertDialogCustom);
         View mView = LayoutInflater.from(context).inflate(R.layout.dialogo_temas, null);
 
-        Button Cancelar =  mView.findViewById(R.id.buttonc);
-        TextView tvTema1 =  mView.findViewById(R.id.tvTema1);
-        TextView tvTema2 =  mView.findViewById(R.id.tvTema2);
-        TextView tvTema3 =  mView.findViewById(R.id.tvTema3);
+        Button Cancelar = mView.findViewById(R.id.buttonc);
+        TextView tvTema1 = mView.findViewById(R.id.tvTema1);
+        TextView tvTema2 = mView.findViewById(R.id.tvTema2);
+        TextView tvTema3 = mView.findViewById(R.id.tvTema3);
 
-        if(themeInterface.getPreferencesManagerBaseTheme() ==R.style.AppTheme_NoActionBar){
+        if (themeInterface.getPreferencesManagerBaseTheme() == R.style.AppTheme_NoActionBar) {
             setupTextTheme(tvTema1, context.getString(R.string.dialog_theme_rojo));
 
         }
-        if(themeInterface.getPreferencesManagerBaseTheme() ==R.style.AppTheme2_NoActionBar){
+        if (themeInterface.getPreferencesManagerBaseTheme() == R.style.AppTheme2_NoActionBar) {
             setupTextTheme(tvTema2, context.getString(R.string.dialog_theme_azul));
 
         }
-        if(themeInterface.getPreferencesManagerBaseTheme() ==R.style.AppTheme4_NoActionBar){
+        if (themeInterface.getPreferencesManagerBaseTheme() == R.style.AppTheme4_NoActionBar) {
             setupTextTheme(tvTema3, context.getString(R.string.dialog_theme_negro));
         }
 
@@ -65,7 +66,7 @@ public class ThemeDialog {
     }
 
     private void setupThemeUi(TextView tvTema1, TextView tvTema2, TextView tvTema3) {
-        ToastHelper.message(context.getString(R.string.toast_theme_change),R.layout.item_customtoast,context);
+        ToastHelper.message(context.getString(R.string.toast_theme_change), R.layout.item_customtoast, context);
         tvTema1.setBackgroundResource(R.drawable.fondoinfoprincipal);
         tvTema2.setBackgroundResource(R.drawable.stylekeycor3);
         tvTema3.setBackgroundResource(R.drawable.stylekeycor3);

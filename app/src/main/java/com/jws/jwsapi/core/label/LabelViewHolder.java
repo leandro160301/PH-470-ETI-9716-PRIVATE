@@ -19,8 +19,8 @@ import com.jws.jwsapi.utils.ToastHelper;
 import java.util.List;
 
 public class LabelViewHolder extends RecyclerView.ViewHolder {
-    TextView tv_campo,tv_textofijo,tv_textoconcatenado;
-    LinearLayout ln_textofijo,ln_textoconcatenado,ln_editar;
+    TextView tv_campo, tv_textofijo, tv_textoconcatenado;
+    LinearLayout ln_textofijo, ln_textoconcatenado, ln_editar;
     Spinner spCampo;
     private int lastPositionAdapter = -1;
     private final LabelInterface labelInterface;
@@ -37,14 +37,14 @@ public class LabelViewHolder extends RecyclerView.ViewHolder {
         ln_editar = itemView.findViewById(R.id.ln_editar);
     }
 
-    void bind(@NonNull LabelViewHolder holder, int position, Context context, List<String> listaVariables,List<LabelModel> mData) {
+    void bind(@NonNull LabelViewHolder holder, int position, Context context, List<String> listaVariables, List<LabelModel> mData) {
         try {
-            setupSpinner(holder.spCampo,context.getApplicationContext(),listaVariables);
+            setupSpinner(holder.spCampo, context.getApplicationContext(), listaVariables);
             holder.tv_campo.setText(mData.get(position).getFieldName());
             labelInterface.updateViews(holder, position);
         } catch (Exception e) {
             e.printStackTrace();
-            ToastHelper.message("Ocurrió un error:"+e.getMessage(), R.layout.item_customtoasterror,context);
+            ToastHelper.message("Ocurrió un error:" + e.getMessage(), R.layout.item_customtoasterror, context);
         }
 
         holder.spCampo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -52,6 +52,7 @@ public class LabelViewHolder extends RecyclerView.ViewHolder {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 labelInterface.spinnerSelection(i, position, holder);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }

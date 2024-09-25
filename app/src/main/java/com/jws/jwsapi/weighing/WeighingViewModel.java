@@ -67,9 +67,9 @@ public class WeighingViewModel extends ViewModel {
     }
 
     public void createWeighing(String gross, String net, String tare, String unit) {
-        Weighing weighing= new Weighing();
-        Pallet pallet= getCurrentPallet().getValue();
-        if(pallet!=null) {
+        Weighing weighing = new Weighing();
+        Pallet pallet = getCurrentPallet().getValue();
+        if (pallet != null) {
             weighing.setCode(pallet.getCode());
             weighing.setGross(gross);
             weighing.setTare(tare);
@@ -81,18 +81,18 @@ public class WeighingViewModel extends ViewModel {
             weighing.setScaleNumber(pallet.getScaleNumber());
             weighing.setQuantity(pallet.getQuantity());
             weighing.setSerialNumber(pallet.getSerialNumber());
-            WeighingRequest weighingRequest = new WeighingRequest(weighing.getSerialNumber(),weighing.getCode(), weighing.getName(), weighing.getNet(), weighing.getGross(), weighing.getTare());
-            createWeighingRequest(weighingRequest,weighing);
-        }else{
+            WeighingRequest weighingRequest = new WeighingRequest(weighing.getSerialNumber(), weighing.getCode(), weighing.getName(), weighing.getNet(), weighing.getGross(), weighing.getTare());
+            createWeighingRequest(weighingRequest, weighing);
+        } else {
             error.setValue("Error de pallet");
         }
     }
 
     public void createWeighingRequest(WeighingRequest weighingRequest, Weighing weighing) {
         loading.setValue(true);
-        Integer id= repository.getCurrentPalletId();
-        if(id!=null&&id>-1) {
-            Disposable disposable = weighingService.newWeighing(weighingRequest,weighing, id)
+        Integer id = repository.getCurrentPalletId();
+        if (id != null && id > -1) {
+            Disposable disposable = weighingService.newWeighing(weighingRequest, weighing, id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doFinally(() -> loading.setValue(false))
@@ -101,7 +101,7 @@ public class WeighingViewModel extends ViewModel {
                             throwable -> errorRequest.setValue(throwable.getMessage())
                     );
             compositeDisposable.add(disposable);
-        }else{
+        } else {
             error.setValue("id null");
         }
     }

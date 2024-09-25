@@ -34,9 +34,9 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
 
     public LabelAdapter(Context context, List<LabelModel> mData, String label, LabelManager labelManager, PrinterPreferences printerPreferences) {
         this.mData = mData;
-        this.context=context;
-        this.label=label;
-        this.labelManager=labelManager;
+        this.context = context;
+        this.label = label;
+        this.labelManager = labelManager;
         this.printerPreferences = printerPreferences;
 
         setupVariablesList();
@@ -47,7 +47,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
     }
 
     private void setupVariablesList() {
-        varElements =new ArrayList<>(labelManager.constantPrinterList);
+        varElements = new ArrayList<>(labelManager.constantPrinterList);
         labelManager.varPrinterList.forEach(var -> varElements.add(var.getDescription()));
     }
 
@@ -59,7 +59,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
     }
 
     private void initializateList(boolean condition) {
-        if(condition){
+        if (condition) {
             intElements = new ArrayList<>(Collections.nCopies(mData.size(), 0));
         }
     }
@@ -72,7 +72,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
     }
 
     private void initializateListString(boolean condition) {
-        if(condition){
+        if (condition) {
             staticElements = new ArrayList<>(Collections.nCopies(mData.size(), ""));
         }
     }
@@ -86,46 +86,46 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
 
     @Override
     public void onBindViewHolder(@NonNull LabelViewHolder holder, int position) {
-        holder.bind(holder, position, context, varElements,mData);
+        holder.bind(holder, position, context, varElements, mData);
     }
 
     @Override
     public void editClick(LabelViewHolder holder, int position) {
-        if(positionsElements.size()<= position) return;
+        if (positionsElements.size() <= position) return;
 
-        if(isConcatenatedPosition(position)){
-            new LabelConcatDialog(context,printerPreferences).showDialog(label, position, holder.tv_textoconcatenado, varElements);
-        } else if(isStaticPosition(positionsElements.get(position), 1)) {
+        if (isConcatenatedPosition(position)) {
+            new LabelConcatDialog(context, printerPreferences).showDialog(label, position, holder.tv_textoconcatenado, varElements);
+        } else if (isStaticPosition(positionsElements.get(position), 1)) {
             keyboard(holder.tv_textofijo, "Ingrese el texto fijo", context, texto -> handleInputText(position, texto));
         }
     }
 
     private void handleInputText(int posi, String texto) {
-        if(staticInternalElements ==null|| staticInternalElements.size()<= posi) return;
+        if (staticInternalElements == null || staticInternalElements.size() <= posi) return;
         staticInternalElements.set(posi, texto);
     }
 
     @Override
     public void updateViews(LabelViewHolder holder, int position) {
-        if(intElements ==null|| intElements.size()<= position) return;
+        if (intElements == null || intElements.size() <= position) return;
 
         int selectedItem = intElements.get(position);
         int constantsSize = labelManager.constantPrinterList.size();
 
         holder.spCampo.setSelection(selectedItem);
 
-        if(isConcatenatedOption(selectedItem, constantsSize)){
+        if (isConcatenatedOption(selectedItem, constantsSize)) {
             setupPositionList(position, 2);
             handleVisibilityElements(holder, View.VISIBLE, holder.ln_editar, holder.ln_textofijo, View.GONE);
             return;
-        }else{
+        } else {
             handleVisibility(holder.ln_textoconcatenado, View.GONE, View.GONE, holder.ln_editar);
         }
-        if(isStaticTextOption(selectedItem, constantsSize)){
+        if (isStaticTextOption(selectedItem, constantsSize)) {
             handleVisibility(holder.ln_editar, View.VISIBLE, View.GONE, holder.ln_textoconcatenado);
             setupPositionList(position, 1);
             setupTextPosition(position, holder);
-        }else{
+        } else {
             handleVisibility(holder.ln_textofijo, View.GONE, View.GONE, holder.ln_editar);
         }
 
@@ -158,52 +158,52 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
     @Override
     public void spinnerSelection(int i, int position, LabelViewHolder holder) {
         try {
-             if(intElements ==null|| intElements.size()<= position) return;
+            if (intElements == null || intElements.size() <= position) return;
 
-             intInternalElements.set(position, i);
-             if(isConcatenatedValue(i)){
-                 holder.tv_textoconcatenado.setText(getConcatenatedValue(position));
-                 handleVisibilityElements(holder, View.VISIBLE, holder.ln_editar, holder.ln_textofijo, View.GONE);
-                 setupPositionList(position, 2);
-                 return;
-             }
-            if(isStaticText(i)){
-                 handleVisibility(holder.ln_textoconcatenado, View.GONE, View.GONE, holder.ln_editar);
-                 setupTextPosition(position, holder);
-                 setupPositionList(position, 1);
-                 handleVisibilityElements(holder, View.GONE, holder.ln_textofijo, holder.ln_editar, View.VISIBLE);
-             }else{
-                 handleVisibility(holder.ln_textofijo, View.GONE, View.GONE, holder.ln_editar);
-             }
+            intInternalElements.set(position, i);
+            if (isConcatenatedValue(i)) {
+                holder.tv_textoconcatenado.setText(getConcatenatedValue(position));
+                handleVisibilityElements(holder, View.VISIBLE, holder.ln_editar, holder.ln_textofijo, View.GONE);
+                setupPositionList(position, 2);
+                return;
+            }
+            if (isStaticText(i)) {
+                handleVisibility(holder.ln_textoconcatenado, View.GONE, View.GONE, holder.ln_editar);
+                setupTextPosition(position, holder);
+                setupPositionList(position, 1);
+                handleVisibilityElements(holder, View.GONE, holder.ln_textofijo, holder.ln_editar, View.VISIBLE);
+            } else {
+                handleVisibility(holder.ln_textofijo, View.GONE, View.GONE, holder.ln_editar);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            ToastHelper.message("Ocurrió un error:"+e.getMessage(), R.layout.item_customtoasterror,context);
+            ToastHelper.message("Ocurrió un error:" + e.getMessage(), R.layout.item_customtoasterror, context);
         }
     }
 
     @NonNull
     private String getConcatenatedValue(int position) {
-        List<Integer> concatInternalElements= printerPreferences.getListConcat(label, position);
+        List<Integer> concatInternalElements = printerPreferences.getListConcat(label, position);
         final String[] concat = {""};
-        String separator= printerPreferences.getSeparator(label, position);
-        if(concatInternalElements==null) return concat[0];
+        String separator = printerPreferences.getSeparator(label, position);
+        if (concatInternalElements == null) return concat[0];
 
         concatInternalElements.forEach(integer -> {
-            if(varElements.size()>integer){
-                concat[0] = concat[0].concat(varElements.get(integer)+separator);
+            if (varElements.size() > integer) {
+                concat[0] = concat[0].concat(varElements.get(integer) + separator);
             }
         });
         return removeLastSeparator(separator, concat[0]);
     }
 
     private void setupTextPosition(int position, LabelViewHolder holder) {
-        if(staticElements !=null&& staticElements.size()> position){
+        if (staticElements != null && staticElements.size() > position) {
             holder.tv_textofijo.setText(staticElements.get(position));
         }
     }
 
     private void setupPositionList(int position, int value) {
-        if(positionsElements.size()> position){
+        if (positionsElements.size() > position) {
             positionsElements.set(position, value);
         }
     }

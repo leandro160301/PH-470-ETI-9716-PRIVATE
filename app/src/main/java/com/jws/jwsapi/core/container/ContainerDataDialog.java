@@ -17,7 +17,7 @@ public class ContainerDataDialog {
         this.context = context;
     }
 
-    public void showDialog(){
+    public void showDialog() {
         DialogoInformacionBinding binding = DialogoInformacionBinding.inflate(LayoutInflater.from(context));
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         setupViews(binding);
@@ -36,7 +36,7 @@ public class ContainerDataDialog {
     }
 
     private void setupViews(DialogoInformacionBinding binding) {
-        if(!containerData.getStorageState()) binding.buttons.setVisibility(View.INVISIBLE);
+        if (!containerData.getStorageState()) binding.buttons.setVisibility(View.INVISIBLE);
         binding.tvIP.setText(containerData.getIp());
         binding.tvVersion.setText(containerData.getVersion());
     }

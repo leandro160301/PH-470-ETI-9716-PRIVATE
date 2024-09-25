@@ -34,8 +34,8 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity{
-    public static final String VERSION ="PH 470 BZA 1.00";
+public class MainActivity extends AppCompatActivity {
+    public static final String VERSION = "PH 470 BZA 1.00";
     public JwsManager jwsObject;
     public MainClass mainClass;
     private InitServer initServer;
@@ -68,12 +68,12 @@ public class MainActivity extends AppCompatActivity{
 
     private void initService() {
         try {
-            FtpInit ftpInit= new FtpInit(getApplicationContext(), userRepository.getUsers(), preferencesManager);
+            FtpInit ftpInit = new FtpInit(getApplicationContext(), userRepository.getUsers(), preferencesManager);
             ftpInit.ftpServer();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        initServer = new InitServer(this,this, userManager,preferencesManager);
+        initServer = new InitServer(this, this, userManager, preferencesManager);
         try {
             initServer.start();
         } catch (Exception e) {
@@ -87,14 +87,14 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initMainClass() {
-        mainClass = new MainClass(this,this, userRepository);
+        mainClass = new MainClass(this, this, userRepository);
         mainClass.init();
     }
 
     private void updateViews() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.blanco);
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.blanco);
         Bitmap bitmap = Utils.drawableToBitmap(drawable);
         try {
             wallpaperManager.setBitmap(bitmap);
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void setTheme() {
-        if(preferencesManager.getTheme()!=R.style.AppTheme_NoActionBar){
+        if (preferencesManager.getTheme() != R.style.AppTheme_NoActionBar) {
             try {
                 setTheme(preferencesManager.getTheme());
             } catch (Exception e) {
@@ -118,21 +118,21 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public void clearCache(){
-        Context context=getApplicationContext();
-        if(userRepository.getLevelUser()>ROLE_SUPERVISOR){
+    public void clearCache() {
+        Context context = getApplicationContext();
+        if (userRepository.getLevelUser() > ROLE_SUPERVISOR) {
             dialogText(this, getString(R.string.dialog_delete_cache), getString(R.string.dialog_button_text_delete_cache), () -> {
                 deleteCache(context);
                 deleteDatabase(MainClass.DB_NAME);
                 deleteDatabase("bza-database");
                 jwsObject.jwsReboot("");
             });
-        }else{
-            ToastHelper.message(getString(R.string.toast_login_error_delete_cache),R.layout.item_customtoasterror,this);
+        } else {
+            ToastHelper.message(getString(R.string.toast_login_error_delete_cache), R.layout.item_customtoasterror, this);
         }
     }
 
-    public void openSettings(){
+    public void openSettings() {
         Intent launchIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.android.settings");
         if (launchIntent != null) {
             startActivity(launchIntent);

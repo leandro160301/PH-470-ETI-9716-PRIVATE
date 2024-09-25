@@ -21,7 +21,7 @@ public class ServiceViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ServiceViewModel.class)) {
-            return (T) new ServiceViewModel(scale,repository);
+            return (T) new ServiceViewModel(scale, repository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

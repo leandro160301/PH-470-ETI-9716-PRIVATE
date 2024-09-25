@@ -26,15 +26,15 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private int lastPositionAdapter = -1;
-    List<String>etiquetas ;
+    List<String> etiquetas;
     Context context;
     PrinterPreferences printerPreferences;
 
-    public LabelProgramAdapter(Context context, List<LabelProgramModel> data, List<String>etiquetas, PrinterPreferences printerPreferences) {
+    public LabelProgramAdapter(Context context, List<LabelProgramModel> data, List<String> etiquetas, PrinterPreferences printerPreferences) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.etiquetas= etiquetas;
-        this.context=context;
+        this.etiquetas = etiquetas;
+        this.context = context;
         this.printerPreferences = printerPreferences;
 
     }
@@ -48,22 +48,24 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        int posi=position;
+        int posi = position;
         holder.tv_campo.setText(mData.get(position).getName());
-        setupSpinner(holder.spCampo,context,etiquetas);
-        int index= etiquetas.indexOf(printerPreferences.getLabel(posi));
-        if (index>-1){
+        setupSpinner(holder.spCampo, context, etiquetas);
+        int index = etiquetas.indexOf(printerPreferences.getLabel(posi));
+        if (index > -1) {
             holder.spCampo.setSelection(index);
         }
         holder.spCampo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                printerPreferences.setLabel(etiquetas.get(i),posi);
+                printerPreferences.setLabel(etiquetas.get(i), posi);
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
         });
-        lastPositionAdapter =setAnimationPivot(holder.itemView,posi, lastPositionAdapter,context);
+        lastPositionAdapter = setAnimationPivot(holder.itemView, posi, lastPositionAdapter, context);
         holder.itemView.setSelected(selectedPos == position);
     }
 
@@ -72,13 +74,14 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
     public int getItemCount() {
         return mData.size();
     }
+
     @Override
     public long getItemId(int position) {
         return position;
     }
+
     @Override
-    public int getItemViewType(int position)
-    {
+    public int getItemViewType(int position) {
         return position;
     }
 
@@ -111,15 +114,18 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
     public void removeAt(int position) {
         mData.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mData.size());
     }
+
     public void filterList(ArrayList<LabelProgramModel> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();
     }
+
     public void refrescarList(List<LabelProgramModel> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();

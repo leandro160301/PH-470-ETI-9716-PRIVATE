@@ -21,35 +21,35 @@ public class PalletResponse {
     @SerializedName("numeroSerie")
     private String serialNumber;
 
-    public String getCode(){
+    public String getCode() {
         return code;
     }
 
-    public void setCode(String code){
+    public void setCode(String code) {
         this.code = code;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public int getQuantity(){
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity){
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public String getSerialNumber(){
+    public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerialNumber(String serialNumber){
+    public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 

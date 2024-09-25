@@ -73,13 +73,13 @@ public class Storage {
     }
 
     public static String openAndReadFile(String archivo, MainActivity mainActivity) {
-        String filePath = MEMORY_PATH +archivo;
+        String filePath = MEMORY_PATH + archivo;
         File file = new File(filePath);
         if (!file.exists()) {
-            ToastHelper.message("La etiqueta ya no esta disponible",R.layout.item_customtoasterror,mainActivity);
+            ToastHelper.message("La etiqueta ya no esta disponible", R.layout.item_customtoasterror, mainActivity);
             return "";
-        }else{
-            String fileContent="";
+        } else {
+            String fileContent = "";
             FileInputStream fis = null;
             InputStreamReader isr = null;
             BufferedReader br = null;
@@ -96,7 +96,7 @@ public class Storage {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                ToastHelper.message("Error al intentar leer la etiqueta"+ e,R.layout.item_customtoasterror,mainActivity);
+                ToastHelper.message("Error al intentar leer la etiqueta" + e, R.layout.item_customtoasterror, mainActivity);
             } finally {
                 try {
                     if (br != null) br.close();
@@ -119,7 +119,7 @@ public class Storage {
     }
 
     public static void copyFileProgress(final File file, final File dir, Context context) {
-        AlertDialog dialog =dialogLoading(context, String.valueOf(R.string.dialog_copy_file));
+        AlertDialog dialog = dialogLoading(context, String.valueOf(R.string.dialog_copy_file));
         copyFileTransfer(file, dir, dialog, context);
     }
 
@@ -127,8 +127,8 @@ public class Storage {
         new Thread(() -> {
             File newFile = new File(dir, file.getName());
             try (
-                FileChannel outputChannel = new FileOutputStream(newFile).getChannel();
-                FileChannel inputChannel = new FileInputStream(file).getChannel()
+                    FileChannel outputChannel = new FileOutputStream(newFile).getChannel();
+                    FileChannel inputChannel = new FileInputStream(file).getChannel()
             ) {
                 inputChannel.transferTo(0, inputChannel.size(), outputChannel);
                 outputChannel.force(true); // Asegura que todos los datos se escriban en el pendrive
@@ -146,12 +146,12 @@ public class Storage {
     }
 
     public int cantidadRegistros() {
-        List<String> Lista=new ArrayList<>();
-        File  root = new File(MEMORY_PATH);
-        if(root.exists()){
+        List<String> Lista = new ArrayList<>();
+        File root = new File(MEMORY_PATH);
+        if (root.exists()) {
             File[] filearr = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(".xls") && filename.toLowerCase().startsWith("registro"));
             StringBuilder f = new StringBuilder();
-            if(filearr!=null&&filearr.length>0){
+            if (filearr != null && filearr.length > 0) {
                 for (File value : filearr) {
                     f.append(value.getName());
                     Lista.add(f.toString());
@@ -214,13 +214,13 @@ public class Storage {
         return jsonArray.toString();
     }
 
-    public static List<String> getFilesExtension(String extension){
-        List <String>lista =new ArrayList<>();
+    public static List<String> getFilesExtension(String extension) {
+        List<String> lista = new ArrayList<>();
         File root = new File(MEMORY_PATH);
-        if(root.exists()){
-            File [] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(extension));
+        if (root.exists()) {
+            File[] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(extension));
             StringBuilder f = new StringBuilder();
-            if(fileArray!=null&&fileArray.length>0){
+            if (fileArray != null && fileArray.length > 0) {
                 for (File value : fileArray) {
                     f.append(value.getName());
                     lista.add(f.toString());
@@ -233,7 +233,7 @@ public class Storage {
 
     public static void createMemoryDirectory() {
         File fileMemoria = new File(MEMORY_PATH);
-        if (!fileMemoria.isDirectory()){
+        if (!fileMemoria.isDirectory()) {
             fileMemoria.mkdir();
         }
     }

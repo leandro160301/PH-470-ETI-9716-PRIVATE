@@ -55,10 +55,11 @@ public class StorageFragment extends Fragment implements AdapterCommon.ItemClick
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
         return binding.getRoot();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
-        mainActivity=(MainActivity)getActivity();
+        super.onViewCreated(view, savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
         setupButtons();
         setupRecycler(extension);
         hideVideoImage(View.INVISIBLE);
@@ -72,20 +73,20 @@ public class StorageFragment extends Fragment implements AdapterCommon.ItemClick
     private void setupButtons() {
         if (buttonProvider != null) {
             buttonProvider.getTitle().setText(R.string.title_file_fragment);
-            handleButtonProvider(buttonProvider.getButton1(),R.drawable.boton_pendrive_on_i,View.INVISIBLE,null);
-            handleButtonProvider(buttonProvider.getButton2(),R.drawable.boton_impresora_i,View.INVISIBLE,null);
-            handleButtonProvider(buttonProvider.getButton3(),R.drawable.boton_pdf_i,View.INVISIBLE,view -> setupAsPdf());
-            handleButtonProvider(buttonProvider.getButton4(),R.drawable.boton_video_i,View.INVISIBLE,view -> setupAsMp4());
-            handleButtonProvider(buttonProvider.getButton5(),R.drawable.boton_camara_i,View.INVISIBLE,view -> setupAsPng());
-            handleButtonProvider(buttonProvider.getButton6(),null,View.INVISIBLE,null);
-            handleButtonProvider(buttonProvider.getButtonHome(),null,null,view -> mainActivity.mainClass.openFragmentPrincipal());
+            handleButtonProvider(buttonProvider.getButton1(), R.drawable.boton_pendrive_on_i, View.INVISIBLE, null);
+            handleButtonProvider(buttonProvider.getButton2(), R.drawable.boton_impresora_i, View.INVISIBLE, null);
+            handleButtonProvider(buttonProvider.getButton3(), R.drawable.boton_pdf_i, View.INVISIBLE, view -> setupAsPdf());
+            handleButtonProvider(buttonProvider.getButton4(), R.drawable.boton_video_i, View.INVISIBLE, view -> setupAsMp4());
+            handleButtonProvider(buttonProvider.getButton5(), R.drawable.boton_camara_i, View.INVISIBLE, view -> setupAsPng());
+            handleButtonProvider(buttonProvider.getButton6(), null, View.INVISIBLE, null);
+            handleButtonProvider(buttonProvider.getButtonHome(), null, null, view -> mainActivity.mainClass.openFragmentPrincipal());
         }
     }
 
     private void handleButtonProvider(Button button, Integer resid, Integer visibility, View.OnClickListener clickListener) {
-        if(resid!=null)button.setBackgroundResource(resid);
-        if(visibility!=null)button.setVisibility(visibility);
-        if(clickListener!=null)button.setOnClickListener(clickListener);
+        if (resid != null) button.setBackgroundResource(resid);
+        if (visibility != null) button.setVisibility(visibility);
+        if (clickListener != null) button.setOnClickListener(clickListener);
     }
 
     private void setupAsPng() {
@@ -143,8 +144,8 @@ public class StorageFragment extends Fragment implements AdapterCommon.ItemClick
     private void showPng(String filePath) {
         binding.pdfviewer.setVisibility(View.INVISIBLE);
         binding.videoView.setVisibility(View.INVISIBLE);
-        File fileImage= new File(filePath);
-        if(fileImage.exists()){
+        File fileImage = new File(filePath);
+        if (fileImage.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(filePath);
             binding.imageViewCapturas.setImageBitmap(myBitmap);
         }

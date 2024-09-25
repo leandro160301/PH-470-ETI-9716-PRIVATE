@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,12 +69,12 @@ public class HttpServer extends NanoWSD {
     private static final String TYPE_VALUE_ICE = "ice";
     private static final String TYPE_VALUE_BYE = "bye";
     private static MainActivity mainActivity;
-    private Context context;
+    private final Context context;
     Ws webSocket = null;
     UserManager userManager;
     PreferencesManager preferencesManagerBase;
 
-    private HttpServerInterface httpServerInterface;
+    private final HttpServerInterface httpServerInterface;
 
     public HttpServer(int port, Context context,
                       HttpServerInterface httpServerInterface, MainActivity activity, UserManager userManager, PreferencesManager preferencesManagerBase) {
@@ -81,13 +82,13 @@ public class HttpServer extends NanoWSD {
         this.context = context;
         this.preferencesManagerBase = preferencesManagerBase;
         this.httpServerInterface = httpServerInterface;
-        this.mainActivity=activity;
+        mainActivity = activity;
         this.userManager = userManager;
     }
 
     class Ws extends WebSocket {
         private static final int PING_INTERVAL = 20000;
-        private Timer pingTimer = new Timer();
+        private final Timer pingTimer = new Timer();
 
         public Ws(IHTTPSession handshakeRequest) {
             super(handshakeRequest);
@@ -114,7 +115,7 @@ public class HttpServer extends NanoWSD {
         @Override
         protected void onClose(WebSocketFrame.CloseCode code, String reason,
                                boolean initiatedByRemote) {
-            Log.d(TAG, "WebSocket close, reason: "+reason);
+            Log.d(TAG, "WebSocket close, reason: " + reason);
             pingTimer.cancel();
             httpServerInterface.onWebSocketClose();
         }
@@ -161,19 +162,33 @@ public class HttpServer extends NanoWSD {
 
     public interface HttpServerInterface {
         void onMouseDown(JSONObject message);
+
         void onMouseMove(JSONObject message);
+
         void onMouseUp(JSONObject message);
+
         void onMouseZoomIn(JSONObject message);
+
         void onMouseZoomOut(JSONObject message);
+
         void onButtonBack();
+
         void onButtonHome();
+
         void onButtonRecent();
+
         void onButtonPower();
+
         void onButtonLock();
+
         void onJoin(HttpServer server);
+
         void onSdp(JSONObject message);
+
         void onIceCandidate(JSONObject message);
+
         void onBye();
+
         void onWebSocketClose();
     }
 
@@ -183,15 +198,15 @@ public class HttpServer extends NanoWSD {
     }
 
     private Response serveRequest(IHTTPSession session, String uri, Method method) throws JSONException, IOException, ResponseException {
-        if(Method.GET.equals(method))
+        if (Method.GET.equals(method))
             return handleGet(session, uri);
-        if(Method.POST.equals(method))
-            return handlePost(session,uri);
-        if(Method.OPTIONS.equals(method)){
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,"OPTIONS RECIBIDO");
+        if (Method.POST.equals(method))
+            return handlePost(session, uri);
+        if (Method.OPTIONS.equals(method)) {
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, "OPTIONS RECIBIDO");
             response.addHeader("Access-Control-Allow-Origin", "*");
-            response.addHeader("Access-Control-Allow-Methods","OPTIONS,POST,GET,PUT,DELETE");
-            response.addHeader("Access-Control-Allow-Headers","name");
+            response.addHeader("Access-Control-Allow-Methods", "OPTIONS,POST,GET,PUT,DELETE");
+            response.addHeader("Access-Control-Allow-Headers", "name");
 
             return response;
         }
@@ -212,9 +227,9 @@ public class HttpServer extends NanoWSD {
             return handleRootRequest(session);
         }
 
-        if(uri.endsWith("getArchivos")){
+        if (uri.endsWith("getArchivos")) {
             try {
-                Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,Storage.JSONarchivos());
+                Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, Storage.JSONarchivos());
                 response.addHeader("Access-Control-Allow-Origin", "*");
                 return response;
             } catch (JSONException e) {
@@ -222,19 +237,19 @@ public class HttpServer extends NanoWSD {
             }
         }
 
-        if (uri.endsWith("getConsultas")){
+        if (uri.endsWith("getConsultas")) {
 
 //            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JSONconsultas());
 //            response.addHeader("Access-Control-Allow-Origin", "*");
 //            return response;
 
         }
-        if(uri.endsWith("GetUsuarios")){
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON, userManager.JsonUsers());
+        if (uri.endsWith("GetUsuarios")) {
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, userManager.JsonUsers());
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
         }
-        if (uri.endsWith("GetPesadas")){
+        if (uri.endsWith("GetPesadas")) {
 //            Map<String, List<String>> filtros = extraerFiltros(session);
 //            String columnaEspecifica = session.getParameters().get("columna") != null ? session.getParameters().get("columna").get(0) : null;
 //            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JSONpesadas(filtros,columnaEspecifica,mainActivity));
@@ -242,7 +257,7 @@ public class HttpServer extends NanoWSD {
 //            return response;
 
         }
-        if (uri.endsWith("GetRecetas")){
+        if (uri.endsWith("GetRecetas")) {
 //            Map<String, List<String>> filtros = extraerFiltros(session);
 //            String columnaEspecifica = session.getParameters().get("columna") != null ? session.getParameters().get("columna").get(0) : null;
 //            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JSONrecetas(filtros,columnaEspecifica,mainActivity));
@@ -251,7 +266,7 @@ public class HttpServer extends NanoWSD {
 
         }
 
-        if (uri.endsWith("GetPedidos")){
+        if (uri.endsWith("GetPedidos")) {
 //            Map<String, List<String>> filtros = extraerFiltros(session);
 //            String columnaEspecifica = session.getParameters().get("columna") != null ? session.getParameters().get("columna").get(0) : null;
 //            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JSONpedidos(filtros,columnaEspecifica,mainActivity));
@@ -260,25 +275,25 @@ public class HttpServer extends NanoWSD {
 
         }
 
-        if (uri.endsWith("getVersion")){
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_TEXT_PLAIN_JS,mainActivity.VERSION);
+        if (uri.endsWith("getVersion")) {
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_TEXT_PLAIN_JS, MainActivity.VERSION);
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
         }
-        if (uri.endsWith("LoginHabilitado")){
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_TEXT_PLAIN_JS,String.valueOf(preferencesManagerBase.getAuthorization()));
+        if (uri.endsWith("LoginHabilitado")) {
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_TEXT_PLAIN_JS, String.valueOf(preferencesManagerBase.getAuthorization()));
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
         }
 
-        if (uri.endsWith("inicio")){
+        if (uri.endsWith("inicio")) {
             try {
                 mainActivity.runOnUiThread(() -> mainActivity.mainClass.openFragmentPrincipal());
 
             } catch (Exception e) {
-                Response response = newFixedLengthResponse("Error:"+ e.getMessage());
+                Response response = newFixedLengthResponse("Error:" + e.getMessage());
                 response.addHeader("Access-Control-Allow-Origin", "*");
                 return response;
             }
@@ -286,43 +301,38 @@ public class HttpServer extends NanoWSD {
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
-        }
-
-        else if(uri.endsWith("REBOOT")){
+        } else if (uri.endsWith("REBOOT")) {
 
             mainActivity.jwsObject.jwsReboot("");
             return newFixedLengthResponse("Hecho");
-        }
-        else if(uri.endsWith("INSTALLAPK")){
-            installApk(mainActivity,mainActivity);
+        } else if (uri.endsWith("INSTALLAPK")) {
+            installApk(mainActivity, mainActivity);
             return newFixedLengthResponse("Hecho");
-        }
-        else if(uri.endsWith("CONFIGURACION")){
+        } else if (uri.endsWith("CONFIGURACION")) {
 
             mainActivity.openSettings();
             return newFixedLengthResponse("Hecho");
-        }
-
-        else if (uri.contains("private")) {
+        } else if (uri.contains("private")) {
             return notFoundResponse();
         }
 
         return handleFileRequest(session, uri);
     }
+
     private Response handlePost(IHTTPSession session, String uri) throws IOException, ResponseException {
         if (uri.endsWith("sendFiles")) {
             return bajarArchivos(session);
         }
 
-        if(uri.endsWith("/descargarArchivo")){
+        if (uri.endsWith("/descargarArchivo")) {
             return downloadFile(session, uri);
         }
 
-        if(uri.endsWith("/descargarPreferences")){
+        if (uri.endsWith("/descargarPreferences")) {
             return downloadPreferences(session, uri);
         }
 
-        if(uri.endsWith("/descargarDB")){
+        if (uri.endsWith("/descargarDB")) {
             return downloadDb();
         }
 
@@ -338,15 +348,15 @@ public class HttpServer extends NanoWSD {
 
     @NonNull
     private static Response bajarArchivos(IHTTPSession session) throws UnsupportedEncodingException {
-        InputStream inputStream=null ;
+        InputStream inputStream = null;
         inputStream = session.getInputStream();
 
-        String nuev="/storage/emulated/0/Memoria/"+URLDecoder.decode(session.getHeaders().get("nombre"),"UTF-8");
-        File fil= new File(nuev);
-        if(fil.exists()){
+        String nuev = "/storage/emulated/0/Memoria/" + URLDecoder.decode(session.getHeaders().get("nombre"), "UTF-8");
+        File fil = new File(nuev);
+        if (fil.exists()) {
             fil.delete();
         }
-        try(OutputStream outputStream = new FileOutputStream(fil,false)){
+        try (OutputStream outputStream = new FileOutputStream(fil, false)) {
             IOUtils.copy(inputStream, outputStream);
             inputStream.close();
             outputStream.close();
@@ -357,7 +367,7 @@ public class HttpServer extends NanoWSD {
             // handle exception here
         }
 
-        Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,"Archivo guardado");
+        Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, "Archivo guardado");
         response.addHeader("Access-Control-Allow-Origin", "*");
         return response;
     }
@@ -407,16 +417,16 @@ public class HttpServer extends NanoWSD {
     @NonNull
     private static Response downloadFile(IHTTPSession session, String uri) throws ResponseException {
         Map<String, String> files = new HashMap<String, String>();
-        String nombre=null;
+        String nombre = null;
         try {
             session.parseBody(files);
-            nombre =files.get("postData");
-            nombre = URLDecoder.decode(nombre,"UTF-8");
+            nombre = files.get("postData");
+            nombre = URLDecoder.decode(nombre, "UTF-8");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(nombre!=null){
+        if (nombre != null) {
             String filePath = "/storage/emulated/0/Memoria/" + nombre;
             System.out.println("Nombre del archivo codificado: " + nombre);
             InputStream fileStream;
@@ -424,17 +434,17 @@ public class HttpServer extends NanoWSD {
                 fileStream = new FileInputStream(new File(filePath));
             } catch (IOException e) {
                 e.printStackTrace();
-                Response response = newFixedLengthResponse("Error al buscar el archivo:"+nombre);
+                Response response = newFixedLengthResponse("Error al buscar el archivo:" + nombre);
                 response.addHeader("Access-Control-Allow-Origin", "*");
                 return response;
             }
 
-            String mime=MIME_TEXT_PLAIN_JS;
+            String mime = MIME_TEXT_PLAIN_JS;
             if (uri.contains(".xls"))
                 mime = MIME_EXCEL;
-            else if (uri.contains(".pdf")){
-                mime = MIME_PDF;}
-            else if (uri.contains(".png"))
+            else if (uri.contains(".pdf")) {
+                mime = MIME_PDF;
+            } else if (uri.contains(".png"))
                 mime = MIME_PNG;
             else if (uri.contains(".jpg"))
                 mime = MIME_JPG;
@@ -443,7 +453,7 @@ public class HttpServer extends NanoWSD {
             Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
-        }else{
+        } else {
             Response response = newFixedLengthResponse("Error al buscar el archivo");
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
@@ -458,12 +468,12 @@ public class HttpServer extends NanoWSD {
             fileStream = new FileInputStream(new File(filePath));
         } catch (IOException e) {
             e.printStackTrace();
-            Response response = newFixedLengthResponse("Error al buscar la base de datos: "+e.getMessage());
+            Response response = newFixedLengthResponse("Error al buscar la base de datos: " + e.getMessage());
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
         }
 
-        String mime="application/octet-stream";
+        String mime = "application/octet-stream";
         Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
         response.addHeader("Access-Control-Allow-Origin", "*");
         return response;
@@ -472,12 +482,12 @@ public class HttpServer extends NanoWSD {
     @NonNull
     private Response updateApk(IHTTPSession session) {
         InputStream inputStream = session.getInputStream();
-        String nuev="/storage/emulated/0/Download/jwsapi.apk";
-        File fil= new File(nuev);
-        if(fil.exists()){
+        String nuev = "/storage/emulated/0/Download/jwsapi.apk";
+        File fil = new File(nuev);
+        if (fil.exists()) {
             fil.delete();
         }
-        try(OutputStream outputStream = new FileOutputStream(fil,false)){
+        try (OutputStream outputStream = new FileOutputStream(fil, false)) {
             IOUtils.copy(inputStream, outputStream);
             inputStream.close();
             outputStream.close();
@@ -486,9 +496,9 @@ public class HttpServer extends NanoWSD {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        mainActivity.runOnUiThread(() -> mainActivity.jwsObject.jwsSilentInstall(fil.getAbsolutePath(),context));
+        mainActivity.runOnUiThread(() -> mainActivity.jwsObject.jwsSilentInstall(fil.getAbsolutePath(), context));
 
-        Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,"Archivo guardado");
+        Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, "Archivo guardado");
         response.addHeader("Access-Control-Allow-Origin", "*");
         return response;
     }
@@ -496,9 +506,9 @@ public class HttpServer extends NanoWSD {
 
     private Response handleRootRequest(IHTTPSession session) {
         String indexHtml = readFile(HTML_DIR + INDEX_HTML);
-        if(preferencesManagerBase.getRemoteFix()){
+        if (preferencesManagerBase.getRemoteFix()) {
             indexHtml = readFile(HTML_DIR + INDEX_HTML_error);
-        }else{
+        } else {
             indexHtml = readFile(HTML_DIR + INDEX_HTML);
         }
 
@@ -568,7 +578,7 @@ public class HttpServer extends NanoWSD {
         try {
             fileStream = context.getAssets().open(fileName);
             BufferedReader reader = new BufferedReader(new InputStreamReader(fileStream,
-                    "UTF-8"));
+                    StandardCharsets.UTF_8));
 
             String line;
             while ((line = reader.readLine()) != null)

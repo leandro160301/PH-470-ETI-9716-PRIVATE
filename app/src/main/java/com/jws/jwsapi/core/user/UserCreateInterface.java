@@ -8,5 +8,6 @@ import java.util.function.Predicate;
 
 public interface UserCreateInterface {
     void handleCreateUserButton(DialogoUsuarioBinding binding, AlertDialog dialog);
+
     boolean searchUserOrCode(Predicate<UserModel> predicate);
 }

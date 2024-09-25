@@ -39,7 +39,7 @@ public class UserPinDialog {
         binding.buttonc.setOnClickListener(view -> dialog.cancel());
         binding.buttons.setOnClickListener(view -> {
             String pinFromTv = binding.tvpin.getText().toString();
-            if(userPinInterface.setupPin(newPin[0], pinFromTv)) dialog.cancel();
+            if (userPinInterface.setupPin(newPin[0], pinFromTv)) dialog.cancel();
         });
     }
 }

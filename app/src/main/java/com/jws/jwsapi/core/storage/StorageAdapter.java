@@ -40,11 +40,10 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
         String animal = mData.get(position);
         holder.myTextView.setText(animal);
 
-        if (selectedPos == position){
+        if (selectedPos == position) {
             holder.itemView.setBackgroundColor(Color.parseColor("#940000"));
             holder.myTextView.setTextColor(Color.WHITE);
-        }
-        else{
+        } else {
             holder.itemView.setBackgroundResource(R.drawable.fondoinfoprincipal);
             holder.myTextView.setTextColor(Color.DKGRAY);
         }

@@ -24,7 +24,7 @@ public class MainClass implements OnFragmentChangeListener {
     public static String DB_NAME = "Frm_DB";
     public BalanzaService service;
     public BalanzaService.Balanzas bza;
-    public int nBza =1;
+    public int nBza = 1;
     Boolean clickEnable = true;
     UserRepository userRepository;
 
@@ -35,10 +35,10 @@ public class MainClass implements OnFragmentChangeListener {
     }
 
     public void init() {
-        service = new BalanzaService(mainActivity,this);
+        service = new BalanzaService(mainActivity, this);
         service.init();
         Runnable myRunnable = () -> {
-            bza =BalanzaService.Balanzas;
+            bza = BalanzaService.Balanzas;
             mainActivity.runOnUiThread(this::openFragmentPrincipal);
         };
         Thread myThread = new Thread(myRunnable);
@@ -65,15 +65,15 @@ public class MainClass implements OnFragmentChangeListener {
 
     @Override
     public void openFragmentService(Fragment fragment, Bundle arg) {
-        if(clickEnable){
+        if (clickEnable) {
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-            boolean programador= userRepository.getLevelUser() > ROLE_ADMINISTRATOR;
-            ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(),arg,programador);
+            boolean programador = userRepository.getLevelUser() > ROLE_ADMINISTRATOR;
+            ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(), arg, programador);
             fragmentManager.beginTransaction()
                     .replace(R.id.container_fragment, containerFragment)
                     .commit();
             clickEnable = false;
-            Handler handler= new Handler();
+            Handler handler = new Handler();
             handler.postDelayed(() -> clickEnable = true, 1000); //arreglar problema de que mas de una optima llame a service al mismo tiempo
         }
 

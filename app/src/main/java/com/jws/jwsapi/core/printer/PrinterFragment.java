@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class PrinterFragment extends Fragment{
+public class PrinterFragment extends Fragment {
 
     @Inject
     PrinterPreferences printerPreferences;
@@ -50,10 +50,11 @@ public class PrinterFragment extends Fragment{
         binding = StandarImpresorasBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
-        mainActivity=(MainActivity)getActivity();
+        super.onViewCreated(view, savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
         setupButtons();
 
         initPrinter();
@@ -65,7 +66,7 @@ public class PrinterFragment extends Fragment{
     }
 
     private void initPrinter() {
-        printerManager =new PrinterManager(getContext(),mainActivity, userRepository, printerPreferences,labelManager);
+        printerManager = new PrinterManager(getContext(), mainActivity, userRepository, printerPreferences, labelManager);
     }
 
     private void initTextView() {
@@ -79,7 +80,7 @@ public class PrinterFragment extends Fragment{
         binding.spPrinter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i!=2){
+                if (i != 2) {
                     printerPreferences.setMode(i);
                 }
             }
@@ -92,10 +93,10 @@ public class PrinterFragment extends Fragment{
     }
 
     private void setupIpHandler(String ip) {
-        if(Utils.isValidIp(ip)) {
+        if (Utils.isValidIp(ip)) {
             printerPreferences.setIp(ip);
         } else {
-            ToastHelper.message(getString(R.string.error_ip_adress_invalid),R.layout.item_customtoasterror,requireContext());
+            ToastHelper.message(getString(R.string.error_ip_adress_invalid), R.layout.item_customtoasterror, requireContext());
             binding.tvPrinterIp.setText("");
         }
     }

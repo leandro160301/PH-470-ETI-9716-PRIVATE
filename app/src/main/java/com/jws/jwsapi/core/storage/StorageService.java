@@ -17,7 +17,7 @@ import javax.inject.Singleton;
 public class StorageService {
     private final Context context;
     private MainActivity appCompatActivity;
-    private static final Handler mHandler= new Handler();
+    private static final Handler mHandler = new Handler();
     private int state = USB_NOT_AVAIBLE;
 
     public StorageService(Context context) {
@@ -33,31 +33,31 @@ public class StorageService {
         @Override
         public void run() {
             verifyMemoryConnected();
-            mHandler.postDelayed(this,1000);
+            mHandler.postDelayed(this, 1000);
         }
     };
 
-    private void verifyMemoryConnected(){
+    private void verifyMemoryConnected() {
         if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory)) {
-            for(File apk: StoragePaths.FILE_APKS){
-                if(apk.exists()){
-                    installApk(context,appCompatActivity);
+            for (File apk : StoragePaths.FILE_APKS) {
+                if (apk.exists()) {
+                    installApk(context, appCompatActivity);
                 }
             }
-            if(StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory)&& state == USB_NOT_AVAIBLE){
+            if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory) && state == USB_NOT_AVAIBLE) {
                 StorageDialogHandler storageDialogHandler = new StorageDialogHandler(appCompatActivity);
                 storageDialogHandler.showDialog();
                 state = USB_CONNECTED;
             }
-            if(StoragePaths.DIRECTORY_MEMORY_PATHS.stream().noneMatch(File::isDirectory)&& state == USB_CONNECTED){
+            if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().noneMatch(File::isDirectory) && state == USB_CONNECTED) {
                 state = USB_NOT_AVAIBLE;
             }
-        }else {
+        } else {
             state = USB_NOT_AVAIBLE;
         }
     }
 
-    public Boolean getState(){
+    public Boolean getState() {
         return state == 1;
     }
 

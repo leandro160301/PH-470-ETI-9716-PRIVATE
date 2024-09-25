@@ -31,7 +31,7 @@ public class UserManager implements UserLoginInterface {
     private final UserRepository repository;
 
     @Inject
-    public UserManager(Application application, PreferencesManager preferencesManagerBase, UserRepository repository){
+    public UserManager(Application application, PreferencesManager preferencesManagerBase, UserRepository repository) {
         this.application = application;
         this.preferencesManagerBase = preferencesManagerBase;
         this.repository = repository;
@@ -39,13 +39,13 @@ public class UserManager implements UserLoginInterface {
 
     @Override
     public boolean login(String password, String user) {
-        if(!password.isEmpty() && !user.isEmpty())return false;
+        if (!password.isEmpty() && !user.isEmpty()) return false;
 
-        if(password.equals(preferencesManagerBase.getPin()) && user.equals("ADMINISTRADOR")){
+        if (password.equals(preferencesManagerBase.getPin()) && user.equals("ADMINISTRADOR")) {
             repository.setUserLevel(ROLE_ADMINISTRATOR);
             repository.setUserName("ADMINISTRADOR");
             return true;
-        } else if ((password.equals("3031")) && user.equals("PROGRAMADOR")){
+        } else if ((password.equals("3031")) && user.equals("PROGRAMADOR")) {
             repository.setUserLevel(ROLE_PROGRAMMER);
             repository.setUserName("PROGRAMADOR");
             return true;
@@ -57,15 +57,15 @@ public class UserManager implements UserLoginInterface {
     }
 
     @Override
-    public void logout(){
+    public void logout() {
         repository.setUserLevel(ROLE_NOT_LOGGED);
         repository.setUserName("");
     }
 
     @Override
-    public List<String> getUsersSpinner(){
+    public List<String> getUsersSpinner() {
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
-            List<UserModel> userElements=dbHelper.getAllUsers();
+            List<UserModel> userElements = dbHelper.getAllUsers();
             List<String> userNames = new ArrayList<>(Arrays.asList(USERS_LIST));
             userElements.forEach(userModel -> userNames.add(userModel.getUser()));
             return userNames;
@@ -75,7 +75,7 @@ public class UserManager implements UserLoginInterface {
     public String JsonUsers() throws JSONException {
         List<UserModel> userElements;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
-            userElements=dbHelper.getAllUsers();
+            userElements = dbHelper.getAllUsers();
         }
         JSONArray jsonArray = new JSONArray();
         putUserToJson("ADMINISTRADOR", jsonArray);

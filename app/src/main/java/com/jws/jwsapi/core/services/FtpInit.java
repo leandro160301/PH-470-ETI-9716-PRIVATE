@@ -24,15 +24,15 @@ public class FtpInit {
 
     Context context;
     List<UserModel> listaUsuarios;
-    private PreferencesManager preferencesManager;
+    private final PreferencesManager preferencesManager;
 
-    public FtpInit(Context context, List<UserModel> listaUsuarios, PreferencesManager preferencesManager){
-        this.context=context;
-        this.listaUsuarios=listaUsuarios;
+    public FtpInit(Context context, List<UserModel> listaUsuarios, PreferencesManager preferencesManager) {
+        this.context = context;
+        this.listaUsuarios = listaUsuarios;
         this.preferencesManager = preferencesManager;
     }
 
-    public void ftpServer(){
+    public void ftpServer() {
         FtpServerFactory serverFactory = new FtpServerFactory();
         ListenerFactory factory = new ListenerFactory();
         factory.setPort(2221);
@@ -54,7 +54,7 @@ public class FtpInit {
         BaseUser user = new BaseUser();
         user.setName(USERS_LIST[0]);
         user.setPassword(preferencesManager.getPin());
-        user.setHomeDirectory(Environment.getExternalStorageDirectory().toString()+"/Memoria");
+        user.setHomeDirectory(Environment.getExternalStorageDirectory().toString() + "/Memoria");
         user.setAuthorities(authorities);
         try {
             serverFactory.getUserManager().save(user);
@@ -71,8 +71,8 @@ public class FtpInit {
 
     }
 
-    public void cargadeUsuariosFtp(FtpServerFactory serverFactory){
-        List<UserModel> lista= listaUsuarios;
+    public void cargadeUsuariosFtp(FtpServerFactory serverFactory) {
+        List<UserModel> lista = listaUsuarios;
         for (UserModel usuario : lista) {
             BaseUser user = new BaseUser();
             user.setName(usuario.getUser());

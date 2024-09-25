@@ -53,7 +53,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mainActivity=(MainActivity)getActivity();
+        mainActivity = (MainActivity) getActivity();
         palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
 
         tabLayoutListener();
@@ -76,7 +76,7 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
         });
 
         palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            if (isLoading!=null){
+            if (isLoading != null) {
                 binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             }
         });
@@ -99,19 +99,23 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
                         break;
                 }
             }
+
             @Override
-            public void onTabUnselected(@NonNull TabLayout.Tab tab) {}
+            public void onTabUnselected(@NonNull TabLayout.Tab tab) {
+            }
+
             @Override
-            public void onTabReselected(@NonNull TabLayout.Tab tab) {}
+            public void onTabReselected(@NonNull TabLayout.Tab tab) {
+            }
         });
     }
 
 
     private void setupRecycler() {
         String unit = repository.getUnit().getValue();
-        if(unit!=null) {
+        if (unit != null) {
             binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-            palletAdapter = new PalletAdapter(new ArrayList<>(),this, unit);
+            palletAdapter = new PalletAdapter(new ArrayList<>(), this, unit);
             binding.recycler.setAdapter(palletAdapter);
         }
 
@@ -119,12 +123,12 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
 
     private void showMessage(boolean message, String toastMessage, int layout) {
         if (message) {
-            ToastHelper.message(toastMessage, layout,getContext());
+            ToastHelper.message(toastMessage, layout, getContext());
         }
     }
 
     private void handlePalletsUpdate(List<Pallet> pallets) {
-        if (pallets !=null) {
+        if (pallets != null) {
             palletAdapter.updateData(pallets);
         }
     }

@@ -14,10 +14,10 @@ import com.jws.jwsapi.databinding.DialogoLogeoBinding;
 
 public class UserLoginDialog {
 
-    public void showDialog(Context context, UserLoginInterface loginInterface){
+    public void showDialog(Context context, UserLoginInterface loginInterface) {
         DialogoLogeoBinding binding = DialogoLogeoBinding.inflate(LayoutInflater.from(context));
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-        setupSpinner(binding.spinner,context,loginInterface.getUsersSpinner());
+        setupSpinner(binding.spinner, context, loginInterface.getUsersSpinner());
         setupUiEvents(context, binding);
         mBuilder.setView(binding.getRoot());
         final AlertDialog dialog = mBuilder.create();
@@ -31,7 +31,7 @@ public class UserLoginDialog {
             dialog.cancel();
         });
         binding.buttons.setOnClickListener(view -> {
-            if(loginInterface.login(binding.tvnContrasena.getText().toString(), binding.spinner.getSelectedItem().toString())) {
+            if (loginInterface.login(binding.tvnContrasena.getText().toString(), binding.spinner.getSelectedItem().toString())) {
                 dialog.cancel();
             }
         });
@@ -45,8 +45,8 @@ public class UserLoginDialog {
         binding.buttons.setText(context.getString(R.string.dialog_login));
     }
 
-    private static void showPasswordKeyboard(TextView textView, Context context){
-        keyboardPassword(textView, "", context, true ,text -> {
+    private static void showPasswordKeyboard(TextView textView, Context context) {
+        keyboardPassword(textView, "", context, true, text -> {
         }, PasswordTransformationMethod.getInstance());
     }
 }

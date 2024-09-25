@@ -27,7 +27,7 @@ public class UserRepository {
         this.application = application;
     }
 
-    public List<UserModel> getUsers(){
+    public List<UserModel> getUsers() {
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
             return dbHelper.getAllUsers();
         }
@@ -39,15 +39,15 @@ public class UserRepository {
                 .orElse(0);
     }
 
-    public void searchUser(String user, String password){
+    public void searchUser(String user, String password) {
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
-            List<UserModel> userElements=dbHelper.searchUsers(user);
-            if(userElements.isEmpty()){
+            List<UserModel> userElements = dbHelper.searchUsers(user);
+            if (userElements.isEmpty()) {
                 showMessage(R.string.toast_user_not_exist, R.layout.item_customtoasterror);
                 return;
             }
             userElements.forEach(userModel -> {
-                if(userModel.getPassword().equals(password)){
+                if (userModel.getPassword().equals(password)) {
                     setUserName(userModel.getName());
                     setupUserLevel(userModel, "Supervisor", ROLE_SUPERVISOR);
                     setupUserLevel(userModel, "Operador", ROLE_OPERATOR);
@@ -62,13 +62,13 @@ public class UserRepository {
     }
 
     private void setupUserLevel(UserModel userModel, String Supervisor, int roleSupervisor) {
-        if(Objects.equals(userModel.getType(), Supervisor)){
+        if (Objects.equals(userModel.getType(), Supervisor)) {
             setUserLevel(roleSupervisor);
         }
     }
 
     private void showMessage(int text, int layout) {
-        ToastHelper.message(application.getResources().getString(text), layout,application);
+        ToastHelper.message(application.getResources().getString(text), layout, application);
     }
 
     public boolean isEnabled() {
@@ -78,11 +78,11 @@ public class UserRepository {
         }
     }
 
-    public String getCurrentUser(){
+    public String getCurrentUser() {
         return userName;
     }
 
-    public int getLevelUser(){
+    public int getLevelUser() {
         return userLevel;
     }
 

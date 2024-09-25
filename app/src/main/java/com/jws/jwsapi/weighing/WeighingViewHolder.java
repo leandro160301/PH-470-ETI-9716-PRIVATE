@@ -23,9 +23,9 @@ public class WeighingViewHolder extends RecyclerView.ViewHolder {
 
         binding.tvWeighingCode.setText(weighing.getCode());
         binding.tvWeighingName.setText(weighing.getName());
-        binding.tvWeighingNet.setText(weighFormat(weighing.getNet(),weighing.getUnit()));
-        binding.tvWeighingGross.setText(weighFormat(weighing.getGross(),weighing.getUnit()));
-        binding.tvWeighingTare.setText(weighFormat(weighing.getTare(),weighing.getUnit()));
+        binding.tvWeighingNet.setText(weighFormat(weighing.getNet(), weighing.getUnit()));
+        binding.tvWeighingGross.setText(weighFormat(weighing.getGross(), weighing.getUnit()));
+        binding.tvWeighingTare.setText(weighFormat(weighing.getTare(), weighing.getUnit()));
         binding.tvWeighingOperator.setText(weighing.getOperator());
         binding.tvWeighingSerialNumber.setText(weighing.getSerialNumber());
         binding.tvWeighingScale.setText(String.valueOf(weighing.getScaleNumber()));

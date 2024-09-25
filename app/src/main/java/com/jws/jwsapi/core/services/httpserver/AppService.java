@@ -76,7 +76,7 @@ public class AppService extends Service {
         Notification notification = notificationBuilder.setOngoing(true)
                 .setContentTitle(NOTIFICATION_TITLE)
                 .setContentText(NOTIFICATION_CONTENT)
-             //   .setSmallIcon(R.drawable.ic_stat_name)
+                //   .setSmallIcon(R.drawable.ic_stat_name)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setContentIntent(pendingIntent)
                 .build();
@@ -88,7 +88,7 @@ public class AppService extends Service {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private String createNotificationChannel(){
+    private String createNotificationChannel() {
         NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
 
@@ -112,12 +112,12 @@ public class AppService extends Service {
 
     public boolean serverStart(Intent intent, int port,
                                boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity, UserManager userManager, PreferencesManager preferencesManagerBase) {
-        this.mainActivity=mainActivity;
-        this.preferencesManagerBase= preferencesManagerBase;
+        this.mainActivity = mainActivity;
+        this.preferencesManagerBase = preferencesManagerBase;
         if (!(isWebServerRunning = startHttpServer(port, userManager)))
             return false;
 
-        webRtcManager = new WebRtcManager(intent, context, httpServer,mainActivity,preferencesManagerBase);
+        webRtcManager = new WebRtcManager(intent, context, httpServer, mainActivity, preferencesManagerBase);
 
         accessibilityServiceSet(context, isAccessibilityServiceEnabled);
 
@@ -142,13 +142,13 @@ public class AppService extends Service {
 
 
     public boolean startHttpServer(int httpServerPort, UserManager userManager) {
-        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface,mainActivity, userManager,preferencesManagerBase);
+        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface, mainActivity, userManager, preferencesManagerBase);
         try {
             httpServer.start();
         } catch (IOException e) {
-           // String fmt = getResources().getString(R.string.port_in_use);
-         //   String errorMessage = String.format(Locale.getDefault(), fmt, httpServerPort);
-            Toast.makeText(getApplicationContext(),"errorMessage", Toast.LENGTH_SHORT).show();
+            // String fmt = getResources().getString(R.string.port_in_use);
+            //   String errorMessage = String.format(Locale.getDefault(), fmt, httpServerPort);
+            Toast.makeText(getApplicationContext(), "errorMessage", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -162,7 +162,7 @@ public class AppService extends Service {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try  {
+                try {
                     // Run stop in thread to avoid NetworkOnMainThreadException
                     httpServer.stop();
                 } catch (Exception e) {
@@ -180,7 +180,7 @@ public class AppService extends Service {
         httpServer = null;
     }
 
-    private HttpServer.HttpServerInterface httpServerInterface = new
+    private final HttpServer.HttpServerInterface httpServerInterface = new
             HttpServer.HttpServerInterface() {
                 @Override
                 public void onMouseDown(JSONObject message) {
@@ -281,7 +281,7 @@ public class AppService extends Service {
                         return;
                     webRtcManager.stop();
                 }
-    };
+            };
 
     private int[] getCoordinates(JSONObject json) {
         int[] coordinates = new int[2];

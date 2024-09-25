@@ -26,7 +26,7 @@ public class AdapterCommon extends RecyclerView.Adapter<AdapterCommon.ViewHolder
     public AdapterCommon(Context context, List<String> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.context= context;
+        this.context = context;
     }
 
     @NonNull
@@ -40,15 +40,14 @@ public class AdapterCommon extends RecyclerView.Adapter<AdapterCommon.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         String animal = mData.get(position);
         holder.myTextView.setText(animal);
-        if (selectedPos == position){
+        if (selectedPos == position) {
             holder.itemView.setBackgroundResource(R.drawable.botoneraprincipal);
             holder.myTextView.setTextColor(Color.WHITE);
-        }
-        else{
+        } else {
             holder.itemView.setBackgroundResource(R.drawable.fondoinfoprincipal);
             holder.myTextView.setTextColor(Color.DKGRAY);
         }
-        lastPositionAdapter= AdapterHelper.setAnimationPivot(holder.itemView,position,lastPositionAdapter,context);
+        lastPositionAdapter = AdapterHelper.setAnimationPivot(holder.itemView, position, lastPositionAdapter, context);
         holder.itemView.setSelected(selectedPos == position);
     }
 
@@ -88,11 +87,13 @@ public class AdapterCommon extends RecyclerView.Adapter<AdapterCommon.ViewHolder
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
     public void removeAt(int position) {
         mData.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mData.size());
     }
+
     public void filterList(List<String> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();

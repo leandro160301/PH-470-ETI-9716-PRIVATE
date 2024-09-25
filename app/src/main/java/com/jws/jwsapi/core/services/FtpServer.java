@@ -9,7 +9,6 @@ import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.user.UserModel;
 
 import org.apache.ftpserver.ConnectionConfigFactory;
-import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.ftplet.Authority;
 import org.apache.ftpserver.ftplet.FtpException;
@@ -20,19 +19,19 @@ import org.apache.ftpserver.usermanager.impl.WritePermission;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FtpInit {
+public class FtpServer {
 
     Context context;
     List<UserModel> userElements;
     private final PreferencesManager preferencesManager;
 
-    public FtpInit(Context context, List<UserModel> userElements, PreferencesManager preferencesManager) {
+    public FtpServer(Context context, List<UserModel> userElements, PreferencesManager preferencesManager) {
         this.context = context;
         this.userElements = userElements;
         this.preferencesManager = preferencesManager;
     }
 
-    public void ftpServer() {
+    public void init() {
         FtpServerFactory serverFactory = new FtpServerFactory();
         ListenerFactory factory = new ListenerFactory();
         factory.setPort(2221);
@@ -62,7 +61,7 @@ public class FtpInit {
             e.printStackTrace();
         }
         cargadeUsuariosFtp(serverFactory);
-        FtpServer server = serverFactory.createServer();
+        org.apache.ftpserver.FtpServer server = serverFactory.createServer();
         try {
             server.start();
         } catch (FtpException e) {

@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat;
 
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
-import com.jws.jwsapi.core.services.FtpInit;
+import com.jws.jwsapi.core.services.FtpServer;
 import com.jws.jwsapi.core.services.httpserver.InitServer;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initService() {
         try {
-            FtpInit ftpInit = new FtpInit(getApplicationContext(), userRepository.getUsers(), preferencesManager);
-            ftpInit.ftpServer();
+            FtpServer ftpServer = new FtpServer(getApplicationContext(), userRepository.getUsers(), preferencesManager);
+            ftpServer.init();
         } catch (Exception e) {
             e.printStackTrace();
         }

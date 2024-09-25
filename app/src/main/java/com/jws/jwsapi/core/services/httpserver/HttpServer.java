@@ -70,11 +70,10 @@ public class HttpServer extends NanoWSD {
     private static final String TYPE_VALUE_BYE = "bye";
     private static MainActivity mainActivity;
     private final Context context;
+    private final HttpServerInterface httpServerInterface;
     Ws webSocket = null;
     UserManager userManager;
     PreferencesManager preferencesManagerBase;
-
-    private final HttpServerInterface httpServerInterface;
 
     public HttpServer(int port, Context context,
                       HttpServerInterface httpServerInterface, MainActivity activity, UserManager userManager, PreferencesManager preferencesManagerBase) {
@@ -86,62 +85,117 @@ public class HttpServer extends NanoWSD {
         this.userManager = userManager;
     }
 
-    class Ws extends WebSocket {
-        private static final int PING_INTERVAL = 20000;
-        private final Timer pingTimer = new Timer();
+    @NonNull
+    private static Response bajarArchivos(IHTTPSession session) throws UnsupportedEncodingException {
+        InputStream inputStream = null;
+        inputStream = session.getInputStream();
 
-        public Ws(IHTTPSession handshakeRequest) {
-            super(handshakeRequest);
+        String nuev = "/storage/emulated/0/Memoria/" + URLDecoder.decode(session.getHeaders().get("nombre"), "UTF-8");
+        File fil = new File(nuev);
+        if (fil.exists()) {
+            fil.delete();
+        }
+        try (OutputStream outputStream = new FileOutputStream(fil, false)) {
+            IOUtils.copy(inputStream, outputStream);
+            inputStream.close();
+            outputStream.close();
+            outputStream.flush();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            // handle exception here
         }
 
-        @Override
-        protected void onOpen() {
-            Log.d(TAG, "WebSocket open");
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
+        Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, "Archivo guardado");
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        return response;
+    }
 
-                    try {
-                        Ws.this.ping(new byte[0]);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+    @NonNull
+    private static Response downloadPreferences(IHTTPSession session, String uri) throws ResponseException {
+        Map<String, String> files = new HashMap<>();
+        String nombre = null;
+        try {
+            session.parseBody(files);
+            nombre = files.get("postData");
+            nombre = URLDecoder.decode(nombre, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (nombre != null) {
+            File sharedPrefsFile = new File(mainActivity.getFilesDir().getParent() + "/shared_prefs/" + nombre + ".xml");
+
+            if (sharedPrefsFile.exists()) {
+                try {
+                    InputStream fileStream = new FileInputStream(sharedPrefsFile);
+
+                    String mime = "text/xml"; // Tipo MIME para un archivo XML
+
+                    Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
+                    response.addHeader("Access-Control-Allow-Origin", "*");
+                    return response;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Response response = newFixedLengthResponse("Error al buscar el archivo: " + nombre);
+                    response.addHeader("Access-Control-Allow-Origin", "*");
+                    return response;
                 }
-            };
-
-            pingTimer.scheduleAtFixedRate(timerTask, PING_INTERVAL, PING_INTERVAL);
+            } else {
+                Response response = newFixedLengthResponse("Error: No se encontró el archivo XML de SharedPreferences.");
+                response.addHeader("Access-Control-Allow-Origin", "*");
+                return response;
+            }
+        } else {
+            Response response = newFixedLengthResponse("Error al buscar el archivo");
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            return response;
         }
+    }
 
-        @Override
-        protected void onClose(WebSocketFrame.CloseCode code, String reason,
-                               boolean initiatedByRemote) {
-            Log.d(TAG, "WebSocket close, reason: " + reason);
-            pingTimer.cancel();
-            httpServerInterface.onWebSocketClose();
+    @NonNull
+    private static Response downloadFile(IHTTPSession session, String uri) throws ResponseException {
+        Map<String, String> files = new HashMap<String, String>();
+        String nombre = null;
+        try {
+            session.parseBody(files);
+            nombre = files.get("postData");
+            nombre = URLDecoder.decode(nombre, "UTF-8");
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        @Override
-        protected void onMessage(WebSocketFrame message) {
-            JSONObject json;
-
+        if (nombre != null) {
+            String filePath = "/storage/emulated/0/Memoria/" + nombre;
+            System.out.println("Nombre del archivo codificado: " + nombre);
+            InputStream fileStream;
             try {
-                json = new JSONObject(message.getTextPayload());
-            } catch (JSONException e) {
+                fileStream = new FileInputStream(new File(filePath));
+            } catch (IOException e) {
                 e.printStackTrace();
-                return;
+                Response response = newFixedLengthResponse("Error al buscar el archivo:" + nombre);
+                response.addHeader("Access-Control-Allow-Origin", "*");
+                return response;
             }
 
-            handleRequest(json);
-        }
-
-        @Override
-        protected void onPong(WebSocketFrame pong) {
-        }
-
-        @Override
-        protected void onException(IOException exception) {
-            Log.d(TAG, "WebSocket exception");
-            //pingTimer.cancel();
+            String mime = MIME_TEXT_PLAIN_JS;
+            if (uri.contains(".xls"))
+                mime = MIME_EXCEL;
+            else if (uri.contains(".pdf")) {
+                mime = MIME_PDF;
+            } else if (uri.contains(".png"))
+                mime = MIME_PNG;
+            else if (uri.contains(".jpg"))
+                mime = MIME_JPG;
+            else if (uri.contains(".csv"))
+                mime = "text/csv";
+            Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            return response;
+        } else {
+            Response response = newFixedLengthResponse("Error al buscar el archivo");
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            return response;
         }
     }
 
@@ -158,38 +212,6 @@ public class HttpServer extends NanoWSD {
 
 
         return serveRequest(session, uri, method);
-    }
-
-    public interface HttpServerInterface {
-        void onMouseDown(JSONObject message);
-
-        void onMouseMove(JSONObject message);
-
-        void onMouseUp(JSONObject message);
-
-        void onMouseZoomIn(JSONObject message);
-
-        void onMouseZoomOut(JSONObject message);
-
-        void onButtonBack();
-
-        void onButtonHome();
-
-        void onButtonRecent();
-
-        void onButtonPower();
-
-        void onButtonLock();
-
-        void onJoin(HttpServer server);
-
-        void onSdp(JSONObject message);
-
-        void onIceCandidate(JSONObject message);
-
-        void onBye();
-
-        void onWebSocketClose();
     }
 
     public void send(String message) throws IOException {
@@ -347,120 +369,6 @@ public class HttpServer extends NanoWSD {
     }
 
     @NonNull
-    private static Response bajarArchivos(IHTTPSession session) throws UnsupportedEncodingException {
-        InputStream inputStream = null;
-        inputStream = session.getInputStream();
-
-        String nuev = "/storage/emulated/0/Memoria/" + URLDecoder.decode(session.getHeaders().get("nombre"), "UTF-8");
-        File fil = new File(nuev);
-        if (fil.exists()) {
-            fil.delete();
-        }
-        try (OutputStream outputStream = new FileOutputStream(fil, false)) {
-            IOUtils.copy(inputStream, outputStream);
-            inputStream.close();
-            outputStream.close();
-            outputStream.flush();
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            // handle exception here
-        }
-
-        Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, "Archivo guardado");
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        return response;
-    }
-
-    @NonNull
-    private static Response downloadPreferences(IHTTPSession session, String uri) throws ResponseException {
-        Map<String, String> files = new HashMap<>();
-        String nombre = null;
-        try {
-            session.parseBody(files);
-            nombre = files.get("postData");
-            nombre = URLDecoder.decode(nombre, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (nombre != null) {
-            File sharedPrefsFile = new File(mainActivity.getFilesDir().getParent() + "/shared_prefs/" + nombre + ".xml");
-
-            if (sharedPrefsFile.exists()) {
-                try {
-                    InputStream fileStream = new FileInputStream(sharedPrefsFile);
-
-                    String mime = "text/xml"; // Tipo MIME para un archivo XML
-
-                    Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
-                    response.addHeader("Access-Control-Allow-Origin", "*");
-                    return response;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Response response = newFixedLengthResponse("Error al buscar el archivo: " + nombre);
-                    response.addHeader("Access-Control-Allow-Origin", "*");
-                    return response;
-                }
-            } else {
-                Response response = newFixedLengthResponse("Error: No se encontró el archivo XML de SharedPreferences.");
-                response.addHeader("Access-Control-Allow-Origin", "*");
-                return response;
-            }
-        } else {
-            Response response = newFixedLengthResponse("Error al buscar el archivo");
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            return response;
-        }
-    }
-
-    @NonNull
-    private static Response downloadFile(IHTTPSession session, String uri) throws ResponseException {
-        Map<String, String> files = new HashMap<String, String>();
-        String nombre = null;
-        try {
-            session.parseBody(files);
-            nombre = files.get("postData");
-            nombre = URLDecoder.decode(nombre, "UTF-8");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (nombre != null) {
-            String filePath = "/storage/emulated/0/Memoria/" + nombre;
-            System.out.println("Nombre del archivo codificado: " + nombre);
-            InputStream fileStream;
-            try {
-                fileStream = new FileInputStream(new File(filePath));
-            } catch (IOException e) {
-                e.printStackTrace();
-                Response response = newFixedLengthResponse("Error al buscar el archivo:" + nombre);
-                response.addHeader("Access-Control-Allow-Origin", "*");
-                return response;
-            }
-
-            String mime = MIME_TEXT_PLAIN_JS;
-            if (uri.contains(".xls"))
-                mime = MIME_EXCEL;
-            else if (uri.contains(".pdf")) {
-                mime = MIME_PDF;
-            } else if (uri.contains(".png"))
-                mime = MIME_PNG;
-            else if (uri.contains(".jpg"))
-                mime = MIME_JPG;
-            else if (uri.contains(".csv"))
-                mime = "text/csv";
-            Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            return response;
-        } else {
-            Response response = newFixedLengthResponse("Error al buscar el archivo");
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            return response;
-        }
-    }
-
-    @NonNull
     private Response downloadDb() {
         String filePath = context.getDatabasePath(MainClass.DB_NAME).getAbsolutePath();
         InputStream fileStream;
@@ -502,7 +410,6 @@ public class HttpServer extends NanoWSD {
         response.addHeader("Access-Control-Allow-Origin", "*");
         return response;
     }
-
 
     private Response handleRootRequest(IHTTPSession session) {
         String indexHtml = readFile(HTML_DIR + INDEX_HTML);
@@ -635,6 +542,97 @@ public class HttpServer extends NanoWSD {
         }
 
         return filtros;
+    }
+
+    public interface HttpServerInterface {
+        void onMouseDown(JSONObject message);
+
+        void onMouseMove(JSONObject message);
+
+        void onMouseUp(JSONObject message);
+
+        void onMouseZoomIn(JSONObject message);
+
+        void onMouseZoomOut(JSONObject message);
+
+        void onButtonBack();
+
+        void onButtonHome();
+
+        void onButtonRecent();
+
+        void onButtonPower();
+
+        void onButtonLock();
+
+        void onJoin(HttpServer server);
+
+        void onSdp(JSONObject message);
+
+        void onIceCandidate(JSONObject message);
+
+        void onBye();
+
+        void onWebSocketClose();
+    }
+
+    class Ws extends WebSocket {
+        private static final int PING_INTERVAL = 20000;
+        private final Timer pingTimer = new Timer();
+
+        public Ws(IHTTPSession handshakeRequest) {
+            super(handshakeRequest);
+        }
+
+        @Override
+        protected void onOpen() {
+            Log.d(TAG, "WebSocket open");
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+
+                    try {
+                        Ws.this.ping(new byte[0]);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            pingTimer.scheduleAtFixedRate(timerTask, PING_INTERVAL, PING_INTERVAL);
+        }
+
+        @Override
+        protected void onClose(WebSocketFrame.CloseCode code, String reason,
+                               boolean initiatedByRemote) {
+            Log.d(TAG, "WebSocket close, reason: " + reason);
+            pingTimer.cancel();
+            httpServerInterface.onWebSocketClose();
+        }
+
+        @Override
+        protected void onMessage(WebSocketFrame message) {
+            JSONObject json;
+
+            try {
+                json = new JSONObject(message.getTextPayload());
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return;
+            }
+
+            handleRequest(json);
+        }
+
+        @Override
+        protected void onPong(WebSocketFrame pong) {
+        }
+
+        @Override
+        protected void onException(IOException exception) {
+            Log.d(TAG, "WebSocket exception");
+            //pingTimer.cancel();
+        }
     }
 
 }

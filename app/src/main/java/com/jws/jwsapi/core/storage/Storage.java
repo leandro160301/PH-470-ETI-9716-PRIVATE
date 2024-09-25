@@ -146,38 +146,6 @@ public class Storage {
         }).start();
     }
 
-    public int quantityExtension(String extension) {
-        List<String> Lista = new ArrayList<>();
-        File root = new File(MEMORY_PATH);
-        if (root.exists()) {
-            File[] filearr = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(extension));
-            StringBuilder f = new StringBuilder();
-            if (filearr != null && filearr.length > 0) {
-                for (File value : filearr) {
-                    f.append(value.getName());
-                    Lista.add(f.toString());
-                    f = new StringBuilder();
-                }
-            }
-
-        }
-        return Lista.size();
-    }
-
-    @SuppressWarnings("all")
-    public void copy(File src, File dst) throws IOException {
-        InputStream in = new FileInputStream(src);
-        OutputStream out = new FileOutputStream(dst);
-
-        byte[] buf = new byte[1024];
-        int len;
-        while ((len = in.read(buf)) > 0) {
-            out.write(buf, 0, len);
-        }
-        in.close();
-        out.close();
-    }
-
     public static String JsonFiles() throws JSONException {
         List<String> guardado = getAllFiles();
         JSONArray jsonArray = new JSONArray();
@@ -256,6 +224,38 @@ public class Storage {
             }
         }
         return lista;
+    }
+
+    public int quantityExtension(String extension) {
+        List<String> Lista = new ArrayList<>();
+        File root = new File(MEMORY_PATH);
+        if (root.exists()) {
+            File[] filearr = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(extension));
+            StringBuilder f = new StringBuilder();
+            if (filearr != null && filearr.length > 0) {
+                for (File value : filearr) {
+                    f.append(value.getName());
+                    Lista.add(f.toString());
+                    f = new StringBuilder();
+                }
+            }
+
+        }
+        return Lista.size();
+    }
+
+    @SuppressWarnings("all")
+    public void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        OutputStream out = new FileOutputStream(dst);
+
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        in.close();
+        out.close();
     }
 
 }

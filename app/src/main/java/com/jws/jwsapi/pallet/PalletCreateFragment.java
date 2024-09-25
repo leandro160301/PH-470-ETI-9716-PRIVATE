@@ -25,10 +25,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class PalletCreateFragment extends Fragment {
 
+    MainActivity mainActivity;
     private PalletViewModel palletViewModel;
     private FragmentPalletCreateBinding binding;
     private ButtonProvider buttonProvider;
-    MainActivity mainActivity;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

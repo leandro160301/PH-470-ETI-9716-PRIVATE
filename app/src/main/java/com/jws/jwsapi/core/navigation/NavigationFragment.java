@@ -70,11 +70,11 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     UserRepository userRepository;
     @Inject
     PreferencesManager preferencesManagerBase;
+    StandarMenuBinding binding;
     private int currentMenu = 0;
     private int currentItem = 0;
     private MainActivity mainActivity;
     private ButtonProvider buttonProvider;
-    StandarMenuBinding binding;
 
     @Nullable
     @Override

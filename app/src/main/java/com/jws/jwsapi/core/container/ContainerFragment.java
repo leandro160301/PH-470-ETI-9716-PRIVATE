@@ -32,11 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class ContainerFragment extends Fragment implements ButtonProvider, ContainerData {
 
-    private MainActivity mainActivity;
-    private JwsManager jwsManager;
-    private boolean stoped = false;
     ContainFragmentBinding binding;
-
     int iconFlag = -1;
     @Inject
     UserManager userManager;
@@ -44,6 +40,9 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     UserRepository userRepository;
     @Inject
     StorageService storageService;
+    private MainActivity mainActivity;
+    private JwsManager jwsManager;
+    private boolean stoped = false;
 
     public static ContainerFragment newInstance(Class<? extends Fragment> fragmentClass) {
         ContainerFragment fragment = new ContainerFragment();

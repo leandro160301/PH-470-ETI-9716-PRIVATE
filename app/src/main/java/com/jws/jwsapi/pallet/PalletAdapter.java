@@ -13,9 +13,9 @@ import java.util.List;
 
 public class PalletAdapter extends RecyclerView.Adapter<PalletViewHolder> {
 
-    private List<Pallet> palletList;
     private final PalletButtonClickListener listener;
     private final String unit;
+    private List<Pallet> palletList;
 
     public PalletAdapter(List<Pallet> palletList, PalletButtonClickListener listener, String unit) {
         this.palletList = palletList;

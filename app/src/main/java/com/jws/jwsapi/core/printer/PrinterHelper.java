@@ -31,6 +31,75 @@ public class PrinterHelper {
         this.userRepository = userRepository;
     }
 
+    private static void addIfNotNull(List<String> finalElements, String finalElement) {
+        if (finalElement != null) finalElements.add(finalElement);
+    }
+
+    @NonNull
+    public static String removeLastSeparator(String separated, String concat) {
+        if (concat.endsWith(separated)) {
+            return concat.substring(0, concat.length() - separated.length());
+        }
+        return concat;
+    }
+
+    private static boolean areElementsMatching(List<Integer> ListElementsInt, List<String> ListElementsFijo, String[] arr) {
+        return arr.length - 1 == ListElementsInt.size() && arr.length - 1 == ListElementsFijo.size();
+    }
+
+    private static boolean isValidLabel(String currentLabel, String labelCode) {
+        return labelCode != null && !labelCode.isEmpty() && !currentLabel.isEmpty();
+    }
+
+    private static String updateCodeWithNewList(List<String> newList, String labelCode, List<String> oldList) {
+        if (oldList.size() == newList.size()) {
+            for (int i = 0; i < newList.size(); i++) {
+                labelCode = labelCode.replace(oldList.get(i), newList.get(i));
+            }
+        }
+        return labelCode;
+    }
+
+    @NonNull
+    private static List<String> getOldFieldsFromCode(String[] commandResult) {
+        List<String> oldList = new ArrayList<>();
+        for (int i = 1; i < commandResult.length; i++) {
+            String[] oldFieldArray = commandResult[i].split("\\^FS");
+            if (oldFieldArray.length > 1) {
+                oldList.add(oldFieldArray[0]);
+            }
+        }
+        return oldList;
+    }
+
+    @NonNull
+    private static String getLabelNameFromCodeCommand(String labelCode) {
+        String[] dfeCommandList = labelCode.split("\\^DFE");
+        String delete = "";
+        if (dfeCommandList.length > 1) {
+            String[] arrFs = dfeCommandList[1].split("\\^FS");
+            if (arrFs.length > 1) {
+                delete = "^DFE" + arrFs[0] + "^FS\n";
+            }
+        }
+        return delete;
+    }
+
+    public static List<LabelModel> getFieldsFromLabel(String label) {
+        List<LabelModel> fieldList = new ArrayList<>();
+        String[] arrFn = label.split("\\^FN");
+        for (int i = 1; i < arrFn.length; i++) {
+            String[] arrFs = arrFn[i].split("\\^FS");
+            if (arrFs.length > 1) {
+                String[] arrSplit = arrFs[0].split("\"");
+                if (arrSplit.length > 1) {
+                    fieldList.add(new LabelModel(arrSplit[1], 0));
+                }
+            }
+        }
+        return fieldList;
+    }
+
     public String getLabelCode(int numetiqueta) {
         try {
             String currentLabel = printerPreferences.getLabel(numetiqueta);
@@ -96,10 +165,6 @@ public class PrinterHelper {
         }
     }
 
-    private static void addIfNotNull(List<String> finalElements, String finalElement) {
-        if (finalElement != null) finalElements.add(finalElement);
-    }
-
     private String getFinalElementValue(Integer concatValue, String currentLabel, List<String> ListElementsFijo, Integer i, boolean isFinalElement) {
         switch (concatValue) {
             case 0:
@@ -162,22 +227,6 @@ public class PrinterHelper {
         return removeLastSeparator(separator, concat.toString());
     }
 
-    @NonNull
-    public static String removeLastSeparator(String separated, String concat) {
-        if (concat.endsWith(separated)) {
-            return concat.substring(0, concat.length() - separated.length());
-        }
-        return concat;
-    }
-
-    private static boolean areElementsMatching(List<Integer> ListElementsInt, List<String> ListElementsFijo, String[] arr) {
-        return arr.length - 1 == ListElementsInt.size() && arr.length - 1 == ListElementsFijo.size();
-    }
-
-    private static boolean isValidLabel(String currentLabel, String labelCode) {
-        return labelCode != null && !labelCode.isEmpty() && !currentLabel.isEmpty();
-    }
-
     public String replaceLabelFields(List<String> newList, String labelCode) {
         try {
             String[] fnCommandsArray = labelCode.split("\\^FN");
@@ -191,55 +240,6 @@ public class PrinterHelper {
             e.printStackTrace();
             return showErrorMessage("Ocurrió un error al procesar la etiqueta:" + e.getMessage());
         }
-    }
-
-    private static String updateCodeWithNewList(List<String> newList, String labelCode, List<String> oldList) {
-        if (oldList.size() == newList.size()) {
-            for (int i = 0; i < newList.size(); i++) {
-                labelCode = labelCode.replace(oldList.get(i), newList.get(i));
-            }
-        }
-        return labelCode;
-    }
-
-    @NonNull
-    private static List<String> getOldFieldsFromCode(String[] commandResult) {
-        List<String> oldList = new ArrayList<>();
-        for (int i = 1; i < commandResult.length; i++) {
-            String[] oldFieldArray = commandResult[i].split("\\^FS");
-            if (oldFieldArray.length > 1) {
-                oldList.add(oldFieldArray[0]);
-            }
-        }
-        return oldList;
-    }
-
-    @NonNull
-    private static String getLabelNameFromCodeCommand(String labelCode) {
-        String[] dfeCommandList = labelCode.split("\\^DFE");
-        String delete = "";
-        if (dfeCommandList.length > 1) {
-            String[] arrFs = dfeCommandList[1].split("\\^FS");
-            if (arrFs.length > 1) {
-                delete = "^DFE" + arrFs[0] + "^FS\n";
-            }
-        }
-        return delete;
-    }
-
-    public static List<LabelModel> getFieldsFromLabel(String label) {
-        List<LabelModel> fieldList = new ArrayList<>();
-        String[] arrFn = label.split("\\^FN");
-        for (int i = 1; i < arrFn.length; i++) {
-            String[] arrFs = arrFn[i].split("\\^FS");
-            if (arrFs.length > 1) {
-                String[] arrSplit = arrFs[0].split("\"");
-                if (arrSplit.length > 1) {
-                    fieldList.add(new LabelModel(arrSplit[1], 0));
-                }
-            }
-        }
-        return fieldList;
     }
 
 }

@@ -23,14 +23,14 @@ import java.util.List;
 
 public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implements LabelInterface {
 
+    public final String label;
     private final List<LabelModel> mData;
-    private List<String> varElements;
+    private final Context context;
     public List<Integer> intElements, intInternalElements, positionsElements;
     public List<String> staticElements, staticInternalElements;
-    private final Context context;
-    public final String label;
     LabelManager labelManager;
     PrinterPreferences printerPreferences;
+    private List<String> varElements;
 
     public LabelAdapter(Context context, List<LabelModel> mData, String label, LabelManager labelManager, PrinterPreferences printerPreferences) {
         this.mData = mData;
@@ -44,6 +44,18 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
         positionsElements = new ArrayList<>(Collections.nCopies(varElements.size(), 0));
         setupStaticList();
 
+    }
+
+    private static boolean isStaticTextOption(int selectedItem, int constantsSize) {
+        return isStaticPosition(selectedItem, constantsSize - 2);
+    }
+
+    private static boolean isConcatenatedOption(int selectedItem, int constantsSize) {
+        return isStaticPosition(selectedItem, constantsSize - 1);
+    }
+
+    private static boolean isStaticPosition(Integer positionsElements, int x) {
+        return positionsElements == x;
     }
 
     private void setupVariablesList() {
@@ -131,24 +143,12 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
 
     }
 
-    private static boolean isStaticTextOption(int selectedItem, int constantsSize) {
-        return isStaticPosition(selectedItem, constantsSize - 2);
-    }
-
-    private static boolean isConcatenatedOption(int selectedItem, int constantsSize) {
-        return isStaticPosition(selectedItem, constantsSize - 1);
-    }
-
     private boolean isStaticText(int i) {
         return isStaticTextOption(i, labelManager.constantPrinterList.size());
     }
 
     private boolean isConcatenatedValue(int i) {
         return isConcatenatedOption(i, labelManager.constantPrinterList.size());
-    }
-
-    private static boolean isStaticPosition(Integer positionsElements, int x) {
-        return positionsElements == x;
     }
 
     private boolean isConcatenatedPosition(int position) {

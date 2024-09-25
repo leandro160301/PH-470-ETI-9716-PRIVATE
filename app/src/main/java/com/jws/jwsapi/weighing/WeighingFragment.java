@@ -24,10 +24,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class WeighingFragment extends Fragment {
 
+    MainActivity mainActivity;
     private WeighingAdapter weighingAdapter;
     private FragmentWeighingBinding binding;
     private ButtonProvider buttonProvider;
-    MainActivity mainActivity;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

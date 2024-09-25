@@ -39,9 +39,9 @@ public class PrinterFragment extends Fragment {
     @Inject
     UserRepository userRepository;
     MainActivity mainActivity;
-    private ButtonProvider buttonProvider;
     PrinterManager printerManager;
     StandarImpresorasBinding binding;
+    private ButtonProvider buttonProvider;
 
     @Nullable
     @Override

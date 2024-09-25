@@ -15,10 +15,17 @@ import javax.inject.Singleton;
 
 @Singleton
 public class StorageService {
+    private static final Handler mHandler = new Handler();
     private final Context context;
     private MainActivity appCompatActivity;
-    private static final Handler mHandler = new Handler();
     private int state = USB_NOT_AVAIBLE;
+    private final Runnable startUsbRead = new Runnable() {
+        @Override
+        public void run() {
+            verifyMemoryConnected();
+            mHandler.postDelayed(this, 1000);
+        }
+    };
 
     public StorageService(Context context) {
         this.context = context;
@@ -28,14 +35,6 @@ public class StorageService {
         this.appCompatActivity = appCompatActivity;
         startUsbRead.run();
     }
-
-    private final Runnable startUsbRead = new Runnable() {
-        @Override
-        public void run() {
-            verifyMemoryConnected();
-            mHandler.postDelayed(this, 1000);
-        }
-    };
 
     private void verifyMemoryConnected() {
         if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory)) {

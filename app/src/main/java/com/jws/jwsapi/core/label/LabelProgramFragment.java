@@ -29,16 +29,16 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class LabelProgramFragment extends Fragment implements LabelProgramAdapter.ItemClickListener {
 
+    public RecyclerView rc_lista_ingredientes;
     @Inject
     PrinterPreferences printerPreferences;
     @Inject
     LabelManager labelManager;
     MainActivity mainActivity;
-    private ButtonProvider buttonProvider;
     LabelProgramAdapter adapter;
-    public RecyclerView rc_lista_ingredientes;
     List<LabelProgramModel> lista_ingredientes;
     int posicion_recycler = -1;
+    private ButtonProvider buttonProvider;
 
     @Nullable
     @Override

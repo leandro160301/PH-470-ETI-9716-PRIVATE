@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String VERSION = "PH 470 BZA 1.00";
     public JwsManager jwsObject;
     public MainClass mainClass;
-    private InitServer initServer;
     @Inject
     UserManager userManager;
     @Inject
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     StorageService storageService;
     @Inject
     PreferencesManager preferencesManager;
+    private InitServer initServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

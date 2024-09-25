@@ -11,23 +11,6 @@ import androidx.core.content.ContextCompat;
 
 public class PermissionHelper {
     private static final String TAG = PermissionHelper.class.getSimpleName();
-
-    public interface OnPermissionGrantedListener {
-        void onAccessNetworkStatePermissionGranted(boolean isGranted);
-
-        void onInternetPermissionGranted(boolean isGranted);
-
-        void onReadExternalStoragePermissionGranted(boolean isGranted);
-
-        void onWakeLockPermissionGranted(boolean isGranted);
-
-        void onForegroundServicePermissionGranted(boolean isGranted);
-
-        void onRecordAudioPermissionGranted(boolean isGranted);
-
-        void onCameraPermissionGranted(boolean isGranted);
-    }
-
     private static final int PERM_ACCESS_NETWORK_STATE = 0;
     private static final int PERM_INTERNET = 1;
     private static final int PERM_READ_EXTERNAL_STORAGE = 2;
@@ -35,10 +18,8 @@ public class PermissionHelper {
     private static final int PERM_FOREGROUND_SERVICE = 4;
     private static final int PERM_RECORD_AUDIO = 5;
     private static final int PERM_CAMERA = 5;
-
     private final Activity activity;
     private final OnPermissionGrantedListener onPermissionGrantedListener;
-
     public PermissionHelper(Activity a, OnPermissionGrantedListener listener) {
         activity = a;
         onPermissionGrantedListener = listener;
@@ -212,5 +193,21 @@ public class PermissionHelper {
                 }
                 break;
         }
+    }
+
+    public interface OnPermissionGrantedListener {
+        void onAccessNetworkStatePermissionGranted(boolean isGranted);
+
+        void onInternetPermissionGranted(boolean isGranted);
+
+        void onReadExternalStoragePermissionGranted(boolean isGranted);
+
+        void onWakeLockPermissionGranted(boolean isGranted);
+
+        void onForegroundServicePermissionGranted(boolean isGranted);
+
+        void onRecordAudioPermissionGranted(boolean isGranted);
+
+        void onCameraPermissionGranted(boolean isGranted);
     }
 }

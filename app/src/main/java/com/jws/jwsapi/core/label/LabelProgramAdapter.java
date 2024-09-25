@@ -21,14 +21,14 @@ import java.util.List;
 
 public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapter.ViewHolder> {
 
-    private int selectedPos = RecyclerView.NO_POSITION;
-    private List<LabelProgramModel> mData;
     private final LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
-    private int lastPositionAdapter = -1;
     List<String> etiquetas;
     Context context;
     PrinterPreferences printerPreferences;
+    private int selectedPos = RecyclerView.NO_POSITION;
+    private List<LabelProgramModel> mData;
+    private ItemClickListener mClickListener;
+    private int lastPositionAdapter = -1;
 
     public LabelProgramAdapter(Context context, List<LabelProgramModel> data, List<String> etiquetas, PrinterPreferences printerPreferences) {
         this.mInflater = LayoutInflater.from(context);
@@ -85,6 +85,30 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
         return position;
     }
 
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public void removeAt(int position) {
+        mData.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size());
+    }
+
+    public void filterList(ArrayList<LabelProgramModel> filteredList) {
+        mData = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public void refrescarList(List<LabelProgramModel> filteredList) {
+        mData = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_campo;
@@ -105,29 +129,5 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
             selectedPos = getLayoutPosition();
             notifyItemChanged(selectedPos);
         }
-    }
-
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    public void removeAt(int position) {
-        mData.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mData.size());
-    }
-
-    public void filterList(ArrayList<LabelProgramModel> filteredList) {
-        mData = filteredList;
-        notifyDataSetChanged();
-    }
-
-    public void refrescarList(List<LabelProgramModel> filteredList) {
-        mData = filteredList;
-        notifyDataSetChanged();
     }
 }

@@ -37,6 +37,14 @@ public class UserManager implements UserLoginInterface {
         this.repository = repository;
     }
 
+    private static void putUserToJson(String user, JSONArray jsonArray) throws JSONException {
+        JSONObject userJson = new JSONObject();
+        userJson.put("Id", "-");
+        userJson.put("Nombre", user);
+        userJson.put("Usuario", user);
+        jsonArray.put(userJson);
+    }
+
     @Override
     public boolean login(String password, String user) {
         if (password.isEmpty() || user.isEmpty()) return false;
@@ -91,14 +99,6 @@ public class UserManager implements UserLoginInterface {
         });
 
         return jsonArray.toString();
-    }
-
-    private static void putUserToJson(String user, JSONArray jsonArray) throws JSONException {
-        JSONObject userJson = new JSONObject();
-        userJson.put("Id", "-");
-        userJson.put("Nombre", user);
-        userJson.put("Usuario", user);
-        jsonArray.put(userJson);
     }
 
     public void loginDialog(MainActivity mainActivity) {

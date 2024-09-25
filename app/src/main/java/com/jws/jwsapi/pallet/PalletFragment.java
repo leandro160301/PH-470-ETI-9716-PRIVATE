@@ -32,15 +32,15 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class PalletFragment extends Fragment implements PalletButtonClickListener {
 
-    private PalletAdapter palletAdapter;
-    private FragmentPalletBinding binding;
-    private PalletViewModel palletViewModel;
-    private ButtonProvider buttonProvider;
     private static final int PALLET_OPEN = 0;
     private static final int PALLET_CLOSED = 1;
     MainActivity mainActivity;
     @Inject
     WeighRepository repository;
+    private PalletAdapter palletAdapter;
+    private FragmentPalletBinding binding;
+    private PalletViewModel palletViewModel;
+    private ButtonProvider buttonProvider;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

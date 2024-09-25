@@ -39,13 +39,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
 
-    private HomeFragmentBinding binding;
-    private ContainerButtonProvider buttonProvider;
-    private MainActivity mainActivity;
-    private WeighingViewModel weighingViewModel;
-    private ServiceViewModel serviceViewModel;
-    private PalletViewModel palletViewModel;
-
     @Inject
     UserManager userManager;
     @Inject
@@ -54,6 +47,12 @@ public class HomeFragment extends Fragment {
     HomeService homeService;
     @Inject
     PalletRepository palletRepository;
+    private HomeFragmentBinding binding;
+    private ContainerButtonProvider buttonProvider;
+    private MainActivity mainActivity;
+    private WeighingViewModel weighingViewModel;
+    private ServiceViewModel serviceViewModel;
+    private PalletViewModel palletViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -16,12 +16,12 @@ import java.util.List;
 
 public class AdapterCommon extends RecyclerView.Adapter<AdapterCommon.ViewHolder> {
 
+    private final LayoutInflater mInflater;
+    Context context;
     private int selectedPos = RecyclerView.NO_POSITION;
     private List<String> mData;
-    private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private int lastPositionAdapter = -1;
-    Context context;
 
     public AdapterCommon(Context context, List<String> data) {
         this.mInflater = LayoutInflater.from(context);
@@ -56,6 +56,29 @@ public class AdapterCommon extends RecyclerView.Adapter<AdapterCommon.ViewHolder
         return mData.size();
     }
 
+    public String getItem(int id) {
+        return mData.get(id);
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public void removeAt(int position) {
+        mData.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size());
+    }
+
+    public void filterList(List<String> filteredList) {
+        mData = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
 
@@ -73,29 +96,5 @@ public class AdapterCommon extends RecyclerView.Adapter<AdapterCommon.ViewHolder
             selectedPos = getLayoutPosition();
             notifyItemChanged(selectedPos);
         }
-    }
-
-
-    public String getItem(int id) {
-        return mData.get(id);
-    }
-
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    public void removeAt(int position) {
-        mData.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mData.size());
-    }
-
-    public void filterList(List<String> filteredList) {
-        mData = filteredList;
-        notifyDataSetChanged();
     }
 }

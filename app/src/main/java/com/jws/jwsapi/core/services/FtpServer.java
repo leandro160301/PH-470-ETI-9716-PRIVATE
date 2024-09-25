@@ -21,9 +21,9 @@ import java.util.List;
 
 public class FtpServer {
 
+    private final PreferencesManager preferencesManager;
     Context context;
     List<UserModel> userElements;
-    private final PreferencesManager preferencesManager;
 
     public FtpServer(Context context, List<UserModel> userElements, PreferencesManager preferencesManager) {
         this.context = context;

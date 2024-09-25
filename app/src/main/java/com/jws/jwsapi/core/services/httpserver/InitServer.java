@@ -19,12 +19,12 @@ import com.jws.jwsapi.core.user.UserManager;
 public class InitServer {
 
     private final Context context;
-    private AppService appService;
     private final PermissionHelper permissionHelper;
-    private ServiceConnection serviceConnection;
     MainActivity mainActivity;
     UserManager userManager;
     PreferencesManager preferencesManagerBase;
+    private AppService appService;
+    private ServiceConnection serviceConnection;
 
     public InitServer(Context context, MainActivity mainActivity, UserManager userManager, PreferencesManager preferencesManager) {
         this.context = context;
@@ -73,6 +73,28 @@ public class InitServer {
                 context.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
         ((Activity) context).startActivityForResult(mediaProjectionManager.createScreenCaptureIntent(),
                 101);
+    }
+
+    public void handleActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 101: // PERM_MEDIA_PROJECTION_SERVICE
+                if (resultCode == Activity.RESULT_OK) {
+                    Runnable myRunnable = () -> {
+                        if (appService != null) {
+                            if (!appService.serverStart(data, 8001,
+                                    isAccessibilityServiceEnabled(), context, mainActivity, userManager, preferencesManagerBase)) {
+                            }
+                        }
+                    };
+                    Thread myThread = new Thread(myRunnable);
+                    myThread.start();
+                }
+                break;
+            case 102: // PERM_ACTION_ACCESSIBILITY_SERVICE
+                if (isAccessibilityServiceEnabled())
+                    enableAccessibilityService();
+                break;
+        }
     }
 
     private class AppServiceConnection implements ServiceConnection {
@@ -128,28 +150,6 @@ public class InitServer {
 
         @Override
         public void onCameraPermissionGranted(boolean isGranted) {
-        }
-    }
-
-    public void handleActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 101: // PERM_MEDIA_PROJECTION_SERVICE
-                if (resultCode == Activity.RESULT_OK) {
-                    Runnable myRunnable = () -> {
-                        if (appService != null) {
-                            if (!appService.serverStart(data, 8001,
-                                    isAccessibilityServiceEnabled(), context, mainActivity, userManager, preferencesManagerBase)) {
-                            }
-                        }
-                    };
-                    Thread myThread = new Thread(myRunnable);
-                    myThread.start();
-                }
-                break;
-            case 102: // PERM_ACTION_ACCESSIBILITY_SERVICE
-                if (isAccessibilityServiceEnabled())
-                    enableAccessibilityService();
-                break;
         }
     }
 }

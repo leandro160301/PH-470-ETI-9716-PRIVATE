@@ -44,6 +44,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    public static StorageService provideStorageService(@ApplicationContext Context context) {
+        return new StorageService(context);
+    }
+
+    @Provides
+    @Singleton
     public UserManager provideUserManager(Application application, PreferencesManager preferencesManager, UserRepository userRepository) {
         return new UserManager(application, preferencesManager, userRepository);
     }
@@ -70,12 +76,6 @@ public class AppModule {
     @Singleton
     public LabelManager provideLabelManager(PrinterPreferences printerPreferences) {
         return new LabelManager(printerPreferences);
-    }
-
-    @Provides
-    @Singleton
-    public static StorageService provideStorageService(@ApplicationContext Context context) {
-        return new StorageService(context);
     }
 
     @Provides

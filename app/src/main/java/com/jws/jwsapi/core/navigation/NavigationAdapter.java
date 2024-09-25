@@ -18,12 +18,12 @@ import java.util.List;
 public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.ViewHolder> {
 
 
+    private final LayoutInflater mInflater;
+    Context context;
     private int selectedPos = RecyclerView.NO_POSITION;
     private List<String> mData;
-    private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private int lastPositionAdapter = -1;
-    Context context;
 
     // data is passed into the constructor
     public NavigationAdapter(Context context, List<String> data) {
@@ -73,6 +73,29 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         return position;
     }
 
+    public String getItem(int id) {
+        return mData.get(id);
+    }
+
+    // allows clicks events to be caught
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public void removeAt(int position) {
+        mData.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size());
+    }
+
+    public void filterList(ArrayList<String> filteredList) {
+        mData = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -92,29 +115,5 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             selectedPos = getLayoutPosition();
             notifyItemChanged(selectedPos);
         }
-    }
-
-    public String getItem(int id) {
-        return mData.get(id);
-    }
-
-    // allows clicks events to be caught
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    public void removeAt(int position) {
-        mData.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mData.size());
-    }
-
-    public void filterList(ArrayList<String> filteredList) {
-        mData = filteredList;
-        notifyDataSetChanged();
     }
 }

@@ -26,10 +26,10 @@ public class MouseAccessibilityService extends AccessibilityService {
     private static MouseAccessibilityService instance;
 
     private final AtomicBoolean lock = new AtomicBoolean(false);
+    private final List<GestureDescription> gestureList = new LinkedList<>();
     private boolean isMouseDown = false;
     private GestureDescription.StrokeDescription currentStroke = null;
     private int prevX = 0, prevY = 0;
-    private final List<GestureDescription> gestureList = new LinkedList<>();
     private Display display = null;
 
     @Override
@@ -195,7 +195,10 @@ public class MouseAccessibilityService extends AccessibilityService {
         }
     }
 
-    private final GestureResultCallback gestureResultCallback =
+    public void backButtonClick() {
+        Log.d(TAG, "Back button pressed");
+        instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+    }    private final GestureResultCallback gestureResultCallback =
             new GestureResultCallback() {
                 @Override
                 public void onCompleted(GestureDescription gestureDescription) {
@@ -218,11 +221,6 @@ public class MouseAccessibilityService extends AccessibilityService {
                     }
                 }
             };
-
-    public void backButtonClick() {
-        Log.d(TAG, "Back button pressed");
-        instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
-    }
 
     public void homeButtonClick() {
         Log.d(TAG, "Home button pressed");
@@ -269,4 +267,6 @@ public class MouseAccessibilityService extends AccessibilityService {
         screenLock.acquire();
         screenLock.release();
     }
+
+
 }

@@ -9,24 +9,19 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.ToastHelper;
 
 public class Alarm<T> {
-    private T value;
     private final MainActivity mainActivity;
     private final Context context;
-    Boolean run = true;
     public String name = "nueva alarma";
     public String errorName = "alarma activada";
     public Boolean mensaje = false;
     public Boolean estado = false;
-    private Boolean alarmaActiva = false;
+    Boolean run = true;
     int id = 0;
-    private int tipoalarma = 0;
     Runnable runnable;
+    private T value;
+    private Boolean alarmaActiva = false;
+    private int tipoalarma = 0;
 
-
-    @FunctionalInterface
-    public interface Condicion {
-        boolean check(Number variable);
-    }
 
     public Alarm(int id, MainActivity mainActivity, Context context) {
         this.mainActivity = mainActivity;
@@ -113,7 +108,6 @@ public class Alarm<T> {
         handler.post(runnable);
     }
 
-
     public void stop() {
         run = false;
     }
@@ -125,10 +119,17 @@ public class Alarm<T> {
         setEstado(true);
     }
 
-
     private Boolean getEstado() {
         SharedPreferences Preferencias = context.getSharedPreferences("ALARMAS", Context.MODE_PRIVATE);
         return Preferencias.getBoolean(name, false);
+    }
+
+    private void setEstado(Boolean value) {
+        estado = value;
+        SharedPreferences Preferencias2 = context.getSharedPreferences("ALARMAS", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
+        ObjEditor2.putBoolean(name, value);
+        ObjEditor2.apply();
     }
 
     public void apagarAlarma() {
@@ -140,12 +141,9 @@ public class Alarm<T> {
 
     }
 
-    private void setEstado(Boolean value) {
-        estado = value;
-        SharedPreferences Preferencias2 = context.getSharedPreferences("ALARMAS", Context.MODE_PRIVATE);
-        SharedPreferences.Editor ObjEditor2 = Preferencias2.edit();
-        ObjEditor2.putBoolean(name, value);
-        ObjEditor2.apply();
+    @FunctionalInterface
+    public interface Condicion {
+        boolean check(Number variable);
     }
 
 }

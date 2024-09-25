@@ -34,13 +34,17 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class UserFragment extends Fragment implements UserButtonClickListener, UserCreateInterface {
 
-    private MainActivity mainActivity;
-    private ButtonProvider buttonProvider;
-    private UserAdapter adapter;
     @Inject
     UserManager userManager;
     @Inject
     UserRepository userRepository;
+    private MainActivity mainActivity;
+    private ButtonProvider buttonProvider;
+    private UserAdapter adapter;
+
+    private static boolean areFieldsValid(String name, String user, String password, String code) {
+        return !name.isEmpty() && !user.isEmpty() && !password.isEmpty() && !code.isEmpty();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -111,10 +115,6 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
             id = dbHelper.createUser(name, user, password, code, binding.spinnertipo.getSelectedItem().toString(), "SI", "SI", "SI");
         }
         return id;
-    }
-
-    private static boolean areFieldsValid(String name, String user, String password, String code) {
-        return !name.isEmpty() && !user.isEmpty() && !password.isEmpty() && !code.isEmpty();
     }
 
     public void addElementToList(List<UserModel> userList) {

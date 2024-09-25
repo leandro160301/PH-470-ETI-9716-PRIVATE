@@ -18,9 +18,9 @@ import java.util.List;
 
 public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHolder> {
 
+    private final LayoutInflater mInflater;
     private int selectedPos = RecyclerView.NO_POSITION;
     private List<String> mData;
-    private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     public StorageAdapter(Context context, List<String> data) {
@@ -56,6 +56,24 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
         return mData.size();
     }
 
+    public String getItem(int id) {
+        return mData.get(id);
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void filterList(ArrayList<String> filteredList) {
+        mData = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
 
@@ -72,23 +90,5 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
             selectedPos = getLayoutPosition();
             notifyItemChanged(selectedPos);
         }
-    }
-
-    public String getItem(int id) {
-        return mData.get(id);
-    }
-
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void filterList(ArrayList<String> filteredList) {
-        mData = filteredList;
-        notifyDataSetChanged();
     }
 }

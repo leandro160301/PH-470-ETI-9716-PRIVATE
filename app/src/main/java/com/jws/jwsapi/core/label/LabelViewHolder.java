@@ -19,11 +19,11 @@ import com.jws.jwsapi.utils.ToastHelper;
 import java.util.List;
 
 public class LabelViewHolder extends RecyclerView.ViewHolder {
+    private final LabelInterface labelInterface;
     TextView tv_campo, tv_textofijo, tv_textoconcatenado;
     LinearLayout ln_textofijo, ln_textoconcatenado, ln_editar;
     Spinner spCampo;
     private int lastPositionAdapter = -1;
-    private final LabelInterface labelInterface;
 
     public LabelViewHolder(@NonNull View itemView, LabelInterface labelInterface) {
         super(itemView);
@@ -35,6 +35,16 @@ public class LabelViewHolder extends RecyclerView.ViewHolder {
         ln_textofijo = itemView.findViewById(R.id.ln_textofijo);
         ln_textoconcatenado = itemView.findViewById(R.id.ln_textoconcatenado);
         ln_editar = itemView.findViewById(R.id.ln_editar);
+    }
+
+    public static void handleVisibility(LinearLayout holder, int gone, int gone1, LinearLayout holder1) {
+        holder.setVisibility(gone);
+        holder1.setVisibility(gone1);
+    }
+
+    public static void handleVisibilityElements(LabelViewHolder holder, int visible, LinearLayout holder1, LinearLayout holder2, int gone) {
+        handleVisibility(holder.ln_textoconcatenado, visible, View.VISIBLE, holder1);
+        holder2.setVisibility(gone);
     }
 
     void bind(@NonNull LabelViewHolder holder, int position, Context context, List<String> listaVariables, List<LabelModel> mData) {
@@ -61,16 +71,6 @@ public class LabelViewHolder extends RecyclerView.ViewHolder {
         holder.ln_editar.setOnClickListener(view -> labelInterface.editClick(holder, position));
 
         lastPositionAdapter = AdapterHelper.setAnimationSlideInLeft(holder.itemView, position, lastPositionAdapter, context);
-    }
-
-    public static void handleVisibility(LinearLayout holder, int gone, int gone1, LinearLayout holder1) {
-        holder.setVisibility(gone);
-        holder1.setVisibility(gone1);
-    }
-
-    public static void handleVisibilityElements(LabelViewHolder holder, int visible, LinearLayout holder1, LinearLayout holder2, int gone) {
-        handleVisibility(holder.ln_textoconcatenado, visible, View.VISIBLE, holder1);
-        holder2.setVisibility(gone);
     }
 
 }

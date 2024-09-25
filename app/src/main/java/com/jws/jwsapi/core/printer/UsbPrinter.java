@@ -26,11 +26,11 @@ import java.util.Map;
 
 public class UsbPrinter {
 
+    private final Context context;
     List<FieldDescriptionData> variablesList = new ArrayList<FieldDescriptionData>();
     Connection connection;
     DiscoveredPrinterListAdapter discoveredPrinterListAdapter;
     Map<Integer, String> vars;
-    private final Context context;
 
     public UsbPrinter(Context context) {
         this.context = context;

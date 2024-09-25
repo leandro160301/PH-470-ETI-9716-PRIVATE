@@ -11,24 +11,21 @@ import javax.inject.Inject;
 
 public class LabelManager {
 
-    PrinterPreferences printerPreferences;
     private final PrinterObject<String> name = new PrinterObject<>();
     private final PrinterObject<String> code = new PrinterObject<>();
     private final PrinterObject<String> scale = new PrinterObject<>();
     private final PrinterObject<String> number = new PrinterObject<>();
     private final PrinterObject<String> origin = new PrinterObject<>();
     private final PrinterObject<String> destination = new PrinterObject<>();
-
-
+    public List<String> nameLabelList = new ArrayList<>();
+    public List<Printer> varPrinterList;
+    public List<String> constantPrinterList;
+    PrinterPreferences printerPreferences;
     @Inject
     public LabelManager(PrinterPreferences printerPreferences) {
         this.printerPreferences = printerPreferences;
         initPrint();
     }
-
-    public List<String> nameLabelList = new ArrayList<>();
-    public List<Printer> varPrinterList;
-    public List<String> constantPrinterList;
 
     public void initPrint() {
         constantPrinterList = new ArrayList<>();

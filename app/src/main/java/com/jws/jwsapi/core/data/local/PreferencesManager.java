@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 public class PreferencesManager {
 
-    private final PreferencesHelper preferencesHelper;
     private final static String KEY_PIN = "PIN";
     private final static String KEY_REMOTE_FIX = "REMOTE_FIX";
     private final static String KEY_THEME = "THEME";
@@ -17,6 +16,7 @@ public class PreferencesManager {
     private final static String KEY_ETH_GATEWAY = "ETH_GATEWAY";
     private final static String KEY_ETH_DNS1 = "ETH_DNS1";
     private final static String KEY_ETH_DNS2 = "ETH_DNS2";
+    private final PreferencesHelper preferencesHelper;
 
     @Inject
     public PreferencesManager(PreferencesHelper preferencesHelper) {

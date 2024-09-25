@@ -29,18 +29,17 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class ContainerCoreFragment extends Fragment implements ContainerButtonProvider, ContainerData {
 
-    private MainActivity mainActivity;
-    private JwsManager jwsManager;
     Boolean stoped = false;
     int iconflag = -1;
     ContainPrincipalBinding binding;
-
     @Inject
     UserRepository userRepository;
     @Inject
     UserManager userManager;
     @Inject
     StorageService storageService;
+    private MainActivity mainActivity;
+    private JwsManager jwsManager;
 
     public static ContainerCoreFragment newInstance(Class<? extends Fragment> fragmentClass) {
         ContainerCoreFragment fragment = new ContainerCoreFragment();

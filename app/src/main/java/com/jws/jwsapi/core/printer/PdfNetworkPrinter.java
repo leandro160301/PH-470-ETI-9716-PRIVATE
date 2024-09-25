@@ -12,11 +12,6 @@ public class PdfNetworkPrinter {
 
     private static PdfNetworkPrinter.PrintListener printListener;
 
-    public enum PaperSize {
-        A4,
-        A5
-    }
-
     public static void printPDFFile(final String printerIP, final int printerPort,
                                     final File file, final String filename, final PdfNetworkPrinter.PaperSize paperSize, final int copies) {
         Thread t = new Thread(new Runnable() {
@@ -78,6 +73,11 @@ public class PdfNetworkPrinter {
 
     public static void setPrintListener(PdfNetworkPrinter.PrintListener list) {
         printListener = list;
+    }
+
+    public enum PaperSize {
+        A4,
+        A5
     }
 
     public interface PrintListener {

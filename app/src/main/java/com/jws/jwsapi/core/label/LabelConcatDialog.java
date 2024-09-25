@@ -25,15 +25,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class LabelConcatDialog {
-    private int posicionConcat = -1;
     private final Context context;
     private final PrinterPreferences printerPreferences;
+    private int posicionConcat = -1;
     private List<Integer> elementsConcatFormat;
     private int selected = 0;
 
     public LabelConcatDialog(Context context, PrinterPreferences printerPreferences) {
         this.context = context;
         this.printerPreferences = printerPreferences;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private static void updateAdapter(AdapterCommon adapter, List<String> ListElementsArrayConcat) {
+        if (adapter != null) {
+            adapter.filterList(ListElementsArrayConcat);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public void showDialog(String label, int posicion, TextView textView, List<String> varList) {
@@ -121,7 +129,6 @@ public class LabelConcatDialog {
         return ListElementsArrayConcat;
     }
 
-
     private String updateSeparator(int x, String separador, String etiqueta, int posicion, String separated) {
         if (selected == x) {
             printerPreferences.setSeparator(separador, etiqueta, posicion);
@@ -166,14 +173,6 @@ public class LabelConcatDialog {
             }
             spCampo.setSelection(0);
             posicionConcat = -1;
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private static void updateAdapter(AdapterCommon adapter, List<String> ListElementsArrayConcat) {
-        if (adapter != null) {
-            adapter.filterList(ListElementsArrayConcat);
-            adapter.notifyDataSetChanged();
         }
     }
 

@@ -62,6 +62,9 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
 
         initInstances();
 
+        binding.btGrabando.setVisibility(View.INVISIBLE);
+        binding.lnalarma.setVisibility(View.INVISIBLE);
+
         handleClickListeners();
         openFragment();
         startRunnable();
@@ -81,7 +84,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     private void openFragment() {
         ContainerButtonProviderSingleton.getInstance().setButtonProvider(this);
 
-        if (getArguments() != null) return;
+        if (getArguments() == null) return;
 
         String fragmentClassName = getArguments().getString("FRAGMENT_CLASS");
         if (fragmentClassName != null) {
@@ -96,6 +99,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
                 e.printStackTrace();
             }
         }
+
     }
 
     private void startRunnable() {

@@ -77,6 +77,9 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
 
         initInstances();
 
+        binding.btGrabando.setVisibility(View.INVISIBLE);
+        binding.lnalarma.setVisibility(View.INVISIBLE);
+
         handleClickListeners();
         openFragment();
         startRunnable();
@@ -96,8 +99,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     private void openFragment() {
         ButtonProviderSingleton.getInstance().setButtonProvider(this);
 
-        if (getArguments() == null)  return;
-
+        if (getArguments() == null) return;
         String fragmentClassName = getArguments().getString("FRAGMENT_CLASS");
         if (fragmentClassName != null) {
             try {

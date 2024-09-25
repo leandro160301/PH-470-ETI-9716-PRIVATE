@@ -230,7 +230,7 @@ public class HttpServer extends NanoWSD {
 
         }
         if(uri.endsWith("GetUsuarios")){
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON, userManager.JSONusuarios());
+            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON, userManager.JsonUsers());
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
         }

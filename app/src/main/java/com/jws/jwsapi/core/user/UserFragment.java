@@ -79,7 +79,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
 
     @Override
     public void handleCreateUserButton(DialogoUsuarioBinding binding, AlertDialog dialog) {
-        if (userRepository.getLevelUser() <= ROLE_SUPERVISOR){
+        if (notEnableToModify()){
             showMessage(R.string.user_error_create_login);
             return;
         }
@@ -98,6 +98,10 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
             dialog.cancel();
         }
 
+    }
+
+    private boolean notEnableToModify() {
+        return userRepository.getLevelUser() <= ROLE_SUPERVISOR;
     }
 
     private long insertUserFromDatabase(DialogoUsuarioBinding binding, String name, String user, String password, String code) {
@@ -125,7 +129,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
 
     @Override
     public void deleteUser(List<UserModel> userList, int position) {
-        if(userRepository.getLevelUser()<=ROLE_SUPERVISOR) {
+        if(notEnableToModify()) {
             showMessage(R.string.user_error_create_login);
             return;
         }

@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -73,14 +72,14 @@ public class UserManager implements UserLoginInterface {
         }
     }
 
-    public String JSONusuarios() throws JSONException {
+    public String JsonUsers() throws JSONException {
         List<UserModel> userElements;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null)) {
             userElements=dbHelper.getAllUsers();
         }
         JSONArray jsonArray = new JSONArray();
-        putUser("ADMINISTRADOR", jsonArray);
-        putUser("PROGRAMADOR", jsonArray);
+        putUserToJson("ADMINISTRADOR", jsonArray);
+        putUserToJson("PROGRAMADOR", jsonArray);
 
         userElements.forEach(userModel -> {
             JSONObject userJson = new JSONObject();
@@ -97,7 +96,7 @@ public class UserManager implements UserLoginInterface {
         return jsonArray.toString();
     }
 
-    private static void putUser(String user, JSONArray jsonArray) throws JSONException {
+    private static void putUserToJson(String user, JSONArray jsonArray) throws JSONException {
         JSONObject userJson = new JSONObject();
         userJson.put("Id", "-");
         userJson.put("Nombre", user);

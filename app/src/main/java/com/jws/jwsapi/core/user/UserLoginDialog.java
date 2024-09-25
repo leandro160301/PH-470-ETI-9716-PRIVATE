@@ -46,7 +46,7 @@ public class UserLoginDialog {
     }
 
     private static void showPasswordKeyboard(TextView textView, Context context){
-        keyboardPassword(textView, "", context, true ,texto -> {
+        keyboardPassword(textView, "", context, true ,text -> {
         }, PasswordTransformationMethod.getInstance());
     }
 }

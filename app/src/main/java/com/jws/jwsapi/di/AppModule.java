@@ -50,6 +50,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    public UserRepository provideUserRepository(Application application) {
+        return new UserRepository(application);
+    }
+
+    @Provides
+    @Singleton
     public PreferencesManager providePreferencesManager(PreferencesHelper preferencesHelper) {
         return new PreferencesManager(preferencesHelper);
     }

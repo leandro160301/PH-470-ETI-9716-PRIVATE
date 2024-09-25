@@ -66,13 +66,6 @@ public class Storage {
 
     }
 
-    public static StorageAdapter setupRecyclerExtension(String extension, RecyclerView recyclerView, Context context) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        StorageAdapter adapter3 = new StorageAdapter(context, FileUtils.getFilesExtension(extension));
-        recyclerView.setAdapter(adapter3);
-        return adapter3;
-    }
-
     public static void copyFileProgress(final File file, final File dir, Context context) {
         AlertDialog dialog = dialogLoading(context, String.valueOf(R.string.dialog_copy_file));
         copyFileTransfer(file, dir, dialog, context);

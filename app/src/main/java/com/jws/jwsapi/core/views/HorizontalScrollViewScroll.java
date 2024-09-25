@@ -1,5 +1,6 @@
 package com.jws.jwsapi.core.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ public class HorizontalScrollViewScroll extends HorizontalScrollView {
         super(context, attrs, defStyle);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {

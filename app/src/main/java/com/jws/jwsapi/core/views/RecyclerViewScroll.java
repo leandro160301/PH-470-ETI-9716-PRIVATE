@@ -1,5 +1,6 @@
 package com.jws.jwsapi.core.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -35,6 +36,7 @@ public class RecyclerViewScroll extends RecyclerView {
         return super.onInterceptTouchEvent(event);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (isTouchingScrollbar) {

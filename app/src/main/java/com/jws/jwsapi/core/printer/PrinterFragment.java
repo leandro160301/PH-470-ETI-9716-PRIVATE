@@ -18,8 +18,8 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.databinding.StandarImpresorasBinding;
 import com.jws.jwsapi.shared.UserRepository;
+import com.jws.jwsapi.utils.NetworkUtils;
 import com.jws.jwsapi.utils.ToastHelper;
-import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -93,7 +93,7 @@ public class PrinterFragment extends Fragment {
     }
 
     private void setupIpHandler(String ip) {
-        if (Utils.isValidIp(ip)) {
+        if (NetworkUtils.isValidIp(ip)) {
             printerPreferences.setIp(ip);
         } else {
             ToastHelper.message(getString(R.string.error_ip_adress_invalid), R.layout.item_customtoasterror, requireContext());

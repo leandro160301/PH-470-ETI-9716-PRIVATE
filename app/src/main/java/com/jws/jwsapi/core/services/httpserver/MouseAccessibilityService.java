@@ -198,6 +198,11 @@ public class MouseAccessibilityService extends AccessibilityService {
     public void backButtonClick() {
         Log.d(TAG, "Back button pressed");
         instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+    }
+
+    public void homeButtonClick() {
+        Log.d(TAG, "Home button pressed");
+        instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
     }    private final GestureResultCallback gestureResultCallback =
             new GestureResultCallback() {
                 @Override
@@ -221,11 +226,6 @@ public class MouseAccessibilityService extends AccessibilityService {
                     }
                 }
             };
-
-    public void homeButtonClick() {
-        Log.d(TAG, "Home button pressed");
-        instance.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
-    }
 
     public void recentButtonClick() {
         Log.d(TAG, "Recent button pressed");
@@ -267,6 +267,8 @@ public class MouseAccessibilityService extends AccessibilityService {
         screenLock.acquire();
         screenLock.release();
     }
+
+
 
 
 }

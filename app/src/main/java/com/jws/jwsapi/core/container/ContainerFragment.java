@@ -21,7 +21,8 @@ import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.ContainFragmentBinding;
 import com.jws.jwsapi.shared.UserRepository;
-import com.jws.jwsapi.utils.Utils;
+import com.jws.jwsapi.utils.NetworkUtils;
+import com.jws.jwsapi.utils.date.DateUtils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -137,7 +138,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
 
     private void updateDate() {
         binding.btUsb.setVisibility(storageService.getState() ? View.VISIBLE : View.INVISIBLE);
-        binding.tvFecha.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
+        binding.tvFecha.setText(String.format("%s %s", DateUtils.getDate(), DateUtils.getHour()));
     }
 
     private void updateUserUi() {
@@ -220,7 +221,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
 
     @Override
     public String getIp() {
-        return Utils.getIPAddress(true);
+        return NetworkUtils.getIPAddress(true);
     }
 
     @Override

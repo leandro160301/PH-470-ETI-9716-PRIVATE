@@ -29,8 +29,8 @@ import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.StandarWifiBinding;
+import com.jws.jwsapi.utils.NetworkUtils;
 import com.jws.jwsapi.utils.ToastHelper;
-import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -128,7 +128,7 @@ public class WifiFragment extends Fragment {
     private void setupViews() {
         binding.layoutwifilist.setVisibility(View.INVISIBLE);
         binding.tvSSIconnected.setVisibility(View.INVISIBLE);
-        binding.tvMAC.setText(Utils.getWifiMac());
+        binding.tvMAC.setText(NetworkUtils.getWifiMac());
     }
 
     private void setOnClickListeners() {

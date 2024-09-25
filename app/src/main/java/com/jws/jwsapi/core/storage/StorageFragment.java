@@ -1,6 +1,5 @@
 package com.jws.jwsapi.core.storage;
 
-import static com.jws.jwsapi.core.storage.Storage.getFilesExtension;
 import static com.jws.jwsapi.core.storage.StoragePaths.MEMORY_PATH;
 
 import android.graphics.Bitmap;
@@ -20,6 +19,7 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.StandarManualesBinding;
 import com.jws.jwsapi.utils.AdapterCommon;
+import com.jws.jwsapi.utils.FileUtils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -119,7 +119,7 @@ public class StorageFragment extends Fragment implements AdapterCommon.ItemClick
 
     public void setupRecycler(String extension) {
         binding.listview.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AdapterCommon(getContext(), getFilesExtension(extension));
+        adapter = new AdapterCommon(getContext(), FileUtils.getFilesExtension(extension));
         adapter.setClickListener(this);
         binding.listview.setAdapter(adapter);
     }

@@ -21,6 +21,7 @@ public class LabelManager {
     public List<Printer> varPrinterList;
     public List<String> constantPrinterList;
     PrinterPreferences printerPreferences;
+
     @Inject
     public LabelManager(PrinterPreferences printerPreferences) {
         this.printerPreferences = printerPreferences;

@@ -10,8 +10,8 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.shared.UserRepository;
+import com.jws.jwsapi.utils.NetworkUtils;
 import com.jws.jwsapi.utils.ToastHelper;
-import com.jws.jwsapi.utils.Utils;
 import com.service.PuertosSerie.PuertosSerie2;
 
 public class PrinterManager {
@@ -59,7 +59,7 @@ public class PrinterManager {
     }
 
     private void networkPrint(String label) {
-        if (Utils.isValidIp(printerPreferences.getIp())) {
+        if (NetworkUtils.isValidIp(printerPreferences.getIp())) {
             NetworkPrinter networkPrinter = new NetworkPrinter();
             networkPrinter.print(printerPreferences.getIp(), label);
         } else {

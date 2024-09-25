@@ -1,7 +1,6 @@
 package com.jws.jwsapi.core.network;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboardIpAdress;
-import static com.jws.jwsapi.utils.Utils.isValidIp;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.databinding.StandarEthernetBinding;
+import com.jws.jwsapi.utils.NetworkUtils;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -150,7 +150,7 @@ public class EthernetFragment extends Fragment {
     }
 
     private void handleUserAction(Runnable action, String ip) {
-        if (isValidIp(ip)) {
+        if (NetworkUtils.isValidIp(ip)) {
             action.run();
         } else {
             toastIpError();

@@ -1,7 +1,6 @@
 package com.jws.jwsapi.core.label;
 
 import static com.jws.jwsapi.core.printer.PrinterHelper.getFieldsFromLabel;
-import static com.jws.jwsapi.core.storage.Storage.getFilesExtension;
 import static com.jws.jwsapi.core.storage.Storage.openAndReadFile;
 
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.jws.jwsapi.databinding.StandarImpresorasEtiquetasBinding;
 import com.jws.jwsapi.utils.AdapterCommon;
+import com.jws.jwsapi.utils.FileUtils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -70,7 +70,7 @@ public class LabelFragment extends Fragment implements AdapterCommon.ItemClickLi
         mainActivity = (MainActivity) getActivity();
         setupButtons();
 
-        labelList = getFilesExtension(".prn");
+        labelList = FileUtils.getFilesExtension(".prn");
         setupLabelRecycler(labelList);
 
     }

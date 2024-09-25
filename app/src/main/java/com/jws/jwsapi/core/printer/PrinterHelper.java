@@ -10,7 +10,7 @@ import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.label.LabelModel;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.ToastHelper;
-import com.jws.jwsapi.utils.Utils;
+import com.jws.jwsapi.utils.date.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,9 +178,9 @@ public class PrinterHelper {
             case 4:
                 return userRepository.getCurrentUser();
             case 5:
-                return Utils.getFecha();
+                return DateUtils.getDate();
             case 6:
-                return Utils.getHora();
+                return DateUtils.getHour();
             default:
                 if (isFinalElement && concatValue == labelManager.constantPrinterList.size() - 1) {
                     return getConcatenatedValue(currentLabel, i);

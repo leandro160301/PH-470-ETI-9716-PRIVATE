@@ -20,7 +20,8 @@ import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.ContainPrincipalBinding;
 import com.jws.jwsapi.shared.UserRepository;
-import com.jws.jwsapi.utils.Utils;
+import com.jws.jwsapi.utils.NetworkUtils;
+import com.jws.jwsapi.utils.date.DateUtils;
 
 import javax.inject.Inject;
 
@@ -113,7 +114,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
                 setupIconProgrammer(0, R.drawable.icono_nologin);
                 binding.btUsb.setVisibility(storageService.getState() ? View.VISIBLE : View.INVISIBLE);
                 handleNetworkUi();
-                binding.tvDate.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
+                binding.tvDate.setText(String.format("%s %s", DateUtils.getDate(), DateUtils.getHour()));
                 binding.tvUser.setText(userRepository.getCurrentUser());
                 if (!stoped) {
                     handler.postDelayed(this, 100);
@@ -183,7 +184,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
 
     @Override
     public String getIp() {
-        return Utils.getIPAddress(true);
+        return NetworkUtils.getIPAddress(true);
     }
 
     @Override

@@ -20,6 +20,7 @@ public class PermissionHelper {
     private static final int PERM_CAMERA = 5;
     private final Activity activity;
     private final OnPermissionGrantedListener onPermissionGrantedListener;
+
     public PermissionHelper(Activity a, OnPermissionGrantedListener listener) {
         activity = a;
         onPermissionGrantedListener = listener;

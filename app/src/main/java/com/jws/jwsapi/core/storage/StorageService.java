@@ -1,6 +1,5 @@
 package com.jws.jwsapi.core.storage;
 
-import static com.jws.jwsapi.core.storage.Storage.installApk;
 import static com.jws.jwsapi.core.storage.StoragePaths.USB_CONNECTED;
 import static com.jws.jwsapi.core.storage.StoragePaths.USB_NOT_AVAIBLE;
 
@@ -8,6 +7,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.utils.PackageUtils;
 
 import java.io.File;
 
@@ -40,7 +40,7 @@ public class StorageService {
         if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory)) {
             for (File apk : StoragePaths.FILE_APKS) {
                 if (apk.exists()) {
-                    installApk(context, appCompatActivity);
+                    PackageUtils.installApk(context, appCompatActivity);
                 }
             }
             if (StoragePaths.DIRECTORY_MEMORY_PATHS.stream().anyMatch(File::isDirectory) && state == USB_NOT_AVAIBLE) {

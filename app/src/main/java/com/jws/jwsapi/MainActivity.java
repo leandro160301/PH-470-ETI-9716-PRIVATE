@@ -1,7 +1,6 @@
 package com.jws.jwsapi;
 
 import static com.jws.jwsapi.core.storage.Storage.createMemoryDirectory;
-import static com.jws.jwsapi.core.storage.Storage.deleteCache;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
 import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
 
@@ -24,6 +23,7 @@ import com.jws.jwsapi.core.services.httpserver.InitServer;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.shared.UserRepository;
+import com.jws.jwsapi.utils.CacheUtils;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         if (userRepository.getLevelUser() > ROLE_SUPERVISOR) {
             dialogText(this, getString(R.string.dialog_delete_cache), getString(R.string.dialog_button_text_delete_cache), () -> {
-                deleteCache(context);
+                CacheUtils.deleteCache(context);
                 deleteDatabase(MainClass.DB_NAME);
                 deleteDatabase("bza-database");
                 jwsObject.jwsReboot("");

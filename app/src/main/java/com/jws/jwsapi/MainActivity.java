@@ -23,6 +23,7 @@ import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.services.FtpInit;
 import com.jws.jwsapi.core.services.httpserver.InitServer;
 import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity{
     private InitServer initServer;
     @Inject
     UserManager userManager;
+    @Inject
+    UserRepository userRepository;
     @Inject
     StorageService storageService;
     @Inject
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void initService() {
         try {
-            FtpInit ftpInit= new FtpInit(getApplicationContext(), userManager.getUsers(), preferencesManager);
+            FtpInit ftpInit= new FtpInit(getApplicationContext(), userRepository.getUsers(), preferencesManager);
             ftpInit.ftpServer();
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initMainClass() {
-        mainClass = new MainClass(this,this, userManager);
+        mainClass = new MainClass(this,this, userRepository);
         mainClass.init();
     }
 
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void clearCache(){
         Context context=getApplicationContext();
-        if(userManager.getLevelUser()>ROLE_SUPERVISOR){
+        if(userRepository.getLevelUser()>ROLE_SUPERVISOR){
             dialogText(this, getString(R.string.dialog_delete_cache), getString(R.string.dialog_button_text_delete_cache), () -> {
                 deleteCache(context);
                 deleteDatabase(MainClass.DB_NAME);

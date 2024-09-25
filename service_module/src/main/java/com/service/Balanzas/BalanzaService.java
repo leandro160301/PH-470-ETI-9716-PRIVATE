@@ -1750,6 +1750,7 @@ public class BalanzaService implements Serializable {
            }
             setBalanzas(List);*/
     }
+
     public static ArrayList<serviceDevice> get_arrayServiceDevices(){
         String tipo="";
         int num=0;

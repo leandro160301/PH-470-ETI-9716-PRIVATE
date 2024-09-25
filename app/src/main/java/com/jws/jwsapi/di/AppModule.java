@@ -17,6 +17,7 @@ import com.jws.jwsapi.pallet.PalletDao;
 import com.jws.jwsapi.pallet.PalletService;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.shared.PalletRepository;
+import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.weighing.WeighingApi;
 import com.jws.jwsapi.weighing.WeighingDao;
@@ -41,8 +42,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public UserManager provideUserManager(Application application, PreferencesManager preferencesManager){
-        return new UserManager(application, preferencesManager);
+    public UserManager provideUserManager(Application application, PreferencesManager preferencesManager, UserRepository userRepository){
+        return new UserManager(application, preferencesManager, userRepository);
     }
 
     @Provides

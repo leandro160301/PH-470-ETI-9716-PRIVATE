@@ -14,6 +14,7 @@ import com.jws.jwsapi.core.container.ContainerCoreFragment;
 import com.jws.jwsapi.core.container.ContainerFragment;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.home.HomeFragment;
+import com.jws.jwsapi.shared.UserRepository;
 import com.service.Balanzas.BalanzaService;
 import com.service.Comunicacion.OnFragmentChangeListener;
 
@@ -25,13 +26,13 @@ public class MainClass implements OnFragmentChangeListener {
     public BalanzaService service;
     public BalanzaService.Balanzas bza;
     public int nBza =1;
-    UserManager userManager;
     Boolean clickEnable = true;
+    UserRepository userRepository;
 
-    public MainClass(Context context, MainActivity activity, UserManager userManager) {
+    public MainClass(Context context, MainActivity activity, UserRepository userRepository) {
         this.context = context;
         this.mainActivity = activity;
-        this.userManager = userManager;
+        this.userRepository = userRepository;
     }
 
     public void init() {
@@ -67,7 +68,7 @@ public class MainClass implements OnFragmentChangeListener {
     public void openFragmentService(Fragment fragment, Bundle arg) {
         if(clickEnable){
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-            boolean programador= userManager.getLevelUser() > ROLE_ADMINISTRATOR;
+            boolean programador= userRepository.getLevelUser() > ROLE_ADMINISTRATOR;
             ContainerFragment containerFragment = ContainerFragment.newInstanceService(fragment.getClass(),arg,programador);
             fragmentManager.beginTransaction()
                     .replace(R.id.container_fragment, containerFragment)

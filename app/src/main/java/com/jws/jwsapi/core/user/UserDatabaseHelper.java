@@ -56,13 +56,6 @@ public class UserDatabaseHelper extends  SQLiteOpenHelper {
         return id;
     }
 
-    public void deleteAllUsers() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM usuarios";
-        db.execSQL(query);
-        db.close();
-    }
-
     public void deleteUser(String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM usuarios WHERE usuario='"+user+"'";

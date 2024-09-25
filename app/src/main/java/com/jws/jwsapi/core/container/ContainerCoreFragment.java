@@ -19,6 +19,7 @@ import com.jws.jwsapi.core.storage.StorageDialogHandler;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.ContainPrincipalBinding;
+import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.Utils;
 
 import javax.inject.Inject;
@@ -34,6 +35,8 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     int iconflag=-1;
     ContainPrincipalBinding binding;
 
+    @Inject
+    UserRepository userRepository;
     @Inject
     UserManager userManager;
     @Inject
@@ -112,7 +115,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
                 binding.btUsb.setVisibility(storageService.getState()? View.VISIBLE : View.INVISIBLE);
                 handleNetworkUi();
                 binding.tvDate.setText(String.format("%s %s", Utils.getFecha(), Utils.getHora()));
-                binding.tvUser.setText(userManager.getCurrentUser());
+                binding.tvUser.setText(userRepository.getCurrentUser());
                 if(!stoped){
                     handler.postDelayed(this, 100);
                 }
@@ -140,7 +143,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     }
 
     private void setupIconProgrammer(int x, int icono_programador) {
-        if(userManager.getLevelUser()== x &&iconflag!= x){
+        if(userRepository.getLevelUser()== x &&iconflag!= x){
             binding.imuser.setImageResource(icono_programador);
             iconflag= x;
         }

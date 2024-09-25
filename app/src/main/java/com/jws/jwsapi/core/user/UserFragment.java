@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.DialogoUsuarioBinding;
+import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -39,6 +40,8 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
     private UserAdapter adapter;
     @Inject
     UserManager userManager;
+    @Inject
+    UserRepository userRepository;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
     private void setupRecycler(@NonNull View view) {
         RecyclerView recycler = view.findViewById(R.id.listausuarios);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new UserAdapter(userManager.getUsers(),this);
+        adapter = new UserAdapter(userRepository.getUsers(),this);
         recycler.setAdapter(adapter);
     }
 
@@ -77,7 +80,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
 
     @Override
     public void handleCreateUserButton(DialogoUsuarioBinding binding, AlertDialog dialog) {
-        if (userManager.getLevelUser() <= ROLE_SUPERVISOR){
+        if (userRepository.getLevelUser() <= ROLE_SUPERVISOR){
             showMessage(R.string.user_error_create_login);
             return;
         }
@@ -89,7 +92,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
             long id;
             id = insertUserFromDatabase(binding, name, user, password, code);
             if (id != -1) {
-                addElementToList(userManager.getUsers());
+                addElementToList(userRepository.getUsers());
             } else {
                 showMessage(R.string.error_reset);
             }
@@ -123,7 +126,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
 
     @Override
     public void deleteUser(List<UserModel> userList, int position) {
-        if(userManager.getLevelUser()<=ROLE_SUPERVISOR) {
+        if(userRepository.getLevelUser()<=ROLE_SUPERVISOR) {
             showMessage(R.string.user_error_create_login);
             return;
         }
@@ -131,7 +134,7 @@ public class UserFragment extends Fragment implements UserButtonClickListener, U
             showMessage(R.string.user_error_create_2);
             return;
         }
-        if(!userList.get(position).getName().equals(userManager.getCurrentUser())){
+        if(!userList.get(position).getName().equals(userRepository.getCurrentUser())){
             dialogText(getContext(), "Quiere eliminar el usuario " + userList.get(position).getName() + "?", "ELIMINAR", () -> {
                 deleteUserFromDatabase(userList, position);
                 userList.remove(position);

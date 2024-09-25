@@ -3,15 +3,11 @@ package com.jws.jwsapi.weighing;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.shared.PalletRepository;
-
+import com.jws.jwsapi.shared.UserRepository;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -30,13 +26,13 @@ public class WeighingViewModel extends ViewModel {
     private final MutableLiveData<String> errorRequest = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final LiveData<Pallet> currentPallet;
-    private final UserManager userManager;
+    private final UserRepository userRepository;
 
     @Inject
-    public WeighingViewModel(PalletRepository repository, WeighingService weighingService, UserManager userManager) {
+    public WeighingViewModel(PalletRepository repository, WeighingService weighingService, UserRepository userRepository) {
         this.repository = repository;
         this.weighingService = weighingService;
-        this.userManager = userManager;
+        this.userRepository = userRepository;
         this.weighings = weighingService.getAllWeighings();
         this.currentPallet = repository.getCurrentPallet();
 
@@ -76,7 +72,7 @@ public class WeighingViewModel extends ViewModel {
             weighing.setNet(net);
             weighing.setUnit(unit);
             weighing.setName(pallet.getName());
-            weighing.setOperator(userManager.getCurrentUser());
+            weighing.setOperator(userRepository.getCurrentUser());
             weighing.setIdPallet(pallet.getId());
             weighing.setScaleNumber(pallet.getScaleNumber());
             weighing.setQuantity(pallet.getQuantity());

@@ -20,6 +20,7 @@ import com.jws.jwsapi.core.storage.StorageDialogHandler;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.ContainFragmentBinding;
+import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.Utils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -39,6 +40,8 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     int iconflag=-1;
     @Inject
     UserManager userManager;
+    @Inject
+    UserRepository userRepository;
     @Inject
     StorageService storageService;
 
@@ -147,7 +150,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
         setupIconProgrammer(2, R.drawable.icono_supervisor);
         setupIconProgrammer(1, R.drawable.icon_user);
         setupIconProgrammer(0, R.drawable.icono_nologin);
-        binding.tvUsuario.setText(userManager.getCurrentUser());
+        binding.tvUsuario.setText(userRepository.getCurrentUser());
     }
 
     private void updateNetworkUi() {
@@ -167,7 +170,7 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     }
 
     private void setupIconProgrammer(int x, int icono_programador) {
-        if(userManager.getLevelUser()== x &&iconflag!= x){
+        if(userRepository.getLevelUser()== x &&iconflag!= x){
             binding.imuser.setImageResource(icono_programador);
             iconflag= x;
         }

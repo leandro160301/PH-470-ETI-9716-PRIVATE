@@ -4,26 +4,24 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.printer.PrinterManager;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
-import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.shared.PalletRepository;
+import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.shared.WeighRepository;
-import com.service.Balanzas.BalanzaService;
 import com.service.PuertosSerie.PuertosSerie2;
-
 import javax.inject.Inject;
 
 public class HomeService {
 
-    UserManager userManager;
-    PrinterPreferences printerPreferences;
-    LabelManager labelManager;
-    WeighRepository weighRepository;
-    PalletRepository palletRepository;
+    private final UserRepository userRepository;
+    private final PrinterPreferences printerPreferences;
+    private final LabelManager labelManager;
+    private final WeighRepository weighRepository;
+    private final PalletRepository palletRepository;
 
     @Inject
-    public HomeService(UserManager userManager, PrinterPreferences printerPreferences, LabelManager labelManager, WeighRepository weighRepository, PalletRepository palletRepository) {
-        this.userManager = userManager;
+    public HomeService(UserRepository userRepository, PrinterPreferences printerPreferences, LabelManager labelManager, WeighRepository weighRepository, PalletRepository palletRepository) {
+        this.userRepository = userRepository;
         this.printerPreferences = printerPreferences;
         this.labelManager = labelManager;
         this.weighRepository = weighRepository;
@@ -43,7 +41,7 @@ public class HomeService {
                         labelManager.setNumber(String.valueOf(pallet.getDone()));
                         labelManager.setOrigin(pallet.getOriginPallet());
                         labelManager.setName(pallet.getName());
-                        PrinterManager printerManager = new PrinterManager(mainActivity,mainActivity,userManager, printerPreferences,labelManager);
+                        PrinterManager printerManager = new PrinterManager(mainActivity,mainActivity,userRepository, printerPreferences,labelManager);
                         printerManager.printLabelInMemory(serialPort,0);
                     }
                 } catch (Exception e) {

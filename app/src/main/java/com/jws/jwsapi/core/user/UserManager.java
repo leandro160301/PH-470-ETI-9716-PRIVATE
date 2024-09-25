@@ -3,6 +3,7 @@ package com.jws.jwsapi.core.user;
 import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_NAME;
 import static com.jws.jwsapi.core.user.UserConstants.DB_USERS_VERSION;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_ADMINISTRATOR;
+import static com.jws.jwsapi.core.user.UserConstants.ROLE_NOT_LOGGED;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_OPERATOR;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_PROGRAMMER;
 import static com.jws.jwsapi.core.user.UserConstants.ROLE_SUPERVISOR;
@@ -13,6 +14,7 @@ import android.app.Application;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 
 import org.json.JSONArray;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -32,30 +35,13 @@ public class UserManager implements UserLoginInterface {
 
     private final Application application;
     private final PreferencesManager preferencesManagerBase;
-    String userName ="";
-    int userLevel =0;
+    private final UserRepository repository;
 
     @Inject
-    public UserManager(Application application, PreferencesManager preferencesManagerBase){
+    public UserManager(Application application, PreferencesManager preferencesManagerBase, UserRepository repository){
         this.application = application;
         this.preferencesManagerBase = preferencesManagerBase;
-    }
-    
-    public int usersQuantity(){
-        List<UserModel> lista= getUsers();
-        if(lista!=null){
-            return lista.size();
-        }else {
-            return 0;
-        }
-    }
-
-    public List<UserModel> getUsers(){
-        List<UserModel> lista;
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            lista=dbHelper.getAllUsers();
-        }
-        return lista;
+        this.repository = repository;
     }
 
     @Override
@@ -63,17 +49,17 @@ public class UserManager implements UserLoginInterface {
         boolean login=false;
         if(!password.isEmpty() && !user.isEmpty()){
             if((password.equals(preferencesManagerBase.getPin())) && user.equals("ADMINISTRADOR")){
-                userLevel = ROLE_ADMINISTRATOR;
+                repository.setUserLevel(ROLE_ADMINISTRATOR);
                 login=true;
-                userName ="ADMINISTRADOR";
+                repository.setUserName("ADMINISTRADOR");
             }
             if((password.equals("3031")) && user.equals("PROGRAMADOR")){
-                userLevel = ROLE_PROGRAMMER;
+                repository.setUserLevel(ROLE_PROGRAMMER);
                 login=true;
-                userName ="PROGRAMADOR";
+                repository.setUserName("PROGRAMADOR");
             }
             if(!login){
-                searchUser(user, password);
+                repository.searchUser(user, password);
             }
         }
         return login;
@@ -81,8 +67,8 @@ public class UserManager implements UserLoginInterface {
 
     @Override
     public void logout(){
-        userName = "";
-        userLevel = 0;
+        repository.setUserLevel(ROLE_NOT_LOGGED);
+        repository.setUserName("");
     }
 
     @Override
@@ -102,91 +88,36 @@ public class UserManager implements UserLoginInterface {
         }
     }
 
-    public void searchUser(String user, String password){
-        List<UserModel> list;
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            list=dbHelper.searchUsers(user);
-        }
-        try {
-            if(list.size()==0){
-                ToastHelper.message(application.getResources().getString(R.string.toast_user_not_exist), R.layout.item_customtoasterror,application);
-            }
-            else{
-                for(int i=0;i<list.size();i++){
-                    if(list.get(i).getPassword().equals(password)){
-                        userName = list.get(i).getName();
-                        if(Objects.equals(list.get(i).getType(), "Supervisor")){
-                            userLevel = ROLE_SUPERVISOR;
-                        }
-                        if(Objects.equals(list.get(i).getType(), "Operador")){
-                            userLevel = ROLE_OPERATOR;
-                        }
-                        ToastHelper.message(application.getResources().getString(R.string.toast_user_login_succesfull),R.layout.item_customtoastok,application);
-                    }
-                    else
-                    {
-                        ToastHelper.message(application.getResources().getString(R.string.toast_user_wrong_password),R.layout.item_customtoasterror,application);
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    public String getCurrentUser(){
-        return userName;
-    }
-
-    public int getLevelUser(){
-        return userLevel;
-    }
-
-    public Boolean isEnabled(){
-        try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application,DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            int cantidad=dbHelper.getQuantity();
-            if(cantidad==0){
-                return true;
-            }else{
-                return getLevelUser() > ROLE_OPERATOR;
-            }
-        }
-    }
-
     public String JSONusuarios() throws JSONException {
-        List<UserModel> lista;
+        List<UserModel> userElements;
         try (UserDatabaseHelper dbHelper = new UserDatabaseHelper(application, DB_USERS_NAME, null, DB_USERS_VERSION)) {
-            lista=dbHelper.getAllUsers();
+            userElements=dbHelper.getAllUsers();
         }
-
         JSONArray jsonArray = new JSONArray();
-        JSONObject Usuario1 = new JSONObject();
-        Usuario1.put("Id", "-");
-        Usuario1.put("Nombre", "ADMINISTRADOR");
-        Usuario1.put("Usuario","ADMINISTRADOR");
-        jsonArray.put(Usuario1);
+        putUser("ADMINISTRADOR", jsonArray);
+        putUser("PROGRAMADOR", jsonArray);
 
-        JSONObject Usuario2 = new JSONObject();
-        Usuario2.put("Id", "-");
-        Usuario2.put("Nombre", "PROGRAMADOR");
-        Usuario2.put("Usuario","PROGRAMADOR");
-        jsonArray.put(Usuario2);
-
-        for(int i=0; i<lista.size();i++){
-            JSONObject Usuario = new JSONObject();
+        userElements.forEach(userModel -> {
+            JSONObject userJson = new JSONObject();
             try {
-                Usuario.put("Id", lista.get(i).getId());
-                Usuario.put("Nombre", lista.get(i).getName());
-                Usuario.put("Usuario", lista.get(i).getUser());
-                jsonArray.put(Usuario);
-
+                userJson.put("Id", userModel.getId());
+                userJson.put("Nombre", userModel.getName());
+                userJson.put("Usuario", userModel.getUser());
+                jsonArray.put(userJson);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
+        });
+
         return jsonArray.toString();
+    }
+
+    private static void putUser(String user, JSONArray jsonArray) throws JSONException {
+        JSONObject userJson = new JSONObject();
+        userJson.put("Id", "-");
+        userJson.put("Nombre", user);
+        userJson.put("Usuario", user);
+        jsonArray.put(userJson);
     }
 
     public void loginDialog(MainActivity mainActivity) {

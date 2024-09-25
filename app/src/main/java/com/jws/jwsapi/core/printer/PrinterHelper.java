@@ -9,23 +9,27 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.label.LabelModel;
 import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class PrinterHelper {
     private final MainActivity mainActivity;
     private final PrinterPreferences printerPreferences;
     private final LabelManager labelManager;
-    private final UserManager userManager;
+    private final UserRepository userRepository;
 
-    public PrinterHelper(MainActivity mainActivity, PrinterPreferences printerPreferences, LabelManager labelManager, UserManager userManager) {
+    @Inject
+    public PrinterHelper(MainActivity mainActivity, PrinterPreferences printerPreferences, LabelManager labelManager, UserRepository userRepository) {
         this.mainActivity = mainActivity;
         this.printerPreferences = printerPreferences;
         this.labelManager = labelManager;
-        this.userManager = userManager;
+        this.userRepository = userRepository;
     }
 
     public String getLabelCode(int numetiqueta){
@@ -103,7 +107,7 @@ public class PrinterHelper {
             case 1: return mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
             case 2: return mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
             case 3: return mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza)+mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
-            case 4: return userManager.getCurrentUser();
+            case 4: return userRepository.getCurrentUser();
             case 5: return Utils.getFecha();
             case 6: return Utils.getHora();
             default:

@@ -47,6 +47,7 @@ import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.core.user.UserPinDialog;
 import com.jws.jwsapi.core.user.UserPinInterface;
 import com.jws.jwsapi.databinding.StandarMenuBinding;
+import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.AdapterCommon;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.date.DateDialog;
@@ -67,7 +68,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class NavigationFragment extends Fragment implements AdapterCommon.ItemClickListener, DateInterface, UserPinInterface, ThemeInterface {
 
     @Inject
-    UserManager userManager;
+    UserRepository userRepository;
     @Inject
     PreferencesManager preferencesManagerBase;
     private int currentMenu = 0;
@@ -247,7 +248,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     }
 
     private boolean hasPermission(int requiredLevel) {
-        return userManager.getLevelUser() > requiredLevel;
+        return userRepository.getLevelUser() > requiredLevel;
     }
 
     private void handleUserAction(Runnable action, int requiredLevel) {

@@ -31,7 +31,7 @@ public class Storage {
         String filePath = MEMORY_PATH + fileName;
         File file = new File(filePath);
         if (!file.exists()) {
-            ToastHelper.message("La etiqueta ya no esta disponible", R.layout.item_customtoasterror, mainActivity);
+            ToastHelper.message(mainActivity.getString(R.string.toast_file_not_avaible), R.layout.item_customtoasterror, mainActivity);
             return "";
         } else {
             String fileContent = "";
@@ -51,7 +51,7 @@ public class Storage {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                ToastHelper.message("Error al intentar leer la etiqueta" + e, R.layout.item_customtoasterror, mainActivity);
+                ToastHelper.message(mainActivity.getString(R.string.toast_read_file_error) + e, R.layout.item_customtoasterror, mainActivity);
             } finally {
                 try {
                     if (br != null) br.close();

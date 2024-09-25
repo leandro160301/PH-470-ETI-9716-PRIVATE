@@ -49,13 +49,6 @@ public class FileUtils {
         return lista;
     }
 
-    /**
-     * Load UTF8withBOM or any ansi text file.
-     *
-     * @param filename which to be converted to string
-     * @return String value of File
-     * @throws java.io.IOException if error occurs
-     */
     @SuppressWarnings("all")
     public static String loadFileAsString(String filename) throws java.io.IOException {
         final int BUFLEN = 1024;
@@ -68,7 +61,7 @@ public class FileUtils {
             while ((read = is.read(bytes)) != -1) {
                 if (count == 0 && bytes[0] == (byte) 0xEF && bytes[1] == (byte) 0xBB && bytes[2] == (byte) 0xBF) {
                     isUTF8 = true;
-                    baos.write(bytes, 3, read - 3); // drop UTF8 bom marker
+                    baos.write(bytes, 3, read - 3);
                 } else {
                     baos.write(bytes, 0, read);
                 }

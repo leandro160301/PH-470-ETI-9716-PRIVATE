@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 
 public class Utils {
 
+    @SuppressWarnings("all")
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;

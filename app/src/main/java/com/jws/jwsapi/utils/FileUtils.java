@@ -33,7 +33,7 @@ public class FileUtils {
     }
 
     public static List<String> getFilesExtension(String extension) {
-        List<String> lista = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         File root = new File(MEMORY_PATH);
         if (root.exists()) {
             File[] fileArray = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(extension));
@@ -41,12 +41,12 @@ public class FileUtils {
             if (fileArray != null && fileArray.length > 0) {
                 for (File value : fileArray) {
                     f.append(value.getName());
-                    lista.add(f.toString());
+                    list.add(f.toString());
                     f = new StringBuilder();
                 }
             }
         }
-        return lista;
+        return list;
     }
 
     @SuppressWarnings("all")

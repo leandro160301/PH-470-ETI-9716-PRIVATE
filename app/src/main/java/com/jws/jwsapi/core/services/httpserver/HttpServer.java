@@ -229,7 +229,7 @@ public class HttpServer extends NanoWSD {
 
         if (uri.endsWith("getArchivos")) {
             try {
-                Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, Storage.JSONarchivos());
+                Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, Storage.JsonFiles());
                 response.addHeader("Access-Control-Allow-Origin", "*");
                 return response;
             } catch (JSONException e) {

@@ -23,12 +23,12 @@ import java.util.List;
 public class FtpInit {
 
     Context context;
-    List<UserModel> listaUsuarios;
+    List<UserModel> userElements;
     private final PreferencesManager preferencesManager;
 
-    public FtpInit(Context context, List<UserModel> listaUsuarios, PreferencesManager preferencesManager) {
+    public FtpInit(Context context, List<UserModel> userElements, PreferencesManager preferencesManager) {
         this.context = context;
-        this.listaUsuarios = listaUsuarios;
+        this.userElements = userElements;
         this.preferencesManager = preferencesManager;
     }
 
@@ -72,7 +72,7 @@ public class FtpInit {
     }
 
     public void cargadeUsuariosFtp(FtpServerFactory serverFactory) {
-        List<UserModel> lista = listaUsuarios;
+        List<UserModel> lista = userElements;
         for (UserModel usuario : lista) {
             BaseUser user = new BaseUser();
             user.setName(usuario.getUser());

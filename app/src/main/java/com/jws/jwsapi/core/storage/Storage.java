@@ -55,7 +55,7 @@ public class Storage {
         if (isPackageExisted("com.android.documentsui", context)) {
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.android.documentsui");
             if (launchIntent != null) {
-                launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  // Añadido por si el contexto no es una actividad
+                launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(launchIntent);
                 mainActivity.finish();
                 System.exit(0);
@@ -72,8 +72,8 @@ public class Storage {
         }
     }
 
-    public static String openAndReadFile(String archivo, MainActivity mainActivity) {
-        String filePath = MEMORY_PATH + archivo;
+    public static String openAndReadFile(String fileName, MainActivity mainActivity) {
+        String filePath = MEMORY_PATH + fileName;
         File file = new File(filePath);
         if (!file.exists()) {
             ToastHelper.message("La etiqueta ya no esta disponible", R.layout.item_customtoasterror, mainActivity);
@@ -105,8 +105,8 @@ public class Storage {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return fileContent;
             }
+            return fileContent;
         }
 
     }
@@ -123,6 +123,7 @@ public class Storage {
         copyFileTransfer(file, dir, dialog, context);
     }
 
+    @SuppressWarnings("all")
     private static void copyFileTransfer(File file, File dir, AlertDialog dialog, Context context) {
         new Thread(() -> {
             File newFile = new File(dir, file.getName());
@@ -131,7 +132,7 @@ public class Storage {
                     FileChannel inputChannel = new FileInputStream(file).getChannel()
             ) {
                 inputChannel.transferTo(0, inputChannel.size(), outputChannel);
-                outputChannel.force(true); // Asegura que todos los datos se escriban en el pendrive
+                outputChannel.force(true);
                 outputChannel.close();
 
                 Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -145,11 +146,11 @@ public class Storage {
         }).start();
     }
 
-    public int cantidadRegistros() {
+    public int quantityExtension(String extension) {
         List<String> Lista = new ArrayList<>();
         File root = new File(MEMORY_PATH);
         if (root.exists()) {
-            File[] filearr = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(".xls") && filename.toLowerCase().startsWith("registro"));
+            File[] filearr = root.listFiles((dir, filename) -> filename.toLowerCase().endsWith(extension));
             StringBuilder f = new StringBuilder();
             if (filearr != null && filearr.length > 0) {
                 for (File value : filearr) {
@@ -163,6 +164,7 @@ public class Storage {
         return Lista.size();
     }
 
+    @SuppressWarnings("all")
     public void copy(File src, File dst) throws IOException {
         InputStream in = new FileInputStream(src);
         OutputStream out = new FileOutputStream(dst);
@@ -176,7 +178,7 @@ public class Storage {
         out.close();
     }
 
-    public static String JSONarchivos() throws JSONException {
+    public static String JsonFiles() throws JSONException {
         List<String> guardado = getAllFiles();
         JSONArray jsonArray = new JSONArray();
 
@@ -231,20 +233,21 @@ public class Storage {
         return lista;
     }
 
+    @SuppressWarnings("all")
     public static void createMemoryDirectory() {
-        File fileMemoria = new File(MEMORY_PATH);
-        if (!fileMemoria.isDirectory()) {
-            fileMemoria.mkdir();
+        File memoryFile = new File(MEMORY_PATH);
+        if (!memoryFile.isDirectory()) {
+            memoryFile.mkdir();
         }
     }
 
     public static List<String> getAllFiles() {
         List<String> lista = new ArrayList<>();
-        File root2 = new File(MEMORY_PATH);
+        File root = new File(MEMORY_PATH);
 
-        if (root2.exists()) {
+        if (root.exists()) {
             Set<String> extensions = new HashSet<>(Arrays.asList(".pdf", ".png", ".xls", ".csv", ".jpg", ".prn", ".lbl", ".nlbl"));
-            File[] files = root2.listFiles();
+            File[] files = root.listFiles();
             if (files != null) {
                 lista = Arrays.stream(files)
                         .map(File::getName)

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class JsonServerUtil {
 
-    public static String jsonGets() {
+    public static String getJsonApi() {
         JSONArray jsonArray = new JSONArray();
         try {
             JSONObject jsonWeighings = new JSONObject();
@@ -43,7 +43,7 @@ public class JsonServerUtil {
         return jsonArray.toString();
     }
 
-    public static String jsonWeighing(WeighingService weighingService) {
+    public static String getJsonWeighing(WeighingService weighingService) {
         List<Weighing> weighingList = weighingService.getAllWeighingsStatic();
         if (weighingList == null) return null;
         JSONArray jsonArray = new JSONArray();
@@ -71,18 +71,18 @@ public class JsonServerUtil {
     }
 
     @SuppressLint("DefaultLocale")
-    public static String jsonPalletOpen(PalletService palletService) {
-        return jsonPallet(false, palletService);
+    public static String getJsonPalletOpen(PalletService palletService) {
+        return getJsonPallet(false, palletService);
     }
 
     @SuppressLint("DefaultLocale")
-    public static String jsonPalletClose(PalletService palletService) {
-        return jsonPallet(true, palletService);
+    public static String getJsonPalletClose(PalletService palletService) {
+        return getJsonPallet(true, palletService);
     }
 
     @SuppressLint("DefaultLocale")
     @Nullable
-    private static String jsonPallet(boolean closed, PalletService palletService) {
+    private static String getJsonPallet(boolean closed, PalletService palletService) {
         List<Pallet> palletList = palletService.getAllPalletsStatic(closed);
         if (palletList == null) return null;
         JSONArray jsonArray = new JSONArray();

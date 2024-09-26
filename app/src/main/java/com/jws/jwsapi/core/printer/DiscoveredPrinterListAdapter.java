@@ -1,4 +1,4 @@
-package com.jws.jwsapi.core.printer.utils;
+package com.jws.jwsapi.core.printer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

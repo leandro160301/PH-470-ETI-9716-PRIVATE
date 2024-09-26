@@ -56,6 +56,8 @@ public class WebRtcManager {
     private final HttpServer server;
     private final Display display;
     private final PreferencesManager preferencesManagerBase;
+    private final DisplayMetrics screenMetrics = new DisplayMetrics();
+    private final Thread rotationDetectorThread = null;
     RtpSender rtpsender;
     RtpParameters rtpParameters;
     List<PeerConnection.IceServer> peerIceServers = new ArrayList<>();
@@ -66,8 +68,6 @@ public class WebRtcManager {
     private PeerConnection localPeer = null;
     private MediaConstraints sdpConstraints;
     private List<IceServer> iceServers = null;
-    private final DisplayMetrics screenMetrics = new DisplayMetrics();
-    private final Thread rotationDetectorThread = null;
 
     public WebRtcManager(Intent intent, Context context, HttpServer server, MainActivity activity, PreferencesManager preferencesManagerBase) {
         this.server = server;
@@ -239,7 +239,7 @@ public class WebRtcManager {
         rtcConfig.rtcpMuxPolicy = PeerConnection.RtcpMuxPolicy.REQUIRE;
         rtcConfig.continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy
                 .GATHER_CONTINUALLY;
-        rtcConfig.iceTransportsType = PeerConnection.IceTransportsType.RELAY;
+        rtcConfig.iceTransportsType = PeerConnection.IceTransportsType.ALL;
 
         rtcConfig.keyType = PeerConnection.KeyType.ECDSA;
         localPeer = peerConnectionFactory.createPeerConnection(rtcConfig,

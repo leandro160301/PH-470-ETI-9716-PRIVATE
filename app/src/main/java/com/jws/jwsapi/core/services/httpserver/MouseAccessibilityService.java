@@ -230,6 +230,20 @@ public class MouseAccessibilityService extends AccessibilityService {
     private boolean isScreenOff() {
         PowerManager pm = (PowerManager) instance.getSystemService(Context.POWER_SERVICE);
         return !pm.isInteractive();
+    }
+
+    @SuppressWarnings("deprecation")
+    private void wakeScreenIfNecessary() {
+        PowerManager pm = (PowerManager) instance.getSystemService(Context.POWER_SERVICE);
+        if (pm.isInteractive()) {
+            return;
+        }
+
+        PowerManager.WakeLock screenLock =
+                pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK |
+                        PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
+        screenLock.acquire();
+        screenLock.release();
     }    private final GestureResultCallback gestureResultCallback =
             new GestureResultCallback() {
                 @Override
@@ -253,20 +267,6 @@ public class MouseAccessibilityService extends AccessibilityService {
                     }
                 }
             };
-
-    @SuppressWarnings("deprecation")
-    private void wakeScreenIfNecessary() {
-        PowerManager pm = (PowerManager) instance.getSystemService(Context.POWER_SERVICE);
-        if (pm.isInteractive()) {
-            return;
-        }
-
-        PowerManager.WakeLock screenLock =
-                pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK |
-                        PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
-        screenLock.acquire();
-        screenLock.release();
-    }
 
 
 

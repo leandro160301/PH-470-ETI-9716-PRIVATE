@@ -1,4 +1,4 @@
-package com.jws.jwsapi.core.printer.utils;
+package com.jws.jwsapi.core.printer;
 
 import com.zebra.sdk.comm.Connection;
 import com.zebra.sdk.printer.discovery.DiscoveredPrinter;
@@ -10,7 +10,7 @@ import java.util.Objects;
 public class SelectedPrinterManager {
     private static final int MAX_HISTORY_SIZE = 5;
 
-    private static final List<DiscoveredPrinter> selectedPrinterHistory = new ArrayList<DiscoveredPrinter>();
+    private static final List<DiscoveredPrinter> selectedPrinterHistory = new ArrayList<>();
 
     public static DiscoveredPrinter getSelectedPrinter() {
         selectedPrinterHistory.size();

@@ -128,21 +128,15 @@ public class WebRtcManager {
                 .setVideoEncoderFactory(defaultVideoEncoderFactory)
                 .setVideoDecoderFactory(defaultVideoDecoderFactory)
                 .createPeerConnectionFactory();
-        //XXX enable camera
-        //videoCapturer = createCameraCapturer(new Camera1Enumerator(false));
 
 
         SurfaceTextureHelper surfaceTextureHelper;
         surfaceTextureHelper = SurfaceTextureHelper.create("CaptureThread",
                 rootEglBase.getEglBaseContext());
         VideoSource videoSource = peerConnectionFactory.createVideoSource(videoCapturer.isScreencast());
-        //videoSource.adaptOutputFormat(1280,800,3);
-
 
         videoCapturer.initialize(surfaceTextureHelper, context, videoSource.getCapturerObserver());
         localVideoTrack = peerConnectionFactory.createVideoTrack("100", videoSource);
-        //TODO audioSource = peerConnectionFactory.createAudioSource(audioConstraints);
-        //TODO localAudioTrack = peerConnectionFactory.createAudioTrack("101", audioSource);
 
         display.getRealMetrics(screenMetrics);
         if (videoCapturer != null) {
@@ -155,33 +149,7 @@ public class WebRtcManager {
                         FRAMES_PER_SECOND);
             }
 
-            // startRotationDetector();
         }
-
-
-        /*
-         SurfaceTextureHelper surfaceTextureHelper;
-        surfaceTextureHelper = SurfaceTextureHelper.create("CaptureThread",
-                rootEglBase.getEglBaseContext());
-        VideoSource videoSource = peerConnectionFactory.createVideoSource(videoCapturer.isScreencast());
-        videoSource.adaptOutputFormat(1280,800,3);
-
-
-        videoCapturer.initialize(surfaceTextureHelper, context, videoSource.getCapturerObserver());
-
-        localVideoTrack = peerConnectionFactory.createVideoTrack("100", videoSource);
-
-        //TODO audioSource = peerConnectionFactory.createAudioSource(audioConstraints);
-        //TODO localAudioTrack = peerConnectionFactory.createAudioTrack("101", audioSource);
-
-        display.getRealMetrics(screenMetrics);
-        if (videoCapturer != null) {
-            videoCapturer.startCapture((screenMetrics.heightPixels), (screenMetrics.widthPixels),
-                    FRAMES_PER_SECOND);
-           // startRotationDetector();
-        }
-        * */
-
     }
 
     public void start(HttpServer server) {
@@ -208,6 +176,72 @@ public class WebRtcManager {
         rtcConfig.rtcpMuxPolicy = PeerConnection.RtcpMuxPolicy.REQUIRE;
         rtcConfig.continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy
                 .GATHER_CONTINUALLY;
+
+        rtcConfig.keyType = PeerConnection.KeyType.ECDSA;
+        localPeer = peerConnectionFactory.createPeerConnection(rtcConfig,
+                new CustomPeerConnectionObserver("localPeerCreation") {
+                    @Override
+                    public void onIceCandidate(IceCandidate iceCandidate) {
+                        super.onIceCandidate(iceCandidate);
+                        onIceCandidateReceived(iceCandidate);
+                    }
+
+                    @Override
+                    public void onAddStream(MediaStream mediaStream) {
+                        super.onAddStream(mediaStream);
+                        Log.d(TAG, "Unexpected remote stream received.");
+                    }
+                });
+
+        addStreamToLocalPeer();
+    }
+
+    private void createPeerConnection2() {
+        List<PeerConnection.IceServer> peerIceServers = new ArrayList<>();
+        peerIceServers.add(PeerConnection.IceServer.builder("stun:stun.l.google.com:19302").createIceServer());
+        peerIceServers.add(PeerConnection.IceServer.builder("stun:sp-turn1.xirsys.com").createIceServer());
+
+        // Servidor TURN proporcionado por XirSys con múltiples URLs y autenticación
+        peerIceServers.add(PeerConnection.IceServer.builder("turn:sp-turn1.xirsys.com:80?transport=udp")
+                .setUsername("pRasIY7zmxyOeNSbI345CIOZrv7Cmy6VR5_EXMN02c2suV_D1enIMVZFr7X_pmc1AAAAAGb1YdRsZWFuZHJvMTYwMzAx")
+                .setPassword("6b797ba4-7c0b-11ef-919c-0242ac120004")
+                .createIceServer());
+
+        peerIceServers.add(PeerConnection.IceServer.builder("turn:sp-turn1.xirsys.com:3478?transport=udp")
+                .setUsername("pRasIY7zmxyOeNSbI345CIOZrv7Cmy6VR5_EXMN02c2suV_D1enIMVZFr7X_pmc1AAAAAGb1YdRsZWFuZHJvMTYwMzAx")
+                .setPassword("6b797ba4-7c0b-11ef-919c-0242ac120004")
+                .createIceServer());
+
+        peerIceServers.add(PeerConnection.IceServer.builder("turn:sp-turn1.xirsys.com:80?transport=tcp")
+                .setUsername("pRasIY7zmxyOeNSbI345CIOZrv7Cmy6VR5_EXMN02c2suV_D1enIMVZFr7X_pmc1AAAAAGb1YdRsZWFuZHJvMTYwMzAx")
+                .setPassword("6b797ba4-7c0b-11ef-919c-0242ac120004")
+                .createIceServer());
+
+        peerIceServers.add(PeerConnection.IceServer.builder("turn:sp-turn1.xirsys.com:3478?transport=tcp")
+                .setUsername("pRasIY7zmxyOeNSbI345CIOZrv7Cmy6VR5_EXMN02c2suV_D1enIMVZFr7X_pmc1AAAAAGb1YdRsZWFuZHJvMTYwMzAx")
+                .setPassword("6b797ba4-7c0b-11ef-919c-0242ac120004")
+                .createIceServer());
+
+        peerIceServers.add(PeerConnection.IceServer.builder("turns:sp-turn1.xirsys.com:443?transport=tcp")
+                .setUsername("pRasIY7zmxyOeNSbI345CIOZrv7Cmy6VR5_EXMN02c2suV_D1enIMVZFr7X_pmc1AAAAAGb1YdRsZWFuZHJvMTYwMzAx")
+                .setPassword("6b797ba4-7c0b-11ef-919c-0242ac120004")
+                .createIceServer());
+
+        peerIceServers.add(PeerConnection.IceServer.builder("turns:sp-turn1.xirsys.com:5349?transport=tcp")
+                .setUsername("pRasIY7zmxyOeNSbI345CIOZrv7Cmy6VR5_EXMN02c2suV_D1enIMVZFr7X_pmc1AAAAAGb1YdRsZWFuZHJvMTYwMzAx")
+                .setPassword("6b797ba4-7c0b-11ef-919c-0242ac120004")
+                .createIceServer());
+
+        PeerConnection.RTCConfiguration rtcConfig =
+                new PeerConnection.RTCConfiguration(peerIceServers);
+        // TCP candidates are only useful when connecting to a server that supports
+        // ICE-TCP.
+        rtcConfig.tcpCandidatePolicy = PeerConnection.TcpCandidatePolicy.ENABLED;
+        rtcConfig.bundlePolicy = PeerConnection.BundlePolicy.MAXBUNDLE;
+        rtcConfig.rtcpMuxPolicy = PeerConnection.RtcpMuxPolicy.REQUIRE;
+        rtcConfig.continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy
+                .GATHER_CONTINUALLY;
+        rtcConfig.iceTransportsType = PeerConnection.IceTransportsType.RELAY;
 
         rtcConfig.keyType = PeerConnection.KeyType.ECDSA;
         localPeer = peerConnectionFactory.createPeerConnection(rtcConfig,
@@ -335,40 +369,6 @@ public class WebRtcManager {
         }
     }
 
-    private VideoCapturer createCameraCapturer(CameraEnumerator enumerator) {
-        Log.d(TAG, new Object() {
-        }.getClass().getEnclosingMethod().getName());
-        final String[] deviceNames = enumerator.getDeviceNames();
-
-        // First, try to find front facing camera
-        Logging.d(TAG, "Looking for front facing cameras.");
-        for (String deviceName : deviceNames) {
-            if (enumerator.isFrontFacing(deviceName)) {
-                Logging.d(TAG, "Creating front facing camera capturer.");
-                VideoCapturer videoCapturer = enumerator.createCapturer(deviceName, null);
-
-                if (videoCapturer != null) {
-                    return videoCapturer;
-                }
-            }
-        }
-
-        // Front facing camera not found, try something else
-        Logging.d(TAG, "Looking for other cameras.");
-        for (String deviceName : deviceNames) {
-            if (!enumerator.isFrontFacing(deviceName)) {
-                Logging.d(TAG, "Creating other camera capturer.");
-                VideoCapturer videoCapturer = enumerator.createCapturer(deviceName, null);
-
-                if (videoCapturer != null) {
-                    return videoCapturer;
-                }
-            }
-        }
-
-        return null;
-    }
-
     public void getIceServers() {
         final String API_ENDPOINT = "https://global.xirsys.net";
 
@@ -419,44 +419,6 @@ public class WebRtcManager {
                 t.printStackTrace();
             }
         });
-    }
-
-    private void startRotationDetector() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Rotation detector start");
-                display.getRealMetrics(screenMetrics);
-                while (true) {
-                    DisplayMetrics metrics = new DisplayMetrics();
-                    display.getRealMetrics(metrics);
-                    if (metrics.widthPixels != screenMetrics.widthPixels ||
-                            metrics.heightPixels != screenMetrics.heightPixels) {
-                        Log.d(TAG, "Rotation detected\n" + "w=" + metrics.widthPixels + " h=" +
-                                metrics.heightPixels + " d=" + metrics.densityDpi);
-                        screenMetrics = metrics;
-                        if (videoCapturer != null) {
-                            try {
-                                videoCapturer.stopCapture();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            videoCapturer.startCapture(screenMetrics.widthPixels,
-                                    screenMetrics.heightPixels, FRAMES_PER_SECOND);
-                        }
-                    }
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        Log.d(TAG, "Rotation detector exit");
-                        Thread.interrupted();
-                        break;
-                    }
-                }
-            }
-        };
-        rotationDetectorThread = new Thread(runnable);
-        rotationDetectorThread.start();
     }
 
     private void stopRotationDetector() {

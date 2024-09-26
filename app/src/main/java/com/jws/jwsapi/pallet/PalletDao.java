@@ -14,7 +14,10 @@ public interface PalletDao {
     LiveData<List<Pallet>> getAllPallets();
 
     @Query("SELECT * FROM pallet WHERE is_closed = :open ORDER BY id DESC")
-    LiveData<List<Pallet>> getAllPalletsAvaible(Boolean open);
+    LiveData<List<Pallet>> getAllPallets(Boolean open);
+
+    @Query("SELECT * FROM pallet WHERE is_closed = :open ORDER BY id DESC")
+    List<Pallet> getAllPalletsStatic(Boolean open);
 
     @Query("SELECT * FROM pallet WHERE id = :id and is_closed = :open")
     LiveData<Pallet> getPalletById(int id, Boolean open);

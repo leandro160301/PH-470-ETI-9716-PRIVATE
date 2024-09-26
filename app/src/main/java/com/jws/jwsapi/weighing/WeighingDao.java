@@ -13,6 +13,9 @@ public interface WeighingDao {
     @Query("SELECT * FROM weighing ORDER BY id DESC")
     LiveData<List<Weighing>> getAllWeighing();
 
+    @Query("SELECT * FROM weighing ORDER BY id DESC")
+    List<Weighing> getAllWeighingStatic();
+
     @Query("SELECT * FROM weighing WHERE id = :id")
     LiveData<Weighing> getWeighingById(int id);
 

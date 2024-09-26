@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.pallet.PalletService;
+import com.jws.jwsapi.weighing.WeighingService;
 
 
 public class InitServer {
@@ -25,11 +27,16 @@ public class InitServer {
     PreferencesManager preferencesManagerBase;
     private AppService appService;
     private ServiceConnection serviceConnection;
+    WeighingService weighingService;
+    PalletService palletService;
 
-    public InitServer(Context context, MainActivity mainActivity, UserManager userManager, PreferencesManager preferencesManager) {
+
+    public InitServer(Context context, MainActivity mainActivity, UserManager userManager, PreferencesManager preferencesManager, WeighingService weighingService, PalletService palletService) {
         this.context = context;
         this.preferencesManagerBase = preferencesManager;
         this.mainActivity = mainActivity;
+        this.weighingService = weighingService;
+        this.palletService = palletService;
         this.permissionHelper = new PermissionHelper((Activity) context, new OnPermissionGrantedListener());
         this.userManager = userManager;
     }
@@ -82,7 +89,9 @@ public class InitServer {
                     Runnable myRunnable = () -> {
                         if (appService != null) {
                             if (!appService.serverStart(data, 8001,
-                                    isAccessibilityServiceEnabled(), context, mainActivity, userManager, preferencesManagerBase)) {
+                                    isAccessibilityServiceEnabled(), context, mainActivity,
+                                    userManager, preferencesManagerBase,
+                                    weighingService,palletService)) {
                             }
                         }
                     };

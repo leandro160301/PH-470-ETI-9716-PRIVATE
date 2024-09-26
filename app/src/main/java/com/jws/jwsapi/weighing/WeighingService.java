@@ -34,4 +34,8 @@ public class WeighingService {
         return weighingDao.getAllWeighing();
     }
 
+    public List<Weighing> getAllWeighingsStatic() {
+        return weighingDao.getAllWeighingStatic();
+    }
+
 }

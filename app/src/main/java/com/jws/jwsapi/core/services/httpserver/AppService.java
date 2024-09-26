@@ -20,6 +20,8 @@ import androidx.core.app.NotificationCompat;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.pallet.PalletService;
+import com.jws.jwsapi.weighing.WeighingService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -207,10 +209,12 @@ public class AppService extends Service {
     }
 
     public boolean serverStart(Intent intent, int port,
-                               boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity, UserManager userManager, PreferencesManager preferencesManagerBase) {
+                               boolean isAccessibilityServiceEnabled, Context context, MainActivity mainActivity,
+                               UserManager userManager, PreferencesManager preferencesManagerBase,
+                               WeighingService weighingService, PalletService palletService) {
         this.mainActivity = mainActivity;
         this.preferencesManagerBase = preferencesManagerBase;
-        if (!(isWebServerRunning = startHttpServer(port, userManager)))
+        if (!(isWebServerRunning = startHttpServer(port, userManager,weighingService, palletService)))
             return false;
 
         webRtcManager = new WebRtcManager(intent, context, httpServer, mainActivity, preferencesManagerBase);
@@ -237,8 +241,9 @@ public class AppService extends Service {
     }
 
 
-    public boolean startHttpServer(int httpServerPort, UserManager userManager) {
-        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface, mainActivity, userManager, preferencesManagerBase);
+    public boolean startHttpServer(int httpServerPort, UserManager userManager, WeighingService weighingService, PalletService palletService) {
+        httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface,
+                mainActivity, userManager, preferencesManagerBase, weighingService,palletService);
         try {
             httpServer.start();
         } catch (IOException e) {

@@ -21,11 +21,13 @@ import com.jws.jwsapi.core.services.FtpServer;
 import com.jws.jwsapi.core.services.httpserver.InitServer;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
+import com.jws.jwsapi.pallet.PalletService;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.CacheUtils;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.utils.file.FileUtils;
+import com.jws.jwsapi.weighing.WeighingService;
 
 import java.io.IOException;
 
@@ -46,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
     StorageService storageService;
     @Inject
     PreferencesManager preferencesManager;
+    @Inject
+    WeighingService weighingService;
+    @Inject
+    PalletService palletService;
     private InitServer initServer;
 
     @Override
@@ -73,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        initServer = new InitServer(this, this, userManager, preferencesManager);
+        initServer = new InitServer(this, this, userManager, preferencesManager,weighingService,palletService);
         try {
             initServer.start();
         } catch (Exception e) {

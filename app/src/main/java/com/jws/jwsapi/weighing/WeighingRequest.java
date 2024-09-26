@@ -6,10 +6,10 @@ public class WeighingRequest {
     @SerializedName("numeroSerie")
     private String serialNumber;
 
-    @SerializedName("code")
+    @SerializedName("codigo")
     private String code;
 
-    @SerializedName("name")
+    @SerializedName("nombre")
     private String name;
 
     @SerializedName("neto")

@@ -265,7 +265,7 @@ public class HttpServer extends NanoWSD {
         }
 
         if (uri.endsWith("getConsultas")) {
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JsonServerUtil.jsonGets());
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, JsonServerUtil.jsonGets());
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
@@ -276,19 +276,19 @@ public class HttpServer extends NanoWSD {
             return response;
         }
         if (uri.endsWith("GetPesadas")) {
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JsonServerUtil.jsonWeighing(weighingService));
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, JsonServerUtil.jsonWeighing(weighingService));
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
 
         }
         if (uri.endsWith("GetPalletOpen")) {
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JsonServerUtil.jsonPalletOpen(palletService));
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, JsonServerUtil.jsonPalletOpen(palletService));
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
         }
 
         if (uri.endsWith("GetPalletClosed")) {
-            Response response = newFixedLengthResponse(Response.Status.OK,MIME_JSON,JsonServerUtil.jsonPalletClose(palletService));
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, JsonServerUtil.jsonPalletClose(palletService));
             response.addHeader("Access-Control-Allow-Origin", "*");
             return response;
         }

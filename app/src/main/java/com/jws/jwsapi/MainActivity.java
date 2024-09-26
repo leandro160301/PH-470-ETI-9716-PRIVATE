@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        initServer = new InitServer(this, this, userManager, preferencesManager,weighingService,palletService);
+        initServer = new InitServer(this, this, userManager, preferencesManager, weighingService, palletService);
         try {
             initServer.start();
         } catch (Exception e) {

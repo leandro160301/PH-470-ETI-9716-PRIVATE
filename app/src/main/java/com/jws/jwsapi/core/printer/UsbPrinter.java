@@ -27,7 +27,7 @@ import java.util.Map;
 public class UsbPrinter {
 
     private final Context context;
-    List<FieldDescriptionData> variablesList = new ArrayList<FieldDescriptionData>();
+    List<FieldDescriptionData> variablesList = new ArrayList<>();
     Connection connection;
     DiscoveredPrinterListAdapter discoveredPrinterListAdapter;
     Map<Integer, String> vars;
@@ -58,7 +58,6 @@ public class UsbPrinter {
                 if (discoveredPrinterListAdapter.getCount() > 0) {
                     DiscoveredPrinter printer = discoveredPrinterListAdapter.getPrinter(0);
                     SelectedPrinterManager.setSelectedPrinter(printer);
-                    DiscoveredPrinter formatPrinter;
                     Print(label, memory, memoryList);
                 }
 
@@ -94,24 +93,13 @@ public class UsbPrinter {
 
                     Collections.addAll(variablesList, variables);
 
-                    vars = new HashMap<Integer, String>();
+                    vars = new HashMap<>();
                     for (int i = 0; i < ListaMemoria.size(); i++) {
                         FieldDescriptionData var = variablesList.get(i);
                         vars.put(var.fieldNumber, ListaMemoria.get(i));
                     }
                 }
 
-                String quantityString = "1";
-
-                int quantity;
-                try {
-                    quantity = Integer.parseInt(quantityString);
-                    if (quantity < 1) {
-                        quantity = 1;
-                    }
-                } catch (NumberFormatException e) {
-                    quantity = 1;
-                }
                 ZebraPrinter printer = null;
 
                 try {

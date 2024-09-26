@@ -16,12 +16,10 @@ import com.jws.jwsapi.core.data.local.PreferencesManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.webrtc.CameraEnumerator;
 import org.webrtc.DefaultVideoDecoderFactory;
 import org.webrtc.DefaultVideoEncoderFactory;
 import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
-import org.webrtc.Logging;
 import org.webrtc.MediaConstraints;
 import org.webrtc.MediaStream;
 import org.webrtc.PeerConnection;
@@ -68,8 +66,8 @@ public class WebRtcManager {
     private PeerConnection localPeer = null;
     private MediaConstraints sdpConstraints;
     private List<IceServer> iceServers = null;
-    private DisplayMetrics screenMetrics = new DisplayMetrics();
-    private Thread rotationDetectorThread = null;
+    private final DisplayMetrics screenMetrics = new DisplayMetrics();
+    private final Thread rotationDetectorThread = null;
 
     public WebRtcManager(Intent intent, Context context, HttpServer server, MainActivity activity, PreferencesManager preferencesManagerBase) {
         this.server = server;

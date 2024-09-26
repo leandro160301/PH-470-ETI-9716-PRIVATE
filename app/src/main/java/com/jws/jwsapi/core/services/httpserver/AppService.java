@@ -214,7 +214,7 @@ public class AppService extends Service {
                                WeighingService weighingService, PalletService palletService) {
         this.mainActivity = mainActivity;
         this.preferencesManagerBase = preferencesManagerBase;
-        if (!(isWebServerRunning = startHttpServer(port, userManager,weighingService, palletService)))
+        if (!(isWebServerRunning = startHttpServer(port, userManager, weighingService, palletService)))
             return false;
 
         webRtcManager = new WebRtcManager(intent, context, httpServer, mainActivity, preferencesManagerBase);
@@ -243,7 +243,7 @@ public class AppService extends Service {
 
     public boolean startHttpServer(int httpServerPort, UserManager userManager, WeighingService weighingService, PalletService palletService) {
         httpServer = new HttpServer(httpServerPort, getApplicationContext(), httpServerInterface,
-                mainActivity, userManager, preferencesManagerBase, weighingService,palletService);
+                mainActivity, userManager, preferencesManagerBase, weighingService, palletService);
         try {
             httpServer.start();
         } catch (IOException e) {

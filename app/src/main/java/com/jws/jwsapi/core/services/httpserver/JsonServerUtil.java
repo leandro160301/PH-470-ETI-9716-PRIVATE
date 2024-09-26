@@ -8,9 +8,11 @@ import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.pallet.PalletService;
 import com.jws.jwsapi.weighing.Weighing;
 import com.jws.jwsapi.weighing.WeighingService;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.List;
 
 public class JsonServerUtil {
@@ -70,12 +72,12 @@ public class JsonServerUtil {
 
     @SuppressLint("DefaultLocale")
     public static String jsonPalletOpen(PalletService palletService) {
-        return jsonPallet(false,palletService);
+        return jsonPallet(false, palletService);
     }
 
     @SuppressLint("DefaultLocale")
     public static String jsonPalletClose(PalletService palletService) {
-        return jsonPallet(true,palletService);
+        return jsonPallet(true, palletService);
     }
 
     @SuppressLint("DefaultLocale")

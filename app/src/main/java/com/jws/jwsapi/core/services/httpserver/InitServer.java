@@ -25,10 +25,10 @@ public class InitServer {
     MainActivity mainActivity;
     UserManager userManager;
     PreferencesManager preferencesManagerBase;
-    private AppService appService;
-    private ServiceConnection serviceConnection;
     WeighingService weighingService;
     PalletService palletService;
+    private AppService appService;
+    private ServiceConnection serviceConnection;
 
 
     public InitServer(Context context, MainActivity mainActivity, UserManager userManager, PreferencesManager preferencesManager, WeighingService weighingService, PalletService palletService) {
@@ -91,7 +91,7 @@ public class InitServer {
                             if (!appService.serverStart(data, 8001,
                                     isAccessibilityServiceEnabled(), context, mainActivity,
                                     userManager, preferencesManagerBase,
-                                    weighingService,palletService)) {
+                                    weighingService, palletService)) {
                             }
                         }
                     };

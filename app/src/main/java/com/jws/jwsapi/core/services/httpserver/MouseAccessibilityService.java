@@ -225,6 +225,11 @@ public class MouseAccessibilityService extends AccessibilityService {
             }
         else
             wakeScreenIfNecessary();
+    }
+
+    private boolean isScreenOff() {
+        PowerManager pm = (PowerManager) instance.getSystemService(Context.POWER_SERVICE);
+        return !pm.isInteractive();
     }    private final GestureResultCallback gestureResultCallback =
             new GestureResultCallback() {
                 @Override
@@ -248,11 +253,6 @@ public class MouseAccessibilityService extends AccessibilityService {
                     }
                 }
             };
-
-    private boolean isScreenOff() {
-        PowerManager pm = (PowerManager) instance.getSystemService(Context.POWER_SERVICE);
-        return !pm.isInteractive();
-    }
 
     @SuppressWarnings("deprecation")
     private void wakeScreenIfNecessary() {

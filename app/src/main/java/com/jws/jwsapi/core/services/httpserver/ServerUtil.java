@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class JsonServerUtil {
+public class ServerUtil {
 
     public static String getJsonApi() {
         JSONArray jsonArray = new JSONArray();

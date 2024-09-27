@@ -58,4 +58,18 @@ public class HomeService {
 
 
     }
+
+    public void printMemory(MainActivity mainActivity, PuertosSerie2 serialPort) {
+        Runnable myRunnable = () -> {
+            try {
+                PrinterManager printerManager = new PrinterManager(mainActivity, mainActivity, userRepository, printerPreferences, labelManager);
+                printerManager.printLastLabel(serialPort);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+        Thread myThread = new Thread(myRunnable);
+        myThread.start();
+    }
+
 }

@@ -134,9 +134,7 @@ public class HttpServer extends NanoWSD {
             if (sharedPrefsFile.exists()) {
                 try {
                     InputStream fileStream = new FileInputStream(sharedPrefsFile);
-
-                    String mime = "text/xml"; // Tipo MIME para un archivo XML
-
+                    String mime = "text/xml";
                     Response response = newChunkedResponse(Response.Status.OK, mime, fileStream);
                     response.addHeader("Access-Control-Allow-Origin", "*");
                     return response;
@@ -365,6 +363,7 @@ public class HttpServer extends NanoWSD {
         return handleFileRequest(session, uri);
     }
 
+    @SuppressWarnings("all")
     @NonNull
     private Response downloadDb() {
         String filePath = context.getDatabasePath(MainClass.DB_NAME).getAbsolutePath();
@@ -384,6 +383,7 @@ public class HttpServer extends NanoWSD {
         return response;
     }
 
+    @SuppressWarnings("all")
     @NonNull
     private Response updateApk(IHTTPSession session) {
         InputStream inputStream = session.getInputStream();

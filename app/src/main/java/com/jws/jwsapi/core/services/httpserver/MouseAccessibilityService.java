@@ -244,7 +244,9 @@ public class MouseAccessibilityService extends AccessibilityService {
                         PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
         screenLock.acquire();
         screenLock.release();
-    }    private final GestureResultCallback gestureResultCallback =
+    }
+
+    private final GestureResultCallback gestureResultCallback =
             new GestureResultCallback() {
                 @Override
                 public void onCompleted(GestureDescription gestureDescription) {
@@ -267,8 +269,6 @@ public class MouseAccessibilityService extends AccessibilityService {
                     }
                 }
             };
-
-
 
 
 }

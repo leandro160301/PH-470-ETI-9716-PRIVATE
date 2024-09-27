@@ -39,6 +39,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
 
+    public static int OPERATION_BUTTONS = 0;
+    public static int SCALE_BUTTONS = 1;
     @Inject
     UserManager userManager;
     @Inject
@@ -53,6 +55,7 @@ public class HomeFragment extends Fragment {
     private WeighingViewModel weighingViewModel;
     private ServiceViewModel serviceViewModel;
     private PalletViewModel palletViewModel;
+    private int buttons = OPERATION_BUTTONS;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +74,8 @@ public class HomeFragment extends Fragment {
         setupButtons();
 
         observeViewModels();
+
+        binding.lnFondolayout.setOnClickListener(v -> changeMode());
 
     }
 
@@ -136,13 +141,13 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void showMessage(String error, int item_customtoastok) {
-        ToastHelper.message(error, item_customtoastok, getContext());
+    private void showMessage(String error, int layout) {
+        ToastHelper.message(error, layout, getContext());
     }
 
-    private void handleWeighUpdate(String net, TextView binding) {
+    private void handleWeighUpdate(String net, TextView textView) {
         if (net != null) {
-            binding.setText(net);
+            textView.setText(net);
         }
     }
 
@@ -151,6 +156,7 @@ public class HomeFragment extends Fragment {
             if (weighingResponse.getStatus()) {
                 showMessage(requireContext().getString(R.string.toast_message_weighing_created), R.layout.item_customtoastok);
                 homeService.print(mainActivity, serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
+                mainActivity.mainClass.bza.setTaraDigital(repository.getScaleNumber(), mainActivity.mainClass.bza.getBruto(repository.getScaleNumber()));
             } else {
                 showMessage(weighingResponse.getError(), R.layout.item_customtoasterror);
             }
@@ -169,6 +175,46 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private void changeMode() {
+        if (buttons == OPERATION_BUTTONS) {
+            buttons = SCALE_BUTTONS;
+            setupButtonsScale();
+        } else {
+            buttons = OPERATION_BUTTONS;
+            setupButtons();
+        }
+    }
+
+    private void setupButtonsScale() {
+        if (buttonProvider != null) {
+            binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza_seleccionado);
+            setupButton(buttonProvider.getButton1(), R.string.button_scale_zero,
+                    view -> mainActivity.mainClass.bza.setCero(repository.getScaleNumber()), View.VISIBLE);
+            setupButton(buttonProvider.getButton2(), R.string.button_scale_tare,
+                    view -> mainActivity.mainClass.bza.setTaraDigital(repository.getScaleNumber(), mainActivity.mainClass.bza.getBruto(repository.getScaleNumber())), View.VISIBLE);
+            setupButton(buttonProvider.getButton3(), R.string.button_scale_print,
+                    view -> homeService.printMemory(mainActivity, serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber())), View.VISIBLE);
+            setupButton(buttonProvider.getButton4(), null, null, View.INVISIBLE);
+            setupButton(buttonProvider.getButton5(), null, null, View.INVISIBLE);
+        }
+    }
+
+    private void setupButtons() {
+        if (buttonProvider != null) {
+            setupButton(buttonProvider.getButton1(), R.string.button_text_2,
+                    v -> createWeighing(), View.VISIBLE);
+            setupButton(buttonProvider.getButton2(), R.string.button_text_3,
+                    v -> mainActivity.mainClass.openFragment(new PalletFragment()), View.VISIBLE);
+            setupButton(buttonProvider.getButton3(), R.string.button_text_4,
+                    v -> mainActivity.mainClass.openFragment(new WeighingFragment()), View.VISIBLE);
+            setupButton(buttonProvider.getButton4(), R.string.button_text_6, v -> closePallet(), View.VISIBLE);
+            setupButton(buttonProvider.getButton5(), R.string.button_text_5,
+                    v -> mainActivity.mainClass.openFragment(new PalletCreateFragment()), View.VISIBLE);
+            binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza);
+        }
+    }
+
+
     private void updateUi(Pallet pallet) {
         binding.tvCantidad.setText(pallet != null ? String.valueOf(pallet.getQuantity()) : "");
         binding.tvDone.setText(pallet != null ? String.valueOf(pallet.getDone()) : "");
@@ -177,20 +223,6 @@ public class HomeFragment extends Fragment {
         binding.tvPalletDestination.setText(pallet != null ? pallet.getDestinationPallet() : "");
         binding.tvScale.setText(pallet != null ? String.valueOf(pallet.getScaleNumber()) : "");
         binding.tvTotalNet.setText(pallet != null ? pallet.getTotalNet() : "");
-    }
-
-    private void setupButtons() {
-        if (buttonProvider != null) {
-            setupButton(buttonProvider.getButton1(), R.string.button_text_2,
-                    v -> createWeighing());
-            setupButton(buttonProvider.getButton2(), R.string.button_text_3,
-                    v -> mainActivity.mainClass.openFragment(new PalletFragment()));
-            setupButton(buttonProvider.getButton3(), R.string.button_text_4,
-                    v -> mainActivity.mainClass.openFragment(new WeighingFragment()));
-            setupButton(buttonProvider.getButton4(), R.string.button_text_6, v -> closePallet());
-            setupButton(buttonProvider.getButton5(), R.string.button_text_5,
-                    v -> mainActivity.mainClass.openFragment(new PalletCreateFragment()));
-        }
     }
 
     private void closePallet() {
@@ -213,11 +245,10 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void setupButton(Button button, int textResId, View.OnClickListener onClickListener) {
-        button.setText(requireContext().getString(textResId));
-        if (onClickListener != null) {
-            button.setOnClickListener(onClickListener);
-        }
+    private void setupButton(Button button, Integer textResId, View.OnClickListener onClickListener, Integer visibility) {
+        if (textResId != null) button.setText(requireContext().getString(textResId));
+        if (onClickListener != null) button.setOnClickListener(onClickListener);
+        if (visibility != null) button.setVisibility(visibility);
     }
 
     @Override

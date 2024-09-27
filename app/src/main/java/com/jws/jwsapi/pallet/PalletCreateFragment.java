@@ -1,7 +1,6 @@
 package com.jws.jwsapi.pallet;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboard;
-import static com.jws.jwsapi.dialog.DialogUtil.keyboardInt;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,9 +15,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.FragmentPalletCreateBinding;
+import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -26,6 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class PalletCreateFragment extends Fragment {
 
     MainActivity mainActivity;
+    @Inject
+    WeighRepository weighRepository;
     private PalletViewModel palletViewModel;
     private FragmentPalletCreateBinding binding;
     private ButtonProvider buttonProvider;
@@ -58,14 +62,16 @@ public class PalletCreateFragment extends Fragment {
                 ToastHelper.message(error, R.layout.item_customtoasterror, getContext());
             }
         });
+        palletViewModel.setScale(weighRepository.getScaleNumber());
+        binding.tvScale.setText(String.valueOf(weighRepository.getScaleNumber()));
     }
 
     private void setOnClickListeners() {
-        binding.tvScale.setOnClickListener(v -> keyboardInt(binding.tvScale, requireContext().getString(R.string.dialog_scale_input), getContext(), texto -> palletViewModel.setScale(Integer.parseInt(texto))));
         binding.tvPalletOrigin.setOnClickListener(v -> keyboard(binding.tvPalletOrigin, requireContext().getString(R.string.dialog_palleto_input), getContext(), texto -> palletViewModel.setPalletOrigin(texto)));
         binding.tvPalletDestination.setOnClickListener(v -> keyboard(binding.tvPalletDestination, requireContext().getString(R.string.dialog_palletd_input), getContext(), texto -> palletViewModel.setPalletDestination(texto)));
         binding.btNewPaller.setOnClickListener(v -> palletViewModel.createPallet());
     }
+
 
     private void setupButtons() {
         if (buttonProvider != null) {

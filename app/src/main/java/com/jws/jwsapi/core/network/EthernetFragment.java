@@ -97,7 +97,7 @@ public class EthernetFragment extends Fragment {
             setupStaticNetwork();
         }, ip)));
 
-        binding.tvsubnet.setOnClickListener(v -> keyboardIpAdress(binding.tvip, getString(R.string.dialog_ethernet_subnet), requireContext(), subnet -> handleUserAction(() -> {
+        binding.tvsubnet.setOnClickListener(v -> keyboardIpAdress(binding.tvsubnet, getString(R.string.dialog_ethernet_subnet), requireContext(), subnet -> handleUserAction(() -> {
             preferencesManagerBase.setSubnet(subnet);
             setupStaticNetwork();
         }, subnet)));

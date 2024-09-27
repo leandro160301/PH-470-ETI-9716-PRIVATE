@@ -68,15 +68,15 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
         startRunnable();
     }
 
+    private void initInstances() {
+        mainActivity = (MainActivity) getActivity();
+        jwsManager = JwsManager.create(requireActivity());
+    }
+
     private void handleClickListeners() {
         binding.lnMenu.setOnClickListener(view1 -> mainActivity.mainClass.openFragment(new NavigationFragment()));
         binding.lnUser.setOnClickListener(view13 -> userManager.loginDialog(mainActivity));
         binding.btWifi.setOnClickListener(view12 -> new ContainerDataDialog(this, mainActivity).showDialog());
-    }
-
-    private void initInstances() {
-        mainActivity = (MainActivity) getActivity();
-        jwsManager = JwsManager.create(requireActivity());
     }
 
     @SuppressWarnings("unchecked")
@@ -104,15 +104,9 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                setupIconProgrammer(4, R.drawable.icono_programador);
-                setupIconProgrammer(3, R.drawable.icono_administrador);
-                setupIconProgrammer(2, R.drawable.icono_supervisor);
-                setupIconProgrammer(1, R.drawable.icon_user);
-                setupIconProgrammer(0, R.drawable.icono_nologin);
-                binding.btUsb.setVisibility(storageService.getState() ? View.VISIBLE : View.INVISIBLE);
-                handleNetworkUi();
-                binding.tvDate.setText(String.format("%s %s", DateUtils.getDate(), DateUtils.getHour()));
-                binding.tvUser.setText(userRepository.getCurrentUser());
+                updateUserUi();
+                updateNetworkUi();
+                updateDate();
                 if (!stoped) {
                     handler.postDelayed(this, 100);
                 }
@@ -123,10 +117,24 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
         handler.post(runnable);
     }
 
-    private void handleNetworkUi() {
-        String tipo = jwsManager.jwsGetCurrentNetType();
-        if (tipo == null) tipo = "";
-        switch (tipo) {
+    private void updateDate() {
+        binding.btUsb.setVisibility(storageService.getState() ? View.VISIBLE : View.INVISIBLE);
+        binding.tvDate.setText(String.format("%s %s", DateUtils.getDate(), DateUtils.getHour()));
+    }
+
+    private void updateUserUi() {
+        setupIconProgrammer(4, R.drawable.icono_programador);
+        setupIconProgrammer(3, R.drawable.icono_administrador);
+        setupIconProgrammer(2, R.drawable.icono_supervisor);
+        setupIconProgrammer(1, R.drawable.icon_user);
+        setupIconProgrammer(0, R.drawable.icono_nologin);
+        binding.tvUser.setText(userRepository.getCurrentUser());
+    }
+
+    private void updateNetworkUi() {
+        String type = jwsManager.jwsGetCurrentNetType();
+        if (type == null) type = "";
+        switch (type) {
             case "ETH":
                 binding.btWifi.setBackgroundResource(R.drawable.icono_ethernet_white);
                 break;

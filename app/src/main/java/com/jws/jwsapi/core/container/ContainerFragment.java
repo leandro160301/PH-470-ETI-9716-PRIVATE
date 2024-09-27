@@ -148,9 +148,9 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     }
 
     private void updateNetworkUi() {
-        String tipo = jwsManager.jwsGetCurrentNetType();
-        if (tipo == null) tipo = "";
-        switch (tipo) {
+        String type = jwsManager.jwsGetCurrentNetType();
+        if (type == null) type = "";
+        switch (type) {
             case "ETH":
                 binding.btWifi.setBackgroundResource(R.drawable.icono_ethernet_white);
                 break;

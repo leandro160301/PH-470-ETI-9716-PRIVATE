@@ -34,7 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class ContainerFragment extends Fragment implements ButtonProvider, ContainerData {
 
     ContainFragmentBinding binding;
-    int iconFlag = -1;
+    private int iconFlag = -1;
     @Inject
     UserManager userManager;
     @Inject
@@ -76,9 +76,6 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
         super.onViewCreated(view, savedInstanceState);
 
         initInstances();
-
-        binding.btGrabando.setVisibility(View.INVISIBLE);
-        binding.lnalarma.setVisibility(View.INVISIBLE);
 
         handleClickListeners();
         openFragment();

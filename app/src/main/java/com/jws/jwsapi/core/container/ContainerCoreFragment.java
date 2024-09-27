@@ -30,8 +30,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class ContainerCoreFragment extends Fragment implements ContainerButtonProvider, ContainerData {
 
-    Boolean stoped = false;
-    int iconflag = -1;
+    private boolean stoped = false;
+    private int iconFlag = -1;
     ContainPrincipalBinding binding;
     @Inject
     UserRepository userRepository;
@@ -62,9 +62,6 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
         super.onViewCreated(view, savedInstanceState);
 
         initInstances();
-
-        binding.btGrabando.setVisibility(View.INVISIBLE);
-        binding.lnalarma.setVisibility(View.INVISIBLE);
 
         handleClickListeners();
         openFragment();
@@ -143,9 +140,9 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     }
 
     private void setupIconProgrammer(int x, int icono_programador) {
-        if (userRepository.getLevelUser() == x && iconflag != x) {
+        if (userRepository.getLevelUser() == x && iconFlag != x) {
             binding.imuser.setImageResource(icono_programador);
-            iconflag = x;
+            iconFlag = x;
         }
     }
 

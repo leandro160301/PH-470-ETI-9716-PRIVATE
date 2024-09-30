@@ -1329,6 +1329,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     public void setTara(int numBza) {
         if(serialPort!=null){
             serialPort.write("KTARE\r");
+            System.out.println("OPTIMA: TARE");
         }
     }
 
@@ -1336,6 +1337,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
     public void setCero(int numBza) {
         if(serialPort!=null){
             serialPort.write("KZERO\r\n");
+            System.out.println("OPTIMA: ZERO");
         }
         taraDigitalStr="0";
     }

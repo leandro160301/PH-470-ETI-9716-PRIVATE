@@ -47,6 +47,33 @@ public class WifiFragment extends Fragment {
     private MainActivity mainActivity;
     private ButtonProvider buttonProvider;
     private StandarWifiBinding binding;
+    Runnable mToastRunnable = new Runnable() {
+        @Override
+        public void run() {
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            String ssid = wifiInfo.getSSID();
+            try {
+                if (Objects.equals(ssid, "<unknown ssid>")) {
+                    binding.tvSSIRED.setText(R.string.fragment_wifi_disconnect);
+                    binding.tvSSIconnected.setText(R.string.fragment_wifi_disconnect);
+                } else {
+                    binding.tvSSIRED.setText(wifiInfo.getSSID());
+                    binding.tvSSIconnected.setText(String.format("%s%s", requireContext().getString(R.string.fragment_wifi_connect_to), wifiInfo.getSSID()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (!stoped) {
+                handler.postDelayed(this, 1000);
+            }
+        }
+    };
+
+    private static void setupVisibilityPanel(LinearLayout layoutwifilist, int visible, LinearLayout tableLayoutwifi, int invisible) {
+        layoutwifilist.setVisibility(visible);
+        tableLayoutwifi.setVisibility(invisible);
+    }
 
     @Nullable
     @Override
@@ -241,35 +268,6 @@ public class WifiFragment extends Fragment {
         WifiManager wifiManager = (WifiManager) mainActivity.getSystemService(Context.WIFI_SERVICE);
         return wifiManager != null && wifiManager.isWifiEnabled();
     }
-
-    Runnable mToastRunnable = new Runnable() {
-        @Override
-        public void run() {
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            String ssid = wifiInfo.getSSID();
-            try {
-                if (Objects.equals(ssid, "<unknown ssid>")) {
-                    binding.tvSSIRED.setText(R.string.fragment_wifi_disconnect);
-                    binding.tvSSIconnected.setText(R.string.fragment_wifi_disconnect);
-                } else {
-                    binding.tvSSIRED.setText(wifiInfo.getSSID());
-                    binding.tvSSIconnected.setText(String.format("%s%s", requireContext().getString(R.string.fragment_wifi_connect_to), wifiInfo.getSSID()));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (!stoped) {
-                handler.postDelayed(this, 1000);
-            }
-        }
-    };
-
-    private static void setupVisibilityPanel(LinearLayout layoutwifilist, int visible, LinearLayout tableLayoutwifi, int invisible) {
-        layoutwifilist.setVisibility(visible);
-        tableLayoutwifi.setVisibility(invisible);
-    }
-
 
     @Override
     public void onDestroyView() {

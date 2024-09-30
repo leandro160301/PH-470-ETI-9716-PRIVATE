@@ -3,6 +3,8 @@ package com.jws.jwsapi.shared;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.jws.jwsapi.service.Service;
+
 import javax.inject.Singleton;
 
 @Singleton
@@ -13,6 +15,11 @@ public class WeighRepository {
     private final MutableLiveData<String> tare = new MutableLiveData<>();
     private final MutableLiveData<Boolean> stable = new MutableLiveData<>();
     private int scaleNumber = 1;
+    private Service service;
+
+    public void setScaleActions(Service service) {
+        this.service = service;
+    }
 
     public LiveData<String> getNet() {
         return net;
@@ -70,6 +77,14 @@ public class WeighRepository {
         if (!newStable.equals(stable.getValue())) {
             stable.postValue(newStable);
         }
+    }
+
+    public void setZero() {
+        if (service != null) service.setZero();
+    }
+
+    public void setTare() {
+        if (service != null) service.setTare();
     }
 
 }

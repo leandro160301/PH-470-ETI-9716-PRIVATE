@@ -30,8 +30,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class ContainerCoreFragment extends Fragment implements ContainerButtonProvider, ContainerData {
 
-    private boolean stoped = false;
-    private int iconFlag = -1;
     ContainPrincipalBinding binding;
     @Inject
     UserRepository userRepository;
@@ -39,6 +37,8 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     UserManager userManager;
     @Inject
     StorageService storageService;
+    private boolean stoped = false;
+    private int iconFlag = -1;
     private MainActivity mainActivity;
     private JwsManager jwsManager;
 

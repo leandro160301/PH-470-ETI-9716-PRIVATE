@@ -30,13 +30,12 @@ public class EthernetFragment extends Fragment {
 
     private static final int DYNAMIC_MODE = 0;
     private static final int STATIC_MODE = 1;
+    @Inject
+    PreferencesManager preferencesManagerBase;
     private MainActivity mainActivity;
     private JwsManager jwsObject;
     private ButtonProvider buttonProvider;
     private StandarEthernetBinding binding;
-
-    @Inject
-    PreferencesManager preferencesManagerBase;
 
     @Nullable
     @Override

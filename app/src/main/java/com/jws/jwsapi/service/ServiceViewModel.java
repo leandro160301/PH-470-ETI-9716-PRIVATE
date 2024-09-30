@@ -10,7 +10,7 @@ import java.util.TimerTask;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class ServiceViewModel extends ViewModel {
+public class ServiceViewModel extends ViewModel implements Service {
 
     private final BalanzaService.Balanzas scaleService;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -20,6 +20,7 @@ public class ServiceViewModel extends ViewModel {
     public ServiceViewModel(BalanzaService.Balanzas scale, WeighRepository repository) {
         this.scaleService = scale;
         this.repository = repository;
+        repository.setScaleActions(this);
         startUpdatingScale();
     }
 
@@ -48,5 +49,15 @@ public class ServiceViewModel extends ViewModel {
 
     public BalanzaService.Balanzas getScaleService() {
         return scaleService;
+    }
+
+    @Override
+    public void setTare() {
+        scaleService.setTaraDigital(repository.getScaleNumber(), scaleService.getBruto(repository.getScaleNumber()));
+    }
+
+    @Override
+    public void setZero() {
+        scaleService.setCero(repository.getScaleNumber());
     }
 }

@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
     private PalletViewModel palletViewModel;
     private int buttons = OPERATION_BUTTONS;
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         buttonProvider = ContainerButtonProviderSingleton.getInstance().getButtonProvider();
@@ -156,7 +157,7 @@ public class HomeFragment extends Fragment {
             if (weighingResponse.getStatus()) {
                 showMessage(requireContext().getString(R.string.toast_message_weighing_created), R.layout.item_customtoastok);
                 homeService.print(mainActivity, serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
-                mainActivity.mainClass.bza.setTaraDigital(repository.getScaleNumber(), mainActivity.mainClass.bza.getBruto(repository.getScaleNumber()));
+                repository.setTare();
             } else {
                 showMessage(weighingResponse.getError(), R.layout.item_customtoasterror);
             }
@@ -189,9 +190,9 @@ public class HomeFragment extends Fragment {
         if (buttonProvider != null) {
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza_seleccionado);
             setupButton(buttonProvider.getButton1(), R.string.button_scale_zero,
-                    view -> mainActivity.mainClass.bza.setCero(repository.getScaleNumber()), View.VISIBLE);
+                    view -> repository.setZero(), View.VISIBLE);
             setupButton(buttonProvider.getButton2(), R.string.button_scale_tare,
-                    view -> mainActivity.mainClass.bza.setTaraDigital(repository.getScaleNumber(), mainActivity.mainClass.bza.getBruto(repository.getScaleNumber())), View.VISIBLE);
+                    view -> repository.setTare(), View.VISIBLE);
             setupButton(buttonProvider.getButton3(), R.string.button_scale_print,
                     view -> homeService.printMemory(mainActivity, serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber())), View.VISIBLE);
             setupButton(buttonProvider.getButton4(), null, null, View.INVISIBLE);

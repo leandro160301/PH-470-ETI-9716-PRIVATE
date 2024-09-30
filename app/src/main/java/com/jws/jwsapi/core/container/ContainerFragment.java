@@ -34,13 +34,13 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class ContainerFragment extends Fragment implements ButtonProvider, ContainerData {
 
     ContainFragmentBinding binding;
-    private int iconFlag = -1;
     @Inject
     UserManager userManager;
     @Inject
     UserRepository userRepository;
     @Inject
     StorageService storageService;
+    private int iconFlag = -1;
     private MainActivity mainActivity;
     private JwsManager jwsManager;
     private boolean stoped = false;

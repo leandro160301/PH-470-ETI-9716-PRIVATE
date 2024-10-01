@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implements LabelInterface {
+public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implements LabelActions {
 
     public final String label;
     private final List<LabelModel> mData;
@@ -102,7 +102,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
     }
 
     @Override
-    public void editClick(LabelViewHolder holder, int position) {
+    public void onEditClick(LabelViewHolder holder, int position) {
         if (positionsElements.size() <= position) return;
 
         if (isConcatenatedPosition(position)) {
@@ -156,7 +156,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
     }
 
     @Override
-    public void spinnerSelection(int i, int position, LabelViewHolder holder) {
+    public void onSpinnerSelection(int i, int position, LabelViewHolder holder) {
         try {
             if (intElements == null || intElements.size() <= position) return;
 

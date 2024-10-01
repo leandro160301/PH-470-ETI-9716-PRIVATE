@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ContainerCoreFragment extends Fragment implements ContainerButtonProvider, ContainerData {
+public class ContainerCoreFragment extends Fragment implements ContainerButtonProvider, ContainerOperations {
 
     ContainPrincipalBinding binding;
     @Inject
@@ -148,12 +148,12 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     }
 
     @Override
-    public String getIp() {
+    public String getIpAdress() {
         return NetworkUtils.getIPAddress(true);
     }
 
     @Override
-    public String getVersion() {
+    public String getFirmwareVersion() {
         return MainActivity.VERSION;
     }
 
@@ -164,7 +164,7 @@ public class ContainerCoreFragment extends Fragment implements ContainerButtonPr
     }
 
     @Override
-    public boolean getStorageState() {
+    public boolean isStorageActive() {
         return storageService.getState();
     }
 }

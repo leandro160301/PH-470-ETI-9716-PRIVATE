@@ -19,15 +19,15 @@ import com.jws.jwsapi.utils.ToastHelper;
 import java.util.List;
 
 public class LabelViewHolder extends RecyclerView.ViewHolder {
-    private final LabelInterface labelInterface;
+    private final LabelActions labelActions;
     TextView tv_campo, tv_textofijo, tv_textoconcatenado;
     LinearLayout ln_textofijo, ln_textoconcatenado, ln_editar;
     Spinner spCampo;
     private int lastPositionAdapter = -1;
 
-    public LabelViewHolder(@NonNull View itemView, LabelInterface labelInterface) {
+    public LabelViewHolder(@NonNull View itemView, LabelActions labelActions) {
         super(itemView);
-        this.labelInterface = labelInterface;
+        this.labelActions = labelActions;
         tv_campo = itemView.findViewById(R.id.tv_campo);
         tv_textofijo = itemView.findViewById(R.id.tv_textofijo);
         spCampo = itemView.findViewById(R.id.spCampo);
@@ -51,7 +51,7 @@ public class LabelViewHolder extends RecyclerView.ViewHolder {
         try {
             setupSpinner(holder.spCampo, context.getApplicationContext(), listaVariables);
             holder.tv_campo.setText(mData.get(position).getFieldName());
-            labelInterface.updateViews(holder, position);
+            labelActions.updateViews(holder, position);
         } catch (Exception e) {
             e.printStackTrace();
             ToastHelper.message("Ocurrió un error:" + e.getMessage(), R.layout.item_customtoasterror, context);
@@ -60,7 +60,7 @@ public class LabelViewHolder extends RecyclerView.ViewHolder {
         holder.spCampo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                labelInterface.spinnerSelection(i, position, holder);
+                labelActions.onSpinnerSelection(i, position, holder);
             }
 
             @Override
@@ -68,7 +68,7 @@ public class LabelViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        holder.ln_editar.setOnClickListener(view -> labelInterface.editClick(holder, position));
+        holder.ln_editar.setOnClickListener(view -> labelActions.onEditClick(holder, position));
 
         lastPositionAdapter = AdapterHelper.setAnimationSlideInLeft(holder.itemView, position, lastPositionAdapter, context);
     }

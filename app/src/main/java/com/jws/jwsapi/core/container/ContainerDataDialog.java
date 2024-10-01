@@ -9,11 +9,11 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.DialogoInformacionBinding;
 
 public class ContainerDataDialog {
-    private final ContainerData containerData;
+    private final ContainerOperations containerOperations;
     private final Context context;
 
-    public ContainerDataDialog(ContainerData containerData, Context context) {
-        this.containerData = containerData;
+    public ContainerDataDialog(ContainerOperations containerOperations, Context context) {
+        this.containerOperations = containerOperations;
         this.context = context;
     }
 
@@ -30,14 +30,14 @@ public class ContainerDataDialog {
     private void handleButtons(DialogoInformacionBinding binding, AlertDialog dialog) {
         binding.buttonc.setOnClickListener(view -> dialog.cancel());
         binding.buttons.setOnClickListener(view -> {
-            containerData.openStorage();
+            containerOperations.openStorage();
             dialog.cancel();
         });
     }
 
     private void setupViews(DialogoInformacionBinding binding) {
-        if (!containerData.getStorageState()) binding.buttons.setVisibility(View.INVISIBLE);
-        binding.tvIP.setText(containerData.getIp());
-        binding.tvVersion.setText(containerData.getVersion());
+        if (!containerOperations.isStorageActive()) binding.buttons.setVisibility(View.INVISIBLE);
+        binding.tvIP.setText(containerOperations.getIpAdress());
+        binding.tvVersion.setText(containerOperations.getFirmwareVersion());
     }
 }

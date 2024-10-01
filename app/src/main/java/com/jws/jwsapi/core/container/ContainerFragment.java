@@ -20,9 +20,7 @@ import com.jws.jwsapi.core.storage.StorageDialogHandler;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.ContainFragmentBinding;
-import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.NetworkUtils;
-import com.jws.jwsapi.utils.date.DateUtils;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -37,10 +35,9 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     @Inject
     UserManager userManager;
     @Inject
-    UserRepository userRepository;
+    ContainerUI containerUI;
     @Inject
     StorageService storageService;
-    private int iconFlag = -1;
     private MainActivity mainActivity;
     private JwsManager jwsManager;
     private boolean stoped = false;
@@ -121,9 +118,9 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                updateUserUi();
-                updateNetworkUi();
-                updateDate();
+                containerUI.updateUserUi(binding.imuser, binding.tvUsuario);
+                containerUI.updateNetworkUi(binding.btWifi, jwsManager);
+                containerUI.updateDate(binding.btUsb, binding.tvFecha);
                 if (!stoped) {
                     handler.postDelayed(this, 100);
                 }
@@ -131,43 +128,6 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
         };
 
         handler.post(runnable);
-    }
-
-    private void updateDate() {
-        binding.btUsb.setVisibility(storageService.getState() ? View.VISIBLE : View.INVISIBLE);
-        binding.tvFecha.setText(String.format("%s %s", DateUtils.getDate(), DateUtils.getHour()));
-    }
-
-    private void updateUserUi() {
-        setupIconProgrammer(4, R.drawable.icono_programador);
-        setupIconProgrammer(3, R.drawable.icono_administrador);
-        setupIconProgrammer(2, R.drawable.icono_supervisor);
-        setupIconProgrammer(1, R.drawable.icon_user);
-        setupIconProgrammer(0, R.drawable.icono_nologin);
-        binding.tvUsuario.setText(userRepository.getCurrentUser());
-    }
-
-    private void updateNetworkUi() {
-        String type = jwsManager.jwsGetCurrentNetType();
-        if (type == null) type = "";
-        switch (type) {
-            case "ETH":
-                binding.btWifi.setBackgroundResource(R.drawable.icono_ethernet_white);
-                break;
-            case "WIFI":
-                binding.btWifi.setBackgroundResource(R.drawable.wifi_white);
-                break;
-            default:
-                binding.btWifi.setBackgroundResource(R.color.transparente);
-                break;
-        }
-    }
-
-    private void setupIconProgrammer(int x, int icono_programador) {
-        if (userRepository.getLevelUser() == x && iconFlag != x) {
-            binding.imuser.setImageResource(icono_programador);
-            iconFlag = x;
-        }
     }
 
     @Override

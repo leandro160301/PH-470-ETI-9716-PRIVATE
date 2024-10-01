@@ -37,7 +37,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ServiceViewModel.WeightListener {
 
     public static int OPERATION_BUTTONS = 0;
     public static int SCALE_BUTTONS = 1;
@@ -84,6 +84,7 @@ public class HomeFragment extends Fragment {
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
         ServiceViewModelFactory factory = new ServiceViewModelFactory(mainActivity.mainClass.bza, repository);
         serviceViewModel = new ViewModelProvider(requireActivity(), factory).get(ServiceViewModel.class);
+        serviceViewModel.setWeightListener(this);
         palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
     }
 
@@ -258,4 +259,8 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
+    @Override
+    public void onWeightConformed() {
+        createWeighing();
+    }
 }

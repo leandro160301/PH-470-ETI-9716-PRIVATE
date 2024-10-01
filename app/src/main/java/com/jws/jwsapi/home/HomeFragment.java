@@ -261,6 +261,6 @@ public class HomeFragment extends Fragment implements ServiceViewModel.WeightLis
 
     @Override
     public void onWeightConformed() {
-        createWeighing();
+        getActivity().runOnUiThread(this::createWeighing);
     }
 }

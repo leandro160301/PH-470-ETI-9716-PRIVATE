@@ -1,6 +1,7 @@
 package com.service.Comunicacion;
 
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public interface ButtonProvider {
@@ -12,6 +13,7 @@ public interface ButtonProvider {
     Button getButton5();
     Button getButton6();
     TextView getTitle();
+    LinearLayout getMenu();
    // Button getButton7();
    // Button getButtonArriba();
 }

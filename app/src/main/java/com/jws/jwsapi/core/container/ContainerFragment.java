@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -163,6 +164,11 @@ public class ContainerFragment extends Fragment implements ButtonProvider, Conta
     @Override
     public TextView getTitle() {
         return binding.tvTitulo;
+    }
+
+    @Override
+    public LinearLayout getMenu() {
+        return binding.lnMenu;
     }
 
     @Override

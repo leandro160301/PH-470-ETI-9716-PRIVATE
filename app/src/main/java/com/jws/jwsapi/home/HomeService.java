@@ -1,7 +1,6 @@
 package com.jws.jwsapi.home;
 
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.printer.PrinterManager;
 import com.jws.jwsapi.core.printer.PrinterPreferences;

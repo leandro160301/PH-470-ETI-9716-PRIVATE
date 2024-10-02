@@ -69,7 +69,7 @@ public class PrinterFragment extends Fragment {
     }
 
     private void initPrinter() {
-        printerManager = new PrinterManager(getContext(), mainActivity, userRepository, printerPreferences, labelManager,weighRepository);
+        printerManager = new PrinterManager(getContext(), mainActivity, userRepository, printerPreferences, labelManager, weighRepository);
     }
 
     private void initTextView() {

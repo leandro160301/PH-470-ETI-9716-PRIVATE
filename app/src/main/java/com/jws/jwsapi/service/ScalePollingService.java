@@ -12,11 +12,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ScalePollingService {
 
+    private final static int PERIOD = 200;
     private final WeightConformationManager weightConformationManager;
     private final BalanzaService.Balanzas scaleService;
     private final WeighRepository repository;
     private Disposable pollingDisposable;
-    private final static int PERIOD = 200;
 
     public ScalePollingService(WeightConformationManager weightConformationManager, BalanzaService.Balanzas scaleService, WeighRepository repository) {
         this.weightConformationManager = weightConformationManager;

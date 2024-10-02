@@ -5,10 +5,10 @@ import com.jws.jwsapi.shared.WeighRepository;
 public class WeightConformationManager {
 
     private final WeighRepository weighRepository;
+    private final WeightPreferences weightPreferences;
     private int counterStable = 0;
     private boolean weightConformed = false;
     private WeightListener weightListener;
-    private final WeightPreferences weightPreferences;
 
     public WeightConformationManager(WeighRepository weighRepository, WeightPreferences weightPreferences) {
         this.weighRepository = weighRepository;

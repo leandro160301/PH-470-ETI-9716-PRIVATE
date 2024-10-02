@@ -2,10 +2,12 @@ package com.jws.jwsapi.service;
 
 import androidx.lifecycle.ViewModel;
 
-import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.service.Balanzas.BalanzaService;
 
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedFactory;
+import dagger.assisted.AssistedInject;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class ServiceViewModel extends ViewModel implements ServiceScaleButtons {
@@ -16,10 +18,14 @@ public class ServiceViewModel extends ViewModel implements ServiceScaleButtons {
     private final WeightConformationManager weightConformationManager;
     private final ScalePollingService scalePollingService;
 
-    public ServiceViewModel(BalanzaService.Balanzas scale, WeighRepository repository, PreferencesHelper preferencesHelper) {
+    @AssistedInject
+    public ServiceViewModel(
+            @Assisted BalanzaService.Balanzas scale,
+            WeighRepository repository,
+            WeightConformationManager weightConformationManager) {
+        this.weightConformationManager = weightConformationManager;
         this.scaleService = scale;
         this.repository = repository;
-        this.weightConformationManager = new WeightConformationManager(repository, new WeightPreferences(preferencesHelper));
         this.scalePollingService = new ScalePollingService(weightConformationManager, scaleService, repository);
         this.repository.setScaleActions(this);
         this.scalePollingService.startPolling();
@@ -48,6 +54,11 @@ public class ServiceViewModel extends ViewModel implements ServiceScaleButtons {
     @Override
     public void setZero() {
         scaleService.setCero(repository.getScaleNumber());
+    }
+
+    @AssistedFactory
+    public interface Factory {
+        ServiceViewModel create(BalanzaService.Balanzas scaleService);
     }
 
 }

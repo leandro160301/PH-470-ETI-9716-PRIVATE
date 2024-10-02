@@ -10,13 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.container.ContainerButtonProvider;
 import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
-import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
 import com.jws.jwsapi.pallet.Pallet;
@@ -24,7 +24,6 @@ import com.jws.jwsapi.pallet.PalletCreateFragment;
 import com.jws.jwsapi.pallet.PalletFragment;
 import com.jws.jwsapi.pallet.PalletViewModel;
 import com.jws.jwsapi.service.ServiceViewModel;
-import com.jws.jwsapi.service.ServiceViewModelFactory;
 import com.jws.jwsapi.service.WeightListener;
 import com.jws.jwsapi.shared.PalletRepository;
 import com.jws.jwsapi.shared.WeighRepository;
@@ -52,7 +51,7 @@ public class HomeFragment extends Fragment implements WeightListener {
     @Inject
     PalletRepository palletRepository;
     @Inject
-    PreferencesHelper preferencesHelper;
+    ServiceViewModel.Factory viewModelFactory;
     private HomeFragmentBinding binding;
     private ContainerButtonProvider buttonProvider;
     private MainActivity mainActivity;
@@ -84,11 +83,19 @@ public class HomeFragment extends Fragment implements WeightListener {
 
     }
 
+    @SuppressWarnings("unchecked")
     private void initViewModels() {
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
-        ServiceViewModelFactory factory = new ServiceViewModelFactory(mainActivity.mainClass.bza, repository, preferencesHelper);
-        serviceViewModel = new ViewModelProvider(requireActivity(), factory).get(ServiceViewModel.class);
+
+        serviceViewModel = new ViewModelProvider(requireActivity(), new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) viewModelFactory.create(mainActivity.mainClass.bza);
+            }
+        }).get(ServiceViewModel.class);
         serviceViewModel.setWeightListener(this);
+
         palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
     }
 

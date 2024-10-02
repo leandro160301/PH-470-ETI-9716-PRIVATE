@@ -2,6 +2,8 @@ package com.jws.jwsapi.service;
 
 import com.jws.jwsapi.shared.WeighRepository;
 
+import javax.inject.Inject;
+
 public class WeightConformationManager {
 
     private final WeighRepository weighRepository;
@@ -10,6 +12,7 @@ public class WeightConformationManager {
     private boolean weightConformed = false;
     private WeightListener weightListener;
 
+    @Inject
     public WeightConformationManager(WeighRepository weighRepository, WeightPreferences weightPreferences) {
         this.weighRepository = weighRepository;
         this.weightPreferences = weightPreferences;

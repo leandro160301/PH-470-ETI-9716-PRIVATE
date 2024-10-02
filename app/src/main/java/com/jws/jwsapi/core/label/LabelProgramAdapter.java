@@ -3,6 +3,7 @@ package com.jws.jwsapi.core.label;
 import static com.jws.jwsapi.utils.AdapterHelper.setAnimationPivot;
 import static com.jws.jwsapi.utils.SpinnerHelper.setupSpinner;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jws.jwsapi.R;
@@ -39,8 +41,9 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
 
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.standar_adapter_etiquetadeprograma, parent, false);
 
         return new ViewHolder(view);
@@ -49,7 +52,7 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         int posi = position;
-        holder.tv_campo.setText(mData.get(position).getName());
+        holder.tv_campo.setText(mData.get(posi).getName());
         setupSpinner(holder.spCampo, context, etiquetas);
         int index = etiquetas.indexOf(printerPreferences.getLabel(posi));
         if (index > -1) {
@@ -66,7 +69,7 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
             }
         });
         lastPositionAdapter = setAnimationPivot(holder.itemView, posi, lastPositionAdapter, context);
-        holder.itemView.setSelected(selectedPos == position);
+        holder.itemView.setSelected(selectedPos == posi);
     }
 
 
@@ -89,18 +92,8 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
         this.mClickListener = itemClickListener;
     }
 
-    public void removeAt(int position) {
-        mData.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mData.size());
-    }
-
+    @SuppressLint("NotifyDataSetChanged")
     public void filterList(ArrayList<LabelProgramModel> filteredList) {
-        mData = filteredList;
-        notifyDataSetChanged();
-    }
-
-    public void refrescarList(List<LabelProgramModel> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();
     }
@@ -109,7 +102,6 @@ public class LabelProgramAdapter extends RecyclerView.Adapter<LabelProgramAdapte
         void onItemClick(View view, int position);
     }
 
-    // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_campo;
         Spinner spCampo;

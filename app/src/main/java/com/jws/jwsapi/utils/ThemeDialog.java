@@ -1,4 +1,4 @@
-package com.jws.jwsapi.core.navigation;
+package com.jws.jwsapi.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.utils.ToastHelper;
 
 public class ThemeDialog {
     private final Context context;

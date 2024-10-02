@@ -106,9 +106,9 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
         if (positionsElements.size() <= position) return;
 
         if (isConcatenatedPosition(position)) {
-            new LabelConcatDialog(context, printerPreferences).showDialog(label, position, holder.tv_textoconcatenado, varElements);
+            new LabelConcatDialog(context, printerPreferences).showDialog(label, position, holder.tvConcatenatedText, varElements);
         } else if (isStaticPosition(positionsElements.get(position), 1)) {
-            keyboard(holder.tv_textofijo, "Ingrese el texto fijo", context, texto -> handleInputText(position, texto));
+            keyboard(holder.tvStaticText, "Ingrese el texto fijo", context, texto -> handleInputText(position, texto));
         }
     }
 
@@ -128,17 +128,17 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
 
         if (isConcatenatedOption(selectedItem, constantsSize)) {
             setupPositionList(position, 2);
-            handleVisibilityElements(holder, View.VISIBLE, holder.ln_editar, holder.ln_textofijo, View.GONE);
+            handleVisibilityElements(holder, View.VISIBLE, holder.lnEdit, holder.lnStaticText, View.GONE);
             return;
         } else {
-            handleVisibility(holder.ln_textoconcatenado, View.GONE, View.GONE, holder.ln_editar);
+            handleVisibility(holder.lnConcatenatedText, View.GONE, View.GONE, holder.lnEdit);
         }
         if (isStaticTextOption(selectedItem, constantsSize)) {
-            handleVisibility(holder.ln_editar, View.VISIBLE, View.GONE, holder.ln_textoconcatenado);
+            handleVisibility(holder.lnEdit, View.VISIBLE, View.GONE, holder.lnConcatenatedText);
             setupPositionList(position, 1);
             setupTextPosition(position, holder);
         } else {
-            handleVisibility(holder.ln_textofijo, View.GONE, View.GONE, holder.ln_editar);
+            handleVisibility(holder.lnStaticText, View.GONE, View.GONE, holder.lnEdit);
         }
 
     }
@@ -162,18 +162,18 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
 
             intInternalElements.set(position, i);
             if (isConcatenatedValue(i)) {
-                holder.tv_textoconcatenado.setText(getConcatenatedValue(position));
-                handleVisibilityElements(holder, View.VISIBLE, holder.ln_editar, holder.ln_textofijo, View.GONE);
+                holder.tvConcatenatedText.setText(getConcatenatedValue(position));
+                handleVisibilityElements(holder, View.VISIBLE, holder.lnEdit, holder.lnStaticText, View.GONE);
                 setupPositionList(position, 2);
                 return;
             }
             if (isStaticText(i)) {
-                handleVisibility(holder.ln_textoconcatenado, View.GONE, View.GONE, holder.ln_editar);
+                handleVisibility(holder.lnConcatenatedText, View.GONE, View.GONE, holder.lnEdit);
                 setupTextPosition(position, holder);
                 setupPositionList(position, 1);
-                handleVisibilityElements(holder, View.GONE, holder.ln_textofijo, holder.ln_editar, View.VISIBLE);
+                handleVisibilityElements(holder, View.GONE, holder.lnStaticText, holder.lnEdit, View.VISIBLE);
             } else {
-                handleVisibility(holder.ln_textofijo, View.GONE, View.GONE, holder.ln_editar);
+                handleVisibility(holder.lnStaticText, View.GONE, View.GONE, holder.lnEdit);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,7 +198,7 @@ public class LabelAdapter extends RecyclerView.Adapter<LabelViewHolder> implemen
 
     private void setupTextPosition(int position, LabelViewHolder holder) {
         if (staticElements != null && staticElements.size() > position) {
-            holder.tv_textofijo.setText(staticElements.get(position));
+            holder.tvStaticText.setText(staticElements.get(position));
         }
     }
 

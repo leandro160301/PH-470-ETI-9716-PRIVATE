@@ -1,4 +1,4 @@
-package com.jws.jwsapi.core.navigation;
+package com.jws.jwsapi.utils;
 
 public interface ThemeInterface {
     int getPreferencesManagerBaseTheme();

@@ -316,7 +316,7 @@
 
     <!--menu feature-->
     <string-array name="menu">
-        <item>Menu serviceScaleButtons</item>
+        <item>Menu service</item>
         <item>Menu configuracion</item>
         <item>Comunicacion</item>
         <item>Usuarios</item>

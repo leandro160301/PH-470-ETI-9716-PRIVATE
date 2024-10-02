@@ -20,21 +20,21 @@ import java.util.List;
 
 public class LabelViewHolder extends RecyclerView.ViewHolder {
     private final LabelActions labelActions;
-    TextView tv_campo, tv_textofijo, tv_textoconcatenado;
-    LinearLayout ln_textofijo, ln_textoconcatenado, ln_editar;
+    TextView tvField, tvStaticText, tvConcatenatedText;
+    LinearLayout lnStaticText, lnConcatenatedText, lnEdit;
     Spinner spCampo;
     private int lastPositionAdapter = -1;
 
     public LabelViewHolder(@NonNull View itemView, LabelActions labelActions) {
         super(itemView);
         this.labelActions = labelActions;
-        tv_campo = itemView.findViewById(R.id.tv_campo);
-        tv_textofijo = itemView.findViewById(R.id.tv_textofijo);
+        tvField = itemView.findViewById(R.id.tv_campo);
+        tvStaticText = itemView.findViewById(R.id.tv_textofijo);
         spCampo = itemView.findViewById(R.id.spCampo);
-        tv_textoconcatenado = itemView.findViewById(R.id.tv_textoconcatenado);
-        ln_textofijo = itemView.findViewById(R.id.ln_textofijo);
-        ln_textoconcatenado = itemView.findViewById(R.id.ln_textoconcatenado);
-        ln_editar = itemView.findViewById(R.id.ln_editar);
+        tvConcatenatedText = itemView.findViewById(R.id.tv_textoconcatenado);
+        lnStaticText = itemView.findViewById(R.id.ln_textofijo);
+        lnConcatenatedText = itemView.findViewById(R.id.ln_textoconcatenado);
+        lnEdit = itemView.findViewById(R.id.ln_editar);
     }
 
     public static void handleVisibility(LinearLayout holder, int gone, int gone1, LinearLayout holder1) {
@@ -43,14 +43,14 @@ public class LabelViewHolder extends RecyclerView.ViewHolder {
     }
 
     public static void handleVisibilityElements(LabelViewHolder holder, int visible, LinearLayout holder1, LinearLayout holder2, int gone) {
-        handleVisibility(holder.ln_textoconcatenado, visible, View.VISIBLE, holder1);
+        handleVisibility(holder.lnConcatenatedText, visible, View.VISIBLE, holder1);
         holder2.setVisibility(gone);
     }
 
-    void bind(@NonNull LabelViewHolder holder, int position, Context context, List<String> listaVariables, List<LabelModel> mData) {
+    void bind(@NonNull LabelViewHolder holder, int position, Context context, List<String> variableList, List<LabelModel> mData) {
         try {
-            setupSpinner(holder.spCampo, context.getApplicationContext(), listaVariables);
-            holder.tv_campo.setText(mData.get(position).getFieldName());
+            setupSpinner(holder.spCampo, context.getApplicationContext(), variableList);
+            holder.tvField.setText(mData.get(position).getFieldName());
             labelActions.updateViews(holder, position);
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +68,7 @@ public class LabelViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        holder.ln_editar.setOnClickListener(view -> labelActions.onEditClick(holder, position));
+        holder.lnEdit.setOnClickListener(view -> labelActions.onEditClick(holder, position));
 
         lastPositionAdapter = AdapterHelper.setAnimationSlideInLeft(holder.itemView, position, lastPositionAdapter, context);
     }

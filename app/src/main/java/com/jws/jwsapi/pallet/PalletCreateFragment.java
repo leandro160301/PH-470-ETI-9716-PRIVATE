@@ -72,7 +72,6 @@ public class PalletCreateFragment extends Fragment {
         binding.btNewPaller.setOnClickListener(v -> palletViewModel.createPallet());
     }
 
-
     private void setupButtons() {
         if (buttonProvider != null) {
             buttonProvider.getButtonHome().setOnClickListener(view -> mainActivity.mainClass.openFragmentPrincipal());

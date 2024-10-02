@@ -39,8 +39,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class HomeFragment extends Fragment implements ServiceViewModel.WeightListener {
 
-    public static int OPERATION_BUTTONS = 0;
-    public static int SCALE_BUTTONS = 1;
+    private static final int OPERATION_BUTTONS = 0;
+    private static final int SCALE_BUTTONS = 1;
     @Inject
     UserManager userManager;
     @Inject

@@ -1339,6 +1339,7 @@ public String Peso_conocido(String pesoconocido,String PuntoDecimal){
             serialPort.write("KZERO\r\n");
             System.out.println("OPTIMA: ZERO");
         }
+        taraDigital=0;
         taraDigitalStr="0";
     }
 

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jws.jwsapi.MainActivity;
@@ -23,8 +22,8 @@ import com.jws.jwsapi.pallet.Pallet;
 import com.jws.jwsapi.pallet.PalletCreateFragment;
 import com.jws.jwsapi.pallet.PalletFragment;
 import com.jws.jwsapi.pallet.PalletViewModel;
-import com.jws.jwsapi.service.ServiceViewModel;
-import com.jws.jwsapi.service.WeightListener;
+import com.jws.jwsapi.scale.ScaleViewModel;
+import com.jws.jwsapi.scale.WeightConformationListener;
 import com.jws.jwsapi.shared.PalletRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.ToastHelper;
@@ -38,7 +37,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends Fragment implements WeightListener {
+public class HomeFragment extends Fragment implements WeightConformationListener {
 
     private static final int OPERATION_BUTTONS = 0;
     private static final int SCALE_BUTTONS = 1;
@@ -51,12 +50,12 @@ public class HomeFragment extends Fragment implements WeightListener {
     @Inject
     PalletRepository palletRepository;
     @Inject
-    ServiceViewModel.Factory viewModelFactory;
+    ScaleViewModel.Factory viewModelFactory;
     private HomeFragmentBinding binding;
     private ContainerButtonProvider buttonProvider;
     private MainActivity mainActivity;
     private WeighingViewModel weighingViewModel;
-    private ServiceViewModel serviceViewModel;
+    private ScaleViewModel serviceScaleViewModel;
     private PalletViewModel palletViewModel;
     private int buttons = OPERATION_BUTTONS;
 
@@ -87,14 +86,14 @@ public class HomeFragment extends Fragment implements WeightListener {
     private void initViewModels() {
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
 
-        serviceViewModel = new ViewModelProvider(requireActivity(), new ViewModelProvider.Factory() {
+        serviceScaleViewModel = new ViewModelProvider(requireActivity(), new ViewModelProvider.Factory() {
             @NonNull
             @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            public <T extends androidx.lifecycle.ViewModel> T create(@NonNull Class<T> modelClass) {
                 return (T) viewModelFactory.create(mainActivity.mainClass.bza);
             }
-        }).get(ServiceViewModel.class);
-        serviceViewModel.setWeightListener(this);
+        }).get(ScaleViewModel.class);
+        serviceScaleViewModel.setWeightListener(this);
 
         palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
     }
@@ -168,7 +167,7 @@ public class HomeFragment extends Fragment implements WeightListener {
         if (weighingResponse != null) {
             if (weighingResponse.getStatus()) {
                 showMessage(requireContext().getString(R.string.toast_message_weighing_created), R.layout.item_customtoastok);
-                homeService.print(mainActivity, serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
+                homeService.print(mainActivity, serviceScaleViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
                 repository.setTare();
             } else {
                 showMessage(weighingResponse.getError(), R.layout.item_customtoasterror);
@@ -206,7 +205,7 @@ public class HomeFragment extends Fragment implements WeightListener {
             setupButton(buttonProvider.getButton2(), R.string.button_scale_tare,
                     view -> repository.setTare(), View.VISIBLE);
             setupButton(buttonProvider.getButton3(), R.string.button_scale_print,
-                    view -> homeService.printMemory(mainActivity, serviceViewModel.getScaleService().getSerialPort(repository.getScaleNumber())), View.VISIBLE);
+                    view -> homeService.printMemory(mainActivity, serviceScaleViewModel.getScaleService().getSerialPort(repository.getScaleNumber())), View.VISIBLE);
             setupButton(buttonProvider.getButton4(), null, null, View.INVISIBLE);
             setupButton(buttonProvider.getButton5(), null, null, View.INVISIBLE);
         }

@@ -21,6 +21,7 @@ public class ServiceViewModel extends ViewModel implements ServiceScaleButtons {
     private int counterStable = 0;
     private WeightListener weightListener;
     private boolean weightConformed = false;
+
     public ServiceViewModel(BalanzaService.Balanzas scale, WeighRepository repository) {
         this.scaleService = scale;
         this.repository = repository;

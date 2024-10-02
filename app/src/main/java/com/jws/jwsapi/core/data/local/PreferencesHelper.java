@@ -61,6 +61,15 @@ public class PreferencesHelper {
         return sharedPreferences.getFloat(key, defaultValue);
     }
 
+    public long getLong(String key, long value) {
+        return sharedPreferences.getLong(key, value);
+    }
+
+    public void putLong(String key, long value) {
+        editor.putLong(key, value);
+        editor.apply();
+    }
+
     public void putIntegerList(String key, List<Integer> list) {
         String json = gson.toJson(list);
         editor.putString(key, json);
@@ -88,5 +97,4 @@ public class PreferencesHelper {
         }.getType();
         return gson.fromJson(json, type);
     }
-
 }

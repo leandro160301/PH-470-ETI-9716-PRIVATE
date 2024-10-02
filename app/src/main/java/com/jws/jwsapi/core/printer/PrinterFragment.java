@@ -18,6 +18,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.databinding.StandarImpresorasBinding;
 import com.jws.jwsapi.shared.UserRepository;
+import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.NetworkUtils;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.service.Comunicacion.ButtonProvider;
@@ -38,6 +39,8 @@ public class PrinterFragment extends Fragment {
     LabelManager labelManager;
     @Inject
     UserRepository userRepository;
+    @Inject
+    WeighRepository weighRepository;
     MainActivity mainActivity;
     PrinterManager printerManager;
     StandarImpresorasBinding binding;
@@ -66,7 +69,7 @@ public class PrinterFragment extends Fragment {
     }
 
     private void initPrinter() {
-        printerManager = new PrinterManager(getContext(), mainActivity, userRepository, printerPreferences, labelManager);
+        printerManager = new PrinterManager(getContext(), mainActivity, userRepository, printerPreferences, labelManager,weighRepository);
     }
 
     private void initTextView() {

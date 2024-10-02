@@ -2,6 +2,7 @@ package com.jws.jwsapi.service;
 
 import androidx.lifecycle.ViewModel;
 
+import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.service.Balanzas.BalanzaService;
 
@@ -15,10 +16,10 @@ public class ServiceViewModel extends ViewModel implements ServiceScaleButtons {
     private final WeightConformationManager weightConformationManager;
     private final ScalePollingService scalePollingService;
 
-    public ServiceViewModel(BalanzaService.Balanzas scale, WeighRepository repository) {
+    public ServiceViewModel(BalanzaService.Balanzas scale, WeighRepository repository, PreferencesHelper preferencesHelper) {
         this.scaleService = scale;
         this.repository = repository;
-        this.weightConformationManager = new WeightConformationManager(repository);
+        this.weightConformationManager = new WeightConformationManager(repository, new WeightPreferences(preferencesHelper));
         this.scalePollingService = new ScalePollingService(weightConformationManager, scaleService, repository);
         this.repository.setScaleActions(this);
         this.scalePollingService.startPolling();

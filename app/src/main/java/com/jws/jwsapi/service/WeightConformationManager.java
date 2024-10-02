@@ -4,26 +4,29 @@ import com.jws.jwsapi.shared.WeighRepository;
 
 public class WeightConformationManager {
 
-    private static final int STABLE_COUNT_THRESHOLD = 15;
-    private static final double ZERO_BAND = 49.0;
     private final WeighRepository weighRepository;
     private int counterStable = 0;
     private boolean weightConformed = false;
     private WeightListener weightListener;
+    private final WeightPreferences weightPreferences;
 
-    public WeightConformationManager(WeighRepository weighRepository) {
+    public WeightConformationManager(WeighRepository weighRepository, WeightPreferences weightPreferences) {
         this.weighRepository = weighRepository;
+        this.weightPreferences = weightPreferences;
     }
 
     void evaluateWeightConformation(boolean stable) {
         double grossWeight = weighRepository.getGross();
-        if (stable && grossWeight > ZERO_BAND && !weightConformed) {
+        double zeroBand = weightPreferences.getZeroBand();
+        int stableCountThreshold = weightPreferences.getStableCountThreshold();
+
+        if (stable && grossWeight > zeroBand && !weightConformed) {
             counterStable++;
         } else {
             counterStable = 0;
         }
 
-        if (counterStable >= STABLE_COUNT_THRESHOLD) {
+        if (counterStable >= stableCountThreshold) {
             if (weightListener != null) {
                 weightListener.onWeightConformed();
             }
@@ -31,7 +34,7 @@ public class WeightConformationManager {
             counterStable = 0;
         }
 
-        if (grossWeight < ZERO_BAND) {
+        if (grossWeight < zeroBand) {
             weightConformed = false;
         }
     }

@@ -16,6 +16,7 @@ public class ScalePollingService {
     private final BalanzaService.Balanzas scaleService;
     private final WeighRepository repository;
     private Disposable pollingDisposable;
+    private final static int PERIOD = 200;
 
     public ScalePollingService(WeightConformationManager weightConformationManager, BalanzaService.Balanzas scaleService, WeighRepository repository) {
         this.weightConformationManager = weightConformationManager;
@@ -24,7 +25,7 @@ public class ScalePollingService {
     }
 
     public void startPolling() {
-        pollingDisposable = Observable.interval(200, TimeUnit.MILLISECONDS)
+        pollingDisposable = Observable.interval(PERIOD, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tick -> updateScaleData());

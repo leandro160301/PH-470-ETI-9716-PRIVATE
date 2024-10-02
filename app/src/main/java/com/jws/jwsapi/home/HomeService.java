@@ -1,6 +1,7 @@
 package com.jws.jwsapi.home;
 
 import com.jws.jwsapi.MainActivity;
+import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.printer.PrinterManager;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
@@ -42,7 +43,7 @@ public class HomeService {
                         labelManager.setNumber(String.valueOf(pallet.getDone()));
                         labelManager.setOrigin(pallet.getOriginPallet());
                         labelManager.setName(pallet.getName());
-                        PrinterManager printerManager = new PrinterManager(mainActivity, mainActivity, userRepository, printerPreferences, labelManager);
+                        PrinterManager printerManager = new PrinterManager(mainActivity, mainActivity, userRepository, printerPreferences, labelManager, weighRepository);
                         printerManager.printLabelInMemory(serialPort, 0);
                     }
                 } catch (Exception e) {
@@ -62,7 +63,7 @@ public class HomeService {
     public void printMemory(MainActivity mainActivity, PuertosSerie2 serialPort) {
         Runnable myRunnable = () -> {
             try {
-                PrinterManager printerManager = new PrinterManager(mainActivity, mainActivity, userRepository, printerPreferences, labelManager);
+                PrinterManager printerManager = new PrinterManager(mainActivity, mainActivity, userRepository, printerPreferences, labelManager, weighRepository);
                 printerManager.printLastLabel(serialPort);
             } catch (Exception e) {
                 e.printStackTrace();

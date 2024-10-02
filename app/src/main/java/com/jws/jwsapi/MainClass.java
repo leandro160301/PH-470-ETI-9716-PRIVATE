@@ -24,7 +24,6 @@ public class MainClass implements OnFragmentChangeListener {
     private final MainActivity mainActivity;
     public BalanzaService service;
     public BalanzaService.Balanzas bza;
-    public int nBza = 1;
     Boolean clickEnable = true;
     UserRepository userRepository;
 

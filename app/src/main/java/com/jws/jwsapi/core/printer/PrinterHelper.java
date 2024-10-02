@@ -7,6 +7,7 @@ import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.label.LabelModel;
 import com.jws.jwsapi.shared.UserRepository;
+import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.date.DateUtils;
 import com.jws.jwsapi.utils.file.FileUtils;
@@ -21,13 +22,15 @@ public class PrinterHelper {
     private final PrinterPreferences printerPreferences;
     private final LabelManager labelManager;
     private final UserRepository userRepository;
+    private final WeighRepository weighRepository;
 
     @Inject
-    public PrinterHelper(MainActivity mainActivity, PrinterPreferences printerPreferences, LabelManager labelManager, UserRepository userRepository) {
+    public PrinterHelper(MainActivity mainActivity, PrinterPreferences printerPreferences, LabelManager labelManager, UserRepository userRepository, WeighRepository weighRepository) {
         this.mainActivity = mainActivity;
         this.printerPreferences = printerPreferences;
         this.labelManager = labelManager;
         this.userRepository = userRepository;
+        this.weighRepository = weighRepository;
     }
 
     private static void addIfNotNull(List<String> finalElements, String finalElement) {
@@ -169,11 +172,11 @@ public class PrinterHelper {
             case 0:
                 return "";
             case 1:
-                return mainActivity.mainClass.bza.getBrutoStr(mainActivity.mainClass.nBza) + mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
+                return mainActivity.mainClass.bza.getBrutoStr(weighRepository.getScaleNumber()) + mainActivity.mainClass.bza.getUnidad(weighRepository.getScaleNumber());
             case 2:
-                return mainActivity.mainClass.bza.getTaraDigital(mainActivity.mainClass.nBza) + mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
+                return mainActivity.mainClass.bza.getTaraDigital(weighRepository.getScaleNumber()) + mainActivity.mainClass.bza.getUnidad(weighRepository.getScaleNumber());
             case 3:
-                return mainActivity.mainClass.bza.getNetoStr(mainActivity.mainClass.nBza) + mainActivity.mainClass.bza.getUnidad(mainActivity.mainClass.nBza);
+                return mainActivity.mainClass.bza.getNetoStr(weighRepository.getScaleNumber()) + mainActivity.mainClass.bza.getUnidad(weighRepository.getScaleNumber());
             case 4:
                 return userRepository.getCurrentUser();
             case 5:

@@ -16,6 +16,7 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.container.ContainerButtonProvider;
 import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
+import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.core.user.UserManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
 import com.jws.jwsapi.pallet.Pallet;
@@ -50,6 +51,8 @@ public class HomeFragment extends Fragment implements WeightListener {
     HomeService homeService;
     @Inject
     PalletRepository palletRepository;
+    @Inject
+    PreferencesHelper preferencesHelper;
     private HomeFragmentBinding binding;
     private ContainerButtonProvider buttonProvider;
     private MainActivity mainActivity;
@@ -83,7 +86,7 @@ public class HomeFragment extends Fragment implements WeightListener {
 
     private void initViewModels() {
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
-        ServiceViewModelFactory factory = new ServiceViewModelFactory(mainActivity.mainClass.bza, repository);
+        ServiceViewModelFactory factory = new ServiceViewModelFactory(mainActivity.mainClass.bza, repository, preferencesHelper);
         serviceViewModel = new ViewModelProvider(requireActivity(), factory).get(ServiceViewModel.class);
         serviceViewModel.setWeightListener(this);
         palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);

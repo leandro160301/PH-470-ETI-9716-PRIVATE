@@ -1,14 +1,30 @@
 package com.jws.jwsapi.utils;
 
+import static com.jws.jwsapi.dialog.DialogUtil.dialogLoading;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.functions.T;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.reflect.Field;
+import java.util.List;
+
+@SuppressWarnings("unused")
 public class ExcelHelper {
 
-   /* public void dialogoExcel(List<FormModelGuardados> lista, Context context) throws IOException {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-        View mView = LayoutInflater.from(context).inflate(R.layout.dialogo_transferenciaarchivo, null);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-        excelGuardados(lista);
+    @SuppressWarnings("unused")
+    public static void excelDialog(List<T> list, Context context) {
+        final AlertDialog dialog = dialogLoading(context, "Creando excel...");
+        exportToExcel(list);
         new Thread(() -> {
             try {
                 Thread.sleep(7000);
@@ -24,55 +40,63 @@ public class ExcelHelper {
         }).start();
     }
 
+    @SuppressWarnings("all")
+    private static <T> void exportToExcel(List<T> listModel) {
+        if (listModel == null || listModel.isEmpty()) {
+            return;
+        }
 
-    public void excelGuardados(List<FormModelGuardados> lista) throws IOException {
-        if(lista.size()>0){
-            int j=1;
-            File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Registro.xls");
-            while(filePath.exists()){
-                filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Registro ("+ j +").xls");
-                j++;
-            }
-            HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-            HSSFSheet hssfSheet = hssfWorkbook.createSheet("Pesadas");
-            HSSFRow row = hssfSheet.createRow(0);
-            row.createCell(0).setCellValue("Id");
-            row.createCell(1).setCellValue("Producto");
-            row.createCell(2).setCellValue("Lote");
-            row.createCell(3).setCellValue("Cliente");
-            row.createCell(4).setCellValue("Dimensiones");
-            row.createCell(5).setCellValue("Neto");
-            row.createCell(6).setCellValue("Bruto");
-            row.createCell(7).setCellValue("Tara");
-            row.createCell(8).setCellValue("Fecha");
-            row.createCell(9).setCellValue("Hora");
+        File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Informe.xls");
+        int j = 1;
+        while (filePath.exists()) {
+            filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Informe (" + j + ").xls");
+            j++;
+        }
 
-            for(int i=0;i<lista.size();i++){
-                row = hssfSheet.createRow(i + 1);
-                row.createCell(0).setCellValue(lista.get(i).getId());
-                row.createCell(1).setCellValue(lista.get(i).getProducto());
-                row.createCell(2).setCellValue(lista.get(i).getLote());
-                row.createCell(3).setCellValue(lista.get(i).getEmpresa());
-                row.createCell(4).setCellValue(lista.get(i).getDimensiones());
-                row.createCell(5).setCellValue(lista.get(i).getNeto());
-                row.createCell(6).setCellValue(lista.get(i).getBruto());
-                row.createCell(7).setCellValue(lista.get(i).getTara());
-                row.createCell(8).setCellValue(lista.get(i).getFecha());
-                row.createCell(9).setCellValue(lista.get(i).getHora());
-            }
-            try {
-                if (!filePath.exists()){
-                    filePath.createNewFile();
+        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet("INFORME");
+
+        HSSFRow headerRow = hssfSheet.createRow(0);
+        Field[] fields = listModel.get(0).getClass().getDeclaredFields();
+
+        for (int i = 0; i < fields.length; i++) {
+            headerRow.createCell(i).setCellValue(fields[i].getName());
+        }
+
+        for (int i = 0; i < listModel.size(); i++) {
+            HSSFRow row = hssfSheet.createRow(i + 1);
+            T item = listModel.get(i);
+
+            for (int k = 0; k < fields.length; k++) {
+                Field field = fields[k];
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(item);
+                    if (value != null) {
+                        row.createCell(k).setCellValue(value.toString());
+                    } else {
+                        row.createCell(k).setCellValue("");
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
-                FileOutputStream fileOutputStream= new FileOutputStream(filePath);
-                hssfWorkbook.write(fileOutputStream);
-                if (fileOutputStream!=null){
-                    fileOutputStream.flush();
-                    fileOutputStream.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
-    }*/
+
+        try {
+            if (!filePath.exists()) {
+                filePath.createNewFile();
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            hssfWorkbook.write(fileOutputStream);
+
+            if (fileOutputStream != null) {
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+

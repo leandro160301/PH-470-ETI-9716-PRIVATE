@@ -22,7 +22,7 @@ public class Utils {
         return true;
     }
 
-
+    @SuppressWarnings("unused")
     public static boolean isLong(String strNum) {
         if (strNum == null) {
             return false;
@@ -35,16 +35,16 @@ public class Utils {
         return true;
     }
 
-    public static String format(String peso, int decimales) {
-        String formato = "0.";
-        StringBuilder capacidadBuilder = new StringBuilder(formato);
-        for (int i = 0; i < decimales; i++) {
+    public static String format(String weight, int decimals) {
+        String format = "0.";
+        StringBuilder capacidadBuilder = new StringBuilder(format);
+        for (int i = 0; i < decimals; i++) {
             capacidadBuilder.append("0");
         }
-        formato = capacidadBuilder.toString();
-        DecimalFormat df = new DecimalFormat(formato);
+        format = capacidadBuilder.toString();
+        DecimalFormat df = new DecimalFormat(format);
 
-        double pesoNumero = Double.parseDouble(peso);
+        double pesoNumero = Double.parseDouble(weight);
         return df.format(pesoNumero);
     }
 
@@ -76,23 +76,25 @@ public class Utils {
         return (int) Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    public static String pointDecimalFormat(String numero, int decimales) {
+    @SuppressWarnings("unused")
+    public static String pointDecimalFormat(String number, int decimal) {
         try {
-            Double.parseDouble(numero);
+            Double.parseDouble(number);
         } catch (NumberFormatException e) {
             return "0000";
         }
         StringBuilder format = new StringBuilder("0");
-        if (decimales > 0) {
+        if (decimal > 0) {
             format.append(".");
-            for (int i = 0; i < decimales; i++) {
+            for (int i = 0; i < decimal; i++) {
                 format.append("0");
             }
         }
         DecimalFormat decimalFormat = new DecimalFormat(format.toString());
-        return decimalFormat.format(Double.parseDouble(numero));
+        return decimalFormat.format(Double.parseDouble(number));
     }
 
+    @SuppressWarnings("unused")
     public static int indexOfArray(String[] array, String target) {
         for (int i = 0; i < array.length; i++) {
             if (array[i].equals(target)) {

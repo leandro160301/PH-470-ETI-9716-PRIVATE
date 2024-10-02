@@ -24,6 +24,7 @@ import com.jws.jwsapi.pallet.PalletFragment;
 import com.jws.jwsapi.pallet.PalletViewModel;
 import com.jws.jwsapi.service.ServiceViewModel;
 import com.jws.jwsapi.service.ServiceViewModelFactory;
+import com.jws.jwsapi.service.WeightListener;
 import com.jws.jwsapi.shared.PalletRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.ToastHelper;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends Fragment implements ServiceViewModel.WeightListener {
+public class HomeFragment extends Fragment implements WeightListener {
 
     private static final int OPERATION_BUTTONS = 0;
     private static final int SCALE_BUTTONS = 1;
@@ -89,9 +90,9 @@ public class HomeFragment extends Fragment implements ServiceViewModel.WeightLis
     }
 
     private void observeViewModels() {
-        repository.getNet().observe(getViewLifecycleOwner(), net -> handleWeighUpdate(net, binding.tvNet));
+        repository.getNetStr().observe(getViewLifecycleOwner(), net -> handleWeighUpdate(net, binding.tvNet));
 
-        repository.getGross().observe(getViewLifecycleOwner(), gross -> handleWeighUpdate(gross, binding.tvGross));
+        repository.getGrossStr().observe(getViewLifecycleOwner(), gross -> handleWeighUpdate(gross, binding.tvGross));
 
         repository.getStable().observe(getViewLifecycleOwner(), stable -> binding.imEstable.setVisibility(stable ? View.VISIBLE : View.INVISIBLE));
 
@@ -240,8 +241,8 @@ public class HomeFragment extends Fragment implements ServiceViewModel.WeightLis
     private void createWeighing() {
         String unit = repository.getUnit().getValue();
         String tare = repository.getTare().getValue();
-        String net = repository.getNet().getValue();
-        String gross = repository.getGross().getValue();
+        String net = repository.getNetStr().getValue();
+        String gross = repository.getGrossStr().getValue();
         if (unit != null && tare != null && net != null && gross != null) {
             weighingViewModel.createWeighing(gross, net, tare, unit);
         }

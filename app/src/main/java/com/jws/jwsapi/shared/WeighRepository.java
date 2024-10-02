@@ -9,11 +9,13 @@ import javax.inject.Singleton;
 
 @Singleton
 public class WeighRepository {
-    private final MutableLiveData<String> net = new MutableLiveData<>();
-    private final MutableLiveData<String> gross = new MutableLiveData<>();
+    private final MutableLiveData<String> netStr = new MutableLiveData<>();
+    private final MutableLiveData<String> grossStr = new MutableLiveData<>();
     private final MutableLiveData<String> unit = new MutableLiveData<>();
     private final MutableLiveData<String> tare = new MutableLiveData<>();
     private final MutableLiveData<Boolean> stable = new MutableLiveData<>();
+    private float net = 0;
+    private float gross = 0;
     private int scaleNumber = 1;
     private ServiceScaleButtons serviceScaleButtons;
 
@@ -21,12 +23,12 @@ public class WeighRepository {
         this.serviceScaleButtons = serviceScaleButtons;
     }
 
-    public LiveData<String> getNet() {
-        return net;
+    public LiveData<String> getNetStr() {
+        return netStr;
     }
 
-    public LiveData<String> getGross() {
-        return gross;
+    public LiveData<String> getGrossStr() {
+        return grossStr;
     }
 
     public LiveData<String> getUnit() {
@@ -45,19 +47,35 @@ public class WeighRepository {
         return scaleNumber;
     }
 
+    public float getNet() {
+        return net;
+    }
+
+    public float getGross() {
+        return gross;
+    }
+
     public void updateScaleNumber(int scaleNumber) {
         this.scaleNumber = scaleNumber;
     }
 
-    public void updateNet(String newNet) {
-        if (!newNet.equals(net.getValue())) {
-            net.postValue(newNet);
+    public void updateNet(float newNet) {
+        this.net = newNet;
+    }
+
+    public void updateGross(float newGross) {
+        this.gross = newGross;
+    }
+
+    public void updateNetStr(String newNet) {
+        if (!newNet.equals(netStr.getValue())) {
+            netStr.postValue(newNet);
         }
     }
 
-    public void updateGross(String newGross) {
-        if (!newGross.equals(gross.getValue())) {
-            gross.postValue(newGross);
+    public void updateGrossStr(String newGross) {
+        if (!newGross.equals(grossStr.getValue())) {
+            grossStr.postValue(newGross);
         }
     }
 

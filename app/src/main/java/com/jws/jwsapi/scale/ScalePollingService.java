@@ -31,7 +31,7 @@ public class ScalePollingService {
                 .subscribe(tick -> updateScaleData());
     }
 
-    void updateScaleData() {
+    private void updateScaleData() {
         repository.updateNetStr(scaleService.getNetoStr(repository.getScaleNumber()));
         repository.updateTare(scaleService.getTaraStr(repository.getScaleNumber()));
         repository.updateGrossStr(scaleService.getBrutoStr(repository.getScaleNumber()));

@@ -38,7 +38,6 @@ public class ScalePollingService {
         repository.updateUnit(scaleService.getUnidad(repository.getScaleNumber()));
         repository.updateNet(scaleService.getNeto(repository.getScaleNumber()));
         repository.updateGross(scaleService.getBruto(repository.getScaleNumber()));
-
         boolean stable = scaleService.getEstable(repository.getScaleNumber());
         repository.updateStable(stable);
 

@@ -17,11 +17,12 @@ public class GpioInputsService {
     private final static int ON = 0;
     private final static int PERIOD = 1; // 1 ms polling
     private final static int STABLE_THRESHOLD = 100; // 100 ms
+    private final static int INPUT_LENGHT = 4;
 
     private final JwsManager jwsManager;
     private final GpioHighListener highListener;
     private final GpioLowListener lowListener;
-    private final GpioInputState[] gpioStates = new GpioInputState[4];
+    private final GpioInputState[] gpioStates = new GpioInputState[INPUT_LENGHT];
     private final Integer[] currentInputValues = {OFF, OFF, OFF, OFF};
     private final int[] lastInputValues = {OFF, OFF, OFF, OFF};
     private Disposable pollingDisposable;
@@ -31,13 +32,12 @@ public class GpioInputsService {
         this.jwsManager = jwsManager;
         this.highListener = highListener;
         this.lowListener = lowListener;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < INPUT_LENGHT; i++) {
             gpioStates[i] = new GpioInputState();
         }
         startPolling();
     }
-
-
+    
     public void startPolling() {
         pollingDisposable = Observable.interval(PERIOD, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
@@ -45,7 +45,7 @@ public class GpioInputsService {
     }
 
     private void updateGpioData() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < INPUT_LENGHT; i++) {
             int index = i;
             currentInputValues[index] = jwsManager.jwsReadExtrnalGpioValue(index);
             if (currentInputValues[index] != null) {

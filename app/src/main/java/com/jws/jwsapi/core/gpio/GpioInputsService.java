@@ -21,30 +21,25 @@ public class GpioInputsService {
     private final JwsManager jwsManager;
     private final GpioHighListener highListener;
     private final GpioLowListener lowListener;
+    private final GpioInputState[] gpioStates = new GpioInputState[4];
     private Disposable pollingDisposable;
-
-    private int currentInputValue1 = OFF;
-    private int currentInputValue2 = OFF;
-    private int currentInputValue3 = OFF;
-    private int currentInputValue4 = OFF;
-
+    private Integer currentInputValue1 = OFF;
+    private Integer currentInputValue2 = OFF;
+    private Integer currentInputValue3 = OFF;
+    private Integer currentInputValue4 = OFF;
     private int lastInputValue1 = OFF;
     private int lastInputValue2 = OFF;
     private int lastInputValue3 = OFF;
     private int lastInputValue4 = OFF;
-
-    private final boolean[] waitHigh = new boolean[4];
-    private final boolean[] waitLow = new boolean[4];
-    private final int[] stableHighCounts = new int[4];
-    private final int[] stableLowCounts = new int[4];
-
-
 
     @Inject
     public GpioInputsService(JwsManager jwsManager, GpioHighListener highListener, GpioLowListener lowListener) {
         this.jwsManager = jwsManager;
         this.highListener = highListener;
         this.lowListener = lowListener;
+        for (int i = 0; i < 4; i++) {
+            gpioStates[i] = new GpioInputState();
+        }
         startPolling();
     }
 
@@ -61,6 +56,8 @@ public class GpioInputsService {
         currentInputValue3 = jwsManager.jwsReadExtrnalGpioValue(2);
         currentInputValue4 = jwsManager.jwsReadExtrnalGpioValue(3);
 
+        if (!isDataValid()) return;
+
         checkAndNotify(0, currentInputValue1, lastInputValue1,
                 highListener::onInput1High, lowListener::onInput1Low);
         checkAndNotify(1, currentInputValue2, lastInputValue2,
@@ -74,49 +71,62 @@ public class GpioInputsService {
         lastInputValue2 = currentInputValue2;
         lastInputValue3 = currentInputValue3;
         lastInputValue4 = currentInputValue4;
-        
+
+    }
+
+    private boolean isDataValid() {
+        return currentInputValue1 != null && currentInputValue2 != null && currentInputValue3 != null && currentInputValue4 != null;
     }
 
     private void checkAndNotify(int inputNumber, int currentInput, int lastInput,
                                 Runnable onHighCallback, Runnable onLowCallback) {
 
+        GpioInputState gpioState = gpioStates[inputNumber];
+
         if (currentInput == ON && lastInput == OFF) {
-            waitHigh[inputNumber] = true;
+            gpioState.setOnWaitHigh();
         }
-        if (waitHigh[inputNumber] && currentInput == OFF) {
-            waitHigh[inputNumber] = false;
-            stableHighCounts[inputNumber] = 0;
+        if (gpioState.isWaitHigh() && currentInput == OFF) {
+            gpioState.resetWaitHigh();
+            gpioState.resetStableHighCount();
         }
-        processStateChange(waitHigh, inputNumber, stableHighCounts, onHighCallback);
+        if (gpioState.isWaitHigh()) {
+            processStateChange(gpioState, gpioState.getStableHighCount(), gpioState::incrementStableHighCount,
+                    gpioState::resetStableHighCount, onHighCallback, gpioState::resetWaitHigh);
+        }
+
 
         if (currentInput == OFF && lastInput == ON) {
-            waitLow[inputNumber] = true;
+            gpioState.setOnWaitLow();
         }
-        if (waitLow[inputNumber] && currentInput == ON) {
-            waitLow[inputNumber] = false;
-            stableLowCounts[inputNumber] = 0;
+        if (gpioState.isWaitLow() && currentInput == ON) {
+            gpioState.resetWaitLow();
+            gpioState.resetStableLowCount();
         }
-        processStateChange(waitLow, inputNumber, stableLowCounts, onLowCallback);
+        if (gpioState.isWaitLow()) {
+            processStateChange(gpioState, gpioState.getStableLowCount(), gpioState::incrementStableLowCount,
+                    gpioState::resetStableLowCount, onLowCallback, gpioState::resetWaitLow);
+        }
+
     }
 
-    private void processStateChange(boolean[] wait, int inputNumber, int[] stableCounts, Runnable onCallback) {
-        if (wait[inputNumber]) {
-            if (stableCounts[inputNumber] >= STABLE_THRESHOLD) {
-                onCallback.run();
-                stableCounts[inputNumber] = 0;
-                wait[inputNumber] = false;
-            }
-            stableCounts[inputNumber]++;
+    private void processStateChange(GpioInputState gpioState,
+                                    int stableCount, Runnable incrementCount,
+                                    Runnable resetCount, Runnable onCallback, Runnable resetWait) {
+        if (stableCount >= STABLE_THRESHOLD) {
+            onCallback.run();
+            resetCount.run();
+            resetWait.run();
+        } else {
+            incrementCount.run();
         }
     }
-
 
     public void stopPolling() {
         if (pollingDisposable != null && !pollingDisposable.isDisposed()) {
             pollingDisposable.dispose();
         }
     }
-
 
     public int getCurrentInputValue1() {
         return currentInputValue1;
@@ -133,7 +143,5 @@ public class GpioInputsService {
     public int getCurrentInputValue4() {
         return currentInputValue4;
     }
-
-
 
 }

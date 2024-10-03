@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 import androidx.room.Room;
 
+import com.android.jws.JwsManager;
 import com.jws.jwsapi.AppDatabase;
 import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
@@ -135,6 +136,11 @@ public class AppModule {
     @Singleton
     public WeighRepository provideWeighRepository() {
         return new WeighRepository();
+    }
+
+    @Provides
+    public JwsManager provideJwsManager(@ApplicationContext Context context) {
+        return new JwsManager(context);
     }
 
 }

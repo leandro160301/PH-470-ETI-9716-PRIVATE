@@ -6,5 +6,5 @@ export declare class Store<S = Record<string, unknown>> {
     getState: () => S;
     getListeners: () => ((current?: S, prev?: S) => void)[];
     dispatch: (reducer: (state: S) => S) => S;
-    subscribe: (listener: (current?: S, prev?: S) => void) => (() => void);
+    subscribe: (highListener: (current?: S, prev?: S) => void) => (() => void);
 }

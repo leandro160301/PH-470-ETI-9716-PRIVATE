@@ -22,15 +22,9 @@ public class GpioInputsService {
     private final GpioHighListener highListener;
     private final GpioLowListener lowListener;
     private final GpioInputState[] gpioStates = new GpioInputState[4];
+    private final Integer[] currentInputValues = {OFF, OFF, OFF, OFF};
+    private final int[] lastInputValues = {OFF, OFF, OFF, OFF};
     private Disposable pollingDisposable;
-    private Integer currentInputValue1 = OFF;
-    private Integer currentInputValue2 = OFF;
-    private Integer currentInputValue3 = OFF;
-    private Integer currentInputValue4 = OFF;
-    private int lastInputValue1 = OFF;
-    private int lastInputValue2 = OFF;
-    private int lastInputValue3 = OFF;
-    private int lastInputValue4 = OFF;
 
     @Inject
     public GpioInputsService(JwsManager jwsManager, GpioHighListener highListener, GpioLowListener lowListener) {
@@ -51,31 +45,16 @@ public class GpioInputsService {
     }
 
     private void updateGpioData() {
-        currentInputValue1 = jwsManager.jwsReadExtrnalGpioValue(0);
-        currentInputValue2 = jwsManager.jwsReadExtrnalGpioValue(1);
-        currentInputValue3 = jwsManager.jwsReadExtrnalGpioValue(2);
-        currentInputValue4 = jwsManager.jwsReadExtrnalGpioValue(3);
+        for (int i = 0; i < 4; i++) {
+            int index = i;
+            currentInputValues[index] = jwsManager.jwsReadExtrnalGpioValue(index);
+            if (currentInputValues[index] != null) {
+                checkAndNotify(index, currentInputValues[index], lastInputValues[index],
+                        () -> highListener.onInputHigh(index), () -> lowListener.onInputLow(index));
+                lastInputValues[index] = currentInputValues[index];
+            }
+        }
 
-        if (!isDataValid()) return;
-
-        checkAndNotify(0, currentInputValue1, lastInputValue1,
-                highListener::onInput1High, lowListener::onInput1Low);
-        checkAndNotify(1, currentInputValue2, lastInputValue2,
-                highListener::onInput2High, lowListener::onInput2Low);
-        checkAndNotify(2, currentInputValue3, lastInputValue3,
-                highListener::onInput3High, lowListener::onInput3Low);
-        checkAndNotify(3, currentInputValue4, lastInputValue4,
-                highListener::onInput4High, lowListener::onInput4Low);
-
-        lastInputValue1 = currentInputValue1;
-        lastInputValue2 = currentInputValue2;
-        lastInputValue3 = currentInputValue3;
-        lastInputValue4 = currentInputValue4;
-
-    }
-
-    private boolean isDataValid() {
-        return currentInputValue1 != null && currentInputValue2 != null && currentInputValue3 != null && currentInputValue4 != null;
     }
 
     private void checkAndNotify(int inputNumber, int currentInput, int lastInput,
@@ -129,19 +108,19 @@ public class GpioInputsService {
     }
 
     public int getCurrentInputValue1() {
-        return currentInputValue1;
+        return currentInputValues[0];
     }
 
     public int getCurrentInputValue2() {
-        return currentInputValue2;
+        return currentInputValues[1];
     }
 
     public int getCurrentInputValue3() {
-        return currentInputValue3;
+        return currentInputValues[2];
     }
 
     public int getCurrentInputValue4() {
-        return currentInputValue4;
+        return currentInputValues[3];
     }
 
 }

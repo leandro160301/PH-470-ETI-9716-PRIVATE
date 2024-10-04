@@ -4,6 +4,7 @@ public class NavigationItems {
     // Devices
     public static final int ITEM_IMPRESORA = 0;
     public static final int ITEM_ESCANER = 1;
+    public static final int ITEM_ENTRADAS = 2;
 
     // Comunication
     public static final int ITEM_WIFI = 0;

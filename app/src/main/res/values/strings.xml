@@ -333,6 +333,7 @@
     <string-array name="menu_items_dispositivos">
         <item>Impresora</item>
         <item>Escaner</item>
+        <item>Entradas</item>
     </string-array>
 
     <string-array name="menu_items_comunicacion">

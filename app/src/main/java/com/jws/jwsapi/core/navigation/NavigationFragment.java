@@ -1,5 +1,6 @@
 package com.jws.jwsapi.core.navigation;
 
+import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_ENTRADAS;
 import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_ETHERNET;
 import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_ETIQUETAS;
 import static com.jws.jwsapi.core.navigation.NavigationItems.ITEM_FECHA_Y_HORA;
@@ -36,9 +37,10 @@ import com.android.jws.JwsManager;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
-import com.jws.jwsapi.core.gpio.GpioInputFragment;
+import com.jws.jwsapi.core.gpio.GpioFragment;
 import com.jws.jwsapi.core.label.LabelFragment;
 import com.jws.jwsapi.core.label.LabelProgramFragment;
+import com.jws.jwsapi.core.network.EthernetFragment;
 import com.jws.jwsapi.core.network.WifiFragment;
 import com.jws.jwsapi.core.printer.PrinterFragment;
 import com.jws.jwsapi.core.storage.StorageFragment;
@@ -201,8 +203,13 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     }
 
     private void handleDevicesMenu(int position) {
-        if (position == ITEM_IMPRESORA) {
-            setupSubItems(Arrays.asList(getResources().getStringArray(R.array.menu_subitems_printer)));
+        switch (position) {
+            case ITEM_IMPRESORA:
+                setupSubItems(Arrays.asList(getResources().getStringArray(R.array.menu_subitems_printer)));
+                break;
+            case ITEM_ENTRADAS:
+                mainActivity.mainClass.openFragment(new GpioFragment());
+                break;
         }
     }
 
@@ -223,7 +230,7 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
                 mainActivity.mainClass.openFragment(new WifiFragment());
                 break;
             case ITEM_ETHERNET:
-                mainActivity.mainClass.openFragment(new GpioInputFragment());
+                mainActivity.mainClass.openFragment(new EthernetFragment());
                 break;
         }
     }

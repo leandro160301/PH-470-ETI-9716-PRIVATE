@@ -27,6 +27,14 @@ public class GpioViewModel extends ViewModel {
     private final MutableLiveData<Integer> inputValue6 = new MutableLiveData<>();
     private final MutableLiveData<Integer> inputValue7 = new MutableLiveData<>();
     private final MutableLiveData<Integer> inputValue8 = new MutableLiveData<>();
+    private final MutableLiveData<Integer> outputValue1 = new MutableLiveData<>();
+    private final MutableLiveData<Integer> outputValue2 = new MutableLiveData<>();
+    private final MutableLiveData<Integer> outputValue3 = new MutableLiveData<>();
+    private final MutableLiveData<Integer> outputValue4 = new MutableLiveData<>();
+    private final MutableLiveData<Integer> outputValue5 = new MutableLiveData<>();
+    private final MutableLiveData<Integer> outputValue6 = new MutableLiveData<>();
+    private final MutableLiveData<Integer> outputValue7 = new MutableLiveData<>();
+    private final MutableLiveData<Integer> outputValue8 = new MutableLiveData<>();
     private Disposable pollingDisposable;
 
     @Inject
@@ -39,11 +47,11 @@ public class GpioViewModel extends ViewModel {
         pollingDisposable = Observable.interval(PERIOD, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(tick -> fetchInputValues());
+                .subscribe(tick -> fetchGpioValues());
     }
 
 
-    private void fetchInputValues() {
+    private void fetchGpioValues() {
         inputValue1.setValue(gpioManager.getInputValue1());
         inputValue2.setValue(gpioManager.getInputValue2());
         inputValue3.setValue(gpioManager.getInputValue3());
@@ -52,6 +60,15 @@ public class GpioViewModel extends ViewModel {
         inputValue6.setValue(gpioManager.getInputValue6());
         inputValue7.setValue(gpioManager.getInputValue7());
         inputValue8.setValue(gpioManager.getInputValue8());
+
+        /*outputValue1.setValue(gpioManager.getOutputValue1());
+        outputValue2.setValue(gpioManager.getOutputValue2());
+        outputValue3.setValue(gpioManager.getOutputValue3());
+        outputValue4.setValue(gpioManager.getOutputValue4());
+        outputValue5.setValue(gpioManager.getOutputValue5());
+        outputValue6.setValue(gpioManager.getOutputValue6());
+        outputValue7.setValue(gpioManager.getOutputValue7());
+        outputValue8.setValue(gpioManager.getOutputValue8());*/
     }
 
     public LiveData<Integer> getInputValue1() {
@@ -84,6 +101,102 @@ public class GpioViewModel extends ViewModel {
 
     public LiveData<Integer> getInputValue8() {
         return inputValue8;
+    }
+
+    public MutableLiveData<Integer> getOutputValue1() {
+        return outputValue1;
+    }
+
+    public MutableLiveData<Integer> getOutputValue2() {
+        return outputValue2;
+    }
+
+    public MutableLiveData<Integer> getOutputValue3() {
+        return outputValue3;
+    }
+
+    public MutableLiveData<Integer> getOutputValue4() {
+        return outputValue4;
+    }
+
+    public MutableLiveData<Integer> getOutputValue5() {
+        return outputValue5;
+    }
+
+    public MutableLiveData<Integer> getOutputValue6() {
+        return outputValue6;
+    }
+
+    public MutableLiveData<Integer> getOutputValue7() {
+        return outputValue7;
+    }
+
+    public MutableLiveData<Integer> getOutputValue8() {
+        return outputValue8;
+    }
+
+    public void setOutputValueOn1() {
+        gpioManager.setOutputValueOn1();
+    }
+
+    public void setOutputValueOn2() {
+        gpioManager.setOutputValueOn2();
+    }
+
+    public void setOutputValueOn3() {
+        gpioManager.setOutputValueOn3();
+    }
+
+    public void setOutputValueOn4() {
+        gpioManager.setOutputValueOn4();
+    }
+
+    public void setOutputValueOn5() {
+        gpioManager.setOutputValueOn5();
+    }
+
+    public void setOutputValueOn6() {
+        gpioManager.setOutputValueOn6();
+    }
+
+    public void setOutputValueOn7() {
+        gpioManager.setOutputValueOn7();
+    }
+
+    public void setOutputValueOn8() {
+        gpioManager.setOutputValueOn8();
+    }
+
+    public void setOutputValueOff1() {
+        gpioManager.setOutputValueOff1();
+    }
+
+    public void setOutputValueOff2() {
+        gpioManager.setOutputValueOff2();
+    }
+
+    public void setOutputValueOff3() {
+        gpioManager.setOutputValueOff3();
+    }
+
+    public void setOutputValueOff4() {
+        gpioManager.setOutputValueOff4();
+    }
+
+    public void setOutputValueOff5() {
+        gpioManager.setOutputValueOff5();
+    }
+
+    public void setOutputValueOff6() {
+        gpioManager.setOutputValueOff6();
+    }
+
+    public void setOutputValueOff7() {
+        gpioManager.setOutputValueOff7();
+    }
+
+    public void setOutputValueOff8() {
+        gpioManager.setOutputValueOff8();
     }
 
     public void stopPolling() {

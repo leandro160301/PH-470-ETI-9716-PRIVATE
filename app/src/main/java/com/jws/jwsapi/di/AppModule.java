@@ -10,6 +10,7 @@ import com.android.jws.JwsManager;
 import com.jws.jwsapi.AppDatabase;
 import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
+import com.jws.jwsapi.core.gpio.GpioManager;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.jws.jwsapi.core.storage.StorageService;
@@ -141,6 +142,12 @@ public class AppModule {
     @Provides
     public JwsManager provideJwsManager(@ApplicationContext Context context) {
         return new JwsManager(context);
+    }
+
+    @Provides
+    @Singleton
+    public GpioManager provideGpioManager(JwsManager jwsManager) {
+        return new GpioManager(jwsManager);
     }
 
 }

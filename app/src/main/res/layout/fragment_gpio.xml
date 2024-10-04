@@ -1,0 +1,62 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- GridLayout para organizar los 8 cuadrados -->
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:columnCount="4"
+        android:rowCount="2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Cuadrados para cada input -->
+        <TextView
+            android:id="@+id/input1"
+            style="@style/InputSquare"
+            android:text="@string/gpio_fragment_input1" />
+
+        <TextView
+            android:id="@+id/input2"
+            style="@style/InputSquare"
+            android:text="@string/gpio_fragment_input2" />
+
+        <TextView
+            android:id="@+id/input3"
+            style="@style/InputSquare"
+            android:text="@string/gpio_fragment_input3" />
+
+        <TextView
+            android:id="@+id/input4"
+            style="@style/InputSquare"
+            android:text="@string/gpio_fragment_input4" />
+
+        <TextView
+            android:id="@+id/input5"
+            style="@style/InputSquare"
+            android:text="@string/gpio_fragment_input5" />
+
+        <TextView
+            android:id="@+id/input6"
+            style="@style/InputSquare"
+            android:text="@string/gpio_fragment_input6" />
+
+        <TextView
+            android:id="@+id/input7"
+            style="@style/InputSquare"
+            android:text="@string/gpio_fragment_input7" />
+
+        <TextView
+            android:id="@+id/input8"
+            style="@style/InputSquare"
+            android:text="@string/gpio_fragment_input8" />
+
+    </GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

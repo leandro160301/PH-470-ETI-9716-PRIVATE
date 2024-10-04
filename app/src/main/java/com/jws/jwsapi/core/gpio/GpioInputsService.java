@@ -4,8 +4,7 @@ import com.android.jws.JwsManager;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
+import dagger.assisted.AssistedInject;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -15,29 +14,27 @@ public class GpioInputsService {
 
     private final static int OFF = 1;
     private final static int ON = 0;
-    private final static int PERIOD = 1; // 1 ms polling
-    private final static int STABLE_THRESHOLD = 100; // 100 ms
-    private final static int INPUT_LENGHT = 4;
+    private final static int PERIOD = 1;
+    private final static int STABLE_THRESHOLD = 10;
+    private final static int INPUT_LENGHT = 8;
 
     private final JwsManager jwsManager;
-    private final GpioHighListener highListener;
-    private final GpioLowListener lowListener;
     private final GpioInputState[] gpioStates = new GpioInputState[INPUT_LENGHT];
-    private final Integer[] currentInputValues = {OFF, OFF, OFF, OFF};
-    private final int[] lastInputValues = {OFF, OFF, OFF, OFF};
+    private final Integer[] currentInputValues = {OFF, OFF, OFF, OFF, OFF, OFF, OFF, OFF};
+    private final int[] lastInputValues = {OFF, OFF, OFF, OFF, OFF, OFF, OFF, OFF};
+    private GpioHighListener highListener = null;
+    private GpioLowListener lowListener = null;
     private Disposable pollingDisposable;
 
-    @Inject
-    public GpioInputsService(JwsManager jwsManager, GpioHighListener highListener, GpioLowListener lowListener) {
+    @AssistedInject
+    public GpioInputsService(JwsManager jwsManager) {
         this.jwsManager = jwsManager;
-        this.highListener = highListener;
-        this.lowListener = lowListener;
         for (int i = 0; i < INPUT_LENGHT; i++) {
             gpioStates[i] = new GpioInputState();
         }
         startPolling();
     }
-    
+
     public void startPolling() {
         pollingDisposable = Observable.interval(PERIOD, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
@@ -49,8 +46,12 @@ public class GpioInputsService {
             int index = i;
             currentInputValues[index] = jwsManager.jwsReadExtrnalGpioValue(index);
             if (currentInputValues[index] != null) {
-                checkAndNotify(index, currentInputValues[index], lastInputValues[index],
-                        () -> highListener.onInputHigh(index), () -> lowListener.onInputLow(index));
+                System.out.println("GPIO" + index + ":" + currentInputValues[index]);
+                if (lowListener != null || highListener != null) {
+                    Runnable highAction = (highListener != null) ? () -> highListener.onInputHigh(index) : null;
+                    Runnable lowAction = (lowListener != null) ? () -> lowListener.onInputLow(index) : null;
+                    checkAndNotify(index, currentInputValues[index], lastInputValues[index], highAction, lowAction);
+                }
                 lastInputValues[index] = currentInputValues[index];
             }
         }
@@ -69,11 +70,10 @@ public class GpioInputsService {
             gpioState.resetWaitHigh();
             gpioState.resetStableHighCount();
         }
-        if (gpioState.isWaitHigh()) {
+        if (gpioState.isWaitHigh() && onHighCallback != null) {
             processStateChange(gpioState, gpioState.getStableHighCount(), gpioState::incrementStableHighCount,
                     gpioState::resetStableHighCount, onHighCallback, gpioState::resetWaitHigh);
         }
-
 
         if (currentInput == OFF && lastInput == ON) {
             gpioState.setOnWaitLow();
@@ -82,7 +82,7 @@ public class GpioInputsService {
             gpioState.resetWaitLow();
             gpioState.resetStableLowCount();
         }
-        if (gpioState.isWaitLow()) {
+        if (gpioState.isWaitLow() && onLowCallback != null) {
             processStateChange(gpioState, gpioState.getStableLowCount(), gpioState::incrementStableLowCount,
                     gpioState::resetStableLowCount, onLowCallback, gpioState::resetWaitLow);
         }
@@ -111,16 +111,41 @@ public class GpioInputsService {
         return currentInputValues[0];
     }
 
-    public int getCurrentInputValue2() {
+    public Integer getCurrentInputValue2() {
         return currentInputValues[1];
     }
 
-    public int getCurrentInputValue3() {
+    public Integer getCurrentInputValue3() {
         return currentInputValues[2];
     }
 
-    public int getCurrentInputValue4() {
+    public Integer getCurrentInputValue4() {
         return currentInputValues[3];
+    }
+
+    public Integer getCurrentInputValue5() {
+        return currentInputValues[4];
+    }
+
+    public Integer getCurrentInputValue6() {
+        return currentInputValues[5];
+    }
+
+    public Integer getCurrentInputValue7() {
+        return currentInputValues[6];
+    }
+
+    public Integer getCurrentInputValue8() {
+        return currentInputValues[7];
+    }
+
+
+    public void setHighListener(GpioHighListener gpioHighListener) {
+        this.highListener = gpioHighListener;
+    }
+
+    public void setLowListener(GpioLowListener gpioLowListener) {
+        this.lowListener = gpioLowListener;
     }
 
 }

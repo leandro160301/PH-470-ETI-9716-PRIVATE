@@ -449,6 +449,14 @@
     <string name="button_scale_zero">CERO</string>
     <string name="button_scale_tare">TARA</string>
     <string name="button_scale_print">IMPRIMIR</string>
+    <string name="gpio_fragment_input1">Entrada 1</string>
+    <string name="gpio_fragment_input2">Entrada 2</string>
+    <string name="gpio_fragment_input3">Entrada 3</string>
+    <string name="gpio_fragment_input4">Entrada 4</string>
+    <string name="gpio_fragment_input5">Entrada 5</string>
+    <string name="gpio_fragment_input6">Entrada 6</string>
+    <string name="gpio_fragment_input7">Entrada 7</string>
+    <string name="gpio_fragment_input8">Entrada 8</string>
 
 
 </resources>

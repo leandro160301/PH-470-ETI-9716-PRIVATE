@@ -104,6 +104,17 @@
         <item name="android:fadeScrollbars">false</item>
     </style>
 
+        <style name="InputSquare">
+            <item name="android:layout_width">0dp</item>
+            <item name="android:layout_height">0dp</item>
+            <item name="android:layout_margin">8dp</item>
+            <item name="android:textSize">28sp</item>
+            <item name="android:gravity">center</item>
+            <item name="android:background">@drawable/square_background_off</item>
+            <item name="android:textColor">#FFFFFF</item>
+            <item name="android:layout_rowWeight">1</item>
+            <item name="android:layout_columnWeight">1</item>
+        </style>
 
 
 </resources>

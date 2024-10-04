@@ -4,7 +4,8 @@ import com.android.jws.JwsManager;
 
 import java.util.concurrent.TimeUnit;
 
-import dagger.assisted.AssistedInject;
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -26,7 +27,7 @@ public class GpioInputsService {
     private GpioLowListener lowListener = null;
     private Disposable pollingDisposable;
 
-    @AssistedInject
+    @Inject
     public GpioInputsService(JwsManager jwsManager) {
         this.jwsManager = jwsManager;
         for (int i = 0; i < INPUT_LENGHT; i++) {

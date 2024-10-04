@@ -22,11 +22,11 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class GpioInputFragment extends Fragment {
 
+    private final static int ON = 0;
     private FragmentGpioBinding binding;
     private ButtonProvider buttonProvider;
     private MainActivity mainActivity;
     private GpioViewModel gpioViewModel;
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class GpioInputFragment extends Fragment {
     }
 
     private void updateInputBackground(TextView inputView, Integer value) {
-        if (value != null && value == 0) {
+        if (value != null && value == ON) {
             inputView.setBackgroundResource(R.drawable.square_background_on);
         } else {
             inputView.setBackgroundResource(R.drawable.square_background_off);

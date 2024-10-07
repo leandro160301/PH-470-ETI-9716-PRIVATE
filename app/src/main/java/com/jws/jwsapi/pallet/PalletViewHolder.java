@@ -50,4 +50,5 @@ public class PalletViewHolder extends RecyclerView.ViewHolder {
             binding.tvPalletTotalHeader.setVisibility(View.VISIBLE);
         }
     }
+
 }

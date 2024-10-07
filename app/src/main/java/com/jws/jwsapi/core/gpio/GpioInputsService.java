@@ -16,7 +16,7 @@ public class GpioInputsService {
     private final static int OFF = 1;
     private final static int ON = 0;
     private final static int PERIOD = 1;
-    private final static int STABLE_THRESHOLD = 10;
+    private final static int STABLE_THRESHOLD = 2;
     private final static int INPUT_LENGHT = 8;
 
     private final JwsManager jwsManager;

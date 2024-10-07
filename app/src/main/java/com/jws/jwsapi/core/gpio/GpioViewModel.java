@@ -27,14 +27,6 @@ public class GpioViewModel extends ViewModel {
     private final MutableLiveData<Integer> inputValue6 = new MutableLiveData<>();
     private final MutableLiveData<Integer> inputValue7 = new MutableLiveData<>();
     private final MutableLiveData<Integer> inputValue8 = new MutableLiveData<>();
-    private final MutableLiveData<Integer> outputValue1 = new MutableLiveData<>();
-    private final MutableLiveData<Integer> outputValue2 = new MutableLiveData<>();
-    private final MutableLiveData<Integer> outputValue3 = new MutableLiveData<>();
-    private final MutableLiveData<Integer> outputValue4 = new MutableLiveData<>();
-    private final MutableLiveData<Integer> outputValue5 = new MutableLiveData<>();
-    private final MutableLiveData<Integer> outputValue6 = new MutableLiveData<>();
-    private final MutableLiveData<Integer> outputValue7 = new MutableLiveData<>();
-    private final MutableLiveData<Integer> outputValue8 = new MutableLiveData<>();
     private Disposable pollingDisposable;
 
     @Inject
@@ -60,15 +52,6 @@ public class GpioViewModel extends ViewModel {
         inputValue6.setValue(gpioManager.getInputValue6());
         inputValue7.setValue(gpioManager.getInputValue7());
         inputValue8.setValue(gpioManager.getInputValue8());
-
-        /*outputValue1.setValue(gpioManager.getOutputValue1());
-        outputValue2.setValue(gpioManager.getOutputValue2());
-        outputValue3.setValue(gpioManager.getOutputValue3());
-        outputValue4.setValue(gpioManager.getOutputValue4());
-        outputValue5.setValue(gpioManager.getOutputValue5());
-        outputValue6.setValue(gpioManager.getOutputValue6());
-        outputValue7.setValue(gpioManager.getOutputValue7());
-        outputValue8.setValue(gpioManager.getOutputValue8());*/
     }
 
     public LiveData<Integer> getInputValue1() {
@@ -101,38 +84,6 @@ public class GpioViewModel extends ViewModel {
 
     public LiveData<Integer> getInputValue8() {
         return inputValue8;
-    }
-
-    public MutableLiveData<Integer> getOutputValue1() {
-        return outputValue1;
-    }
-
-    public MutableLiveData<Integer> getOutputValue2() {
-        return outputValue2;
-    }
-
-    public MutableLiveData<Integer> getOutputValue3() {
-        return outputValue3;
-    }
-
-    public MutableLiveData<Integer> getOutputValue4() {
-        return outputValue4;
-    }
-
-    public MutableLiveData<Integer> getOutputValue5() {
-        return outputValue5;
-    }
-
-    public MutableLiveData<Integer> getOutputValue6() {
-        return outputValue6;
-    }
-
-    public MutableLiveData<Integer> getOutputValue7() {
-        return outputValue7;
-    }
-
-    public MutableLiveData<Integer> getOutputValue8() {
-        return outputValue8;
     }
 
     public void setOutputValueOn1() {

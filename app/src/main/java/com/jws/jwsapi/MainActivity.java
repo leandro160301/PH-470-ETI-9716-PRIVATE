@@ -37,7 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
-    public static final String VERSION = "PH 470 BZA 1.00";
+    public static final String VERSION = "PH 470 ETI 9716 1.00";
     public JwsManager jwsObject;
     public MainClass mainClass;
     @Inject

@@ -56,38 +56,6 @@ public class GpioManager {
         return gpioInputsService.getCurrentInputValue8();
     }
 
-    public Integer getOutputValue1() {
-        return gpioOutputs.getCurrentOutputValue1();
-    }
-
-    public Integer getOutputValue2() {
-        return gpioOutputs.getCurrentOutputValue2();
-    }
-
-    public Integer getOutputValue3() {
-        return gpioOutputs.getCurrentOutputValue3();
-    }
-
-    public Integer getOutputValue4() {
-        return gpioOutputs.getCurrentOutputValue4();
-    }
-
-    public Integer getOutputValue5() {
-        return gpioOutputs.getCurrentOutputValue5();
-    }
-
-    public Integer getOutputValue6() {
-        return gpioOutputs.getCurrentOutputValue6();
-    }
-
-    public Integer getOutputValue7() {
-        return gpioOutputs.getCurrentOutputValue7();
-    }
-
-    public Integer getOutputValue8() {
-        return gpioOutputs.getCurrentOutputValue8();
-    }
-
     public void setOutputValueOn1() {
         gpioOutputs.setOutputValueOn1();
     }

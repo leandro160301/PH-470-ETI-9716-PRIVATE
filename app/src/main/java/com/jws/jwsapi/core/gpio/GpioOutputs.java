@@ -14,46 +14,6 @@ public class GpioOutputs {
         this.jwsManager = jwsManager;
     }
 
-    public Integer getCurrentOutputValue1() {
-        Integer value = jwsManager.jwsReadExtrnalGpioValue(0);
-        return value != null ? value : OFF;
-    }
-
-    public Integer getCurrentOutputValue2() {
-        Integer value = jwsManager.jwsReadExtrnalGpioValue(1);
-        return value != null ? value : OFF;
-    }
-
-    public Integer getCurrentOutputValue3() {
-        Integer value = jwsManager.jwsReadExtrnalGpioValue(2);
-        return value != null ? value : OFF;
-    }
-
-    public Integer getCurrentOutputValue4() {
-        Integer value = jwsManager.jwsReadExtrnalGpioValue(3);
-        return value != null ? value : OFF;
-    }
-
-    public Integer getCurrentOutputValue5() {
-        Integer value = jwsManager.jwsReadExtrnalGpioValue(4);
-        return value != null ? value : OFF;
-    }
-
-    public Integer getCurrentOutputValue6() {
-        Integer value = jwsManager.jwsReadExtrnalGpioValue(5);
-        return value != null ? value : OFF;
-    }
-
-    public Integer getCurrentOutputValue7() {
-        Integer value = jwsManager.jwsReadExtrnalGpioValue(6);
-        return value != null ? value : OFF;
-    }
-
-    public Integer getCurrentOutputValue8() {
-        Integer value = jwsManager.jwsReadExtrnalGpioValue(7);
-        return value != null ? value : OFF;
-    }
-
     public void setOutputValueOn1() {
         jwsManager.jwsSetExtrnalGpioValue(0, true);
     }

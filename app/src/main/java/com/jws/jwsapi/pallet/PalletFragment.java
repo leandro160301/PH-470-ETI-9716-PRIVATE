@@ -55,7 +55,6 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
 
         mainActivity = (MainActivity) getActivity();
         palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
-
         tabLayoutListener();
 
         setupButtons();
@@ -173,4 +172,5 @@ public class PalletFragment extends Fragment implements PalletButtonClickListene
         dialogText(getContext(), requireContext().getString(R.string.dialog_close_pallet), requireContext().getString(R.string.dialog_button_close_pallet), ()
                 -> palletViewModel.closePallet(pallet.getSerialNumber()));
     }
+
 }

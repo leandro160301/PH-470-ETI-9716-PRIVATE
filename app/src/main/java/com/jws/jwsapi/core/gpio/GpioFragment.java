@@ -62,16 +62,7 @@ public class GpioFragment extends Fragment {
         gpioViewModel.getInputValue7().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input7, value));
         gpioViewModel.getInputValue8().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input8, value));
 
-        /*gpioViewModel.getOutputValue1().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.output1, value));
-        gpioViewModel.getOutputValue2().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.output2, value));
-        gpioViewModel.getOutputValue3().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.output3, value));
-        gpioViewModel.getOutputValue4().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.output4, value));
-        gpioViewModel.getOutputValue5().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.output5, value));
-        gpioViewModel.getOutputValue6().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.output6, value));
-        gpioViewModel.getOutputValue7().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.output7, value));
-        gpioViewModel.getOutputValue8().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.output8, value));
-*/
-        binding.switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        /*binding.switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 gpioViewModel.setOutputValueOn1();
             } else {
@@ -89,51 +80,51 @@ public class GpioFragment extends Fragment {
 
         binding.switch3.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                gpioViewModel.setOutputValueOn3();
-            } else {
                 gpioViewModel.setOutputValueOff3();
+            } else {
+                gpioViewModel.setOutputValueOn3();
             }
         });
 
         binding.switch4.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                gpioViewModel.setOutputValueOn4();
-            } else {
                 gpioViewModel.setOutputValueOff4();
+            } else {
+                gpioViewModel.setOutputValueOn4();
             }
         });
 
         binding.switch5.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                gpioViewModel.setOutputValueOn5();
-            } else {
                 gpioViewModel.setOutputValueOff5();
+            } else {
+                gpioViewModel.setOutputValueOn5();
             }
         });
 
         binding.switch6.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                gpioViewModel.setOutputValueOn6();
-            } else {
                 gpioViewModel.setOutputValueOff6();
+            } else {
+                gpioViewModel.setOutputValueOn6();
             }
         });
 
         binding.switch7.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                gpioViewModel.setOutputValueOn7();
-            } else {
                 gpioViewModel.setOutputValueOff7();
+            } else {
+                gpioViewModel.setOutputValueOn7();
             }
         });
 
         binding.switch8.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                gpioViewModel.setOutputValueOn8();
-            } else {
                 gpioViewModel.setOutputValueOff8();
+            } else {
+                gpioViewModel.setOutputValueOn8();
             }
-        });
+        });*/
 
     }
 

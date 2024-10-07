@@ -278,8 +278,12 @@ public class HomeFragment extends Fragment implements WeightConformationListener
 
     @Override
     public void onInputHigh(int input) {
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> messageError("prendio la:" + (input + 1)));
+        if (getActivity() != null && input == 0) {
+            getActivity().runOnUiThread(() -> {
+                showMessage("Tara realizada", R.layout.item_customtoastok);
+                repository.setTare();
+            });
+
         }
 
     }

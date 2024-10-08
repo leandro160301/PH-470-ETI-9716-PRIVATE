@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 
-import com.jws.jwsapi.pallet.Pallet;
-import com.jws.jwsapi.pallet.PalletService;
 import com.jws.jwsapi.weighing.Weighing;
 import com.jws.jwsapi.weighing.WeighingService;
 
@@ -70,41 +68,7 @@ public class ServerUtil {
         return jsonArray.toString();
     }
 
-    @SuppressLint("DefaultLocale")
-    public static String getJsonPalletOpen(PalletService palletService) {
-        return getJsonPallet(false, palletService);
-    }
 
-    @SuppressLint("DefaultLocale")
-    public static String getJsonPalletClose(PalletService palletService) {
-        return getJsonPallet(true, palletService);
-    }
-
-    @SuppressLint("DefaultLocale")
-    @Nullable
-    private static String getJsonPallet(boolean closed, PalletService palletService) {
-        List<Pallet> palletList = palletService.getAllPalletsStatic(closed);
-        if (palletList == null) return null;
-        JSONArray jsonArray = new JSONArray();
-        try {
-            for (Pallet pallet : palletList) {
-                JSONObject palletField = new JSONObject();
-                palletField.put("Id", String.valueOf(pallet.getId()));
-                palletField.put("Codigo", pallet.getCode());
-                palletField.put("Producto", pallet.getName());
-                palletField.put("Origen", pallet.getOriginPallet());
-                palletField.put("Destino", pallet.getDestinationPallet());
-                palletField.put("Cantidad", String.format("%d/%d", pallet.getDone(), pallet.getQuantity()));
-                palletField.put("Balanza", String.valueOf(pallet.getScaleNumber()));
-                palletField.put("Numero de serie", pallet.getSerialNumber());
-                palletField.put("Acumulado", pallet.getTotalNet());
-                jsonArray.put(palletField);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonArray.toString();
-    }
 
 
 }

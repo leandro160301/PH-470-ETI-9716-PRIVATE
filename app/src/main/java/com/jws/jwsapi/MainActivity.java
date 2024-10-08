@@ -21,7 +21,6 @@ import com.jws.jwsapi.core.services.FtpServer;
 import com.jws.jwsapi.core.services.httpserver.InitServer;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
-import com.jws.jwsapi.pallet.PalletService;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.CacheUtils;
 import com.jws.jwsapi.utils.ToastHelper;
@@ -50,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
     PreferencesManager preferencesManager;
     @Inject
     WeighingService weighingService;
-    @Inject
-    PalletService palletService;
     private InitServer initServer;
 
     @Override
@@ -79,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        initServer = new InitServer(this, this, userManager, preferencesManager, weighingService, palletService);
+        initServer = new InitServer(this, this, userManager, preferencesManager, weighingService);
         try {
             initServer.start();
         } catch (Exception e) {

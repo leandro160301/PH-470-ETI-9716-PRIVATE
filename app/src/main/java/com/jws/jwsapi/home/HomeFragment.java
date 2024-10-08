@@ -19,13 +19,8 @@ import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
 import com.jws.jwsapi.core.gpio.GpioHighListener;
 import com.jws.jwsapi.core.gpio.GpioManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
-import com.jws.jwsapi.pallet.Pallet;
-import com.jws.jwsapi.pallet.PalletCreateFragment;
-import com.jws.jwsapi.pallet.PalletFragment;
-import com.jws.jwsapi.pallet.PalletViewModel;
 import com.jws.jwsapi.scale.ScaleViewModel;
 import com.jws.jwsapi.scale.WeightConformationListener;
-import com.jws.jwsapi.shared.PalletRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
@@ -47,8 +42,6 @@ public class HomeFragment extends Fragment implements WeightConformationListener
     @Inject
     HomeService homeService;
     @Inject
-    PalletRepository palletRepository;
-    @Inject
     ScaleViewModel.Factory viewModelFactory;
     @Inject
     GpioManager gpioManager;
@@ -57,7 +50,6 @@ public class HomeFragment extends Fragment implements WeightConformationListener
     private MainActivity mainActivity;
     private WeighingViewModel weighingViewModel;
     private ScaleViewModel serviceScaleViewModel;
-    private PalletViewModel palletViewModel;
     private int buttons = OPERATION_BUTTONS;
 
 
@@ -96,7 +88,6 @@ public class HomeFragment extends Fragment implements WeightConformationListener
         }).get(ScaleViewModel.class);
         serviceScaleViewModel.setWeightListener(this);
 
-        palletViewModel = new ViewModelProvider(this).get(PalletViewModel.class);
         gpioManager.setHighListener(this);
     }
 
@@ -115,13 +106,11 @@ public class HomeFragment extends Fragment implements WeightConformationListener
             binding.tvNetUnit.setText(unit);
         });
 
-        handleObservePallet();
 
         handleObserveWeighing();
     }
 
     private void handleObserveWeighing() {
-        weighingViewModel.getCurrentPallet().observe(getViewLifecycleOwner(), this::updateUi);
 
         weighingViewModel.getLoading().observe(getViewLifecycleOwner(), this::handleLoadingUpdate);
 
@@ -131,28 +120,6 @@ public class HomeFragment extends Fragment implements WeightConformationListener
 
         weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), this::handleWeighingResponse);
 
-    }
-
-    private void handleObservePallet() {
-        palletViewModel.getPalletCloseResponse().observe(getViewLifecycleOwner(), palletCloseResponse -> {
-            if (palletCloseResponse == null) return;
-            int toastLayout = palletCloseResponse.getStatus() ? R.layout.item_customtoastok : R.layout.item_customtoasterror;
-            String message = palletCloseResponse.getStatus() ? requireContext().getString(R.string.toast_message_pallet_closed) : palletCloseResponse.getError();
-            showMessage(message, toastLayout);
-        });
-
-        palletViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            if (isLoading != null) {
-                binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-            }
-        });
-        palletViewModel.getError().observe(getViewLifecycleOwner(), this::handleErrorPallet);
-    }
-
-    private void handleErrorPallet(String error) {
-        if (error != null) {
-            showMessage(error, R.layout.item_customtoasterror);
-        }
     }
 
     private void showMessage(String error, int layout) {
@@ -218,35 +185,14 @@ public class HomeFragment extends Fragment implements WeightConformationListener
             setupButton(buttonProvider.getButton1(), R.string.button_text_2,
                     v -> createWeighing(), View.VISIBLE);
             setupButton(buttonProvider.getButton2(), R.string.button_text_3,
-                    v -> mainActivity.mainClass.openFragment(new PalletFragment()), View.VISIBLE);
+                    null, View.VISIBLE);
             setupButton(buttonProvider.getButton3(), R.string.button_text_4,
                     v -> mainActivity.mainClass.openFragment(new WeighingFragment()), View.VISIBLE);
-            setupButton(buttonProvider.getButton4(), R.string.button_text_6, v -> closePallet(), View.VISIBLE);
+            setupButton(buttonProvider.getButton4(), R.string.button_text_6, null, View.VISIBLE);
             setupButton(buttonProvider.getButton5(), R.string.button_text_5,
-                    v -> mainActivity.mainClass.openFragment(new PalletCreateFragment()), View.VISIBLE);
+                    null, View.VISIBLE);
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza);
         }
-    }
-
-
-    private void updateUi(Pallet pallet) {
-        binding.tvCantidad.setText(pallet != null ? String.valueOf(pallet.getQuantity()) : "");
-        binding.tvDone.setText(pallet != null ? String.valueOf(pallet.getDone()) : "");
-        binding.tvProduct.setText(pallet != null ? pallet.getName() : "");
-        binding.tvPalletOrigin.setText(pallet != null ? pallet.getOriginPallet() : "");
-        binding.tvPalletDestination.setText(pallet != null ? pallet.getDestinationPallet() : "");
-        binding.tvScale.setText(pallet != null ? String.valueOf(pallet.getScaleNumber()) : "");
-        binding.tvTotalNet.setText(pallet != null ? pallet.getTotalNet() : "");
-    }
-
-    private void closePallet() {
-        Pallet currentPallet = palletRepository.getCurrentPallet().getValue();
-        if (currentPallet != null) {
-            palletViewModel.closePallet(currentPallet.getSerialNumber());
-        } else {
-            messageError(getString(R.string.toast_error_close_pallet));
-        }
-
     }
 
     private void createWeighing() {

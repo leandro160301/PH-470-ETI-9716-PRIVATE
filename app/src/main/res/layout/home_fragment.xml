@@ -171,21 +171,12 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textView26"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Acumulado total"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="#000000"
-                            android:textSize="30sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="132dp"
+                            android:layout_height="390dp"
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
@@ -197,11 +188,11 @@
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif-black"
                                 android:gravity="center|end"
-                                android:text="0"
-                                android:textAlignment="viewEnd"
+                                android:text="Linea"
+                                android:textAlignment="center"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                 android:textColor="#000000"
-                                android:textSize="65sp"
+                                android:textSize="75sp"
                                 android:textStyle="normal" />
 
                             <TextView
@@ -209,9 +200,44 @@
                                 android:layout_width="95dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center|left"
-                                android:text="gr"
+                                android:text="1"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                 android:textColor="#000000"
-                                android:textSize="52sp" />
+                                android:textSize="75sp"
+                                android:textStyle="normal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:id="@+id/textView10"
+                                android:layout_width="300dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="calibre"
+                                android:textAlignment="textStart"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#000000"
+                                android:textSize="47sp" />
+
+                            <TextView
+                                android:id="@+id/tv_scale2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/campollenarclickeableceropadding_selector"
+                                android:gravity="center"
+                                android:text="20 x 25"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textColor="#000000"
+                                android:textSize="47sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -227,58 +253,131 @@
                     android:layout_marginRight="55dp"
                     android:layout_marginBottom="0dp"
                     android:layout_weight="1"
-                    android:background="@drawable/boton_selector"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textView25"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="CANTIDAD"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="#FFFFFF"
-                        android:textSize="21sp" />
-
-                    <TextView
-                        android:id="@+id/tv_cantidad"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="#FFFFFF"
-                        android:textSize="37sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                        android:orientation="horizontal"
+                        android:padding="20dp">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="REALIZADOS"
+                            android:gravity="center"
+                            android:text="ENVASE"
                             android:textAlignment="textEnd"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="#FFFFFF"
-                            android:textSize="20sp" />
+                            android:textColor="@color/negro"
+                            android:textSize="35sp" />
 
                         <TextView
                             android:id="@+id/tv_done"
                             android:layout_width="167dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="0"
                             android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="#FFFFFF"
-                            android:textSize="20sp" />
+                            android:textColor="@color/negro"
+                            android:textSize="35sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                        android:orientation="horizontal"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="PIEZAS"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="35sp" />
+
+                        <TextView
+                            android:id="@+id/tv_done"
+                            android:layout_width="167dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="35sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                        android:orientation="horizontal"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="HIELO"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="35sp" />
+
+                        <TextView
+                            android:id="@+id/tv_done"
+                            android:layout_width="167dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="35sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/campollenarclickeableceropadding_selector"
+                        android:orientation="horizontal"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TAPA"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="35sp" />
+
+                        <TextView
+                            android:id="@+id/tv_done"
+                            android:layout_width="167dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="35sp" />
                     </LinearLayout>
 
                 </LinearLayout>

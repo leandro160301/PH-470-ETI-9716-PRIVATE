@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.jws.jwsapi.pallet.Pallet;
-import com.jws.jwsapi.shared.PalletRepository;
 import com.jws.jwsapi.shared.UserRepository;
 
 import java.util.List;
@@ -21,7 +19,6 @@ import io.reactivex.schedulers.Schedulers;
 @HiltViewModel
 public class WeighingViewModel extends ViewModel {
 
-    private final PalletRepository repository;
     private final WeighingService weighingService;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final LiveData<List<Weighing>> weighings;
@@ -29,22 +26,16 @@ public class WeighingViewModel extends ViewModel {
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final MutableLiveData<String> errorRequest = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
-    private final LiveData<Pallet> currentPallet;
     private final UserRepository userRepository;
 
     @Inject
-    public WeighingViewModel(PalletRepository repository, WeighingService weighingService, UserRepository userRepository) {
-        this.repository = repository;
+    public WeighingViewModel( WeighingService weighingService, UserRepository userRepository) {
         this.weighingService = weighingService;
         this.userRepository = userRepository;
         this.weighings = weighingService.getAllWeighings();
-        this.currentPallet = repository.getCurrentPallet();
 
     }
 
-    public LiveData<Pallet> getCurrentPallet() {
-        return currentPallet;
-    }
 
     public LiveData<List<Weighing>> getWeighings() {
         return weighings;
@@ -67,43 +58,11 @@ public class WeighingViewModel extends ViewModel {
     }
 
     public void createWeighing(String gross, String net, String tare, String unit) {
-        Weighing weighing = new Weighing();
-        Pallet pallet = getCurrentPallet().getValue();
-        if (pallet != null) {
-            weighing.setCode(pallet.getCode());
-            weighing.setGross(gross);
-            weighing.setTare(tare);
-            weighing.setNet(net);
-            weighing.setUnit(unit);
-            weighing.setName(pallet.getName());
-            weighing.setOperator(userRepository.getCurrentUser());
-            weighing.setIdPallet(pallet.getId());
-            weighing.setScaleNumber(pallet.getScaleNumber());
-            weighing.setQuantity(pallet.getQuantity());
-            weighing.setSerialNumber(pallet.getSerialNumber());
-            WeighingRequest weighingRequest = new WeighingRequest(weighing.getSerialNumber(), weighing.getCode(), weighing.getName(), weighing.getNet(), weighing.getGross(), weighing.getTare());
-            createWeighingRequest(weighingRequest, weighing);
-        } else {
-            error.setValue("Error de pallet");
-        }
+
     }
 
     public void createWeighingRequest(WeighingRequest weighingRequest, Weighing weighing) {
         loading.setValue(true);
-        Integer id = repository.getCurrentPalletId();
-        if (id != null && id > -1) {
-            Disposable disposable = weighingService.newWeighing(weighingRequest, weighing, id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doFinally(() -> loading.setValue(false))
-                    .subscribe(
-                            weighingResponse::setValue,
-                            throwable -> errorRequest.setValue(throwable.getMessage())
-                    );
-            compositeDisposable.add(disposable);
-        } else {
-            error.setValue("id null");
-        }
     }
 
     @Override

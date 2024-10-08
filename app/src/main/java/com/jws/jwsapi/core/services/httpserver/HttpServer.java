@@ -11,7 +11,6 @@ import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.storage.StorageJsonUtils;
 import com.jws.jwsapi.core.user.UserJsonUtils;
 import com.jws.jwsapi.core.user.UserManager;
-import com.jws.jwsapi.pallet.PalletService;
 import com.jws.jwsapi.utils.PackageUtils;
 import com.jws.jwsapi.weighing.WeighingService;
 
@@ -76,16 +75,14 @@ public class HttpServer extends NanoWSD {
     UserManager userManager;
     PreferencesManager preferencesManagerBase;
     WeighingService weighingService;
-    PalletService palletService;
 
     public HttpServer(int port, Context context,
-                      HttpServerInterface httpServerInterface, MainActivity activity, UserManager userManager, PreferencesManager preferencesManagerBase, WeighingService weighingService, PalletService palletService) {
+                      HttpServerInterface httpServerInterface, MainActivity activity, UserManager userManager, PreferencesManager preferencesManagerBase, WeighingService weighingService) {
         super(port);
         this.context = context;
         this.preferencesManagerBase = preferencesManagerBase;
         this.httpServerInterface = httpServerInterface;
         this.weighingService = weighingService;
-        this.palletService = palletService;
         mainActivity = activity;
         this.userManager = userManager;
     }
@@ -279,18 +276,6 @@ public class HttpServer extends NanoWSD {
             return response;
 
         }
-        if (uri.endsWith("GetPalletOpen")) {
-            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, ServerUtil.getJsonPalletOpen(palletService));
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            return response;
-        }
-
-        if (uri.endsWith("GetPalletClosed")) {
-            Response response = newFixedLengthResponse(Response.Status.OK, MIME_JSON, ServerUtil.getJsonPalletClose(palletService));
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            return response;
-        }
-
 
         if (uri.endsWith("getVersion")) {
             Response response = newFixedLengthResponse(Response.Status.OK, MIME_TEXT_PLAIN_JS, MainActivity.VERSION);

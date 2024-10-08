@@ -15,10 +15,8 @@ import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
-import com.jws.jwsapi.pallet.PalletApi;
-import com.jws.jwsapi.pallet.PalletDao;
-import com.jws.jwsapi.pallet.PalletService;
-import com.jws.jwsapi.shared.PalletRepository;
+import com.jws.jwsapi.productionline.ProductionLineManager;
+import com.jws.jwsapi.productionline.ProductionLinePreferences;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.weighing.WeighingApi;
@@ -40,7 +38,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @InstallIn(SingletonComponent.class)
 public class AppModule {
 
-    private static final String DATABASE_NAME = "bza-database";
+    private static final String DATABASE_NAME = "eti-database";
     private static final String BASE_URL = "http://10.41.0.78:8080/";
     private static final String PREFS_NAME = "bza_pref";
 
@@ -81,12 +79,6 @@ public class AppModule {
     }
 
     @Provides
-    @Singleton
-    public PalletRepository providePalletRepository(PalletDao palletDao) {
-        return new PalletRepository(palletDao);
-    }
-
-    @Provides
     public Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -100,10 +92,6 @@ public class AppModule {
         return retrofit.create(WeighingApi.class);
     }
 
-    @Provides
-    public PalletApi providePalletApi(Retrofit retrofit) {
-        return retrofit.create(PalletApi.class);
-    }
 
     @Provides
     @Singleton
@@ -113,24 +101,24 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public PalletDao providePalletDao(AppDatabase appDatabase) {
-        return appDatabase.palletDao();
-    }
-
-    @Provides
-    @Singleton
     public AppDatabase provideAppDatabase(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
     }
 
     @Provides
-    public PalletService providePalletService(PalletApi palletApi, PalletDao palletDao) {
-        return new PalletService(palletApi, palletDao);
+    public ProductionLinePreferences provideProductionLinePreferences(PreferencesHelper preferencesHelper) {
+        return new ProductionLinePreferences(preferencesHelper);
     }
 
     @Provides
-    public WeighingService provideWeighingService(WeighingApi weighingApi, WeighingDao weighingDao, PalletDao palletDao) {
-        return new WeighingService(weighingApi, weighingDao, palletDao);
+    @Singleton
+    public ProductionLineManager provideProductLineManager(ProductionLinePreferences preferences) {
+        return new ProductionLineManager(preferences);
+    }
+
+    @Provides
+    public WeighingService provideWeighingService(WeighingApi weighingApi, WeighingDao weighingDao) {
+        return new WeighingService(weighingApi, weighingDao);
     }
 
     @Provides

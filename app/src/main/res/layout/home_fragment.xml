@@ -258,7 +258,7 @@
                     android:id="@+id/ln_cantidad"
                     android:layout_width="904dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="0dp"
                     android:layout_marginRight="55dp"
                     android:layout_marginBottom="0dp"
@@ -280,14 +280,24 @@
                             android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/negro"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/tv_tare_value_1"
+                            android:layout_width="167dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
                             android:textSize="24sp" />
 
                         <TextView
 
+                            android:id="@+id/tv_tare_unit_1"
                             android:layout_width="167dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="0"
                             android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/negro"
@@ -312,10 +322,20 @@
                             android:textSize="24sp" />
 
                         <TextView
+                            android:id="@+id/tv_tare_value_2"
                             android:layout_width="167dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="0"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/tv_tare_unit_2"
+                            android:layout_width="167dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/negro"
@@ -340,10 +360,20 @@
                             android:textSize="24sp" />
 
                         <TextView
+                            android:id="@+id/tv_tare_value_3"
                             android:layout_width="167dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="0"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/tv_tare_unit_3"
+                            android:layout_width="167dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/negro"
@@ -361,18 +391,27 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textAlignment="center"
                             android:text="TAPA"
+                            android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/negro"
                             android:textSize="24sp" />
 
                         <TextView
-                            android:id="@+id/tv_done"
+                            android:id="@+id/tv_tare_value_4"
                             android:layout_width="167dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="0"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/tv_tare_unit_4"
+                            android:layout_width="167dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/negro"

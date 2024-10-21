@@ -121,14 +121,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
         productionLineViewModel.getCaliber().observe(getViewLifecycleOwner(), caliber ->
                 animateAndSetText(binding.tvCaliber,binding.shimmerLine,caliber));
         productionLineViewModel.getLineNumber().observe(getViewLifecycleOwner(), number ->
-        {
-            animateAndSetText(binding.tvLine,binding.shimmerLine,String.valueOf(number));
-            if (number == 1) {
-                binding.lnLine.setBackgroundResource(R.drawable.line_1);
-            } else {
-                binding.lnLine.setBackgroundResource(R.drawable.line_2);
-            }
-        });
+                animateAndSetText(binding.tvLine,binding.shimmerLine,String.valueOf(number)));
 
         handleObserveWeighing();
     }
@@ -235,9 +228,19 @@ public class HomeFragment extends Fragment implements GpioHighListener {
 
     private void animateAndSetText(TextView textView, ShimmerFrameLayout shimmerLayout, String newText) {
         shimmerLayout.startShimmer();
-        new Handler().postDelayed(() -> {
+        textView.postDelayed(() -> {
             shimmerLayout.stopShimmer();
             textView.setText(newText);
+
+            if (getActivity() != null && textView == binding.tvLine) {
+                if (Utils.isNumeric(newText)) {
+                    if (Integer.parseInt(newText) == 1) {
+                        binding.lnLine.setBackgroundResource(R.drawable.line_1);
+                    } else {
+                        binding.lnLine.setBackgroundResource(R.drawable.line_2);
+                    }
+                }
+            }
         }, 2000);
     }
 

@@ -1,5 +1,6 @@
 package com.jws.jwsapi.home;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends Fragment implements WeightConformationListener, GpioHighListener {
+public class HomeFragment extends Fragment implements GpioHighListener {
 
     @Inject
     WeighRepository repository;
@@ -91,7 +92,6 @@ public class HomeFragment extends Fragment implements WeightConformationListener
                 return (T) viewModelFactory.create(mainActivity.mainClass.bza);
             }
         }).get(ScaleViewModel.class);
-        serviceScaleViewModel.setWeightListener(this);
 
         gpioManager.setHighListener(this);
     }
@@ -121,7 +121,14 @@ public class HomeFragment extends Fragment implements WeightConformationListener
         productionLineViewModel.getCaliber().observe(getViewLifecycleOwner(), caliber ->
                 animateAndSetText(binding.tvCaliber,binding.shimmerLine,caliber));
         productionLineViewModel.getLineNumber().observe(getViewLifecycleOwner(), number ->
-                animateAndSetText(binding.tvLine,binding.shimmerLine,String.valueOf(number)));
+        {
+            animateAndSetText(binding.tvLine,binding.shimmerLine,String.valueOf(number));
+            if (number == 1) {
+                binding.lnLine.setBackgroundResource(R.drawable.line_1);
+            } else {
+                binding.lnLine.setBackgroundResource(R.drawable.line_2);
+            }
+        });
 
         handleObserveWeighing();
     }
@@ -240,11 +247,6 @@ public class HomeFragment extends Fragment implements WeightConformationListener
         super.onDestroyView();
         productionLineViewModel.stopPolling();
         binding = null;
-    }
-
-    @Override
-    public void onWeightConformed() {
-        getActivity().runOnUiThread(this::createWeighing);
     }
 
     @Override

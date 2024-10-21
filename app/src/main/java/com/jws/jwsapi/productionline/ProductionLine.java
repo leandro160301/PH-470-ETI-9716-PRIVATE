@@ -4,7 +4,7 @@ public class ProductionLine {
 
     private String destinatation;
     private String product;
-    private String maturity;
+    private String expirateDate;
     private String caliber;
     private String batch;
     private String topTare;
@@ -13,12 +13,12 @@ public class ProductionLine {
     private String coverTare;
     private ProductionLineStates productionLineState;
 
-    public ProductionLine(String destinatation, String product, String maturity, String caliber,
+    public ProductionLine(String destinatation, String product, String expirateDate, String caliber,
                           String batch, String topTare, String partsTare, String iceTare,
                           String coverTare, ProductionLineStates productionLineState) {
         this.destinatation = destinatation;
         this.product = product;
-        this.maturity = maturity;
+        this.expirateDate = expirateDate;
         this.caliber = caliber;
         this.batch = batch;
         this.topTare = topTare;
@@ -44,12 +44,12 @@ public class ProductionLine {
         this.product = product;
     }
 
-    public String getMaturity() {
-        return maturity;
+    public String getExpirateDate() {
+        return expirateDate;
     }
 
-    public void setMaturity(String maturity) {
-        this.maturity = maturity;
+    public void setExpirateDate(String expirateDate) {
+        this.expirateDate = expirateDate;
     }
 
     public String getCaliber() {

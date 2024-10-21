@@ -377,7 +377,7 @@
 
     <!--home feature-->
     <string name="button_text_1">CANTIDAD</string>
-    <string name="button_text_2">PESAR</string>
+    <string name="button_text_2">LINEAS</string>
     <string name="button_text_3">PALLETS</string>
     <string name="button_text_4">PESADAS</string>
     <string name="button_text_5">NUEVO PALLET</string>

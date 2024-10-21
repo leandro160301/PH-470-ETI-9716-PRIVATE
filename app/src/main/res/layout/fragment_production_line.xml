@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fondo_prod"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/loadingPanel2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        tools:layout_editor_absoluteY="59dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/blanco"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@color/gregorutti_color"
+                                    android:fontFamily="sans-serif-black"
+                                    android:gravity="center"
+                                    android:text="LINEA 1"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="34sp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@color/gregorutti_color"
+                                    android:fontFamily="sans-serif-black"
+                                    android:gravity="center"
+                                    android:text="LINEA 2"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="34sp" />
+                            </LinearLayout>
+
+                            <com.jws.jwsapi.core.views.ScrollViewScroll
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <LinearLayout
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="20dp"
+                                    android:orientation="vertical">
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical"
+                                            android:padding="10dp">
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="5dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Destinatario"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_destinatation_1"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="20dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Vencimiento"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_expirate_date_1"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="20dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Producto"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_product_1"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="20dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Calibre"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_caliber_1"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="20dp"
+                                                android:layout_marginBottom="20dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Lote"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_batch_1"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical"
+                                            android:padding="10dp">
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="5dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Destinatario"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_destinatation_2"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="20dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Vencimiento"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_expirate_date_2"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="20dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Producto"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_product_2"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="20dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Calibre"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_caliber_2"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="20dp"
+                                                android:layout_marginBottom="20dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:text="Lote"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="30sp" />
+
+                                                <TextView
+                                                    android:id="@+id/tv_batch_2"
+                                                    android:layout_width="180dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/stylekeycor6ceropaddin"
+                                                    android:gravity="center"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#000000"
+                                                    android:textSize="24sp" />
+
+
+                                            </LinearLayout>
+
+                                        </LinearLayout>
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+                            </com.jws.jwsapi.core.views.ScrollViewScroll>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

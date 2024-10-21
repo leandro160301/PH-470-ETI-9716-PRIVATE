@@ -1,6 +1,7 @@
 package com.jws.jwsapi.home;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.container.ContainerButtonProvider;
@@ -19,6 +22,9 @@ import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
 import com.jws.jwsapi.core.gpio.GpioHighListener;
 import com.jws.jwsapi.core.gpio.GpioManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
+import com.jws.jwsapi.productionline.ProductionLineFragment;
+import com.jws.jwsapi.productionline.ProductionLineManager;
+import com.jws.jwsapi.productionline.ProductionLineViewModel;
 import com.jws.jwsapi.scale.ScaleViewModel;
 import com.jws.jwsapi.scale.WeightConformationListener;
 import com.jws.jwsapi.shared.WeighRepository;
@@ -35,8 +41,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class HomeFragment extends Fragment implements WeightConformationListener, GpioHighListener {
 
-    private static final int OPERATION_BUTTONS = 0;
-    private static final int SCALE_BUTTONS = 1;
     @Inject
     WeighRepository repository;
     @Inject
@@ -50,7 +54,8 @@ public class HomeFragment extends Fragment implements WeightConformationListener
     private MainActivity mainActivity;
     private WeighingViewModel weighingViewModel;
     private ScaleViewModel serviceScaleViewModel;
-    private int buttons = OPERATION_BUTTONS;
+    private ProductionLineViewModel productionLineViewModel;
+    private boolean isScaleMode = false;
 
 
     @Override
@@ -78,7 +83,7 @@ public class HomeFragment extends Fragment implements WeightConformationListener
     @SuppressWarnings("unchecked")
     private void initViewModels() {
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
-
+        productionLineViewModel = new ViewModelProvider(this).get(ProductionLineViewModel.class);
         serviceScaleViewModel = new ViewModelProvider(requireActivity(), new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -101,11 +106,22 @@ public class HomeFragment extends Fragment implements WeightConformationListener
         repository.getTare().observe(getViewLifecycleOwner(), tare -> binding.imTare.setVisibility(Utils.isNumeric(tare) && Float.parseFloat(tare) > 0 ? View.VISIBLE : View.INVISIBLE));
 
         repository.getUnit().observe(getViewLifecycleOwner(), unit -> {
-            binding.tvTotalNetUnit.setText(unit);
             binding.tvGrossUnit.setText(unit);
             binding.tvNetUnit.setText(unit);
         });
 
+        productionLineViewModel.getProduct().observe(getViewLifecycleOwner(), product ->
+                animateAndSetText(binding.tvProduct,binding.shimmerViewProduct,product));
+        productionLineViewModel.getBatch().observe(getViewLifecycleOwner(), batch ->
+                animateAndSetText(binding.tvBatch,binding.shimmerViewBatch,batch));
+        productionLineViewModel.getDestination().observe(getViewLifecycleOwner(), destination ->
+                animateAndSetText(binding.tvDestination,binding.shimmerViewDestination,destination));
+        productionLineViewModel.getExpirationDate().observe(getViewLifecycleOwner(), expiration ->
+                animateAndSetText(binding.tvExpirationDate,binding.shimmerViewExpirationDate,expiration));
+        productionLineViewModel.getCaliber().observe(getViewLifecycleOwner(), caliber ->
+                animateAndSetText(binding.tvCaliber,binding.shimmerLine,caliber));
+        productionLineViewModel.getLineNumber().observe(getViewLifecycleOwner(), number ->
+                animateAndSetText(binding.tvLine,binding.shimmerLine,String.valueOf(number)));
 
         handleObserveWeighing();
     }
@@ -157,13 +173,12 @@ public class HomeFragment extends Fragment implements WeightConformationListener
     }
 
     private void changeMode() {
-        if (buttons == OPERATION_BUTTONS) {
-            buttons = SCALE_BUTTONS;
-            setupButtonsScale();
-        } else {
-            buttons = OPERATION_BUTTONS;
+        if (isScaleMode) {
             setupButtons();
+        } else {
+            setupButtonsScale();
         }
+        isScaleMode = !isScaleMode;
     }
 
     private void setupButtonsScale() {
@@ -183,7 +198,7 @@ public class HomeFragment extends Fragment implements WeightConformationListener
     private void setupButtons() {
         if (buttonProvider != null) {
             setupButton(buttonProvider.getButton1(), R.string.button_text_2,
-                    v -> createWeighing(), View.VISIBLE);
+                    v -> mainActivity.mainClass.openFragment(new ProductionLineFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton2(), R.string.button_text_3,
                     null, View.VISIBLE);
             setupButton(buttonProvider.getButton3(), R.string.button_text_4,
@@ -211,9 +226,19 @@ public class HomeFragment extends Fragment implements WeightConformationListener
         if (visibility != null) button.setVisibility(visibility);
     }
 
+    private void animateAndSetText(TextView textView, ShimmerFrameLayout shimmerLayout, String newText) {
+        shimmerLayout.startShimmer();
+        new Handler().postDelayed(() -> {
+            shimmerLayout.stopShimmer();
+            textView.setText(newText);
+        }, 2000);
+    }
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        productionLineViewModel.stopPolling();
         binding = null;
     }
 
@@ -229,7 +254,10 @@ public class HomeFragment extends Fragment implements WeightConformationListener
                 showMessage("Tara realizada", R.layout.item_customtoastok);
                 repository.setTare();
             });
+        }
 
+        if (getActivity() != null && input == 1) {
+            getActivity().runOnUiThread(() -> productionLineViewModel.changeCurrentLine());
         }
 
     }

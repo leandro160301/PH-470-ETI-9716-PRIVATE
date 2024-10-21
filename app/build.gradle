@@ -113,6 +113,7 @@ dependencies {
    // implementation 'org.webrtc:google-webrtc:1.0.20849'
 
     //  implementation files('libs\\rxtxcomm.jar')
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'io.github.java-native:jssc:2.9.4'
     implementation files('libs\\comm-2.0.jar')

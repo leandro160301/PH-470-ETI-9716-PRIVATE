@@ -25,58 +25,121 @@ public class ProductionLineManager {
         }
     }
 
-    public void setCurrentProductionLineNumber(int lineNumber) {
-        this.currentProductionLineNumber = lineNumber;
-        preferences.putCurrentProductionLineNumber(lineNumber);
+    public ProductionLine getProductionLineOne() {
+        return this.productionLineOne;
+    }
+
+    public ProductionLine getProductionLineTwo() {
+        return this.productionLineTwo;
+    }
+
+    public void changeCurrentProductionLine() {
+        if (currentProductionLineNumber == 1) {
+            currentProductionLineNumber = 2;
+            preferences.putCurrentProductionLineNumber(2);
+        } else {
+            currentProductionLineNumber = 1;
+            preferences.putCurrentProductionLineNumber(1);
+        }
+
     }
 
     public int getCurrentProductionLineNumber() {
         return currentProductionLineNumber;
     }
 
-    public void updateProductionLineDestination(String destination) {
-        if (currentProductionLineNumber == 1) {
+    public void updateProductionLineDestinationOne(String destination) {
+        updateProductionLineDestination(destination, 1);
+    }
+
+    public void updateProductionLineDestinationTwo(String destination) {
+        updateProductionLineDestination(destination, 2);
+    }
+
+    private void updateProductionLineDestination(String destination, int line) {
+        if (line == 1) {
             productionLineOne.setDestinatation(destination);
+            preferences.putDestinationOne(destination);
         } else {
             productionLineTwo.setDestinatation(destination);
+            preferences.putDestinationTwo(destination);
         }
-        preferences.putDestination(destination);
+
     }
 
-    public void updateProductionLineProduct(String product) {
-        if (currentProductionLineNumber == 1) {
+    public void updateProductionLineProductOne(String product) {
+        updateProductionLineProduct(product, 1);
+    }
+
+    public void updateProductionLineProductTwo(String product) {
+        updateProductionLineProduct(product, 2);
+    }
+
+    private void updateProductionLineProduct(String product, int line) {
+        if (line == 1) {
             productionLineOne.setProduct(product);
+            preferences.putProductOne(product);
         } else {
             productionLineTwo.setProduct(product);
+            preferences.putProductTwo(product);
         }
-        preferences.putProduct(product);
     }
 
-    public void updateProductionLineMaturity(String maturity) {
-        if (currentProductionLineNumber == 1) {
-            productionLineOne.setMaturity(maturity);
+    public void updateProductionLineExpirateDateOne(String maturity) {
+        updateProductionLineExpirateDate(maturity, 1);
+    }
+
+    public void updateProductionLineExpirateDateTwo(String maturity) {
+        updateProductionLineExpirateDate(maturity, 2);
+    }
+
+    private void updateProductionLineExpirateDate(String maturity, int line) {
+        if (line == 1) {
+            productionLineOne.setExpirateDate(maturity);
+            preferences.putExpirateDateOne(maturity);
         } else {
-            productionLineTwo.setMaturity(maturity);
+            productionLineTwo.setExpirateDate(maturity);
+            preferences.putExpirateDateTwo(maturity);
         }
-        preferences.putMaturity(maturity);
+
     }
 
-    public void updateProductionLineCaliber(String caliber) {
-        if (currentProductionLineNumber == 1) {
+    public void updateProductionLineCaliberOne(String caliber) {
+        updateProductionLineCaliber(caliber, 1);
+    }
+
+    public void updateProductionLineCaliberTwo(String caliber) {
+        updateProductionLineCaliber(caliber, 2);
+    }
+
+    private void updateProductionLineCaliber(String caliber, int line) {
+        if (line == 1) {
             productionLineOne.setCaliber(caliber);
+            preferences.putCaliberOne(caliber);
         } else {
             productionLineTwo.setCaliber(caliber);
+            preferences.putCaliberTwo(caliber);
         }
-        preferences.putCaliber(caliber);
+
     }
 
-    public void updateProductionLineBatch(String batch) {
-        if (currentProductionLineNumber == 1) {
+    public void updateProductionLineBatchOne(String batch) {
+        updateProductionLineBatch(batch,1);
+    }
+
+    public void updateProductionLineBatchTwo(String batch) {
+        updateProductionLineBatch(batch,2);
+    }
+
+    private void updateProductionLineBatch(String batch, int line) {
+        if (line == 1) {
             productionLineOne.setBatch(batch);
+            preferences.putBatchOne(batch);
         } else {
             productionLineTwo.setBatch(batch);
+            preferences.putBatchTwo(batch);
         }
-        preferences.putBatch(batch);
+
     }
 
     public void updateProductionLineTopTare(String topTare) {

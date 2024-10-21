@@ -51,24 +51,44 @@ public class ProductionLinePreferences {
         preferencesHelper.putInt("current_productline",value);
     }
 
-    public void putDestination(String destination) {
-        preferencesHelper.putString(getCurrentProductionLineNumber()==1 ? "destinatation_one" : "destinatation_two", destination);
+    public void putDestinationOne(String destination) {
+        preferencesHelper.putString("destinatation_one", destination);
     }
 
-    public void putProduct(String product) {
-        preferencesHelper.putString(getCurrentProductionLineNumber()==1 ? "product_one" : "product_two", product);
+    public void putProductOne(String product) {
+        preferencesHelper.putString("product_one", product);
     }
 
-    public void putMaturity(String maturity) {
-        preferencesHelper.putString(getCurrentProductionLineNumber() == 1 ? "maturity_one" : "maturity_two", maturity);
+    public void putExpirateDateOne(String maturity) {
+        preferencesHelper.putString("maturity_one", maturity);
     }
 
-    public void putCaliber(String caliber) {
-        preferencesHelper.putString(getCurrentProductionLineNumber() == 1 ? "caliber_one" : "caliber_two", caliber);
+    public void putCaliberOne(String caliber) {
+        preferencesHelper.putString("caliber_one", caliber);
     }
 
-    public void putBatch(String batch) {
-        preferencesHelper.putString(getCurrentProductionLineNumber() == 1 ? "batch_one" : "batch_two", batch);
+    public void putBatchOne(String batch) {
+        preferencesHelper.putString("batch_one", batch);
+    }
+
+    public void putDestinationTwo(String destination) {
+        preferencesHelper.putString("destinatation_two", destination);
+    }
+
+    public void putProductTwo(String product) {
+        preferencesHelper.putString("product_two", product);
+    }
+
+    public void putExpirateDateTwo(String maturity) {
+        preferencesHelper.putString("maturity_two", maturity);
+    }
+
+    public void putCaliberTwo(String caliber) {
+        preferencesHelper.putString("caliber_two", caliber);
+    }
+
+    public void putBatchTwo(String batch) {
+        preferencesHelper.putString("batch_two", batch);
     }
 
     public void putTopTare(String topTare) {

@@ -11,20 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.databinding.FragmentProductionLineBinding;
-import com.jws.jwsapi.databinding.FragmentWeighingBinding;
-import com.jws.jwsapi.dialog.DialogInputInterface;
-import com.jws.jwsapi.weighing.WeighingAdapter;
-import com.jws.jwsapi.weighing.WeighingViewModel;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -65,19 +57,19 @@ public class ProductionLineFragment extends Fragment {
     private void setOnClickListeners() {
         binding.tvBatch1.setOnClickListener(v ->
                 keyboard(binding.tvBatch1, "Ingrese el Lote 1", requireContext(), value ->
-                productionLineManager.updateProductionLineBatchOne(value)));
+                        productionLineManager.updateProductionLineBatchOne(value)));
         binding.tvCaliber1.setOnClickListener(v ->
                 keyboard(binding.tvCaliber1, "Ingrese el Calibre 1", requireContext(), value ->
-                productionLineManager.updateProductionLineCaliberOne(value)));
+                        productionLineManager.updateProductionLineCaliberOne(value)));
         binding.tvDestinatation1.setOnClickListener(v ->
                 keyboard(binding.tvDestinatation1, "Ingrese el Destino 1", requireContext(), value ->
-                productionLineManager.updateProductionLineDestinationOne(value)));
+                        productionLineManager.updateProductionLineDestinationOne(value)));
         binding.tvExpirateDate1.setOnClickListener(v ->
                 keyboard(binding.tvExpirateDate1, "Ingrese el Vencimiento 1", requireContext(), value ->
-                productionLineManager.updateProductionLineExpirateDateOne(value)));
+                        productionLineManager.updateProductionLineExpirateDateOne(value)));
         binding.tvProduct1.setOnClickListener(v ->
                 keyboard(binding.tvProduct1, "Ingrese el Producto 1", requireContext(), value ->
-                productionLineManager.updateProductionLineProductOne(value)));
+                        productionLineManager.updateProductionLineProductOne(value)));
 
         binding.tvBatch2.setOnClickListener(v ->
                 keyboard(binding.tvBatch2, "Ingrese el Lote 2", requireContext(), value ->

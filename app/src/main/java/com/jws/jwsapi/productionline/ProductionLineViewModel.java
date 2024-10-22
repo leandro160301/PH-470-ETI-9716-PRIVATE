@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.jws.jwsapi.shared.WeighRepository;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -18,6 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 @HiltViewModel
 public class ProductionLineViewModel extends ViewModel {
 
+    private final static int PERIOD = 200;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final MutableLiveData<String> batch = new MutableLiveData<>();
@@ -26,13 +29,15 @@ public class ProductionLineViewModel extends ViewModel {
     private final MutableLiveData<String> expirationDate = new MutableLiveData<>();
     private final MutableLiveData<String> caliber = new MutableLiveData<>();
     private final MutableLiveData<Integer> lineNumber = new MutableLiveData<>();
+    private final MutableLiveData<ProductionLineStates> state = new MutableLiveData<>();
     private final ProductionLineManager productionLineManager;
-    private final static int PERIOD = 200;
+    private final WeighRepository weighRepository;
     private Disposable pollingDisposable;
 
     @Inject
-    public ProductionLineViewModel(ProductionLineManager productionLineManager) {
+    public ProductionLineViewModel(ProductionLineManager productionLineManager, WeighRepository weighRepository) {
         this.productionLineManager = productionLineManager;
+        this.weighRepository = weighRepository;
         startPolling();
     }
 
@@ -51,6 +56,7 @@ public class ProductionLineViewModel extends ViewModel {
         String expirationDate = productionLine.getExpirateDate();
         String caliber = productionLine.getCaliber();
         Integer lineNumber = productionLineManager.getCurrentProductionLineNumber();
+        ProductionLineStates state = productionLineManager.getCurrentProductionLine().getProductionLineState();
         if (!batch.equals(this.batch.getValue())) {
             this.batch.postValue(batch);
         }
@@ -68,6 +74,9 @@ public class ProductionLineViewModel extends ViewModel {
         }
         if (!lineNumber.equals(this.lineNumber.getValue())) {
             this.lineNumber.postValue(lineNumber);
+        }
+        if (!state.equals(this.state.getValue())) {
+            this.state.postValue(state);
         }
     }
 
@@ -98,6 +107,35 @@ public class ProductionLineViewModel extends ViewModel {
     public MutableLiveData<String> getCaliber() {
         return caliber;
     }
+
+    public MutableLiveData<ProductionLineStates> getState() {
+        return state;
+    }
+
+    public void putTareBoxProcess() {
+        productionLineManager.updateProductionLineCoverTare(String.valueOf(weighRepository.getNet()));
+        productionLineManager.updateProductionLineState(ProductionLineStates.TARE);
+    }
+
+    public void putTarePartsProcess() {
+        productionLineManager.updateProductionLinePartsTare(String.valueOf(weighRepository.getNet()));
+        productionLineManager.updateProductionLineState(ProductionLineStates.PARTS);
+    }
+
+    public void putTareIceProcess() {
+        productionLineManager.updateProductionLineIceTare(String.valueOf(weighRepository.getNet()));
+        productionLineManager.updateProductionLineState(ProductionLineStates.ICE);
+    }
+
+    public void putTareTopProcess() {
+        productionLineManager.updateProductionLineTopTare(String.valueOf(weighRepository.getNet()));
+        productionLineManager.updateProductionLineState(ProductionLineStates.COVER);
+    }
+
+    public void finishWeight() {
+        productionLineManager.updateProductionLineState(ProductionLineStates.INIT);
+    }
+
 
     public void stopPolling() {
         if (pollingDisposable != null && !pollingDisposable.isDisposed()) {

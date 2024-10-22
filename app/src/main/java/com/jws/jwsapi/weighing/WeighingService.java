@@ -2,7 +2,6 @@ package com.jws.jwsapi.weighing;
 
 import androidx.lifecycle.LiveData;
 
-
 import java.util.List;
 
 import io.reactivex.Single;

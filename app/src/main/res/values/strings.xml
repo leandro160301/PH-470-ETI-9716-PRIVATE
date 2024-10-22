@@ -378,7 +378,7 @@
     <!--home feature-->
     <string name="button_text_1">CANTIDAD</string>
     <string name="button_text_2">LINEAS</string>
-    <string name="button_text_3">PALLETS</string>
+    <string name="button_text_3">CALIBRES</string>
     <string name="button_text_4">PESADAS</string>
     <string name="button_text_5">NUEVO PALLET</string>
     <string name="toast_message_weighing_created">Pesada enviada al sistema</string>
@@ -458,6 +458,7 @@
     <string name="gpio_fragment_input6">Entrada 6</string>
     <string name="gpio_fragment_input7">Entrada 7</string>
     <string name="gpio_fragment_input8">Entrada 8</string>
+    <string name="fragment_title_caliber">CALIBRES</string>
 
 
 </resources>

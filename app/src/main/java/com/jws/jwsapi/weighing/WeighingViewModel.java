@@ -11,10 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 @HiltViewModel
 public class WeighingViewModel extends ViewModel {
@@ -29,7 +26,7 @@ public class WeighingViewModel extends ViewModel {
     private final UserRepository userRepository;
 
     @Inject
-    public WeighingViewModel( WeighingService weighingService, UserRepository userRepository) {
+    public WeighingViewModel(WeighingService weighingService, UserRepository userRepository) {
         this.weighingService = weighingService;
         this.userRepository = userRepository;
         this.weighings = weighingService.getAllWeighings();

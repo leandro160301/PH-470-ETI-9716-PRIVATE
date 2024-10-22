@@ -6,8 +6,8 @@ public class ProductionLineManager {
 
     private final ProductionLine productionLineOne;
     private final ProductionLine productionLineTwo;
-    private int currentProductionLineNumber;
     private final ProductionLinePreferences preferences;
+    private int currentProductionLineNumber;
 
     @Inject
     public ProductionLineManager(ProductionLinePreferences preferences) {
@@ -17,12 +17,36 @@ public class ProductionLineManager {
         this.preferences = preferences;
     }
 
-    public ProductionLine getCurrentProductionLine() {
-        if (currentProductionLineNumber == 1) {
-            return productionLineOne;
-        } else {
-            return productionLineTwo;
-        }
+    public void updateProductionLineExpirateDateOne(String maturity) {
+        updateProductionLineExpirateDate(maturity, 1);
+    }
+
+    public void updateProductionLineExpirateDateTwo(String maturity) {
+        updateProductionLineExpirateDate(maturity, 2);
+    }
+
+    public void updateProductionLineCaliberOne(String caliber) {
+        updateProductionLineCaliber(caliber, 1);
+    }
+
+    public void updateProductionLineCaliberTwo(String caliber) {
+        updateProductionLineCaliber(caliber, 2);
+    }
+
+    public void updateProductionLineProductOne(String product) {
+        updateProductionLineProduct(product, 1);
+    }
+
+    public void updateProductionLineProductTwo(String product) {
+        updateProductionLineProduct(product, 2);
+    }
+
+    public void updateProductionLineDestinationOne(String destination) {
+        updateProductionLineDestination(destination, 1);
+    }
+
+    public void updateProductionLineDestinationTwo(String destination) {
+        updateProductionLineDestination(destination, 2);
     }
 
     public ProductionLine getProductionLineOne() {
@@ -31,6 +55,14 @@ public class ProductionLineManager {
 
     public ProductionLine getProductionLineTwo() {
         return this.productionLineTwo;
+    }
+
+    public ProductionLine getCurrentProductionLine() {
+        if (currentProductionLineNumber == 1) {
+            return productionLineOne;
+        } else {
+            return productionLineTwo;
+        }
     }
 
     public void changeCurrentProductionLine() {
@@ -48,13 +80,6 @@ public class ProductionLineManager {
         return currentProductionLineNumber;
     }
 
-    public void updateProductionLineDestinationOne(String destination) {
-        updateProductionLineDestination(destination, 1);
-    }
-
-    public void updateProductionLineDestinationTwo(String destination) {
-        updateProductionLineDestination(destination, 2);
-    }
 
     private void updateProductionLineDestination(String destination, int line) {
         if (line == 1) {
@@ -67,14 +92,6 @@ public class ProductionLineManager {
 
     }
 
-    public void updateProductionLineProductOne(String product) {
-        updateProductionLineProduct(product, 1);
-    }
-
-    public void updateProductionLineProductTwo(String product) {
-        updateProductionLineProduct(product, 2);
-    }
-
     private void updateProductionLineProduct(String product, int line) {
         if (line == 1) {
             productionLineOne.setProduct(product);
@@ -83,14 +100,6 @@ public class ProductionLineManager {
             productionLineTwo.setProduct(product);
             preferences.putProductTwo(product);
         }
-    }
-
-    public void updateProductionLineExpirateDateOne(String maturity) {
-        updateProductionLineExpirateDate(maturity, 1);
-    }
-
-    public void updateProductionLineExpirateDateTwo(String maturity) {
-        updateProductionLineExpirateDate(maturity, 2);
     }
 
     private void updateProductionLineExpirateDate(String maturity, int line) {
@@ -102,14 +111,6 @@ public class ProductionLineManager {
             preferences.putExpirateDateTwo(maturity);
         }
 
-    }
-
-    public void updateProductionLineCaliberOne(String caliber) {
-        updateProductionLineCaliber(caliber, 1);
-    }
-
-    public void updateProductionLineCaliberTwo(String caliber) {
-        updateProductionLineCaliber(caliber, 2);
     }
 
     private void updateProductionLineCaliber(String caliber, int line) {
@@ -124,11 +125,11 @@ public class ProductionLineManager {
     }
 
     public void updateProductionLineBatchOne(String batch) {
-        updateProductionLineBatch(batch,1);
+        updateProductionLineBatch(batch, 1);
     }
 
     public void updateProductionLineBatchTwo(String batch) {
-        updateProductionLineBatch(batch,2);
+        updateProductionLineBatch(batch, 2);
     }
 
     private void updateProductionLineBatch(String batch, int line) {

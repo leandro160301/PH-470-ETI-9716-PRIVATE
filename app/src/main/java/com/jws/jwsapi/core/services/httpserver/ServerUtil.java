@@ -1,9 +1,5 @@
 package com.jws.jwsapi.core.services.httpserver;
 
-import android.annotation.SuppressLint;
-
-import androidx.annotation.Nullable;
-
 import com.jws.jwsapi.weighing.Weighing;
 import com.jws.jwsapi.weighing.WeighingService;
 
@@ -67,8 +63,6 @@ public class ServerUtil {
         }
         return jsonArray.toString();
     }
-
-
 
 
 }

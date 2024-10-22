@@ -266,8 +266,10 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/ln_state_1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:background="@drawable/campollenarclickeableceropadding_selector"
                         android:orientation="horizontal">
@@ -280,33 +282,15 @@
                             android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="@color/negro"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/tv_tare_value_1"
-                            android:layout_width="167dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="@color/negro"
                             android:textSize="24sp" />
 
-                        <TextView
-
-                            android:id="@+id/tv_tare_unit_1"
-                            android:layout_width="167dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ln_state_2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:background="@drawable/campollenarclickeableceropadding_selector"
                         android:orientation="horizontal">
@@ -321,30 +305,13 @@
                             android:textColor="@color/negro"
                             android:textSize="24sp" />
 
-                        <TextView
-                            android:id="@+id/tv_tare_value_2"
-                            android:layout_width="167dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
-
-                        <TextView
-                            android:id="@+id/tv_tare_unit_2"
-                            android:layout_width="167dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ln_state_3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:background="@drawable/campollenarclickeableceropadding_selector"
                         android:orientation="horizontal">
@@ -359,30 +326,13 @@
                             android:textColor="@color/negro"
                             android:textSize="24sp" />
 
-                        <TextView
-                            android:id="@+id/tv_tare_value_3"
-                            android:layout_width="167dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
-
-                        <TextView
-                            android:id="@+id/tv_tare_unit_3"
-                            android:layout_width="167dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ln_state_4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:background="@drawable/campollenarclickeableceropadding_selector"
                         android:orientation="horizontal">
@@ -397,25 +347,6 @@
                             android:textColor="@color/negro"
                             android:textSize="24sp" />
 
-                        <TextView
-                            android:id="@+id/tv_tare_value_4"
-                            android:layout_width="167dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
-
-                        <TextView
-                            android:id="@+id/tv_tare_unit_4"
-                            android:layout_width="167dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -477,14 +408,14 @@
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
                                             android:gravity="center"
-                                            android:text="Lote"
+                                            android:text="Producto"
                                             android:textAlignment="textStart"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
                                             android:textSize="47sp" />
 
                                         <com.facebook.shimmer.ShimmerFrameLayout
-                                            android:id="@+id/shimmer_view_batch"
+                                            android:id="@+id/shimmer_view_product"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
@@ -494,7 +425,7 @@
                                             app:shimmer_duration="1000">
 
                                             <TextView
-                                                android:id="@+id/tv_batch"
+                                                android:id="@+id/tv_product"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
                                                 android:layout_weight="1"
@@ -599,14 +530,14 @@
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
                                             android:gravity="center"
-                                            android:text="Producto"
+                                            android:text="Lote"
                                             android:textAlignment="textStart"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
-                                            android:textSize="34sp" />
+                                            android:textSize="38sp" />
 
                                         <com.facebook.shimmer.ShimmerFrameLayout
-                                            android:id="@+id/shimmer_view_product"
+                                            android:id="@+id/shimmer_view_batch"
                                             android:layout_width="500dp"
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
@@ -616,7 +547,7 @@
                                             app:shimmer_duration="1000">
 
                                             <TextView
-                                                android:id="@+id/tv_product"
+                                                android:id="@+id/tv_batch"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
                                                 android:layout_weight="1"
@@ -639,7 +570,7 @@
                                             android:textAlignment="center"
                                             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                             android:textColor="#000000"
-                                            android:textSize="34sp" />
+                                            android:textSize="38sp" />
 
                                         <com.facebook.shimmer.ShimmerFrameLayout
                                             android:id="@+id/shimmer_view_expiration_date"

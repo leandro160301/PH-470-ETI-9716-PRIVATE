@@ -1,18 +1,16 @@
 package com.jws.jwsapi.home;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -23,11 +21,10 @@ import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
 import com.jws.jwsapi.core.gpio.GpioHighListener;
 import com.jws.jwsapi.core.gpio.GpioManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
+import com.jws.jwsapi.productionline.ProductionLineCaliberFragment;
 import com.jws.jwsapi.productionline.ProductionLineFragment;
-import com.jws.jwsapi.productionline.ProductionLineManager;
 import com.jws.jwsapi.productionline.ProductionLineViewModel;
 import com.jws.jwsapi.scale.ScaleViewModel;
-import com.jws.jwsapi.scale.WeightConformationListener;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
@@ -111,24 +108,45 @@ public class HomeFragment extends Fragment implements GpioHighListener {
         });
 
         productionLineViewModel.getProduct().observe(getViewLifecycleOwner(), product ->
-                animateAndSetText(binding.tvProduct,binding.shimmerViewProduct,product));
+                animateAndSetText(binding.tvProduct, binding.shimmerViewProduct, product));
         productionLineViewModel.getBatch().observe(getViewLifecycleOwner(), batch ->
-                animateAndSetText(binding.tvBatch,binding.shimmerViewBatch,batch));
+                animateAndSetText(binding.tvBatch, binding.shimmerViewBatch, batch));
         productionLineViewModel.getDestination().observe(getViewLifecycleOwner(), destination ->
-                animateAndSetText(binding.tvDestination,binding.shimmerViewDestination,destination));
+                animateAndSetText(binding.tvDestination, binding.shimmerViewDestination, destination));
         productionLineViewModel.getExpirationDate().observe(getViewLifecycleOwner(), expiration ->
-                animateAndSetText(binding.tvExpirationDate,binding.shimmerViewExpirationDate,expiration));
+                animateAndSetText(binding.tvExpirationDate, binding.shimmerViewExpirationDate, expiration));
         productionLineViewModel.getCaliber().observe(getViewLifecycleOwner(), caliber ->
-                animateAndSetText(binding.tvCaliber,binding.shimmerLine,caliber));
+                animateAndSetText(binding.tvCaliber, binding.shimmerLine, caliber));
         productionLineViewModel.getLineNumber().observe(getViewLifecycleOwner(), number ->
-                animateAndSetText(binding.tvLine,binding.shimmerLine,String.valueOf(number)));
+                animateAndSetText(binding.tvLine, binding.shimmerLine, String.valueOf(number)));
+        productionLineViewModel.getState().observe(getViewLifecycleOwner(), productionLineStates -> {
+            switch (productionLineStates) {
+                case INIT:
+                    setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, binding.lnState4);
+                    break;
+                case TARE:
+                    setupLinearState(null, binding.lnState2, binding.lnState3, binding.lnState4);
+                    binding.lnState1.setBackgroundResource(R.drawable.botoneraprincipalverde);
+                    break;
+                case PARTS:
+                    setupLinearState(binding.lnState1, null, binding.lnState3, binding.lnState4);
+                    binding.lnState2.setBackgroundResource(R.drawable.botoneraprincipalverde);
+                    break;
+                case ICE:
+                    setupLinearState(binding.lnState1, binding.lnState2, null, binding.lnState4);
+                    binding.lnState3.setBackgroundResource(R.drawable.botoneraprincipalverde);
+                    break;
+                case COVER:
+                    setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, null);
+                    binding.lnState4.setBackgroundResource(R.drawable.botoneraprincipalverde);
+                    break;
+            }
+        });
 
         handleObserveWeighing();
     }
 
     private void handleObserveWeighing() {
-
-        weighingViewModel.getLoading().observe(getViewLifecycleOwner(), this::handleLoadingUpdate);
 
         weighingViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
 
@@ -136,6 +154,17 @@ public class HomeFragment extends Fragment implements GpioHighListener {
 
         weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), this::handleWeighingResponse);
 
+    }
+
+    private void setupLinearState(LinearLayout ln1, LinearLayout ln2, LinearLayout ln3, LinearLayout ln4) {
+        if (ln1 != null)
+            ln1.setBackgroundResource(R.drawable.campollenarclickeableceropadding_selector);
+        if (ln2 != null)
+            ln2.setBackgroundResource(R.drawable.campollenarclickeableceropadding_selector);
+        if (ln3 != null)
+            ln3.setBackgroundResource(R.drawable.campollenarclickeableceropadding_selector);
+        if (ln4 != null)
+            ln4.setBackgroundResource(R.drawable.campollenarclickeableceropadding_selector);
     }
 
     private void showMessage(String error, int layout) {
@@ -157,12 +186,6 @@ public class HomeFragment extends Fragment implements GpioHighListener {
             } else {
                 showMessage(weighingResponse.getError(), R.layout.item_customtoasterror);
             }
-        }
-    }
-
-    private void handleLoadingUpdate(Boolean isLoading) {
-        if (isLoading != null) {
-            binding.loadingPanel.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -200,7 +223,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
             setupButton(buttonProvider.getButton1(), R.string.button_text_2,
                     v -> mainActivity.mainClass.openFragment(new ProductionLineFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton2(), R.string.button_text_3,
-                    null, View.VISIBLE);
+                    v -> mainActivity.mainClass.openFragment(new ProductionLineCaliberFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton3(), R.string.button_text_4,
                     v -> mainActivity.mainClass.openFragment(new WeighingFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton4(), R.string.button_text_6, null, View.VISIBLE);
@@ -256,6 +279,23 @@ public class HomeFragment extends Fragment implements GpioHighListener {
     public void onInputHigh(int input) {
         if (getActivity() != null && input == 0) {
             getActivity().runOnUiThread(() -> {
+                switch (productionLineViewModel.getState().getValue()) {
+                    case INIT:
+                        productionLineViewModel.putTareBoxProcess();
+                        break;
+                    case TARE:
+                        productionLineViewModel.putTarePartsProcess();
+                        break;
+                    case PARTS:
+                        productionLineViewModel.putTareIceProcess();
+                        break;
+                    case ICE:
+                        productionLineViewModel.putTareTopProcess();
+                        break;
+                    case COVER:
+                        productionLineViewModel.finishWeight();
+                        break;
+                }
                 showMessage("Tara realizada", R.layout.item_customtoastok);
                 repository.setTare();
             });

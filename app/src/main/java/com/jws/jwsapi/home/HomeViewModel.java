@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel;
 import com.jws.jwsapi.MainActivity;
 import com.service.PuertosSerie.PuertosSerie2;
 
-import javax.inject.Inject;
-
 public class HomeViewModel extends ViewModel {
 
-    @Inject
     HomeService homeService;
+
+    public HomeViewModel(HomeService homeService) {
+        this.homeService = homeService;
+    }
 
     public void print(MainActivity mainActivity, PuertosSerie2 serialPort) {
         homeService.print(mainActivity, serialPort);

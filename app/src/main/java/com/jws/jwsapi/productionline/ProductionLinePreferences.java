@@ -7,7 +7,7 @@ import javax.inject.Inject;
 public class ProductionLinePreferences {
 
     private final PreferencesHelper preferencesHelper;
-    
+
     @Inject
     public ProductionLinePreferences(PreferencesHelper preferencesHelper) {
         this.preferencesHelper = preferencesHelper;
@@ -44,11 +44,11 @@ public class ProductionLinePreferences {
     }
 
     public Integer getCurrentProductionLineNumber() {
-        return preferencesHelper.getInt("current_productline",1);
+        return preferencesHelper.getInt("current_productline", 1);
     }
 
     public void putCurrentProductionLineNumber(Integer value) {
-        preferencesHelper.putInt("current_productline",value);
+        preferencesHelper.putInt("current_productline", value);
     }
 
     public void putDestinationOne(String destination) {

@@ -10,20 +10,11 @@ public class Weighing {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "id_pallet")
-    private int idPallet;
+    @ColumnInfo(name = "product")
+    private String product;
 
-    @ColumnInfo(name = "scale_number")
-    private int scaleNumber;
-
-    @ColumnInfo(name = "code")
-    private String code;
-
-    @ColumnInfo(name = "name")
-    private String name;
-
-    @ColumnInfo(name = "serial_number")
-    private String serialNumber;
+    @ColumnInfo(name = "destination")
+    private String destination;
 
     @ColumnInfo(name = "operator")
     private String operator;
@@ -34,14 +25,29 @@ public class Weighing {
     @ColumnInfo(name = "gross")
     private String gross;
 
-    @ColumnInfo(name = "tare")
-    private String tare;
+    @ColumnInfo(name = "batch")
+    private String batch;
 
-    @ColumnInfo(name = "quantity")
-    private int quantity;
+    @ColumnInfo(name = "caliber")
+    private String caliber;
 
-    @ColumnInfo(name = "unit")
-    private String unit;
+    @ColumnInfo(name = "line")
+    private String line;
+
+    @ColumnInfo(name = "expirate_date")
+    private String expirateDate;
+
+    @ColumnInfo(name = "top_tare")
+    private String topTare;
+
+    @ColumnInfo(name = "parts_tare")
+    private String partsTare;
+
+    @ColumnInfo(name = "ice_tare")
+    private String iceTare;
+
+    @ColumnInfo(name = "box_tare")
+    private String boxTare;
 
     public int getId() {
         return id;
@@ -51,44 +57,20 @@ public class Weighing {
         this.id = id;
     }
 
-    public int getIdPallet() {
-        return idPallet;
+    public String getProduct() {
+        return product;
     }
 
-    public void setIdPallet(int idPallet) {
-        this.idPallet = idPallet;
+    public void setProduct(String product) {
+        this.product = product;
     }
 
-    public int getScaleNumber() {
-        return scaleNumber;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setScaleNumber(int scaleNumber) {
-        this.scaleNumber = scaleNumber;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public String getOperator() {
@@ -115,28 +97,68 @@ public class Weighing {
         this.gross = gross;
     }
 
-    public String getTare() {
-        return tare;
+    public String getBatch() {
+        return batch;
     }
 
-    public void setTare(String tare) {
-        this.tare = tare;
+    public void setBatch(String batch) {
+        this.batch = batch;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getCaliber() {
+        return caliber;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setCaliber(String caliber) {
+        this.caliber = caliber;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getLine() {
+        return line;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public String getExpirateDate() {
+        return expirateDate;
+    }
+
+    public void setExpirateDate(String expirateDate) {
+        this.expirateDate = expirateDate;
+    }
+
+    public String getTopTare() {
+        return topTare;
+    }
+
+    public void setTopTare(String topTare) {
+        this.topTare = topTare;
+    }
+
+    public String getPartsTare() {
+        return partsTare;
+    }
+
+    public void setPartsTare(String partsTare) {
+        this.partsTare = partsTare;
+    }
+
+    public String getIceTare() {
+        return iceTare;
+    }
+
+    public void setIceTare(String iceTare) {
+        this.iceTare = iceTare;
+    }
+
+    public String getBoxTare() {
+        return boxTare;
+    }
+
+    public void setBoxTare(String boxTare) {
+        this.boxTare = boxTare;
     }
 
 }

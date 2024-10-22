@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.jws.jwsapi.productionline.ProductionLine;
+import com.jws.jwsapi.productionline.ProductionLineManager;
 import com.jws.jwsapi.shared.UserRepository;
 
 import java.util.List;
@@ -19,15 +21,15 @@ public class WeighingViewModel extends ViewModel {
     private final WeighingService weighingService;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final LiveData<List<Weighing>> weighings;
-    private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
-    private final MutableLiveData<String> errorRequest = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final UserRepository userRepository;
+    private final ProductionLineManager productionLineManager;
 
     @Inject
-    public WeighingViewModel(WeighingService weighingService, UserRepository userRepository) {
+    public WeighingViewModel(WeighingService weighingService, UserRepository userRepository, ProductionLineManager productionLineManager) {
         this.weighingService = weighingService;
         this.userRepository = userRepository;
+        this.productionLineManager = productionLineManager;
         this.weighings = weighingService.getAllWeighings();
     }
 
@@ -35,15 +37,27 @@ public class WeighingViewModel extends ViewModel {
         return weighings;
     }
 
-    public LiveData<Boolean> getLoading() {
-        return loading;
-    }
-
     public LiveData<String> getError() {
         return error;
     }
 
     public void createWeighing(String gross, String net, String tare, String unit) {
+        Weighing weighing = new Weighing();
+        ProductionLine productionLine = productionLineManager.getCurrentProductionLine();
+        if (productionLine == null) return;
+        weighing.setBatch(productionLine.getBatch());
+        weighing.setCaliber(productionLine.getCaliber());
+        weighing.setBoxTare(productionLine.getBoxTare());
+        weighing.setDestination(productionLine.getDestinatation());
+        weighing.setGross(gross);
+        weighing.setExpirateDate(productionLine.getExpirateDate());
+        weighing.setIceTare(productionLine.getIceTare());
+        weighing.setNet(net);
+        weighing.setTopTare(productionLine.getTopTare());
+        weighing.setPartsTare(productionLine.getPartsTare());
+        weighing.setProduct(productionLine.getProduct());
+        weighing.setOperator(userRepository.getCurrentUser());
+        weighingService.newWeighing(weighing);
     }
 
     @Override

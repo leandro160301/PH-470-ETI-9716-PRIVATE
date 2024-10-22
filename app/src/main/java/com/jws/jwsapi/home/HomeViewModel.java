@@ -7,7 +7,7 @@ import com.service.PuertosSerie.PuertosSerie2;
 
 public class HomeViewModel extends ViewModel {
 
-    HomeService homeService;
+    private final HomeService homeService;
 
     public HomeViewModel(HomeService homeService) {
         this.homeService = homeService;

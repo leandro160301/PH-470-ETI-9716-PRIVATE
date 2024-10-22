@@ -16,13 +16,9 @@ public class WeighingService {
         weighingDao.insertWeighing(weighing);
     }
 
-
     public LiveData<List<Weighing>> getAllWeighings() {
         return weighingDao.getAllWeighing();
     }
 
-    public List<Weighing> getAllWeighingsStatic() {
-        return weighingDao.getAllWeighingStatic();
-    }
 
 }

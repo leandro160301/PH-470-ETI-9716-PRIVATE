@@ -13,13 +13,13 @@ import io.reactivex.schedulers.Schedulers;
 public class ScalePollingService {
 
     private final static int PERIOD = 200;
-    private final WeightConformationManager weightConformationManager;
+    private final ScaleConformationManager scaleConformationManager;
     private final BalanzaService.Balanzas scaleService;
     private final WeighRepository repository;
     private Disposable pollingDisposable;
 
-    public ScalePollingService(WeightConformationManager weightConformationManager, BalanzaService.Balanzas scaleService, WeighRepository repository) {
-        this.weightConformationManager = weightConformationManager;
+    public ScalePollingService(ScaleConformationManager scaleConformationManager, BalanzaService.Balanzas scaleService, WeighRepository repository) {
+        this.scaleConformationManager = scaleConformationManager;
         this.scaleService = scaleService;
         this.repository = repository;
     }
@@ -41,7 +41,7 @@ public class ScalePollingService {
         boolean stable = scaleService.getEstable(repository.getScaleNumber());
         repository.updateStable(stable);
 
-        weightConformationManager.evaluateWeightConformation(stable);
+        scaleConformationManager.evaluateWeightConformation(stable);
     }
 
     public void stopPolling() {

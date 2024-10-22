@@ -10,12 +10,12 @@ public class ProductionLine {
     private String topTare;
     private String partsTare;
     private String iceTare;
-    private String coverTare;
+    private String boxTare;
     private ProductionLineStates productionLineState;
 
     public ProductionLine(String destinatation, String product, String expirateDate, String caliber,
                           String batch, String topTare, String partsTare, String iceTare,
-                          String coverTare, ProductionLineStates productionLineState) {
+                          String boxTare, ProductionLineStates productionLineState) {
         this.destinatation = destinatation;
         this.product = product;
         this.expirateDate = expirateDate;
@@ -24,7 +24,7 @@ public class ProductionLine {
         this.topTare = topTare;
         this.partsTare = partsTare;
         this.iceTare = iceTare;
-        this.coverTare = coverTare;
+        this.boxTare = boxTare;
         this.productionLineState = productionLineState;
     }
 
@@ -92,12 +92,12 @@ public class ProductionLine {
         this.iceTare = iceTare;
     }
 
-    public String getCoverTare() {
-        return coverTare;
+    public String getBoxTare() {
+        return boxTare;
     }
 
-    public void setCoverTare(String coverTare) {
-        this.coverTare = coverTare;
+    public void setBoxTare(String boxTare) {
+        this.boxTare = boxTare;
     }
 
     public ProductionLineStates getProductionLineState() {

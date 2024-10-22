@@ -21,14 +21,14 @@ public class WeighingViewHolder extends RecyclerView.ViewHolder {
         binding.lnExpand.setVisibility(View.GONE);
         binding.btExpand.setBackgroundResource(R.drawable.boton_mas_i);
 
-        binding.tvWeighingCode.setText(weighing.getCode());
-        binding.tvWeighingName.setText(weighing.getName());
-        binding.tvWeighingNet.setText(weighFormat(weighing.getNet(), weighing.getUnit()));
-        binding.tvWeighingGross.setText(weighFormat(weighing.getGross(), weighing.getUnit()));
-        binding.tvWeighingTare.setText(weighFormat(weighing.getTare(), weighing.getUnit()));
-        binding.tvWeighingOperator.setText(weighing.getOperator());
-        binding.tvWeighingSerialNumber.setText(weighing.getSerialNumber());
-        binding.tvWeighingScale.setText(String.valueOf(weighing.getScaleNumber()));
+//        binding.tvWeighingCode.setText(weighing.getCode());
+//        binding.tvWeighingName.setText(weighing.getName());
+//        binding.tvWeighingNet.setText(weighFormat(weighing.getNet(), weighing.getUnit()));
+//        binding.tvWeighingGross.setText(weighFormat(weighing.getGross(), weighing.getUnit()));
+//        binding.tvWeighingTare.setText(weighFormat(weighing.getTare(), weighing.getUnit()));
+//        binding.tvWeighingOperator.setText(weighing.getOperator());
+//        binding.tvWeighingSerialNumber.setText(weighing.getSerialNumber());
+//        binding.tvWeighingScale.setText(String.valueOf(weighing.getScaleNumber()));
         binding.btExpand.setOnClickListener(v -> {
             boolean isGone = (binding.lnExpand.getVisibility() == View.GONE);
             binding.lnExpand.setVisibility(isGone ? View.VISIBLE : View.GONE);

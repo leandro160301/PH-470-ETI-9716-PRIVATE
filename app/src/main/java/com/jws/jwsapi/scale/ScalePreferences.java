@@ -4,7 +4,7 @@ import com.jws.jwsapi.core.data.local.PreferencesHelper;
 
 import javax.inject.Inject;
 
-public class WeightPreferences {
+public class ScalePreferences {
 
     private static final String PREF_STABLE_COUNT_THRESHOLD = "stable_count_threshold";
     private static final String PREF_ZERO_BAND = "zero_band";
@@ -14,7 +14,7 @@ public class WeightPreferences {
     private final PreferencesHelper preferencesHelper;
 
     @Inject
-    public WeightPreferences(PreferencesHelper preferencesHelper) {
+    public ScalePreferences(PreferencesHelper preferencesHelper) {
         this.preferencesHelper = preferencesHelper;
     }
 

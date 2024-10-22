@@ -4,24 +4,24 @@ import com.jws.jwsapi.shared.WeighRepository;
 
 import javax.inject.Inject;
 
-public class WeightConformationManager {
+public class ScaleConformationManager {
 
     private final WeighRepository weighRepository;
-    private final WeightPreferences weightPreferences;
+    private final ScalePreferences scalePreferences;
     private int counterStable = 0;
     private boolean weightConformed = false;
-    private WeightConformationListener weightConformationListener;
+    private ScaleConformationListener scaleConformationListener;
 
     @Inject
-    public WeightConformationManager(WeighRepository weighRepository, WeightPreferences weightPreferences) {
+    public ScaleConformationManager(WeighRepository weighRepository, ScalePreferences scalePreferences) {
         this.weighRepository = weighRepository;
-        this.weightPreferences = weightPreferences;
+        this.scalePreferences = scalePreferences;
     }
 
     void evaluateWeightConformation(boolean stable) {
         double grossWeight = weighRepository.getGross();
-        double zeroBand = weightPreferences.getZeroBand();
-        int stableCountThreshold = weightPreferences.getStableCountThreshold();
+        double zeroBand = scalePreferences.getZeroBand();
+        int stableCountThreshold = scalePreferences.getStableCountThreshold();
 
         if (stable && grossWeight > zeroBand && !weightConformed) {
             counterStable++;
@@ -30,8 +30,8 @@ public class WeightConformationManager {
         }
 
         if (counterStable >= stableCountThreshold) {
-            if (weightConformationListener != null) {
-                weightConformationListener.onWeightConformed();
+            if (scaleConformationListener != null) {
+                scaleConformationListener.onWeightConformed();
             }
             weightConformed = true;
             counterStable = 0;
@@ -42,8 +42,8 @@ public class WeightConformationManager {
         }
     }
 
-    public void setWeightListener(WeightConformationListener weightConformationListener) {
-        this.weightConformationListener = weightConformationListener;
+    public void setWeightListener(ScaleConformationListener scaleConformationListener) {
+        this.scaleConformationListener = scaleConformationListener;
     }
 
 

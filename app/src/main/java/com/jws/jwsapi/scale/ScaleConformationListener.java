@@ -1,5 +1,5 @@
 package com.jws.jwsapi.scale;
 
-public interface WeightConformationListener {
+public interface ScaleConformationListener {
     void onWeightConformed();
 }

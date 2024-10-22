@@ -13,18 +13,18 @@ public class ScaleViewModel extends androidx.lifecycle.ViewModel implements Scal
     private final BalanzaService.Balanzas scaleService;
     private final WeighRepository repository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private final WeightConformationManager weightConformationManager;
+    private final ScaleConformationManager scaleConformationManager;
     private final ScalePollingService scalePollingService;
 
     @AssistedInject
     public ScaleViewModel(
             @Assisted BalanzaService.Balanzas scale,
             WeighRepository repository,
-            WeightConformationManager weightConformationManager) {
-        this.weightConformationManager = weightConformationManager;
+            ScaleConformationManager scaleConformationManager) {
+        this.scaleConformationManager = scaleConformationManager;
         this.scaleService = scale;
         this.repository = repository;
-        this.scalePollingService = new ScalePollingService(weightConformationManager, scaleService, repository);
+        this.scalePollingService = new ScalePollingService(scaleConformationManager, scaleService, repository);
         this.repository.setScaleActions(this);
         this.scalePollingService.startPolling();
     }
@@ -36,8 +36,8 @@ public class ScaleViewModel extends androidx.lifecycle.ViewModel implements Scal
         this.scalePollingService.stopPolling();
     }
 
-    public void setWeightListener(WeightConformationListener weightConformationListener) {
-        this.weightConformationManager.setWeightListener(weightConformationListener);
+    public void setWeightListener(ScaleConformationListener scaleConformationListener) {
+        this.scaleConformationManager.setWeightListener(scaleConformationListener);
     }
 
     public BalanzaService.Balanzas getScaleService() {

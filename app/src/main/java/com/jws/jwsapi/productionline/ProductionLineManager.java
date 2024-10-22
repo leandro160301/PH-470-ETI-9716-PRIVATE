@@ -172,9 +172,9 @@ public class ProductionLineManager {
 
     public void updateProductionLineCoverTare(String coverTare) {
         if (currentProductionLineNumber == 1) {
-            productionLineOne.setCoverTare(coverTare);
+            productionLineOne.setBoxTare(coverTare);
         } else {
-            productionLineTwo.setCoverTare(coverTare);
+            productionLineTwo.setBoxTare(coverTare);
         }
         preferences.putCoverTare(coverTare);
     }

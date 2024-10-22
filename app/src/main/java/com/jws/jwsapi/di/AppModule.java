@@ -19,7 +19,6 @@ import com.jws.jwsapi.productionline.ProductionLineManager;
 import com.jws.jwsapi.productionline.ProductionLinePreferences;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.shared.WeighRepository;
-import com.jws.jwsapi.weighing.WeighingApi;
 import com.jws.jwsapi.weighing.WeighingDao;
 import com.jws.jwsapi.weighing.WeighingService;
 
@@ -30,16 +29,12 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 @InstallIn(SingletonComponent.class)
 public class AppModule {
 
     private static final String DATABASE_NAME = "eti-database";
-    private static final String BASE_URL = "http://10.41.0.78:8080/";
     private static final String PREFS_NAME = "bza_pref";
 
     @Provides
@@ -79,21 +74,6 @@ public class AppModule {
     }
 
     @Provides
-    public Retrofit provideRetrofit() {
-        return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-    }
-
-    @Provides
-    public WeighingApi provideWeighingApi(Retrofit retrofit) {
-        return retrofit.create(WeighingApi.class);
-    }
-
-
-    @Provides
     @Singleton
     public WeighingDao provideWeighingDao(AppDatabase appDatabase) {
         return appDatabase.weighingDao();
@@ -117,8 +97,8 @@ public class AppModule {
     }
 
     @Provides
-    public WeighingService provideWeighingService(WeighingApi weighingApi, WeighingDao weighingDao) {
-        return new WeighingService(weighingApi, weighingDao);
+    public WeighingService provideWeighingService(WeighingDao weighingDao) {
+        return new WeighingService(weighingDao);
     }
 
     @Provides

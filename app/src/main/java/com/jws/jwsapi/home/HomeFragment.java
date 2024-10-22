@@ -29,7 +29,6 @@ import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.weighing.WeighingFragment;
-import com.jws.jwsapi.weighing.WeighingResponse;
 import com.jws.jwsapi.weighing.WeighingViewModel;
 
 import javax.inject.Inject;
@@ -118,27 +117,23 @@ public class HomeFragment extends Fragment implements GpioHighListener {
                 animateAndSetText(binding.tvCaliber, binding.shimmerLine, caliber));
         productionLineViewModel.getLineNumber().observe(getViewLifecycleOwner(), number ->
                 animateAndSetText(binding.tvLine, binding.shimmerLine, String.valueOf(number)));
-        productionLineViewModel.getState().observe(getViewLifecycleOwner(), productionLineStates -> {
-            switch (productionLineStates) {
+
+        productionLineViewModel.getState().observe(getViewLifecycleOwner(), state -> {
+            switch (state) {
                 case INIT:
                     setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, binding.lnState4);
-                    break;
                 case TARE:
                     setupLinearState(null, binding.lnState2, binding.lnState3, binding.lnState4);
                     binding.lnState1.setBackgroundResource(R.drawable.botoneraprincipalverde);
-                    break;
                 case PARTS:
                     setupLinearState(binding.lnState1, null, binding.lnState3, binding.lnState4);
                     binding.lnState2.setBackgroundResource(R.drawable.botoneraprincipalverde);
-                    break;
                 case ICE:
                     setupLinearState(binding.lnState1, binding.lnState2, null, binding.lnState4);
                     binding.lnState3.setBackgroundResource(R.drawable.botoneraprincipalverde);
-                    break;
                 case COVER:
                     setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, null);
                     binding.lnState4.setBackgroundResource(R.drawable.botoneraprincipalverde);
-                    break;
             }
         });
 
@@ -146,13 +141,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
     }
 
     private void handleObserveWeighing() {
-
         weighingViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
-
-        weighingViewModel.getErrorRequest().observe(getViewLifecycleOwner(), this::messageError);
-
-        weighingViewModel.getWeighingResponse().observe(getViewLifecycleOwner(), this::handleWeighingResponse);
-
     }
 
     private void setupLinearState(LinearLayout ln1, LinearLayout ln2, LinearLayout ln3, LinearLayout ln4) {
@@ -173,18 +162,6 @@ public class HomeFragment extends Fragment implements GpioHighListener {
     private void handleWeighUpdate(String net, TextView textView) {
         if (net != null) {
             textView.setText(net);
-        }
-    }
-
-    private void handleWeighingResponse(WeighingResponse weighingResponse) {
-        if (weighingResponse != null) {
-            if (weighingResponse.getStatus()) {
-                showMessage(requireContext().getString(R.string.toast_message_weighing_created), R.layout.item_customtoastok);
-                homeService.print(mainActivity, serviceScaleViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
-                repository.setTare();
-            } else {
-                showMessage(weighingResponse.getError(), R.layout.item_customtoasterror);
-            }
         }
     }
 

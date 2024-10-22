@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 
 import com.jws.jwsapi.Constants;
 import com.jws.jwsapi.MainActivity;
-import com.jws.jwsapi.MainClass;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.storage.StorageJsonUtils;
 import com.jws.jwsapi.core.user.UserJsonUtils;

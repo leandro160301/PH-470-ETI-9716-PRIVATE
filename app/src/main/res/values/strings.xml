@@ -378,7 +378,7 @@
     <!--home feature-->
     <string name="button_text_1">CANTIDAD</string>
     <string name="button_text_2">LINEAS</string>
-    <string name="button_text_3">CALIBRES</string>
+    <string name="button_text_3">CALIBRE</string>
     <string name="button_text_4">PESADAS</string>
     <string name="button_text_5">IMPRIMIR</string>
     <string name="toast_message_weighing_created">Pesada enviada al sistema</string>

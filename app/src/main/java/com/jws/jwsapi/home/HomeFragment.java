@@ -125,18 +125,23 @@ public class HomeFragment extends Fragment implements GpioHighListener {
             switch (state) {
                 case INIT:
                     setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, binding.lnState4);
+                    break;
                 case BOX:
                     setupLinearState(null, binding.lnState2, binding.lnState3, binding.lnState4);
                     binding.lnState1.setBackgroundResource(R.drawable.botoneraprincipalverde);
+                    break;
                 case PARTS:
                     setupLinearState(binding.lnState1, null, binding.lnState3, binding.lnState4);
                     binding.lnState2.setBackgroundResource(R.drawable.botoneraprincipalverde);
+                    break;
                 case ICE:
                     setupLinearState(binding.lnState1, binding.lnState2, null, binding.lnState4);
                     binding.lnState3.setBackgroundResource(R.drawable.botoneraprincipalverde);
+                    break;
                 case TOP:
                     setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, null);
                     binding.lnState4.setBackgroundResource(R.drawable.botoneraprincipalverde);
+                    break;
             }
         });
 
@@ -255,18 +260,16 @@ public class HomeFragment extends Fragment implements GpioHighListener {
     @Override
     public void onInputHigh(int input) {
         if (getActivity() == null) return;
+
         if (input == 0) {
             tareButton();
         }
-
         if (input == 1) {
-            getActivity().runOnUiThread(() -> productionLineViewModel.changeCurrentLine());
-        }
-
-        if (input == 2) {
             printButton();
         }
-
+        if (input == 2) {
+            getActivity().runOnUiThread(() -> productionLineViewModel.changeCurrentLine());
+        }
 
     }
 
@@ -274,8 +277,9 @@ public class HomeFragment extends Fragment implements GpioHighListener {
         ProductionLineStates state = productionLineViewModel.getState().getValue();
         if (state == ProductionLineStates.TOP) {
             createWeighing();
+            productionLineViewModel.finishWeight();
         } else {
-            getActivity().runOnUiThread(() -> ToastHelper.message("No finalizo la pesada"+ state.toString(), R.layout.item_customtoasterror, requireContext()));
+            getActivity().runOnUiThread(() -> ToastHelper.message("No finalizo la pesada", R.layout.item_customtoasterror, requireContext()));
         }
     }
 
@@ -284,22 +288,29 @@ public class HomeFragment extends Fragment implements GpioHighListener {
             switch (productionLineViewModel.getState().getValue()) {
                 case INIT:
                     productionLineViewModel.putTareBoxProcess();
+                    showMessage("Caja lista", R.layout.item_customtoastok);
+                    repository.setTare();
                     break;
                 case BOX:
                     productionLineViewModel.putTarePartsProcess();
+                    showMessage("Piezas listas", R.layout.item_customtoastok);
+                    repository.setTare();
                     break;
                 case PARTS:
                     productionLineViewModel.putTareIceProcess();
+                    showMessage("Hielo listo", R.layout.item_customtoastok);
+                    repository.setTare();
                     break;
                 case ICE:
                     productionLineViewModel.putTareTopProcess();
+                    showMessage("Caja cerrada", R.layout.item_customtoastok);
+                    repository.setTare();
                     break;
-                case TOP:
-                    productionLineViewModel.finishWeight();
-                    break;
+                default:
+                    showMessage("Error caja finalizada, pulse imprimir", R.layout.item_customtoasterror);
             }
-            showMessage("Tara realizada", R.layout.item_customtoastok);
-            repository.setTare();
+
+
         });
     }
 }

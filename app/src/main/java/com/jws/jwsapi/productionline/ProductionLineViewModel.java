@@ -114,7 +114,7 @@ public class ProductionLineViewModel extends ViewModel {
 
     public void putTareBoxProcess() {
         productionLineManager.updateProductionLineCoverTare(String.valueOf(weighRepository.getNet()));
-        productionLineManager.updateProductionLineState(ProductionLineStates.TARE);
+        productionLineManager.updateProductionLineState(ProductionLineStates.BOX);
     }
 
     public void putTarePartsProcess() {
@@ -129,7 +129,7 @@ public class ProductionLineViewModel extends ViewModel {
 
     public void putTareTopProcess() {
         productionLineManager.updateProductionLineTopTare(String.valueOf(weighRepository.getNet()));
-        productionLineManager.updateProductionLineState(ProductionLineStates.COVER);
+        productionLineManager.updateProductionLineState(ProductionLineStates.TOP);
     }
 
     public void finishWeight() {

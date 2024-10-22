@@ -380,7 +380,7 @@
     <string name="button_text_2">LINEAS</string>
     <string name="button_text_3">CALIBRES</string>
     <string name="button_text_4">PESADAS</string>
-    <string name="button_text_5">NUEVO PALLET</string>
+    <string name="button_text_5">IMPRIMIR</string>
     <string name="toast_message_weighing_created">Pesada enviada al sistema</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -441,7 +441,7 @@
     <string name="toast_navigation_new_pin_ok">PIN CORRECTO</string>
     <string name="toast_printer_rs232_error">Error para imprimir por puerto serie B</string>
     <string name="toast_printer_network_error">Error para imprimir, IP no valida</string>
-    <string name="button_text_6">CERRAR PALLET</string>
+    <string name="button_text_6">SIGUIENTE</string>
     <string name="toast_error_close_pallet">Error de pallet</string>
     <string name="dialog_user_button_delete">ELIMINAR</string>
     <string name="dialog_delete_user_question">"Quiere eliminar el usuario "</string>

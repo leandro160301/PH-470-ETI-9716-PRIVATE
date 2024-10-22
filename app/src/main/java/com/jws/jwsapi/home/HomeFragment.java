@@ -23,6 +23,7 @@ import com.jws.jwsapi.core.gpio.GpioManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
 import com.jws.jwsapi.productionline.ProductionLineCaliberFragment;
 import com.jws.jwsapi.productionline.ProductionLineFragment;
+import com.jws.jwsapi.productionline.ProductionLineStates;
 import com.jws.jwsapi.productionline.ProductionLineViewModel;
 import com.jws.jwsapi.scale.ScaleViewModel;
 import com.jws.jwsapi.shared.WeighRepository;
@@ -74,6 +75,8 @@ public class HomeFragment extends Fragment implements GpioHighListener {
 
         binding.lnFondolayout.setOnClickListener(v -> changeMode());
 
+        binding.lnLine.setOnClickListener(v -> productionLineViewModel.changeCurrentLine());
+
     }
 
     @SuppressWarnings("unchecked")
@@ -122,7 +125,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
             switch (state) {
                 case INIT:
                     setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, binding.lnState4);
-                case TARE:
+                case BOX:
                     setupLinearState(null, binding.lnState2, binding.lnState3, binding.lnState4);
                     binding.lnState1.setBackgroundResource(R.drawable.botoneraprincipalverde);
                 case PARTS:
@@ -131,7 +134,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
                 case ICE:
                     setupLinearState(binding.lnState1, binding.lnState2, null, binding.lnState4);
                     binding.lnState3.setBackgroundResource(R.drawable.botoneraprincipalverde);
-                case COVER:
+                case TOP:
                     setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, null);
                     binding.lnState4.setBackgroundResource(R.drawable.botoneraprincipalverde);
             }
@@ -200,9 +203,9 @@ public class HomeFragment extends Fragment implements GpioHighListener {
                     v -> mainActivity.mainClass.openFragment(new ProductionLineCaliberFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton3(), R.string.button_text_4,
                     v -> mainActivity.mainClass.openFragment(new WeighingFragment()), View.VISIBLE);
-            setupButton(buttonProvider.getButton4(), R.string.button_text_6, null, View.VISIBLE);
+            setupButton(buttonProvider.getButton4(), R.string.button_text_6, v -> tareButton(), View.VISIBLE);
             setupButton(buttonProvider.getButton5(), R.string.button_text_5,
-                    null, View.VISIBLE);
+                    v -> printButton(), View.VISIBLE);
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza);
         }
     }
@@ -251,33 +254,52 @@ public class HomeFragment extends Fragment implements GpioHighListener {
 
     @Override
     public void onInputHigh(int input) {
-        if (getActivity() != null && input == 0) {
-            getActivity().runOnUiThread(() -> {
-                switch (productionLineViewModel.getState().getValue()) {
-                    case INIT:
-                        productionLineViewModel.putTareBoxProcess();
-                        break;
-                    case TARE:
-                        productionLineViewModel.putTarePartsProcess();
-                        break;
-                    case PARTS:
-                        productionLineViewModel.putTareIceProcess();
-                        break;
-                    case ICE:
-                        productionLineViewModel.putTareTopProcess();
-                        break;
-                    case COVER:
-                        productionLineViewModel.finishWeight();
-                        break;
-                }
-                showMessage("Tara realizada", R.layout.item_customtoastok);
-                repository.setTare();
-            });
+        if (getActivity() == null) return;
+        if (input == 0) {
+            tareButton();
         }
 
-        if (getActivity() != null && input == 1) {
+        if (input == 1) {
             getActivity().runOnUiThread(() -> productionLineViewModel.changeCurrentLine());
         }
 
+        if (input == 2) {
+            printButton();
+        }
+
+
+    }
+
+    private void printButton() {
+        ProductionLineStates state = productionLineViewModel.getState().getValue();
+        if (state == ProductionLineStates.TOP) {
+            createWeighing();
+        } else {
+            getActivity().runOnUiThread(() -> ToastHelper.message("No finalizo la pesada", R.layout.item_customtoasterror, requireContext()));
+        }
+    }
+
+    private void tareButton() {
+        getActivity().runOnUiThread(() -> {
+            switch (productionLineViewModel.getState().getValue()) {
+                case INIT:
+                    productionLineViewModel.putTareBoxProcess();
+                    break;
+                case BOX:
+                    productionLineViewModel.putTarePartsProcess();
+                    break;
+                case PARTS:
+                    productionLineViewModel.putTareIceProcess();
+                    break;
+                case ICE:
+                    productionLineViewModel.putTareTopProcess();
+                    break;
+                case TOP:
+                    productionLineViewModel.finishWeight();
+                    break;
+            }
+            showMessage("Tara realizada", R.layout.item_customtoastok);
+            repository.setTare();
+        });
     }
 }

@@ -189,9 +189,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
     }
 
     private void messageError(String error) {
-        if (error != null) {
-            showMessage(error, R.layout.item_customtoasterror);
-        }
+        if (error != null) showMessage(error, R.layout.item_customtoasterror);
     }
 
     private void changeMode() {

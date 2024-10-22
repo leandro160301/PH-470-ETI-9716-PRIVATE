@@ -134,6 +134,10 @@ public class ProductionLineViewModel extends ViewModel {
 
     public void finishWeight() {
         productionLineManager.updateProductionLineState(ProductionLineStates.INIT);
+        productionLineManager.updateProductionLineTopTare("0");
+        productionLineManager.updateProductionLineIceTare("0");
+        productionLineManager.updateProductionLinePartsTare("0");
+        productionLineManager.updateProductionLineCoverTare("0");
     }
 
 

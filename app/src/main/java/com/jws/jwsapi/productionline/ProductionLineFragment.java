@@ -61,8 +61,8 @@ public class ProductionLineFragment extends Fragment {
 
     private void setupSpinners() {
         try {
-            setupSpinner(binding.spCaliber1,requireContext(),ProductionLineCaliberRepository.getCalibers(requireContext()));
-            setupSpinner(binding.spCaliber2,requireContext(),ProductionLineCaliberRepository.getCalibers(requireContext()));
+            setupSpinner(binding.spCaliber1, requireContext(), ProductionLineCaliberRepository.getCalibers(requireContext()));
+            setupSpinner(binding.spCaliber2, requireContext(), ProductionLineCaliberRepository.getCalibers(requireContext()));
             binding.spCaliber1.setSelection(ProductionLineCaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineOne().getCaliber()));
             binding.spCaliber2.setSelection(ProductionLineCaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineTwo().getCaliber()));
         } catch (Exception e) {

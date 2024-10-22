@@ -1,12 +1,10 @@
 package com.jws.jwsapi.productionline;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,45 +63,30 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
     }
 
     public void dialogNewElement() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_nuevo_calibre, null);
-        TextView tvCaliber = mView.findViewById(R.id.tv_codigoingrediente);
-        tvCaliber.setOnClickListener(view -> DialogUtil.keyboard(tvCaliber, "Ingrese el nuevo calibre", mainActivity, null));
+        DialogUtil.keyboard(null, "Ingrese el nuevo calibre", mainActivity, this::checkCaliberSave);
+    }
 
-        Button Guardar = mView.findViewById(R.id.buttons);
-        Button Cancelar = mView.findViewById(R.id.buttonc);
-
-        Guardar.setText("CREAR");
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-        Guardar.setOnClickListener(view -> {
-            String caliber = tvCaliber.getText().toString();
-            if (!caliber.isEmpty()) {
-                List<String> newList = ProductionLineCaliberRepository.getCalibers(requireContext());
-                boolean exist = false;
-                for (int i = 0; i < newList.size(); i++) {
-                    if (caliber.equals(newList.get(i))) {
-                        exist = true;
-                    }
+    private void checkCaliberSave(String caliber) {
+        if (!caliber.isEmpty()) {
+            List<String> newList = ProductionLineCaliberRepository.getCalibers(requireContext());
+            boolean exist = false;
+            for (int i = 0; i < newList.size(); i++) {
+                if (caliber.equals(newList.get(i))) {
+                    exist = true;
                 }
-                if (!exist) {
-                    newList.add(caliber);
-                    ProductionLineCaliberRepository.setCalibers(newList);
-                    elements.add(caliber);
-                    adapter.refreshList(elements);
-                    binding.recyclerview.smoothScrollToPosition(elements.size() - 1);
-                } else {
-                    ToastHelper.message("Ya existe el calibre", R.layout.item_customtoasterror, requireContext());
-                }
-            } else {
-                ToastHelper.message("Los valores ingresados no son validos", R.layout.item_customtoasterror, requireContext());
             }
-            dialog.cancel();
-
-        });
-        Cancelar.setOnClickListener(view -> dialog.cancel());
+            if (!exist) {
+                newList.add(caliber);
+                ProductionLineCaliberRepository.setCalibers(newList);
+                elements.add(caliber);
+                adapter.refreshList(elements);
+                binding.recyclerview.smoothScrollToPosition(elements.size() - 1);
+            } else {
+                ToastHelper.message("Ya existe el calibre", R.layout.item_customtoasterror, requireContext());
+            }
+        } else {
+            ToastHelper.message("Los valores ingresados no son validos", R.layout.item_customtoasterror, requireContext());
+        }
     }
 
     private void setupButtons() {

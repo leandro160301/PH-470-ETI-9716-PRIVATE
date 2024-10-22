@@ -39,7 +39,7 @@
                         android:orientation="vertical">
 
                         <com.jws.jwsapi.core.views.RecyclerViewScroll
-                            android:id="@+id/lista_ingredientes"
+                            android:id="@+id/recyclerview"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"

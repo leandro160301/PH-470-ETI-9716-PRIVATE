@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
-import com.jws.jwsapi.databinding.ProgFormuladorPantallaIngredientesBinding;
+import com.jws.jwsapi.databinding.FragmentCaliberBinding;
 import com.jws.jwsapi.dialog.DialogUtil;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.utils.ToastHelper;
@@ -34,7 +34,7 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
     MainActivity mainActivity;
     CaliberAdapter adapter;
     List<String> elements;
-    ProgFormuladorPantallaIngredientesBinding binding;
+    FragmentCaliberBinding binding;
     @Inject
     UserRepository userRepository;
     private ButtonProvider buttonProvider;
@@ -43,7 +43,7 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
-        binding = ProgFormuladorPantallaIngredientesBinding.inflate(inflater, container, false);
+        binding = FragmentCaliberBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -52,16 +52,15 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
         super.onViewCreated(view, savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         elements = ProductionLineCaliberRepository.getCalibers(requireContext());
-        configuracionBotones();
+        setupButtons();
         setupRecyclerView();
 
     }
 
-
     private void setupRecyclerView() {
-        binding.listaIngredientes.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new CaliberAdapter(getContext(), elements, this);
-        binding.listaIngredientes.setAdapter(adapter);
+        binding.recyclerview.setAdapter(adapter);
 
     }
 
@@ -94,9 +93,9 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
                     ProductionLineCaliberRepository.setCalibers(newList);
                     elements.add(caliber);
                     adapter.refreshList(elements);
-                    binding.listaIngredientes.smoothScrollToPosition(elements.size() - 1);
+                    binding.recyclerview.smoothScrollToPosition(elements.size() - 1);
                 } else {
-                    ToastHelper.message("Ya existe un ingrediente con el codigo ingresado", R.layout.item_customtoasterror, requireContext());
+                    ToastHelper.message("Ya existe el calibre", R.layout.item_customtoasterror, requireContext());
                 }
             } else {
                 ToastHelper.message("Los valores ingresados no son validos", R.layout.item_customtoasterror, requireContext());
@@ -107,8 +106,7 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
         Cancelar.setOnClickListener(view -> dialog.cancel());
     }
 
-
-    private void configuracionBotones() {
+    private void setupButtons() {
         if (buttonProvider != null) {
             Button bt_home = buttonProvider.getButtonHome();
             Button bt_1 = buttonProvider.getButton1();

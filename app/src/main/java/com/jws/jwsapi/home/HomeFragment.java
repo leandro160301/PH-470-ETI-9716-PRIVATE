@@ -55,7 +55,6 @@ public class HomeFragment extends Fragment implements GpioHighListener {
     private ProductionLineViewModel productionLineViewModel;
     private boolean isScaleMode = false;
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         buttonProvider = ContainerButtonProviderSingleton.getInstance().getButtonProvider();

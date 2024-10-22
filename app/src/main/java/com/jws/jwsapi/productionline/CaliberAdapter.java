@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jws.jwsapi.databinding.ProgFormuladorAdapterIngredientesBinding;
+import com.jws.jwsapi.databinding.CaliberAdapterBinding;
 import com.jws.jwsapi.utils.AdapterHelper;
 
 import java.util.List;
@@ -17,24 +17,24 @@ import java.util.List;
 public class CaliberAdapter extends RecyclerView.Adapter<CaliberAdapter.ViewHolder> {
 
     private final LayoutInflater mInflater;
-    CaliberInterface ingredientesInterface;
+    CaliberInterface caliberInterface;
     Context context;
     private int selectedPos = RecyclerView.NO_POSITION;
     private List<String> mData;
     private ItemClickListener mClickListener;
     private int lastPositionAdapter = -1;
 
-    public CaliberAdapter(Context context, List<String> data, CaliberInterface ingredientesInterface) {
+    public CaliberAdapter(Context context, List<String> data, CaliberInterface caliberInterface) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.context = context;
-        this.ingredientesInterface = ingredientesInterface;
+        this.caliberInterface = caliberInterface;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ProgFormuladorAdapterIngredientesBinding binding = ProgFormuladorAdapterIngredientesBinding.inflate(mInflater, parent, false);
+        CaliberAdapterBinding binding = CaliberAdapterBinding.inflate(mInflater, parent, false);
         return new ViewHolder(binding);
     }
 
@@ -44,7 +44,7 @@ public class CaliberAdapter extends RecyclerView.Adapter<CaliberAdapter.ViewHold
         holder.binding.tvDescripcioningrediente.setText(item);
 
         holder.binding.lnEditar.setOnClickListener(view -> {
-            ingredientesInterface.deleteElement(mData, position);
+            caliberInterface.deleteElement(mData, position);
         });
         lastPositionAdapter = AdapterHelper.setAnimationPivot(holder.itemView, position, lastPositionAdapter, context);
         holder.itemView.setSelected(selectedPos == position);
@@ -86,9 +86,9 @@ public class CaliberAdapter extends RecyclerView.Adapter<CaliberAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final ProgFormuladorAdapterIngredientesBinding binding;
+        final CaliberAdapterBinding binding;
 
-        ViewHolder(ProgFormuladorAdapterIngredientesBinding binding) {
+        ViewHolder(CaliberAdapterBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             binding.getRoot().setOnClickListener(this);

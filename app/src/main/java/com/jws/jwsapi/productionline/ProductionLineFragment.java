@@ -1,11 +1,13 @@
 package com.jws.jwsapi.productionline;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboard;
+import static com.jws.jwsapi.utils.SpinnerHelper.setupSpinner;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,23 +46,34 @@ public class ProductionLineFragment extends Fragment {
 
         mainActivity = (MainActivity) getActivity();
         setupButtons();
+
+        setupSpinners();
+
         setupProductLine(productionLineManager.getProductionLineOne(), binding.tvProduct1,
-                binding.tvBatch1, binding.tvCaliber1, binding.tvDestinatation1, binding.tvExpirateDate1);
+                binding.tvBatch1, binding.tvDestinatation1, binding.tvExpirateDate1);
 
         setupProductLine(productionLineManager.getProductionLineTwo(), binding.tvProduct2,
-                binding.tvBatch2, binding.tvCaliber2, binding.tvDestinatation2, binding.tvExpirateDate2);
+                binding.tvBatch2, binding.tvDestinatation2, binding.tvExpirateDate2);
 
         setOnClickListeners();
 
+    }
+
+    private void setupSpinners() {
+        try {
+            setupSpinner(binding.spCaliber1,requireContext(),ProductionLineCaliberRepository.getCalibers(requireContext()));
+            setupSpinner(binding.spCaliber2,requireContext(),ProductionLineCaliberRepository.getCalibers(requireContext()));
+            binding.spCaliber1.setSelection(ProductionLineCaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineOne().getCaliber()));
+            binding.spCaliber2.setSelection(ProductionLineCaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineTwo().getCaliber()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setOnClickListeners() {
         binding.tvBatch1.setOnClickListener(v ->
                 keyboard(binding.tvBatch1, "Ingrese el Lote 1", requireContext(), value ->
                         productionLineManager.updateProductionLineBatchOne(value)));
-        binding.tvCaliber1.setOnClickListener(v ->
-                keyboard(binding.tvCaliber1, "Ingrese el Calibre 1", requireContext(), value ->
-                        productionLineManager.updateProductionLineCaliberOne(value)));
         binding.tvDestinatation1.setOnClickListener(v ->
                 keyboard(binding.tvDestinatation1, "Ingrese el Destino 1", requireContext(), value ->
                         productionLineManager.updateProductionLineDestinationOne(value)));
@@ -74,9 +87,7 @@ public class ProductionLineFragment extends Fragment {
         binding.tvBatch2.setOnClickListener(v ->
                 keyboard(binding.tvBatch2, "Ingrese el Lote 2", requireContext(), value ->
                         productionLineManager.updateProductionLineBatchTwo(value)));
-        binding.tvCaliber2.setOnClickListener(v ->
-                keyboard(binding.tvCaliber2, "Ingrese el Calibre 2", requireContext(), value ->
-                        productionLineManager.updateProductionLineCaliberTwo(value)));
+
         binding.tvDestinatation2.setOnClickListener(v ->
                 keyboard(binding.tvDestinatation2, "Ingrese el Destino 2", requireContext(), value ->
                         productionLineManager.updateProductionLineDestinationTwo(value)));
@@ -87,12 +98,42 @@ public class ProductionLineFragment extends Fragment {
                 keyboard(binding.tvProduct2, "Ingrese el Producto 2", requireContext(), value ->
                         productionLineManager.updateProductionLineProductTwo(value)));
 
+        binding.spCaliber1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    productionLineManager.updateProductionLineCaliberOne(ProductionLineCaliberRepository.getCalibers(requireContext()).get(position));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        binding.spCaliber2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    productionLineManager.updateProductionLineCaliberTwo(ProductionLineCaliberRepository.getCalibers(requireContext()).get(position));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
-    private void setupProductLine(ProductionLine productionLineManager, TextView binding, TextView binding1, TextView binding2, TextView binding3, TextView binding4) {
+    private void setupProductLine(ProductionLine productionLineManager, TextView binding, TextView binding1, TextView binding3, TextView binding4) {
         binding.setText(productionLineManager.getProduct());
         binding1.setText(productionLineManager.getBatch());
-        binding2.setText(productionLineManager.getCaliber());
         binding3.setText(productionLineManager.getDestinatation());
         binding4.setText(productionLineManager.getExpirateDate());
     }

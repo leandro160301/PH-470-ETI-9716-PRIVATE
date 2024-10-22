@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.jws.jwsapi.Constants;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.MainClass;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
@@ -351,7 +352,7 @@ public class HttpServer extends NanoWSD {
     @SuppressWarnings("all")
     @NonNull
     private Response downloadDb() {
-        String filePath = context.getDatabasePath(MainClass.DB_NAME).getAbsolutePath();
+        String filePath = context.getDatabasePath(Constants.DATABASE_NAME).getAbsolutePath();
         InputStream fileStream;
         try {
             fileStream = new FileInputStream(new File(filePath));

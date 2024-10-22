@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
         if (userRepository.getLevelUser() > ROLE_SUPERVISOR) {
             dialogText(this, getString(R.string.dialog_delete_cache), getString(R.string.dialog_button_text_delete_cache), () -> {
                 CacheUtils.deleteCache(context);
-                deleteDatabase(MainClass.DB_NAME);
-                deleteDatabase("bza-database");
+                deleteDatabase(Constants.DATABASE_NAME);
+                deleteDatabase(Constants.PREFS_NAME);
                 jwsObject.jwsReboot("");
             });
         } else {

@@ -19,7 +19,6 @@ import com.service.Comunicacion.OnFragmentChangeListener;
 
 public class MainClass implements OnFragmentChangeListener {
 
-    public static String DB_NAME = "Frm_DB";
     private final Context context;
     private final MainActivity mainActivity;
     public BalanzaService service;

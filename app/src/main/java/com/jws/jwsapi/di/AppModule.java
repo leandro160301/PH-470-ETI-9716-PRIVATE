@@ -1,5 +1,6 @@
 package com.jws.jwsapi.di;
 
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import androidx.room.Room;
 
 import com.android.jws.JwsManager;
 import com.jws.jwsapi.AppDatabase;
+import com.jws.jwsapi.Constants;
 import com.jws.jwsapi.core.data.local.PreferencesHelper;
 import com.jws.jwsapi.core.data.local.PreferencesManager;
 import com.jws.jwsapi.core.gpio.GpioManager;
@@ -33,9 +35,6 @@ import dagger.hilt.components.SingletonComponent;
 @Module
 @InstallIn(SingletonComponent.class)
 public class AppModule {
-
-    private static final String DATABASE_NAME = "eti-database";
-    private static final String PREFS_NAME = "bza_pref";
 
     @Provides
     @Singleton
@@ -64,7 +63,7 @@ public class AppModule {
     @Singleton
     @Provides
     public SharedPreferences provideSharedPreferences(@ApplicationContext Context context) {
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     @Provides
@@ -82,7 +81,7 @@ public class AppModule {
     @Provides
     @Singleton
     public AppDatabase provideAppDatabase(@ApplicationContext Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
+        return Room.databaseBuilder(context, AppDatabase.class, Constants.DATABASE_NAME).build();
     }
 
     @Provides

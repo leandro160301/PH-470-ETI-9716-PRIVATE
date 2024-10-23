@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.caliber.CaliberRepository;
 import com.jws.jwsapi.databinding.FragmentProductionLineBinding;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
@@ -67,10 +68,10 @@ public class ProductionLineFragment extends Fragment {
 
     private void setupSpinners() {
         try {
-            setupSpinner(binding.spCaliber1, requireContext(), ProductionLineCaliberRepository.getCalibers(requireContext()));
-            setupSpinner(binding.spCaliber2, requireContext(), ProductionLineCaliberRepository.getCalibers(requireContext()));
-            binding.spCaliber1.setSelection(ProductionLineCaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineOne().getCaliber()));
-            binding.spCaliber2.setSelection(ProductionLineCaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineTwo().getCaliber()));
+            setupSpinner(binding.spCaliber1, requireContext(), CaliberRepository.getCalibers(requireContext()));
+            setupSpinner(binding.spCaliber2, requireContext(), CaliberRepository.getCalibers(requireContext()));
+            binding.spCaliber1.setSelection(CaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineOne().getCaliber()));
+            binding.spCaliber2.setSelection(CaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineTwo().getCaliber()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,7 +114,7 @@ public class ProductionLineFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    productionLineManager.updateProductionLineCaliberOne(ProductionLineCaliberRepository.getCalibers(requireContext()).get(position));
+                    productionLineManager.updateProductionLineCaliberOne(CaliberRepository.getCalibers(requireContext()).get(position));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -128,7 +129,7 @@ public class ProductionLineFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    productionLineManager.updateProductionLineCaliberTwo(ProductionLineCaliberRepository.getCalibers(requireContext()).get(position));
+                    productionLineManager.updateProductionLineCaliberTwo(CaliberRepository.getCalibers(requireContext()).get(position));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

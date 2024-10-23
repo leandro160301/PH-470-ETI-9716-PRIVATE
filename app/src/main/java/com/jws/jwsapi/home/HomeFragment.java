@@ -16,12 +16,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.caliber.CaliberFragment;
 import com.jws.jwsapi.core.container.ContainerButtonProvider;
 import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
 import com.jws.jwsapi.core.gpio.GpioHighListener;
 import com.jws.jwsapi.core.gpio.GpioManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
-import com.jws.jwsapi.productionline.ProductionLineCaliberFragment;
 import com.jws.jwsapi.productionline.ProductionLineFragment;
 import com.jws.jwsapi.productionline.ProductionLineStates;
 import com.jws.jwsapi.productionline.ProductionLineViewModel;
@@ -210,7 +210,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
             setupButton(buttonProvider.getButton1(), R.string.button_text_2,
                     v -> mainActivity.mainClass.openFragment(new ProductionLineFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton2(), R.string.button_text_3,
-                    v -> mainActivity.mainClass.openFragment(new ProductionLineCaliberFragment()), View.VISIBLE);
+                    v -> mainActivity.mainClass.openFragment(new CaliberFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton3(), R.string.button_text_4,
                     v -> mainActivity.mainClass.openFragment(new WeighingFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton4(), R.string.button_text_6, v -> tareButton(), View.VISIBLE);

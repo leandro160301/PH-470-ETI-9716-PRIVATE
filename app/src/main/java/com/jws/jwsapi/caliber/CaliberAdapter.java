@@ -1,4 +1,4 @@
-package com.jws.jwsapi.productionline;
+package com.jws.jwsapi.caliber;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -67,12 +67,6 @@ public class CaliberAdapter extends RecyclerView.Adapter<CaliberAdapter.ViewHold
 
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
-    }
-
-    public void removeAt(int position) {
-        mData.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mData.size());
     }
 
     @SuppressLint("NotifyDataSetChanged")

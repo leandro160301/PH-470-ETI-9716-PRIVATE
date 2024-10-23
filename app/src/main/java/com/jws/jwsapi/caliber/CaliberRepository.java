@@ -1,4 +1,4 @@
-package com.jws.jwsapi.productionline;
+package com.jws.jwsapi.caliber;
 
 import android.content.Context;
 import android.os.Environment;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
-public class ProductionLineCaliberRepository {
+public class CaliberRepository {
 
     public static List<String> getCalibers(Context context) {
         List<String> elements = new ArrayList<>();

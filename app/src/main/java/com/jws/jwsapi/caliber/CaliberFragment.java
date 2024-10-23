@@ -1,4 +1,4 @@
-package com.jws.jwsapi.productionline;
+package com.jws.jwsapi.caliber;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,7 +27,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ProductionLineCaliberFragment extends Fragment implements CaliberInterface {
+public class CaliberFragment extends Fragment implements CaliberInterface {
 
     MainActivity mainActivity;
     CaliberAdapter adapter;
@@ -49,7 +49,7 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mainActivity = (MainActivity) getActivity();
-        elements = ProductionLineCaliberRepository.getCalibers(requireContext());
+        elements = CaliberRepository.getCalibers(requireContext());
         setupButtons();
         setupRecyclerView();
 
@@ -68,7 +68,7 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
 
     private void checkCaliberSave(String caliber) {
         if (!caliber.isEmpty()) {
-            List<String> newList = ProductionLineCaliberRepository.getCalibers(requireContext());
+            List<String> newList = CaliberRepository.getCalibers(requireContext());
             boolean exist = false;
             for (int i = 0; i < newList.size(); i++) {
                 if (caliber.equals(newList.get(i))) {
@@ -77,7 +77,7 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
             }
             if (!exist) {
                 newList.add(caliber);
-                ProductionLineCaliberRepository.setCalibers(newList);
+                CaliberRepository.setCalibers(newList);
                 elements.add(caliber);
                 adapter.refreshList(elements);
                 binding.recyclerview.smoothScrollToPosition(elements.size() - 1);
@@ -116,7 +116,7 @@ public class ProductionLineCaliberFragment extends Fragment implements CaliberIn
     private void dialogDeleteElement(int posicion, List<String> mData) {
         DialogUtil.dialogText(mainActivity, "¿Quiere eliminar el ingrediente " + mData.get(posicion) + "?", "ELIMINAR", () -> {
             mData.remove(posicion);
-            ProductionLineCaliberRepository.setCalibers(mData);
+            CaliberRepository.setCalibers(mData);
             adapter.refreshList(mData);
         });
     }

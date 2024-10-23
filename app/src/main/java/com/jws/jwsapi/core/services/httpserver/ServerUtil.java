@@ -50,6 +50,7 @@ public class ServerUtil {
                 weighingField.put("Tara tapa", weighing.getTopTare());
                 weighingField.put("Bruto", weighing.getGross());
                 weighingField.put("Neto", weighing.getNet());
+                weighingField.put("Unidad", weighing.getUnit());
                 weighingField.put("Operador", weighing.getOperator());
 
                 jsonArray.put(weighingField);

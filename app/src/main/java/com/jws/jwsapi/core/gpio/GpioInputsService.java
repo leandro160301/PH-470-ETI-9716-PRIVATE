@@ -109,38 +109,9 @@ public class GpioInputsService {
         }
     }
 
-    public Integer getCurrentInputValue1() {
-        return currentInputValues[0];
+    public Integer getCurrentValue(int gpio) {
+        return currentInputValues[gpio];
     }
-
-    public Integer getCurrentInputValue2() {
-        return currentInputValues[1];
-    }
-
-    public Integer getCurrentInputValue3() {
-        return currentInputValues[2];
-    }
-
-    public Integer getCurrentInputValue4() {
-        return currentInputValues[3];
-    }
-
-    public Integer getCurrentInputValue5() {
-        return currentInputValues[4];
-    }
-
-    public Integer getCurrentInputValue6() {
-        return currentInputValues[5];
-    }
-
-    public Integer getCurrentInputValue7() {
-        return currentInputValues[6];
-    }
-
-    public Integer getCurrentInputValue8() {
-        return currentInputValues[7];
-    }
-
 
     public void setHighListener(GpioHighListener gpioHighListener) {
         this.highListener = gpioHighListener;

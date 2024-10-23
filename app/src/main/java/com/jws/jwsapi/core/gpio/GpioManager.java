@@ -27,21 +27,21 @@ public class GpioManager {
     public Integer getGpioValue(int index) {
         switch (index) {
             case 1:
-                return gpioInputsService.getCurrentInputValue1();
+                return gpioInputsService.getCurrentValue(0);
             case 2:
-                return gpioInputsService.getCurrentInputValue2();
+                return gpioInputsService.getCurrentValue(1);
             case 3:
-                return gpioInputsService.getCurrentInputValue3();
+                return gpioInputsService.getCurrentValue(2);
             case 4:
-                return gpioInputsService.getCurrentInputValue4();
+                return gpioInputsService.getCurrentValue(3);
             case 5:
-                return gpioInputsService.getCurrentInputValue5();
+                return gpioInputsService.getCurrentValue(4);
             case 6:
-                return gpioInputsService.getCurrentInputValue6();
+                return gpioInputsService.getCurrentValue(5);
             case 7:
-                return gpioInputsService.getCurrentInputValue7();
+                return gpioInputsService.getCurrentValue(6);
             case 8:
-                return gpioInputsService.getCurrentInputValue8();
+                return gpioInputsService.getCurrentValue(7);
             default:
                 return OFF;
         }

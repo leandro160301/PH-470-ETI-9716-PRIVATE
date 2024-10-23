@@ -30,7 +30,6 @@ public class WeighingService {
         return weighingDao.getAllWeighingStatic();
     }
 
-
     public Completable deleteAllWeighing() {
         return Completable.fromAction(weighingDao::deleteAllWeighings)
                 .subscribeOn(Schedulers.io())

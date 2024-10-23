@@ -19,7 +19,7 @@ public class ThemeDialog {
     }
 
     public void showDialog() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(context.getApplicationContext(), R.style.AlertDialogCustom);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         View mView = LayoutInflater.from(context).inflate(R.layout.dialogo_temas, null);
 
         Button Cancelar = mView.findViewById(R.id.buttonc);

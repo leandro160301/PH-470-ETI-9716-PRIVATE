@@ -277,6 +277,29 @@
 
 
                                             </LinearLayout>
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="40dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+
+                                                <Button
+                                                    android:id="@+id/bt_reset_1"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/boton_selector"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:gravity="center"
+                                                    android:text="REINICIAR LINEA DE PESAJE ACTUAL"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#FFFFFF"
+                                                    android:textSize="24sp" />
+                                            </LinearLayout>
                                         </LinearLayout>
 
                                         <LinearLayout
@@ -459,6 +482,28 @@
                                                     android:textSize="24sp" />
 
 
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="70dp"
+                                                android:layout_marginTop="40dp"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+
+                                                <Button
+                                                    android:id="@+id/bt_reset_2"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/boton_selector"
+                                                    android:fontFamily="sans-serif-black"
+                                                    android:gravity="center"
+                                                    android:text="REINICIAR LINEA DE PESAJE ACTUAL"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="#FFFFFF"
+                                                    android:textSize="24sp" />
                                             </LinearLayout>
 
                                         </LinearLayout>

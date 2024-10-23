@@ -3,7 +3,7 @@ package com.jws.jwsapi.shared;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.jws.jwsapi.scale.ScaleButtons;
+import com.jws.jwsapi.scale.ScaleOperations;
 
 import javax.inject.Singleton;
 
@@ -17,10 +17,10 @@ public class WeighRepository {
     private float net = 0;
     private float gross = 0;
     private int scaleNumber = 1;
-    private ScaleButtons serviceScaleButtons;
+    private ScaleOperations serviceScaleOperations;
 
-    public void setScaleActions(ScaleButtons serviceScaleButtons) {
-        this.serviceScaleButtons = serviceScaleButtons;
+    public void setScaleActions(ScaleOperations serviceScaleOperations) {
+        this.serviceScaleOperations = serviceScaleOperations;
     }
 
     public LiveData<String> getNetStr() {
@@ -98,11 +98,19 @@ public class WeighRepository {
     }
 
     public void setZero() {
-        if (serviceScaleButtons != null) serviceScaleButtons.setZero();
+        if (serviceScaleOperations != null) serviceScaleOperations.setZero();
     }
 
     public void setTare() {
-        if (serviceScaleButtons != null) serviceScaleButtons.setTare();
+        if (serviceScaleOperations != null) serviceScaleOperations.setTare();
+    }
+
+    public String format(String weight) {
+        if (serviceScaleOperations != null) {
+            return serviceScaleOperations.format(weight);
+        } else {
+            return "0";
+        }
     }
 
 }

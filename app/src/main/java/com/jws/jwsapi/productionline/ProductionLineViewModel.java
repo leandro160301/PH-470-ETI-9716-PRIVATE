@@ -113,33 +113,28 @@ public class ProductionLineViewModel extends ViewModel {
     }
 
     public void putTareBoxProcess() {
-        productionLineManager.updateProductionLineCoverTare(String.valueOf(weighRepository.getNet()));
+        productionLineManager.updateProductionLineCoverTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
         productionLineManager.updateProductionLineState(ProductionLineStates.BOX);
     }
 
     public void putTarePartsProcess() {
-        productionLineManager.updateProductionLinePartsTare(String.valueOf(weighRepository.getNet()));
+        productionLineManager.updateProductionLinePartsTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
         productionLineManager.updateProductionLineState(ProductionLineStates.PARTS);
     }
 
     public void putTareIceProcess() {
-        productionLineManager.updateProductionLineIceTare(String.valueOf(weighRepository.getNet()));
+        productionLineManager.updateProductionLineIceTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
         productionLineManager.updateProductionLineState(ProductionLineStates.ICE);
     }
 
     public void putTareTopProcess() {
-        productionLineManager.updateProductionLineTopTare(String.valueOf(weighRepository.getNet()));
+        productionLineManager.updateProductionLineTopTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
         productionLineManager.updateProductionLineState(ProductionLineStates.TOP);
     }
 
     public void finishWeight() {
-        productionLineManager.updateProductionLineState(ProductionLineStates.INIT);
-        productionLineManager.updateProductionLineTopTare("0");
-        productionLineManager.updateProductionLineIceTare("0");
-        productionLineManager.updateProductionLinePartsTare("0");
-        productionLineManager.updateProductionLineCoverTare("0");
+        productionLineManager.finishWeight();
     }
-
 
     public void stopPolling() {
         if (pollingDisposable != null && !pollingDisposable.isDisposed()) {

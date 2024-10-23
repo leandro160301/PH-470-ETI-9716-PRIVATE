@@ -459,6 +459,7 @@
     <string name="gpio_fragment_input7">Entrada 7</string>
     <string name="gpio_fragment_input8">Entrada 8</string>
     <string name="fragment_title_caliber">CALIBRES</string>
+    <string name="title_production_line">LINEAS</string>
 
 
 </resources>

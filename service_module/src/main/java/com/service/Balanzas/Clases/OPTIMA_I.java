@@ -377,11 +377,6 @@ public class OPTIMA_I implements Balanza.Struct, Serializable {
         serialPort.write(msj);
     }
 
-    public void setTara(float tara){
-        Tara=tara;
-        taraStr=String.valueOf(tara);
-    }
-
     public void setTaraDigital(float tara){
         taraDigital=tara;
         taraDigitalStr=String.valueOf(tara);

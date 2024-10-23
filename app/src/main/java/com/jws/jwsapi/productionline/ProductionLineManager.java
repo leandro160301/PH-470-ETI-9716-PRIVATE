@@ -187,4 +187,13 @@ public class ProductionLineManager {
         }
         preferences.putProductionLineState(productionLineState);
     }
+
+    public void finishWeight() {
+        updateProductionLineState(ProductionLineStates.INIT);
+        updateProductionLineTopTare("0");
+        updateProductionLineIceTare("0");
+        updateProductionLinePartsTare("0");
+        updateProductionLineCoverTare("0");
+    }
+
 }

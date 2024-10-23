@@ -49,6 +49,12 @@ public class ProductionLineFragment extends Fragment {
 
         setupSpinners();
 
+        if (productionLineManager.getCurrentProductionLineNumber() == 1) {
+            binding.btReset2.setVisibility(View.INVISIBLE);
+        } else {
+            binding.btReset1.setVisibility(View.INVISIBLE);
+        }
+
         setupProductLine(productionLineManager.getProductionLineOne(), binding.tvProduct1,
                 binding.tvBatch1, binding.tvDestinatation1, binding.tvExpirateDate1);
 
@@ -97,6 +103,11 @@ public class ProductionLineFragment extends Fragment {
         binding.tvProduct2.setOnClickListener(v ->
                 keyboard(binding.tvProduct2, "Ingrese el Producto 2", requireContext(), value ->
                         productionLineManager.updateProductionLineProductTwo(value)));
+
+        View.OnClickListener onClickListener = v -> productionLineManager.finishWeight();
+
+        binding.btReset1.setOnClickListener(onClickListener);
+        binding.btReset2.setOnClickListener(onClickListener);
 
         binding.spCaliber1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -147,7 +158,7 @@ public class ProductionLineFragment extends Fragment {
             buttonProvider.getButton4().setVisibility(View.INVISIBLE);
             buttonProvider.getButton5().setVisibility(View.INVISIBLE);
             buttonProvider.getButton6().setVisibility(View.INVISIBLE);
-            buttonProvider.getTitle().setText(requireContext().getString(R.string.title_weighings));
+            buttonProvider.getTitle().setText(requireContext().getString(R.string.title_production_line));
         }
     }
 

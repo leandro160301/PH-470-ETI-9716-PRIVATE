@@ -283,6 +283,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
         if (state == ProductionLineStates.TOP) {
             createWeighing();
             productionLineViewModel.finishWeight();
+            repository.setTare();
         } else {
             getActivity().runOnUiThread(() -> ToastHelper.message("No finalizo la pesada", R.layout.item_customtoasterror, requireContext()));
         }

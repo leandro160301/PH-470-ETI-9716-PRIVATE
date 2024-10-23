@@ -8,7 +8,7 @@ import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class ScaleViewModel extends androidx.lifecycle.ViewModel implements ScaleButtons {
+public class ScaleViewModel extends androidx.lifecycle.ViewModel implements ScaleOperations {
 
     private final BalanzaService.Balanzas scaleService;
     private final WeighRepository repository;
@@ -52,6 +52,11 @@ public class ScaleViewModel extends androidx.lifecycle.ViewModel implements Scal
     @Override
     public void setZero() {
         scaleService.setCero(repository.getScaleNumber());
+    }
+
+    @Override
+    public String format(String weight) {
+        return scaleService.format(repository.getScaleNumber(), weight);
     }
 
     @AssistedFactory

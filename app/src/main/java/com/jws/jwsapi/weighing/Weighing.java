@@ -49,6 +49,39 @@ public class Weighing {
     @ColumnInfo(name = "box_tare")
     private String boxTare;
 
+    @ColumnInfo(name = "date")
+    private String date;
+
+    @ColumnInfo(name = "hour")
+    private String hour;
+
+    @ColumnInfo(name = "unit")
+    private String unit;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     public int getId() {
         return id;
     }

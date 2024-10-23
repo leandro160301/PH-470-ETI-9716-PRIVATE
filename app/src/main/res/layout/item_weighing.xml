@@ -45,12 +45,25 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="49dp"
+                            android:id="@+id/tv_line"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginEnd="22dp"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Linea 1"
+                            android:textColor="@color/negro"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="0dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="13dp"
-                            android:layout_weight="1"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="8dp"
                             android:gravity="center"
                             android:text="PRODUCTO"
                             android:textAlignment="viewEnd"
@@ -58,24 +71,12 @@
                             android:textSize="24sp" />
 
                         <TextView
-                            android:id="@+id/tv_weighing_code"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="22dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="13dp"
-                            android:gravity="center"
-                            android:text="0001"
-                            android:textColor="@color/negro"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
-
-                        <TextView
                             android:id="@+id/tv_weighing_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="22dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_weight="1"
                             android:gravity="center"
                             android:padding="5dp"
                             android:text="ACIDO TARTARICO POLVO X 25KG"
@@ -84,29 +85,27 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="70dp"
+                            android:layout_width="110dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="22dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="13dp"
-                            android:layout_weight="1"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="8dp"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="NETO TOTAL"
+                            android:text="FECHA"
                             android:textAlignment="viewEnd"
                             android:textColor="@color/negro"
                             android:textSize="24sp" />
 
                         <TextView
-                            android:id="@+id/tv_weighing_net"
-                            android:layout_width="25dp"
+                            android:id="@+id/tv_date"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="22dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
+                            android:layout_marginTop="6dp"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="10"
+                            android:text="10/10/2024 15:23"
                             android:textColor="@color/negro"
                             android:textSize="24sp"
                             android:textStyle="bold" />
@@ -134,7 +133,7 @@
                         android:background="@drawable/stylekeycor"
                         android:orientation="vertical"
                         android:padding="10dp"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -146,8 +145,45 @@
 
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="13dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:padding="5dp"
+                                android:text="NETO"
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/tv_net"
+                                android:layout_width="25dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginEnd="22dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/stylesubrayado3"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
                                 android:layout_weight="1"
                                 android:gravity="end"
                                 android:padding="5dp"
@@ -160,13 +196,12 @@
                                 android:id="@+id/tv_weighing_gross"
                                 android:layout_width="25dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="6dp"
                                 android:layout_marginEnd="22dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/stylesubrayado3"
                                 android:gravity="center"
                                 android:padding="5dp"
-                                android:text="10"
                                 android:textColor="@color/negro"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
@@ -183,27 +218,26 @@
                                 android:layout_width="70dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="22dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="13dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:padding="5dp"
-                                android:text="TARA"
+                                android:text="TARA CAJA"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/negro"
                                 android:textSize="24sp" />
 
                             <TextView
-                                android:id="@+id/tv_weighing_tare"
+                                android:id="@+id/tv_tare_box"
                                 android:layout_width="25dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="6dp"
                                 android:layout_marginEnd="22dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/stylesubrayado3"
                                 android:gravity="center"
                                 android:padding="5dp"
-                                android:text="10"
                                 android:textColor="@color/negro"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
@@ -220,27 +254,26 @@
                                 android:layout_width="70dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="22dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="13dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:padding="5dp"
-                                android:text="BALANZA"
+                                android:text="TARA HIELO"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/negro"
                                 android:textSize="24sp" />
 
                             <TextView
-                                android:id="@+id/tv_weighing_scale"
+                                android:id="@+id/tv_tare_ice"
                                 android:layout_width="25dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="6dp"
                                 android:layout_marginEnd="22dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/stylesubrayado3"
                                 android:gravity="center"
                                 android:padding="5dp"
-                                android:text="10"
                                 android:textColor="@color/negro"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
@@ -257,8 +290,80 @@
                                 android:layout_width="70dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="22dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="13dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="TARA PIEZAS"
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/tv_tare_parts"
+                                android:layout_width="25dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginEnd="22dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/stylesubrayado3"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="22dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="TARA TAPA"
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/tv_tare_top"
+                                android:layout_width="25dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginEnd="22dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/stylesubrayado3"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="22dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:padding="5dp"
@@ -271,13 +376,50 @@
                                 android:id="@+id/tv_weighing_operator"
                                 android:layout_width="25dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="6dp"
                                 android:layout_marginEnd="22dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/stylesubrayado3"
                                 android:gravity="center"
                                 android:padding="5dp"
-                                android:text="10"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="22dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="DESTINATARIO"
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/tv_destinatation"
+                                android:layout_width="25dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginEnd="22dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/stylesubrayado3"
+                                android:gravity="center"
+                                android:padding="5dp"
                                 android:textColor="@color/negro"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
@@ -294,27 +436,62 @@
                                 android:layout_width="70dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="22dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="13dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:padding="5dp"
-                                android:text="NUMERO DE SERIE"
+                                android:text="LOTE"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/negro"
                                 android:textSize="24sp" />
 
                             <TextView
-                                android:id="@+id/tv_weighing_serial_number"
+                                android:id="@+id/tv_batch"
                                 android:layout_width="25dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="6dp"
                                 android:layout_marginEnd="22dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/stylesubrayado3"
                                 android:gravity="center"
                                 android:padding="5dp"
-                                android:text="10"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="22dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="CALIBRE"
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/negro"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/tv_caliber"
+                                android:layout_width="25dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginEnd="22dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/stylesubrayado3"
+                                android:gravity="center"
+                                android:padding="5dp"
                                 android:textColor="@color/negro"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />

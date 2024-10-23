@@ -16,15 +16,26 @@ public class WeighingService {
         this.weighingDao = weighingDao;
     }
 
-    public void newWeighing(Weighing weighing) {
-        Completable.fromAction(() -> weighingDao.insertWeighing(weighing))
+    public Completable newWeighing(Weighing weighing) {
+        return Completable.fromAction(() -> weighingDao.insertWeighing(weighing))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public LiveData<List<Weighing>> getAllWeighings() {
         return weighingDao.getAllWeighing();
+    }
+
+    public List<Weighing> getAllWeighingsStatic() {
+        return weighingDao.getAllWeighingStatic();
+    }
+
+
+    public Completable deleteAllWeighing() {
+        return Completable.fromAction(weighingDao::deleteAllWeighings)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
     }
 
 

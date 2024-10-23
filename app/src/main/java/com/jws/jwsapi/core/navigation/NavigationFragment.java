@@ -55,7 +55,6 @@ import com.jws.jwsapi.utils.ThemeInterface;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.date.DateDialog;
 import com.jws.jwsapi.utils.date.DateInterface;
-import com.service.Balanzas.Fragments.ServiceFragment;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -148,12 +147,12 @@ public class NavigationFragment extends Fragment implements AdapterCommon.ItemCl
     }
 
     private void handleService() {
-        handleUserAction(() -> {
+        /*handleUserAction(() -> {
             ServiceFragment fragment = ServiceFragment.newInstance(mainActivity.mainClass.service);
             Bundle args = new Bundle();
             args.putSerializable("instanceService", mainActivity.mainClass.service);
             mainActivity.mainClass.openFragmentService(fragment, args);
-        }, ROLE_OPERATOR);
+        }, ROLE_OPERATOR);*/
     }
 
     private void setupItems(List<String> list) {

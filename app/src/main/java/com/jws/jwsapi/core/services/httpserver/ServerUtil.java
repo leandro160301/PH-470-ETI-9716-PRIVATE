@@ -29,7 +29,7 @@ public class ServerUtil {
 
     public static String getJsonWeighing(WeighingService weighingService) {
 
-        List<Weighing> weighingList = weighingService.getAllWeighings().getValue();
+        List<Weighing> weighingList = weighingService.getAllWeighingsStatic();
         if (weighingList == null) return null;
         JSONArray jsonArray = new JSONArray();
         try {
@@ -40,6 +40,9 @@ public class ServerUtil {
                 weighingField.put("Destinatario", weighing.getDestination());
                 weighingField.put("Lote", weighing.getBatch());
                 weighingField.put("Calibre", weighing.getCaliber());
+                weighingField.put("Fecha", weighing.getDate());
+                weighingField.put("Hora", weighing.getHour());
+                weighingField.put("Linea", weighing.getLine());
                 weighingField.put("Vencimiento", weighing.getExpirateDate());
                 weighingField.put("Tara envase", weighing.getBoxTare());
                 weighingField.put("Tara partes", weighing.getPartsTare());

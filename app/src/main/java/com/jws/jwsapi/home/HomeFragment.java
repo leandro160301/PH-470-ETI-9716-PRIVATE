@@ -150,6 +150,11 @@ public class HomeFragment extends Fragment implements GpioHighListener {
 
     private void handleObserveWeighing() {
         weighingViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
+        weighingViewModel.getMessage().observe(getViewLifecycleOwner(), message -> {
+            if (message != null) {
+                ToastHelper.message(message, R.layout.item_customtoastok, requireContext());
+            }
+        });
     }
 
     private void setupLinearState(LinearLayout ln1, LinearLayout ln2, LinearLayout ln3, LinearLayout ln4) {
@@ -221,7 +226,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
         String net = repository.getNetStr().getValue();
         String gross = repository.getGrossStr().getValue();
         if (unit != null && tare != null && net != null && gross != null) {
-            weighingViewModel.createWeighing(gross, net, tare, unit);
+            weighingViewModel.createWeighing(gross, net, unit);
         }
     }
 

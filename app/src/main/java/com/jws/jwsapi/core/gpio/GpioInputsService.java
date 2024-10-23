@@ -1,5 +1,8 @@
 package com.jws.jwsapi.core.gpio;
 
+import static com.jws.jwsapi.core.gpio.GpioConstants.OFF;
+import static com.jws.jwsapi.core.gpio.GpioConstants.ON;
+
 import com.android.jws.JwsManager;
 
 import java.util.concurrent.TimeUnit;
@@ -13,8 +16,6 @@ import io.reactivex.schedulers.Schedulers;
 @SuppressWarnings("unused")
 public class GpioInputsService {
 
-    private final static int OFF = 0;
-    private final static int ON = 1;
     private final static int PERIOD = 1;
     private final static int STABLE_THRESHOLD = 2;
     private final static int INPUT_LENGHT = 8;
@@ -108,7 +109,7 @@ public class GpioInputsService {
         }
     }
 
-    public int getCurrentInputValue1() {
+    public Integer getCurrentInputValue1() {
         return currentInputValues[0];
     }
 

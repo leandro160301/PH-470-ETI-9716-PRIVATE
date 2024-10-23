@@ -1,5 +1,8 @@
 package com.jws.jwsapi.core.gpio;
 
+import static com.jws.jwsapi.core.gpio.GpioConstants.OFF;
+import static com.jws.jwsapi.core.gpio.GpioConstants.ON;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class GpioFragment extends Fragment {
 
-    private final static int ON = 0;
     private FragmentGpioBinding binding;
     private ButtonProvider buttonProvider;
     private MainActivity mainActivity;
@@ -53,86 +55,23 @@ public class GpioFragment extends Fragment {
     }
 
     private void observeViewModels() {
-        gpioViewModel.getInputValue1().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input1, value));
-        gpioViewModel.getInputValue2().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input2, value));
-        gpioViewModel.getInputValue3().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input3, value));
-        gpioViewModel.getInputValue4().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input4, value));
-        gpioViewModel.getInputValue5().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input5, value));
-        gpioViewModel.getInputValue6().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input6, value));
-        gpioViewModel.getInputValue7().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input7, value));
-        gpioViewModel.getInputValue8().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input8, value));
-
-        /*binding.switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                gpioViewModel.setOutputValueOn1();
-            } else {
-                gpioViewModel.setOutputValueOff1();
-            }
-        });
-
-        binding.switch2.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                gpioViewModel.setOutputValueOn2();
-            } else {
-                gpioViewModel.setOutputValueOff2();
-            }
-        });
-
-        binding.switch3.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                gpioViewModel.setOutputValueOff3();
-            } else {
-                gpioViewModel.setOutputValueOn3();
-            }
-        });
-
-        binding.switch4.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                gpioViewModel.setOutputValueOff4();
-            } else {
-                gpioViewModel.setOutputValueOn4();
-            }
-        });
-
-        binding.switch5.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                gpioViewModel.setOutputValueOff5();
-            } else {
-                gpioViewModel.setOutputValueOn5();
-            }
-        });
-
-        binding.switch6.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                gpioViewModel.setOutputValueOff6();
-            } else {
-                gpioViewModel.setOutputValueOn6();
-            }
-        });
-
-        binding.switch7.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                gpioViewModel.setOutputValueOff7();
-            } else {
-                gpioViewModel.setOutputValueOn7();
-            }
-        });
-
-        binding.switch8.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                gpioViewModel.setOutputValueOff8();
-            } else {
-                gpioViewModel.setOutputValueOn8();
-            }
-        });*/
-
+        gpioViewModel.getGpioValue1().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input1, value));
+        gpioViewModel.getGpioValue2().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input2, value));
+        gpioViewModel.getGpioValue3().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input3, value));
+        gpioViewModel.getGpioValue4().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input4, value));
+        gpioViewModel.getGpioValue5().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input5, value));
+        gpioViewModel.getGpioValue6().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input6, value));
+        gpioViewModel.getGpioValue7().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input7, value));
+        gpioViewModel.getGpioValue8().observe(getViewLifecycleOwner(), value -> updateGpioBackground(binding.input8, value));
     }
 
     private void updateGpioBackground(TextView textView, Integer value) {
-        if (value != null && value == ON) {
-            textView.setBackgroundResource(R.drawable.square_background_on);
-        } else {
-            textView.setBackgroundResource(R.drawable.square_background_off);
+        if (value != null) {
+            if (value == ON) {
+                textView.setBackgroundResource(R.drawable.square_background_on);
+            } else if (value == OFF) {
+                textView.setBackgroundResource(R.drawable.square_background_off);
+            }
         }
     }
 

@@ -87,7 +87,7 @@ public class WeighingViewModel extends ViewModel {
 
             @Override
             public void onError(Throwable e) {
-                message.setValue(e.getMessage());
+                error.setValue(e.getMessage());
             }
         });
     }
@@ -107,9 +107,11 @@ public class WeighingViewModel extends ViewModel {
 
                 @Override
                 public void onError(Throwable e) {
-                    message.setValue(e.getMessage());
+                    error.setValue(e.getMessage());
                 }
             });
+        } else {
+            error.setValue("No esta habilitado para cambiar datos");
         }
     }
 

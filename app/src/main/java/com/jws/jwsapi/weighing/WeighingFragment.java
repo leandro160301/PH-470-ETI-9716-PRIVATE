@@ -1,5 +1,7 @@
 package com.jws.jwsapi.weighing;
 
+import static com.jws.jwsapi.dialog.DialogUtil.dialogText;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +78,9 @@ public class WeighingFragment extends Fragment {
             buttonProvider.getButton5().setVisibility(View.INVISIBLE);
             buttonProvider.getButton6().setVisibility(View.INVISIBLE);
             buttonProvider.getTitle().setText(requireContext().getString(R.string.title_weighings));
-            buttonProvider.getButton1().setOnClickListener(v -> weighingViewModel.deleteAllWeighings());
+            buttonProvider.getButton1().setOnClickListener(v ->
+                    dialogText(requireContext(), "¿Quiere eliminar todas las pesadas", "ELIMINAR",
+                            () -> weighingViewModel.deleteAllWeighings()));
         }
     }
 

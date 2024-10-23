@@ -36,7 +36,7 @@ public class ServerUtil {
             for (Weighing weighing : weighingList) {
                 JSONObject weighingField = new JSONObject();
                 weighingField.put("Id", String.valueOf(weighing.getId()));
-                weighingField.put("Codigo", weighing.getProduct());
+                weighingField.put("Producto", weighing.getProduct());
                 weighingField.put("Destinatario", weighing.getDestination());
                 weighingField.put("Lote", weighing.getBatch());
                 weighingField.put("Calibre", weighing.getCaliber());

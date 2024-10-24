@@ -40,10 +40,10 @@ public class HomeService {
                 labelManager.destinatation.value = productionLine.getDestinatation();
                 labelManager.name.value = productionLine.getProduct();
                 labelManager.expirateDate.value = productionLine.getExpirateDate();
-                labelManager.tareBox.value = productionLine.getBoxTare();
-                labelManager.tareIce.value = productionLine.getIceTare();
-                labelManager.tareParts.value = productionLine.getPartsTare();
-                labelManager.tareTop.value = productionLine.getTopTare();
+                labelManager.tareBox.value = productionLine.getBoxTare() + weighRepository.getUnit().getValue();
+                labelManager.tareIce.value = productionLine.getIceTare() + weighRepository.getUnit().getValue();
+                labelManager.tareParts.value = productionLine.getPartsTare() + weighRepository.getUnit().getValue();
+                labelManager.tareTop.value = productionLine.getTopTare() + weighRepository.getUnit().getValue();
                 PrinterManager printerManager = new PrinterManager(context, userRepository, printerPreferences, labelManager, weighRepository);
                 printerManager.printLabelInMemory(serialPort, 0);
 

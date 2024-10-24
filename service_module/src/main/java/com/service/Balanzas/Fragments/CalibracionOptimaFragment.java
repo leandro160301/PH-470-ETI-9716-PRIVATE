@@ -7,7 +7,6 @@ import static com.service.Utils.getHora;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -26,7 +25,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,13 +32,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-
 import com.service.Balanzas.BalanzaService;
 import com.service.Balanzas.Clases.OPTIMA_I;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import com.service.Comunicacion.OnFragmentChangeListener;
-import com.service.PuertosSerie.PuertosSerie;
 import com.service.PuertosSerie.PuertosSerie2;
 import com.service.R;
 
@@ -115,16 +111,16 @@ public class CalibracionOptimaFragment extends Fragment {
         for (int i = 0; i < 16; i++) {
             Lista0aF[i] = Integer.toHexString(i).toUpperCase();
         }
-        ArrayAdapter<String> adapter11 = new ArrayAdapter<>(requireContext(),R.layout.item_spinner,Lista0aF);
+        ArrayAdapter<String> adapter11 = new ArrayAdapter<>(requireContext(), R.layout.item_spinner,Lista0aF);
         adapter11.setDropDownViewResource(R.layout.item_spinner);
         sp_acu.setAdapter(adapter11);
-        ArrayAdapter<String> adapter13= new ArrayAdapter<>(requireContext(),R.layout.item_spinner,Lista0aF);
+        ArrayAdapter<String> adapter13= new ArrayAdapter<>(requireContext(), R.layout.item_spinner,Lista0aF);
         adapter13.setDropDownViewResource(R.layout.item_spinner);
         sp_off.setAdapter(adapter13);
         toggle4.setOnCheckedChangeListener((radioGroup, i) -> {
             RadioButton bton= view.findViewById(R.id.btON4);
             RadioButton btoff = view.findViewById(R.id.btOFF4);
-            if(toggle4.getCheckedRadioButtonId()==R.id.btON4){
+            if(toggle4.getCheckedRadioButtonId()== R.id.btON4){
                 btoff.setText("NO");
                 bton.setText("SI");
                 btoff.setTextColor(getResources().getColor(R.color.negro));
@@ -139,7 +135,7 @@ public class CalibracionOptimaFragment extends Fragment {
         toggle2.setOnCheckedChangeListener((radioGroup, i) -> {
             RadioButton bton= view.findViewById(R.id.btON2);
             RadioButton btoff = view.findViewById(R.id.btOFF2);
-            if(toggle2.getCheckedRadioButtonId()==R.id.btON2){
+            if(toggle2.getCheckedRadioButtonId()== R.id.btON2){
                 btoff.setTextColor(getResources().getColor(R.color.negro));
                 bton.setTextColor(getResources().getColor(R.color.blanco));
                 btoff.setText("NO");
@@ -166,7 +162,7 @@ public class CalibracionOptimaFragment extends Fragment {
                 btoff.setTextColor(getResources().getColor(R.color.blanco));
                     }
         });
-        ArrayAdapter<String> adapter12= new ArrayAdapter<>(requireContext(),R.layout.item_spinner,Lista0aF);
+        ArrayAdapter<String> adapter12= new ArrayAdapter<>(requireContext(), R.layout.item_spinner,Lista0aF);
         adapter12.setDropDownViewResource(R.layout.item_spinner);
         sp_pro.setAdapter(adapter12);
     }
@@ -648,7 +644,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                 ArrayList<String> finalListerr = Listerr;
 
 
-                Mensaje(finalListerr.get(finalI).toString(),R.layout.item_customtoasterror,mainActivity);
+                Mensaje(finalListerr.get(finalI).toString(), R.layout.item_customtoasterror,mainActivity);
                     //Toast.makeText(requireContext(),finalListerr.get(finalI).toString(),Toast.LENGTH_SHORT).show();
 
             }}}
@@ -877,7 +873,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
         toggle1.setOnCheckedChangeListener((radioGroup, i) -> {
             RadioButton bton= view.findViewById(R.id.btON1);
             RadioButton btoff = view.findViewById(R.id.btOFF1);
-            if(toggle1.getCheckedRadioButtonId()==R.id.btON1) {
+            if(toggle1.getCheckedRadioButtonId()== R.id.btON1) {
                btoff.setText("NO");
                btoff.setTextColor(getResources().getColor(R.color.negro));
                bton.setTextColor(getResources().getColor(R.color.blanco));
@@ -895,7 +891,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
             RadioButton bton= view.findViewById(R.id.btON3);
             RadioButton btoff = view.findViewById(R.id.btOFF3);
 
-            if(toggle3.getCheckedRadioButtonId()==R.id.btON3){
+            if(toggle3.getCheckedRadioButtonId()== R.id.btON3){
                 btoff.setText("NO");
                 bton.setText("SI");
                 btoff.setTextColor(getResources().getColor(R.color.negro));
@@ -1023,7 +1019,7 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                 if(CapDivPDecimal!=null){
                     inicioCalibracion(CapDivPDecimal);
                 }else{
-                    Mensaje("Revisa la capacidad, division minima y  el punto decimal",R.layout.item_customtoasterror, BZA.mainActivity);
+                    Mensaje("Revisa la capacidad, division minima y  el punto decimal", R.layout.item_customtoasterror, BZA.mainActivity);
                     bt_iniciarCalibracionbool=true;
                 }
             }
@@ -1198,15 +1194,15 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
         Runnable myRunnable = () -> {
             try {
                   String param1="";
-                param1 += leertoggles(toggle1,R.id.btON1);
-                param1 += leertoggles(toggle2,R.id.btON2);// "0";
-                param1 += leertoggles(toggle3,R.id.btON3);
-                param1 +=leertoggles(toggle4,R.id.btON4); //"0";
+                param1 += leertoggles(toggle1, R.id.btON1);
+                param1 += leertoggles(toggle2, R.id.btON2);// "0";
+                param1 += leertoggles(toggle3, R.id.btON3);
+                param1 +=leertoggles(toggle4, R.id.btON4); //"0";
                 lasttanque= (leertoggles(toggle3, R.id.btON3).equals("1"));
                 param1 +="0";// leertoggles(toggle5,R.id.btON5);
                 param1 +=  "1";// leertoggles(toggle6,R.id.btON6); // ESTE NECESITA ESTAR EN 0
                 param1 +="1";// leertoggles(toggle7,R.id.btON7);
-                param1 += leertoggles(toggle8,R.id.btON8); // "0";
+                param1 += leertoggles(toggle8, R.id.btON8); // "0";
                 String param2="00000000";
                 BZA.serialPort.write( BZA.EnviarParametros(param1,param2,sp_pro.getSelectedItem().toString(),sp_off.getSelectedItem().toString(),sp_acu.getSelectedItem().toString()));
                 Thread.sleep(1000);

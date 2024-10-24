@@ -30,6 +30,7 @@ import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.ToastHelper;
 import com.jws.jwsapi.utils.Utils;
 import com.jws.jwsapi.weighing.WeighingFragment;
+import com.jws.jwsapi.weighing.WeighingPrintAction;
 import com.jws.jwsapi.weighing.WeighingViewModel;
 
 import javax.inject.Inject;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends Fragment implements GpioHighListener {
+public class HomeFragment extends Fragment implements GpioHighListener, WeighingPrintAction {
 
     @Inject
     WeighRepository repository;
@@ -95,9 +96,9 @@ public class HomeFragment extends Fragment implements GpioHighListener {
     }
 
     private void observeViewModels() {
-        repository.getNetStr().observe(getViewLifecycleOwner(), net -> handleWeighUpdate(net, binding.tvNet));
+        repository.getNetStr().observe(getViewLifecycleOwner(), net -> updateWeightDisplay(net, binding.tvNet));
 
-        repository.getGrossStr().observe(getViewLifecycleOwner(), gross -> handleWeighUpdate(gross, binding.tvGross));
+        repository.getGrossStr().observe(getViewLifecycleOwner(), gross -> updateWeightDisplay(gross, binding.tvGross));
 
         repository.getStable().observe(getViewLifecycleOwner(), stable -> binding.imEstable.setVisibility(stable ? View.VISIBLE : View.INVISIBLE));
 
@@ -172,9 +173,9 @@ public class HomeFragment extends Fragment implements GpioHighListener {
         ToastHelper.message(error, layout, getContext());
     }
 
-    private void handleWeighUpdate(String net, TextView textView) {
-        if (net != null) {
-            textView.setText(net);
+    private void updateWeightDisplay(String weight, TextView textView) {
+        if (weight != null) {
+            textView.setText(weight);
         }
     }
 
@@ -217,16 +218,6 @@ public class HomeFragment extends Fragment implements GpioHighListener {
             setupButton(buttonProvider.getButton5(), R.string.button_text_5,
                     v -> printButton(), View.VISIBLE);
             binding.lnFondolayout.setBackgroundResource(R.drawable.boton_selector_balanza);
-        }
-    }
-
-    private void createWeighing() {
-        String unit = repository.getUnit().getValue();
-        String tare = repository.getTare().getValue();
-        String net = repository.getNetStr().getValue();
-        String gross = repository.getGrossStr().getValue();
-        if (unit != null && tare != null && net != null && gross != null) {
-            weighingViewModel.createWeighing(gross, net, unit);
         }
     }
 
@@ -281,9 +272,7 @@ public class HomeFragment extends Fragment implements GpioHighListener {
     private void printButton() {
         ProductionLineStates state = productionLineViewModel.getState().getValue();
         if (state == ProductionLineStates.TOP) {
-            createWeighing();
-            productionLineViewModel.finishWeight();
-            repository.setTare();
+            weighingViewModel.createWeighing(this);
         } else {
             getActivity().runOnUiThread(() -> ToastHelper.message("No finalizo la pesada", R.layout.item_customtoasterror, requireContext()));
         }
@@ -318,5 +307,10 @@ public class HomeFragment extends Fragment implements GpioHighListener {
 
 
         });
+    }
+
+    @Override
+    public void print() {
+        homeService.print(requireContext(), serviceScaleViewModel.getScaleService().getSerialPort(repository.getScaleNumber()));
     }
 }

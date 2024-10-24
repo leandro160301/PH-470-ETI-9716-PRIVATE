@@ -132,10 +132,6 @@ public class ProductionLineViewModel extends ViewModel {
         productionLineManager.updateProductionLineState(ProductionLineStates.TOP);
     }
 
-    public void finishWeight() {
-        productionLineManager.finishWeight();
-    }
-
     public void stopPolling() {
         if (pollingDisposable != null && !pollingDisposable.isDisposed()) {
             pollingDisposable.dispose();

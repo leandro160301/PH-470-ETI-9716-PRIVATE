@@ -1,8 +1,9 @@
 package com.jws.jwsapi.core.printer;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
-import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.label.LabelModel;
@@ -18,15 +19,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class PrinterHelper {
-    private final MainActivity mainActivity;
+    private final Context context;
     private final PrinterPreferences printerPreferences;
     private final LabelManager labelManager;
     private final UserRepository userRepository;
     private final WeighRepository weighRepository;
 
     @Inject
-    public PrinterHelper(MainActivity mainActivity, PrinterPreferences printerPreferences, LabelManager labelManager, UserRepository userRepository, WeighRepository weighRepository) {
-        this.mainActivity = mainActivity;
+    public PrinterHelper(Context context, PrinterPreferences printerPreferences, LabelManager labelManager, UserRepository userRepository, WeighRepository weighRepository) {
+        this.context = context;
         this.printerPreferences = printerPreferences;
         this.labelManager = labelManager;
         this.userRepository = userRepository;
@@ -105,7 +106,7 @@ public class PrinterHelper {
     public String getLabelCode(int numetiqueta) {
         try {
             String currentLabel = printerPreferences.getLabel(numetiqueta);
-            String labelCode = FileUtils.openAndReadFile(currentLabel, mainActivity);
+            String labelCode = FileUtils.openAndReadFile(currentLabel, context);
 
             if (!isValidLabel(currentLabel, labelCode)) return "";
 
@@ -172,11 +173,11 @@ public class PrinterHelper {
             case 0:
                 return "";
             case 1:
-                return mainActivity.mainClass.bza.getBrutoStr(weighRepository.getScaleNumber()) + mainActivity.mainClass.bza.getUnidad(weighRepository.getScaleNumber());
+                return weighRepository.getGrossStr().getValue() + weighRepository.getUnit().getValue();
             case 2:
-                return mainActivity.mainClass.bza.getTaraDigital(weighRepository.getScaleNumber()) + mainActivity.mainClass.bza.getUnidad(weighRepository.getScaleNumber());
+                return weighRepository.getTare().getValue() + weighRepository.getUnit().getValue();
             case 3:
-                return mainActivity.mainClass.bza.getNetoStr(weighRepository.getScaleNumber()) + mainActivity.mainClass.bza.getUnidad(weighRepository.getScaleNumber());
+                return weighRepository.getNetStr().getValue() + weighRepository.getUnit().getValue();
             case 4:
                 return userRepository.getCurrentUser();
             case 5:
@@ -197,7 +198,7 @@ public class PrinterHelper {
 
     @NonNull
     private String showErrorMessage(String texto) {
-        ToastHelper.message(texto, R.layout.item_customtoasterror, mainActivity);
+        ToastHelper.message(texto, R.layout.item_customtoasterror, context);
         return "";
     }
 

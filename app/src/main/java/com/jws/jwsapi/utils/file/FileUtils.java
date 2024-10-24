@@ -2,7 +2,8 @@ package com.jws.jwsapi.utils.file;
 
 import static com.jws.jwsapi.core.storage.StoragePaths.MEMORY_PATH;
 
-import com.jws.jwsapi.MainActivity;
+import android.content.Context;
+
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.utils.ToastHelper;
 
@@ -69,11 +70,11 @@ public class FileUtils {
         }
     }
 
-    public static String openAndReadFile(String fileName, MainActivity mainActivity) {
+    public static String openAndReadFile(String fileName, Context context) {
         String filePath = MEMORY_PATH + fileName;
         File file = new File(filePath);
         if (!file.exists()) {
-            ToastHelper.message(mainActivity.getString(R.string.toast_file_not_avaible), R.layout.item_customtoasterror, mainActivity);
+            ToastHelper.message("El archivo ya no esta disponible", R.layout.item_customtoasterror, context);
             return "";
         } else {
             String fileContent = "";
@@ -93,7 +94,7 @@ public class FileUtils {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                ToastHelper.message(mainActivity.getString(R.string.toast_read_file_error) + e, R.layout.item_customtoasterror, mainActivity);
+                ToastHelper.message("Error al intentar leer el archivo" + e, R.layout.item_customtoasterror, context);
             } finally {
                 try {
                     if (br != null) br.close();

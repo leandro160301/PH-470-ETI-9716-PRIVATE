@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.jws.jwsapi.productionline.ProductionLine;
 import com.jws.jwsapi.productionline.ProductionLineManager;
 import com.jws.jwsapi.shared.UserRepository;
+import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.date.DateUtils;
 
 import java.util.List;
@@ -29,12 +30,14 @@ public class WeighingViewModel extends ViewModel {
     private final MutableLiveData<String> message = new MutableLiveData<>();
     private final UserRepository userRepository;
     private final ProductionLineManager productionLineManager;
+    private final WeighRepository weighRepository;
 
     @Inject
-    public WeighingViewModel(WeighingService weighingService, UserRepository userRepository, ProductionLineManager productionLineManager) {
+    public WeighingViewModel(WeighingService weighingService, UserRepository userRepository, ProductionLineManager productionLineManager, WeighRepository weighRepository) {
         this.weighingService = weighingService;
         this.userRepository = userRepository;
         this.productionLineManager = productionLineManager;
+        this.weighRepository = weighRepository;
         this.weighings = weighingService.getAllWeighings();
     }
 
@@ -50,10 +53,13 @@ public class WeighingViewModel extends ViewModel {
         return message;
     }
 
-    public void createWeighing(String gross, String net, String unit) {
+    public void createWeighing(WeighingPrintAction printAction) {
+        String gross = weighRepository.getGrossStr().getValue();
+        String net = weighRepository.getNetStr().getValue();
+        String unit = weighRepository.getUnit().getValue();
         Weighing weighing = new Weighing();
         ProductionLine productionLine = productionLineManager.getCurrentProductionLine();
-        if (productionLine == null) return;
+        if (productionLine == null || gross == null || net == null || unit == null) return;
         weighing.setBatch(productionLine.getBatch());
         weighing.setCaliber(productionLine.getCaliber());
         weighing.setBoxTare(productionLine.getBoxTare());
@@ -70,10 +76,10 @@ public class WeighingViewModel extends ViewModel {
         weighing.setHour(DateUtils.getHour());
         weighing.setUnit(unit);
         weighing.setLine(String.format(Locale.US, "%s %s", "Linea", productionLineManager.getCurrentProductionLineNumber()));
-        insertWeighing(weighing);
+        insertWeighing(weighing, printAction);
     }
 
-    private void insertWeighing(Weighing weighing) {
+    private void insertWeighing(Weighing weighing, WeighingPrintAction printAction) {
         weighingService.newWeighing(weighing).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -83,6 +89,9 @@ public class WeighingViewModel extends ViewModel {
             @Override
             public void onComplete() {
                 message.setValue("Operacion realizada con exito");
+                printAction.print();
+                productionLineManager.finishWeight();
+                weighRepository.setTare();
             }
 
             @Override

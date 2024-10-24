@@ -6,7 +6,6 @@ import static com.jws.jwsapi.core.printer.PrinterMode.MODE_USB;
 
 import android.content.Context;
 
-import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.shared.UserRepository;
@@ -22,12 +21,12 @@ public class PrinterManager {
     LabelManager labelManager;
     PrinterHelper printerHelper;
 
-    public PrinterManager(Context context, MainActivity activity, UserRepository userRepository, PrinterPreferences printerPreferences, LabelManager labelManager, WeighRepository weighRepository) {
+    public PrinterManager(Context context, UserRepository userRepository, PrinterPreferences printerPreferences, LabelManager labelManager, WeighRepository weighRepository) {
         this.context = context;
         this.printerPreferences = printerPreferences;
         this.labelManager = labelManager;
         this.userRepository = userRepository;
-        printerHelper = new PrinterHelper(activity, printerPreferences, labelManager, userRepository, weighRepository);
+        printerHelper = new PrinterHelper(context, printerPreferences, labelManager, userRepository, weighRepository);
     }
 
     public void printLabelInMemory(PuertosSerie2 serialPort, int numetiqueta) {

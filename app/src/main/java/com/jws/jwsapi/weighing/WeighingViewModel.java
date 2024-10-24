@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.jws.jwsapi.productionline.ProductionLine;
 import com.jws.jwsapi.productionline.ProductionLineManager;
+import com.jws.jwsapi.productionline.ProductionLineStates;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.date.DateUtils;
@@ -54,29 +55,35 @@ public class WeighingViewModel extends ViewModel {
     }
 
     public void createWeighing(WeighingPrintAction printAction) {
-        String gross = weighRepository.getGrossStr().getValue();
-        String net = weighRepository.getNetStr().getValue();
-        String unit = weighRepository.getUnit().getValue();
-        Weighing weighing = new Weighing();
-        ProductionLine productionLine = productionLineManager.getCurrentProductionLine();
-        if (productionLine == null || gross == null || net == null || unit == null) return;
-        weighing.setBatch(productionLine.getBatch());
-        weighing.setCaliber(productionLine.getCaliber());
-        weighing.setBoxTare(productionLine.getBoxTare());
-        weighing.setDestination(productionLine.getDestinatation());
-        weighing.setGross(gross);
-        weighing.setExpirateDate(productionLine.getExpirateDate());
-        weighing.setIceTare(productionLine.getIceTare());
-        weighing.setNet(net);
-        weighing.setTopTare(productionLine.getTopTare());
-        weighing.setPartsTare(productionLine.getPartsTare());
-        weighing.setProduct(productionLine.getProduct());
-        weighing.setOperator(userRepository.getCurrentUser());
-        weighing.setDate(DateUtils.getDate());
-        weighing.setHour(DateUtils.getHour());
-        weighing.setUnit(unit);
-        weighing.setLine(String.format(Locale.US, "%s %s", "Linea", productionLineManager.getCurrentProductionLineNumber()));
-        insertWeighing(weighing, printAction);
+        ProductionLineStates state = productionLineManager.getCurrentProductionLine().getProductionLineState();
+        if (state == ProductionLineStates.TOP) {
+            String gross = weighRepository.getGrossStr().getValue();
+            String net = weighRepository.getNetStr().getValue();
+            String unit = weighRepository.getUnit().getValue();
+            Weighing weighing = new Weighing();
+            ProductionLine productionLine = productionLineManager.getCurrentProductionLine();
+            if (productionLine == null || gross == null || net == null || unit == null) return;
+            weighing.setBatch(productionLine.getBatch());
+            weighing.setCaliber(productionLine.getCaliber());
+            weighing.setBoxTare(productionLine.getBoxTare());
+            weighing.setDestination(productionLine.getDestinatation());
+            weighing.setGross(gross);
+            weighing.setExpirateDate(productionLine.getExpirateDate());
+            weighing.setIceTare(productionLine.getIceTare());
+            weighing.setNet(net);
+            weighing.setTopTare(productionLine.getTopTare());
+            weighing.setPartsTare(productionLine.getPartsTare());
+            weighing.setProduct(productionLine.getProduct());
+            weighing.setOperator(userRepository.getCurrentUser());
+            weighing.setDate(DateUtils.getDate());
+            weighing.setHour(DateUtils.getHour());
+            weighing.setUnit(unit);
+            weighing.setLine(String.format(Locale.US, "%s %s", "Linea", productionLineManager.getCurrentProductionLineNumber()));
+            insertWeighing(weighing, printAction);
+        } else {
+            error.setValue("No finalizo la pesada");
+        }
+
     }
 
     private void insertWeighing(Weighing weighing, WeighingPrintAction printAction) {

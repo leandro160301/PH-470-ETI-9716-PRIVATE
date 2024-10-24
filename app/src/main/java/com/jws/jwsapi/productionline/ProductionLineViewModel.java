@@ -22,7 +22,6 @@ public class ProductionLineViewModel extends ViewModel {
 
     private final static int PERIOD = 200;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final MutableLiveData<String> batch = new MutableLiveData<>();
     private final MutableLiveData<String> destination = new MutableLiveData<>();
     private final MutableLiveData<String> product = new MutableLiveData<>();
@@ -30,6 +29,8 @@ public class ProductionLineViewModel extends ViewModel {
     private final MutableLiveData<String> caliber = new MutableLiveData<>();
     private final MutableLiveData<Integer> lineNumber = new MutableLiveData<>();
     private final MutableLiveData<ProductionLineStates> state = new MutableLiveData<>();
+    private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final MutableLiveData<String> message = new MutableLiveData<>();
     private final ProductionLineManager productionLineManager;
     private final WeighRepository weighRepository;
     private Disposable pollingDisposable;
@@ -80,12 +81,16 @@ public class ProductionLineViewModel extends ViewModel {
         }
     }
 
-    public MutableLiveData<Integer> getLineNumber() {
-        return lineNumber;
+    public LiveData<String> getError() {
+        return error;
     }
 
-    public LiveData<Boolean> getLoading() {
-        return loading;
+    public LiveData<String> getMessage() {
+        return message;
+    }
+
+    public MutableLiveData<Integer> getLineNumber() {
+        return lineNumber;
     }
 
     public MutableLiveData<String> getBatch() {
@@ -140,6 +145,34 @@ public class ProductionLineViewModel extends ViewModel {
 
     public void changeCurrentLine() {
         productionLineManager.changeCurrentProductionLine();
+    }
+
+    public void tareButton() {
+        ProductionLineStates state = productionLineManager.getCurrentProductionLine().getProductionLineState();
+        switch (state) {
+            case INIT:
+                putTareBoxProcess();
+                message.setValue("Caja lista");
+                weighRepository.setTare();
+                break;
+            case BOX:
+                putTarePartsProcess();
+                message.setValue("Piezas listas");
+                weighRepository.setTare();
+                break;
+            case PARTS:
+                putTareIceProcess();
+                message.setValue("Hielo listo");
+                weighRepository.setTare();
+                break;
+            case ICE:
+                putTareTopProcess();
+                message.setValue("Caja cerrada");
+                weighRepository.setTare();
+                break;
+            default:
+                error.setValue("Error caja finalizada, pulse imprimir");
+        }
     }
 
     @Override

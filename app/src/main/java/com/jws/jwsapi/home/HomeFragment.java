@@ -23,7 +23,6 @@ import com.jws.jwsapi.core.gpio.GpioHighListener;
 import com.jws.jwsapi.core.gpio.GpioManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
 import com.jws.jwsapi.productionline.ProductionLineFragment;
-import com.jws.jwsapi.productionline.ProductionLineStates;
 import com.jws.jwsapi.productionline.ProductionLineViewModel;
 import com.jws.jwsapi.scale.ScaleViewModel;
 import com.jws.jwsapi.shared.WeighRepository;
@@ -156,6 +155,12 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
                 ToastHelper.message(message, R.layout.item_customtoastok, requireContext());
             }
         });
+        productionLineViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
+        productionLineViewModel.getMessage().observe(getViewLifecycleOwner(), message -> {
+            if (message != null) {
+                ToastHelper.message(message, R.layout.item_customtoastok, requireContext());
+            }
+        });
     }
 
     private void setupLinearState(LinearLayout ln1, LinearLayout ln2, LinearLayout ln3, LinearLayout ln4) {
@@ -269,44 +274,12 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
 
     }
 
-    private void printButton() {
-        ProductionLineStates state = productionLineViewModel.getState().getValue();
-        if (state == ProductionLineStates.TOP) {
-            weighingViewModel.createWeighing(this);
-        } else {
-            getActivity().runOnUiThread(() -> ToastHelper.message("No finalizo la pesada", R.layout.item_customtoasterror, requireContext()));
-        }
+    private void tareButton() {
+        getActivity().runOnUiThread(() -> productionLineViewModel.tareButton());
     }
 
-    private void tareButton() {
-        getActivity().runOnUiThread(() -> {
-            switch (productionLineViewModel.getState().getValue()) {
-                case INIT:
-                    productionLineViewModel.putTareBoxProcess();
-                    showMessage("Caja lista", R.layout.item_customtoastok);
-                    repository.setTare();
-                    break;
-                case BOX:
-                    productionLineViewModel.putTarePartsProcess();
-                    showMessage("Piezas listas", R.layout.item_customtoastok);
-                    repository.setTare();
-                    break;
-                case PARTS:
-                    productionLineViewModel.putTareIceProcess();
-                    showMessage("Hielo listo", R.layout.item_customtoastok);
-                    repository.setTare();
-                    break;
-                case ICE:
-                    productionLineViewModel.putTareTopProcess();
-                    showMessage("Caja cerrada", R.layout.item_customtoastok);
-                    repository.setTare();
-                    break;
-                default:
-                    showMessage("Error caja finalizada, pulse imprimir", R.layout.item_customtoasterror);
-            }
-
-
-        });
+    private void printButton() {
+        getActivity().runOnUiThread(() -> weighingViewModel.createWeighing(HomeFragment.this));
     }
 
     @Override

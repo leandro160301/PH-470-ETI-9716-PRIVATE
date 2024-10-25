@@ -347,10 +347,6 @@
     </string-array>
 
     <string-array name="menu_items_settings">
-        <item>Programa</item>
-        <item>Balanzas</item>
-        <item>Turno</item>
-        <item>Datos</item>
         <item>Etiquetas</item>
     </string-array>
     <!--menu items feature-->

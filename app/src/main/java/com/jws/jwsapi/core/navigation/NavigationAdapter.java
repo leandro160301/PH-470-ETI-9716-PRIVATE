@@ -1,5 +1,6 @@
 package com.jws.jwsapi.core.navigation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jws.jwsapi.R;
@@ -25,22 +27,20 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     private ItemClickListener mClickListener;
     private int lastPositionAdapter = -1;
 
-    // data is passed into the constructor
     public NavigationAdapter(Context context, List<String> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.context = context;
     }
 
-    // inflates the row layout from xml when needed
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_list_black_tex4t, parent, false);
 
         return new ViewHolder(view);
     }
 
-    // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String animal = mData.get(position);
@@ -73,21 +73,11 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         return position;
     }
 
-    public String getItem(int id) {
-        return mData.get(id);
-    }
-
-    // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    public void removeAt(int position) {
-        mData.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mData.size());
-    }
-
+    @SuppressLint("NotifyDataSetChanged")
     public void filterList(ArrayList<String> filteredList) {
         mData = filteredList;
         notifyDataSetChanged();
@@ -97,7 +87,6 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         void onItemClick(View view, int position);
     }
 
-    // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
 

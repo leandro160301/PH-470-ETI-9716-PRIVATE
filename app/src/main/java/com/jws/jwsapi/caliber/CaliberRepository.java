@@ -22,29 +22,35 @@ public class CaliberRepository {
         List<String> elements = new ArrayList<>();
         try {
             String filePath = Environment.getExternalStorageDirectory() + "/Memoria/Calibres.csv";
-            File filess = new File(filePath);
-            boolean error = false;
-            if (filess.exists()) {
-                try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
-                    String[] nextLine;
-                    while ((nextLine = reader.readNext()) != null) {
-                        if (nextLine.length > 0) {
-                            String pos0 = nextLine[0].replace("\"", "");
-                            elements.add(pos0);
-                        } else {
-                            error = true;
-                        }
-                    }
-                    if (error) {
-                        ToastHelper.message("Error en el archivo, verifique que todos los datos son correctos", R.layout.item_customtoasterror, context);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            File file = new File(filePath);
+            if (file.exists()) {
+                elements = readCalibersFromFile(filePath, context);
             } else {
                 ToastHelper.message("Error no se encuentran calibres", R.layout.item_customtoasterror, context);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return elements;
+    }
+
+    public static List<String> readCalibersFromFile(String filePath, Context context) {
+        List<String> elements = new ArrayList<>();
+        boolean error = false;
+        try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine.length > 0) {
+                    String pos0 = nextLine[0].replace("\"", "");
+                    elements.add(pos0);
+                } else {
+                    error = true;
+                }
+            }
+            if (error) {
+                ToastHelper.message("Error en el archivo, verifique que todos los datos son correctos", R.layout.item_customtoasterror, context);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return elements;

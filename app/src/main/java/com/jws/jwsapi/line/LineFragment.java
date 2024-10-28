@@ -46,7 +46,7 @@ public class LineFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(LineDataViewModel.class);
-        
+
         mainActivity = (MainActivity) getActivity();
         setupButtons();
 
@@ -150,11 +150,11 @@ public class LineFragment extends Fragment {
 
     }
 
-    private void setupProductLine(Line lineManager, TextView binding, TextView binding1, TextView binding3, TextView binding4) {
-        binding.setText(lineManager.getProduct());
-        binding1.setText(lineManager.getBatch());
-        binding3.setText(lineManager.getDestinatation());
-        binding4.setText(lineManager.getExpirateDate());
+    private void setupProductLine(Line line, TextView bindingProduct, TextView bindingBatch, TextView bindingDestination, TextView bindingExpirateDate) {
+        bindingProduct.setText(line.getProduct());
+        bindingBatch.setText(line.getBatch());
+        bindingDestination.setText(line.getDestinatation());
+        bindingExpirateDate.setText(line.getExpirateDate());
     }
 
     private void setupButtons() {

@@ -1,20 +1,20 @@
-package com.jws.jwsapi.productionline;
+package com.jws.jwsapi.line;
 
 import com.jws.jwsapi.core.data.local.PreferencesHelper;
 
 import javax.inject.Inject;
 
-public class ProductionLinePreferences {
+public class LinePreferences {
 
     private final PreferencesHelper preferencesHelper;
 
     @Inject
-    public ProductionLinePreferences(PreferencesHelper preferencesHelper) {
+    public LinePreferences(PreferencesHelper preferencesHelper) {
         this.preferencesHelper = preferencesHelper;
     }
 
-    public ProductionLine getProductionLineOne() {
-        return new ProductionLine(
+    public Line getProductionLineOne() {
+        return new Line(
                 preferencesHelper.getString("destinatation_one", ""),
                 preferencesHelper.getString("product_one", ""),
                 preferencesHelper.getString("maturity_one", ""),
@@ -24,12 +24,12 @@ public class ProductionLinePreferences {
                 preferencesHelper.getString("partsTare_one", "0"),
                 preferencesHelper.getString("iceTare_one", "0"),
                 preferencesHelper.getString("coverTare_one", "0"),
-                ProductionLineStates.valueOf(preferencesHelper.getString("productionLineState_one", ProductionLineStates.INIT.name()))
+                LineStates.valueOf(preferencesHelper.getString("productionLineState_one", LineStates.INIT.name()))
         );
     }
 
-    public ProductionLine getProductionLineTwo() {
-        return new ProductionLine(
+    public Line getProductionLineTwo() {
+        return new Line(
                 preferencesHelper.getString("destinatation_two", ""),
                 preferencesHelper.getString("product_two", ""),
                 preferencesHelper.getString("maturity_two", ""),
@@ -39,7 +39,7 @@ public class ProductionLinePreferences {
                 preferencesHelper.getString("partsTare_two", "0"),
                 preferencesHelper.getString("iceTare_two", "0"),
                 preferencesHelper.getString("coverTare_two", "0"),
-                ProductionLineStates.valueOf(preferencesHelper.getString("productionLineState_two", ProductionLineStates.INIT.name()))
+                LineStates.valueOf(preferencesHelper.getString("productionLineState_two", LineStates.INIT.name()))
         );
     }
 
@@ -107,7 +107,7 @@ public class ProductionLinePreferences {
         preferencesHelper.putString(getCurrentProductionLineNumber() == 1 ? "coverTare_one" : "coverTare_two", coverTare);
     }
 
-    public void putProductionLineState(ProductionLineStates productionLineState) {
+    public void putProductionLineState(LineStates productionLineState) {
         preferencesHelper.putString(getCurrentProductionLineNumber() == 1 ? "productionLineState_one" : "productionLineState_two", productionLineState.name());
     }
 

@@ -5,8 +5,8 @@ import android.content.Context;
 import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.printer.PrinterManager;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
-import com.jws.jwsapi.productionline.ProductionLine;
-import com.jws.jwsapi.productionline.ProductionLineManager;
+import com.jws.jwsapi.line.Line;
+import com.jws.jwsapi.line.LineManager;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.service.PuertosSerie.PuertosSerie2;
@@ -19,31 +19,31 @@ public class HomeService {
     private final PrinterPreferences printerPreferences;
     private final LabelManager labelManager;
     private final WeighRepository weighRepository;
-    private final ProductionLineManager productionLineManager;
+    private final LineManager lineManager;
 
     @Inject
-    public HomeService(UserRepository userRepository, PrinterPreferences printerPreferences, LabelManager labelManager, WeighRepository weighRepository, ProductionLineManager productionLineManager) {
+    public HomeService(UserRepository userRepository, PrinterPreferences printerPreferences, LabelManager labelManager, WeighRepository weighRepository, LineManager lineManager) {
         this.userRepository = userRepository;
         this.printerPreferences = printerPreferences;
         this.labelManager = labelManager;
         this.weighRepository = weighRepository;
-        this.productionLineManager = productionLineManager;
+        this.lineManager = lineManager;
     }
 
     public void print(Context context, PuertosSerie2 serialPort) {
         Runnable myRunnable = () -> {
             try {
-                ProductionLine productionLine = productionLineManager.getCurrentProductionLine();
-                labelManager.linea.value = String.valueOf(productionLineManager.getCurrentProductionLineNumber());
-                labelManager.batch.value = productionLine.getBatch();
-                labelManager.caliber.value = productionLine.getCaliber();
-                labelManager.destinatation.value = productionLine.getDestinatation();
-                labelManager.name.value = productionLine.getProduct();
-                labelManager.expirateDate.value = productionLine.getExpirateDate();
-                labelManager.tareBox.value = productionLine.getBoxTare() + weighRepository.getUnit().getValue();
-                labelManager.tareIce.value = productionLine.getIceTare() + weighRepository.getUnit().getValue();
-                labelManager.tareParts.value = productionLine.getPartsTare() + weighRepository.getUnit().getValue();
-                labelManager.tareTop.value = productionLine.getTopTare() + weighRepository.getUnit().getValue();
+                Line line = lineManager.getCurrentProductionLine();
+                labelManager.linea.value = String.valueOf(lineManager.getCurrentProductionLineNumber());
+                labelManager.batch.value = line.getBatch();
+                labelManager.caliber.value = line.getCaliber();
+                labelManager.destinatation.value = line.getDestinatation();
+                labelManager.name.value = line.getProduct();
+                labelManager.expirateDate.value = line.getExpirateDate();
+                labelManager.tareBox.value = line.getBoxTare() + weighRepository.getUnit().getValue();
+                labelManager.tareIce.value = line.getIceTare() + weighRepository.getUnit().getValue();
+                labelManager.tareParts.value = line.getPartsTare() + weighRepository.getUnit().getValue();
+                labelManager.tareTop.value = line.getTopTare() + weighRepository.getUnit().getValue();
                 PrinterManager printerManager = new PrinterManager(context, userRepository, printerPreferences, labelManager, weighRepository);
                 printerManager.printLabelInMemory(serialPort, 0);
 

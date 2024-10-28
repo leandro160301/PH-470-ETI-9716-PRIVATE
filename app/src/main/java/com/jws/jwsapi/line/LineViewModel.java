@@ -1,4 +1,4 @@
-package com.jws.jwsapi.productionline;
+package com.jws.jwsapi.line;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,7 +18,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @HiltViewModel
-public class ProductionLineViewModel extends ViewModel {
+public class LineViewModel extends ViewModel {
 
     private final static int PERIOD = 200;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -28,16 +28,16 @@ public class ProductionLineViewModel extends ViewModel {
     private final MutableLiveData<String> expirationDate = new MutableLiveData<>();
     private final MutableLiveData<String> caliber = new MutableLiveData<>();
     private final MutableLiveData<Integer> lineNumber = new MutableLiveData<>();
-    private final MutableLiveData<ProductionLineStates> state = new MutableLiveData<>();
+    private final MutableLiveData<LineStates> state = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<String> message = new MutableLiveData<>();
-    private final ProductionLineManager productionLineManager;
+    private final LineManager lineManager;
     private final WeighRepository weighRepository;
     private Disposable pollingDisposable;
 
     @Inject
-    public ProductionLineViewModel(ProductionLineManager productionLineManager, WeighRepository weighRepository) {
-        this.productionLineManager = productionLineManager;
+    public LineViewModel(LineManager lineManager, WeighRepository weighRepository) {
+        this.lineManager = lineManager;
         this.weighRepository = weighRepository;
         startPolling();
     }
@@ -50,14 +50,14 @@ public class ProductionLineViewModel extends ViewModel {
     }
 
     private void updateData() {
-        ProductionLine productionLine = productionLineManager.getCurrentProductionLine();
-        String batch = productionLine.getBatch();
-        String destination = productionLine.getDestinatation();
-        String product = productionLine.getProduct();
-        String expirationDate = productionLine.getExpirateDate();
-        String caliber = productionLine.getCaliber();
-        Integer lineNumber = productionLineManager.getCurrentProductionLineNumber();
-        ProductionLineStates state = productionLineManager.getCurrentProductionLine().getProductionLineState();
+        Line line = lineManager.getCurrentProductionLine();
+        String batch = line.getBatch();
+        String destination = line.getDestinatation();
+        String product = line.getProduct();
+        String expirationDate = line.getExpirateDate();
+        String caliber = line.getCaliber();
+        Integer lineNumber = lineManager.getCurrentProductionLineNumber();
+        LineStates state = lineManager.getCurrentProductionLine().getProductionLineState();
         if (!batch.equals(this.batch.getValue())) {
             this.batch.postValue(batch);
         }
@@ -113,28 +113,28 @@ public class ProductionLineViewModel extends ViewModel {
         return caliber;
     }
 
-    public MutableLiveData<ProductionLineStates> getState() {
+    public MutableLiveData<LineStates> getState() {
         return state;
     }
 
     public void putTareBoxProcess() {
-        productionLineManager.updateProductionLineCoverTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
-        productionLineManager.updateProductionLineState(ProductionLineStates.BOX);
+        lineManager.updateProductionLineCoverTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
+        lineManager.updateProductionLineState(LineStates.BOX);
     }
 
     public void putTarePartsProcess() {
-        productionLineManager.updateProductionLinePartsTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
-        productionLineManager.updateProductionLineState(ProductionLineStates.PARTS);
+        lineManager.updateProductionLinePartsTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
+        lineManager.updateProductionLineState(LineStates.PARTS);
     }
 
     public void putTareIceProcess() {
-        productionLineManager.updateProductionLineIceTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
-        productionLineManager.updateProductionLineState(ProductionLineStates.ICE);
+        lineManager.updateProductionLineIceTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
+        lineManager.updateProductionLineState(LineStates.ICE);
     }
 
     public void putTareTopProcess() {
-        productionLineManager.updateProductionLineTopTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
-        productionLineManager.updateProductionLineState(ProductionLineStates.TOP);
+        lineManager.updateProductionLineTopTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
+        lineManager.updateProductionLineState(LineStates.TOP);
     }
 
     public void stopPolling() {
@@ -144,11 +144,11 @@ public class ProductionLineViewModel extends ViewModel {
     }
 
     public void changeCurrentLine() {
-        productionLineManager.changeCurrentProductionLine();
+        lineManager.changeCurrentProductionLine();
     }
 
     public void tareButton() {
-        ProductionLineStates state = productionLineManager.getCurrentProductionLine().getProductionLineState();
+        LineStates state = lineManager.getCurrentProductionLine().getProductionLineState();
         switch (state) {
             case INIT:
                 putTareBoxProcess();

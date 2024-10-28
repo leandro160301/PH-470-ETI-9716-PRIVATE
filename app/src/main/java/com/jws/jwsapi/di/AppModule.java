@@ -17,8 +17,8 @@ import com.jws.jwsapi.core.label.LabelManager;
 import com.jws.jwsapi.core.printer.PrinterPreferences;
 import com.jws.jwsapi.core.storage.StorageService;
 import com.jws.jwsapi.core.user.UserManager;
-import com.jws.jwsapi.productionline.ProductionLineManager;
-import com.jws.jwsapi.productionline.ProductionLinePreferences;
+import com.jws.jwsapi.line.LineManager;
+import com.jws.jwsapi.line.LinePreferences;
 import com.jws.jwsapi.shared.UserRepository;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.weighing.WeighingDao;
@@ -85,14 +85,14 @@ public class AppModule {
     }
 
     @Provides
-    public ProductionLinePreferences provideProductionLinePreferences(PreferencesHelper preferencesHelper) {
-        return new ProductionLinePreferences(preferencesHelper);
+    public LinePreferences provideProductionLinePreferences(PreferencesHelper preferencesHelper) {
+        return new LinePreferences(preferencesHelper);
     }
 
     @Provides
     @Singleton
-    public ProductionLineManager provideProductLineManager(ProductionLinePreferences preferences) {
-        return new ProductionLineManager(preferences);
+    public LineManager provideProductLineManager(LinePreferences preferences) {
+        return new LineManager(preferences);
     }
 
     @Provides

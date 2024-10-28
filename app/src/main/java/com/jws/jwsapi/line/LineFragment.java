@@ -1,4 +1,4 @@
-package com.jws.jwsapi.productionline;
+package com.jws.jwsapi.line;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboard;
 import static com.jws.jwsapi.utils.SpinnerHelper.setupSpinner;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
@@ -21,17 +22,16 @@ import com.jws.jwsapi.databinding.FragmentProductionLineBinding;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
-import javax.inject.Inject;
+import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ProductionLineFragment extends Fragment {
+public class LineFragment extends Fragment {
 
-    MainActivity mainActivity;
-    @Inject
-    ProductionLineManager productionLineManager;
+    private MainActivity mainActivity;
     private FragmentProductionLineBinding binding;
+    private LineDataViewModel viewModel;
     private ButtonProvider buttonProvider;
 
     @Override
@@ -45,33 +45,40 @@ public class ProductionLineFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        viewModel = new ViewModelProvider(this).get(LineDataViewModel.class);
+
         mainActivity = (MainActivity) getActivity();
         setupButtons();
 
         setupSpinners();
 
-        if (productionLineManager.getCurrentProductionLineNumber() == 1) {
-            binding.btReset2.setVisibility(View.INVISIBLE);
-        } else {
-            binding.btReset1.setVisibility(View.INVISIBLE);
-        }
+        setupResetButtons();
 
-        setupProductLine(productionLineManager.getProductionLineOne(), binding.tvProduct1,
+        setupProductLine(viewModel.getLineOne(), binding.tvProduct1,
                 binding.tvBatch1, binding.tvDestinatation1, binding.tvExpirateDate1);
 
-        setupProductLine(productionLineManager.getProductionLineTwo(), binding.tvProduct2,
+        setupProductLine(viewModel.getLineTwo(), binding.tvProduct2,
                 binding.tvBatch2, binding.tvDestinatation2, binding.tvExpirateDate2);
 
         setOnClickListeners();
 
     }
 
+    private void setupResetButtons() {
+        if (viewModel.getCurrentLine() == 1) {
+            binding.btReset2.setVisibility(View.INVISIBLE);
+        } else {
+            binding.btReset1.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void setupSpinners() {
         try {
-            setupSpinner(binding.spCaliber1, requireContext(), CaliberRepository.getCalibers(requireContext()));
-            setupSpinner(binding.spCaliber2, requireContext(), CaliberRepository.getCalibers(requireContext()));
-            binding.spCaliber1.setSelection(CaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineOne().getCaliber()));
-            binding.spCaliber2.setSelection(CaliberRepository.getCalibers(requireContext()).indexOf(productionLineManager.getProductionLineTwo().getCaliber()));
+            List<String> caliberElements = CaliberRepository.getCalibers(requireContext());
+            setupSpinner(binding.spCaliber1, requireContext(), caliberElements);
+            setupSpinner(binding.spCaliber2, requireContext(), caliberElements);
+            binding.spCaliber1.setSelection(caliberElements.indexOf(viewModel.getLineOne().getCaliber()));
+            binding.spCaliber2.setSelection(caliberElements.indexOf(viewModel.getLineTwo().getCaliber()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,32 +87,32 @@ public class ProductionLineFragment extends Fragment {
     private void setOnClickListeners() {
         binding.tvBatch1.setOnClickListener(v ->
                 keyboard(binding.tvBatch1, "Ingrese el Lote 1", requireContext(), value ->
-                        productionLineManager.updateProductionLineBatchOne(value)));
+                        viewModel.updateBatchOne(value)));
         binding.tvDestinatation1.setOnClickListener(v ->
                 keyboard(binding.tvDestinatation1, "Ingrese el Destino 1", requireContext(), value ->
-                        productionLineManager.updateProductionLineDestinationOne(value)));
+                        viewModel.updateDestinationOne(value)));
         binding.tvExpirateDate1.setOnClickListener(v ->
                 keyboard(binding.tvExpirateDate1, "Ingrese el Vencimiento 1", requireContext(), value ->
-                        productionLineManager.updateProductionLineExpirateDateOne(value)));
+                        viewModel.updateExpirateOne(value)));
         binding.tvProduct1.setOnClickListener(v ->
                 keyboard(binding.tvProduct1, "Ingrese el Producto 1", requireContext(), value ->
-                        productionLineManager.updateProductionLineProductOne(value)));
+                        viewModel.updateProductOne(value)));
 
         binding.tvBatch2.setOnClickListener(v ->
                 keyboard(binding.tvBatch2, "Ingrese el Lote 2", requireContext(), value ->
-                        productionLineManager.updateProductionLineBatchTwo(value)));
+                        viewModel.updateBatchTwo(value)));
 
         binding.tvDestinatation2.setOnClickListener(v ->
                 keyboard(binding.tvDestinatation2, "Ingrese el Destino 2", requireContext(), value ->
-                        productionLineManager.updateProductionLineDestinationTwo(value)));
+                        viewModel.updateDestinationTwo(value)));
         binding.tvExpirateDate2.setOnClickListener(v ->
                 keyboard(binding.tvExpirateDate2, "Ingrese el Vencimiento 2", requireContext(), value ->
-                        productionLineManager.updateProductionLineExpirateDateTwo(value)));
+                        viewModel.updateExpirateTwo(value)));
         binding.tvProduct2.setOnClickListener(v ->
                 keyboard(binding.tvProduct2, "Ingrese el Producto 2", requireContext(), value ->
-                        productionLineManager.updateProductionLineProductTwo(value)));
+                        viewModel.updateProductTwo(value)));
 
-        View.OnClickListener onClickListener = v -> productionLineManager.finishWeight();
+        View.OnClickListener onClickListener = v -> viewModel.finishWeight();
 
         binding.btReset1.setOnClickListener(onClickListener);
         binding.btReset2.setOnClickListener(onClickListener);
@@ -114,7 +121,7 @@ public class ProductionLineFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    productionLineManager.updateProductionLineCaliberOne(CaliberRepository.getCalibers(requireContext()).get(position));
+                    viewModel.updateCaliberOne(CaliberRepository.getCalibers(requireContext()).get(position));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -129,7 +136,7 @@ public class ProductionLineFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    productionLineManager.updateProductionLineCaliberTwo(CaliberRepository.getCalibers(requireContext()).get(position));
+                    viewModel.updateCaliberTwo(CaliberRepository.getCalibers(requireContext()).get(position));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -143,11 +150,11 @@ public class ProductionLineFragment extends Fragment {
 
     }
 
-    private void setupProductLine(ProductionLine productionLineManager, TextView binding, TextView binding1, TextView binding3, TextView binding4) {
-        binding.setText(productionLineManager.getProduct());
-        binding1.setText(productionLineManager.getBatch());
-        binding3.setText(productionLineManager.getDestinatation());
-        binding4.setText(productionLineManager.getExpirateDate());
+    private void setupProductLine(Line lineManager, TextView binding, TextView binding1, TextView binding3, TextView binding4) {
+        binding.setText(lineManager.getProduct());
+        binding1.setText(lineManager.getBatch());
+        binding3.setText(lineManager.getDestinatation());
+        binding4.setText(lineManager.getExpirateDate());
     }
 
     private void setupButtons() {

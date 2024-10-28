@@ -1,6 +1,6 @@
-package com.jws.jwsapi.productionline;
+package com.jws.jwsapi.line;
 
-public class ProductionLine {
+public class Line {
 
     private String destinatation;
     private String product;
@@ -11,11 +11,11 @@ public class ProductionLine {
     private String partsTare;
     private String iceTare;
     private String boxTare;
-    private ProductionLineStates productionLineState;
+    private LineStates productionLineState;
 
-    public ProductionLine(String destinatation, String product, String expirateDate, String caliber,
-                          String batch, String topTare, String partsTare, String iceTare,
-                          String boxTare, ProductionLineStates productionLineState) {
+    public Line(String destinatation, String product, String expirateDate, String caliber,
+                String batch, String topTare, String partsTare, String iceTare,
+                String boxTare, LineStates productionLineState) {
         this.destinatation = destinatation;
         this.product = product;
         this.expirateDate = expirateDate;
@@ -100,11 +100,11 @@ public class ProductionLine {
         this.boxTare = boxTare;
     }
 
-    public ProductionLineStates getProductionLineState() {
+    public LineStates getProductionLineState() {
         return productionLineState;
     }
 
-    public void setProductionLineState(ProductionLineStates productionLineState) {
+    public void setProductionLineState(LineStates productionLineState) {
         this.productionLineState = productionLineState;
     }
 

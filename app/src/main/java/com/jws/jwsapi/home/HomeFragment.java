@@ -22,8 +22,8 @@ import com.jws.jwsapi.core.container.ContainerButtonProviderSingleton;
 import com.jws.jwsapi.core.gpio.GpioHighListener;
 import com.jws.jwsapi.core.gpio.GpioManager;
 import com.jws.jwsapi.databinding.HomeFragmentBinding;
-import com.jws.jwsapi.productionline.ProductionLineFragment;
-import com.jws.jwsapi.productionline.ProductionLineViewModel;
+import com.jws.jwsapi.line.LineFragment;
+import com.jws.jwsapi.line.LineViewModel;
 import com.jws.jwsapi.scale.ScaleViewModel;
 import com.jws.jwsapi.shared.WeighRepository;
 import com.jws.jwsapi.utils.ToastHelper;
@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
     private MainActivity mainActivity;
     private WeighingViewModel weighingViewModel;
     private ScaleViewModel serviceScaleViewModel;
-    private ProductionLineViewModel productionLineViewModel;
+    private LineViewModel lineViewModel;
     private boolean isScaleMode = false;
 
     @Override
@@ -75,14 +75,14 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
 
         binding.lnFondolayout.setOnClickListener(v -> changeMode());
 
-        binding.lnLine.setOnClickListener(v -> productionLineViewModel.changeCurrentLine());
+        binding.lnLine.setOnClickListener(v -> lineViewModel.changeCurrentLine());
 
     }
 
     @SuppressWarnings("unchecked")
     private void initViewModels() {
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
-        productionLineViewModel = new ViewModelProvider(this).get(ProductionLineViewModel.class);
+        lineViewModel = new ViewModelProvider(this).get(LineViewModel.class);
         serviceScaleViewModel = new ViewModelProvider(requireActivity(), new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -108,20 +108,20 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
             binding.tvNetUnit.setText(unit);
         });
 
-        productionLineViewModel.getProduct().observe(getViewLifecycleOwner(), product ->
+        lineViewModel.getProduct().observe(getViewLifecycleOwner(), product ->
                 animateAndSetText(binding.tvProduct, binding.shimmerViewProduct, product));
-        productionLineViewModel.getBatch().observe(getViewLifecycleOwner(), batch ->
+        lineViewModel.getBatch().observe(getViewLifecycleOwner(), batch ->
                 animateAndSetText(binding.tvBatch, binding.shimmerViewBatch, batch));
-        productionLineViewModel.getDestination().observe(getViewLifecycleOwner(), destination ->
+        lineViewModel.getDestination().observe(getViewLifecycleOwner(), destination ->
                 animateAndSetText(binding.tvDestination, binding.shimmerViewDestination, destination));
-        productionLineViewModel.getExpirationDate().observe(getViewLifecycleOwner(), expiration ->
+        lineViewModel.getExpirationDate().observe(getViewLifecycleOwner(), expiration ->
                 animateAndSetText(binding.tvExpirationDate, binding.shimmerViewExpirationDate, expiration));
-        productionLineViewModel.getCaliber().observe(getViewLifecycleOwner(), caliber ->
+        lineViewModel.getCaliber().observe(getViewLifecycleOwner(), caliber ->
                 animateAndSetText(binding.tvCaliber, binding.shimmerLine, caliber));
-        productionLineViewModel.getLineNumber().observe(getViewLifecycleOwner(), number ->
+        lineViewModel.getLineNumber().observe(getViewLifecycleOwner(), number ->
                 animateAndSetText(binding.tvLine, binding.shimmerLine, String.valueOf(number)));
 
-        productionLineViewModel.getState().observe(getViewLifecycleOwner(), state -> {
+        lineViewModel.getState().observe(getViewLifecycleOwner(), state -> {
             switch (state) {
                 case INIT:
                     setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, binding.lnState4);
@@ -155,8 +155,8 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
                 ToastHelper.message(message, R.layout.item_customtoastok, requireContext());
             }
         });
-        productionLineViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
-        productionLineViewModel.getMessage().observe(getViewLifecycleOwner(), message -> {
+        lineViewModel.getError().observe(getViewLifecycleOwner(), this::messageError);
+        lineViewModel.getMessage().observe(getViewLifecycleOwner(), message -> {
             if (message != null) {
                 ToastHelper.message(message, R.layout.item_customtoastok, requireContext());
             }
@@ -214,7 +214,7 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
     private void setupButtons() {
         if (buttonProvider != null) {
             setupButton(buttonProvider.getButton1(), R.string.button_text_2,
-                    v -> mainActivity.mainClass.openFragment(new ProductionLineFragment()), View.VISIBLE);
+                    v -> mainActivity.mainClass.openFragment(new LineFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton2(), R.string.button_text_3,
                     v -> mainActivity.mainClass.openFragment(new CaliberFragment()), View.VISIBLE);
             setupButton(buttonProvider.getButton3(), R.string.button_text_4,
@@ -254,7 +254,7 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        productionLineViewModel.stopPolling();
+        lineViewModel.stopPolling();
         binding = null;
     }
 
@@ -269,13 +269,13 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
             printButton();
         }
         if (input == 2) {
-            getActivity().runOnUiThread(() -> productionLineViewModel.changeCurrentLine());
+            getActivity().runOnUiThread(() -> lineViewModel.changeCurrentLine());
         }
 
     }
 
     private void tareButton() {
-        getActivity().runOnUiThread(() -> productionLineViewModel.tareButton());
+        getActivity().runOnUiThread(() -> lineViewModel.tareButton());
     }
 
     private void printButton() {

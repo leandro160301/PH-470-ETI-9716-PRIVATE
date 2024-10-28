@@ -1,18 +1,18 @@
-package com.jws.jwsapi.productionline;
+package com.jws.jwsapi.line;
 
 import javax.inject.Inject;
 
-public class ProductionLineManager {
+public class LineManager {
 
-    private final ProductionLine productionLineOne;
-    private final ProductionLine productionLineTwo;
-    private final ProductionLinePreferences preferences;
+    private final Line lineOne;
+    private final Line lineTwo;
+    private final LinePreferences preferences;
     private int currentProductionLineNumber;
 
     @Inject
-    public ProductionLineManager(ProductionLinePreferences preferences) {
-        this.productionLineOne = preferences.getProductionLineOne();
-        this.productionLineTwo = preferences.getProductionLineTwo();
+    public LineManager(LinePreferences preferences) {
+        this.lineOne = preferences.getProductionLineOne();
+        this.lineTwo = preferences.getProductionLineTwo();
         currentProductionLineNumber = preferences.getCurrentProductionLineNumber();
         this.preferences = preferences;
     }
@@ -49,19 +49,19 @@ public class ProductionLineManager {
         updateProductionLineDestination(destination, 2);
     }
 
-    public ProductionLine getProductionLineOne() {
-        return this.productionLineOne;
+    public Line getProductionLineOne() {
+        return this.lineOne;
     }
 
-    public ProductionLine getProductionLineTwo() {
-        return this.productionLineTwo;
+    public Line getProductionLineTwo() {
+        return this.lineTwo;
     }
 
-    public ProductionLine getCurrentProductionLine() {
+    public Line getCurrentProductionLine() {
         if (currentProductionLineNumber == 1) {
-            return productionLineOne;
+            return lineOne;
         } else {
-            return productionLineTwo;
+            return lineTwo;
         }
     }
 
@@ -83,10 +83,10 @@ public class ProductionLineManager {
 
     private void updateProductionLineDestination(String destination, int line) {
         if (line == 1) {
-            productionLineOne.setDestinatation(destination);
+            lineOne.setDestinatation(destination);
             preferences.putDestinationOne(destination);
         } else {
-            productionLineTwo.setDestinatation(destination);
+            lineTwo.setDestinatation(destination);
             preferences.putDestinationTwo(destination);
         }
 
@@ -94,20 +94,20 @@ public class ProductionLineManager {
 
     private void updateProductionLineProduct(String product, int line) {
         if (line == 1) {
-            productionLineOne.setProduct(product);
+            lineOne.setProduct(product);
             preferences.putProductOne(product);
         } else {
-            productionLineTwo.setProduct(product);
+            lineTwo.setProduct(product);
             preferences.putProductTwo(product);
         }
     }
 
     private void updateProductionLineExpirateDate(String maturity, int line) {
         if (line == 1) {
-            productionLineOne.setExpirateDate(maturity);
+            lineOne.setExpirateDate(maturity);
             preferences.putExpirateDateOne(maturity);
         } else {
-            productionLineTwo.setExpirateDate(maturity);
+            lineTwo.setExpirateDate(maturity);
             preferences.putExpirateDateTwo(maturity);
         }
 
@@ -115,10 +115,10 @@ public class ProductionLineManager {
 
     private void updateProductionLineCaliber(String caliber, int line) {
         if (line == 1) {
-            productionLineOne.setCaliber(caliber);
+            lineOne.setCaliber(caliber);
             preferences.putCaliberOne(caliber);
         } else {
-            productionLineTwo.setCaliber(caliber);
+            lineTwo.setCaliber(caliber);
             preferences.putCaliberTwo(caliber);
         }
 
@@ -134,10 +134,10 @@ public class ProductionLineManager {
 
     private void updateProductionLineBatch(String batch, int line) {
         if (line == 1) {
-            productionLineOne.setBatch(batch);
+            lineOne.setBatch(batch);
             preferences.putBatchOne(batch);
         } else {
-            productionLineTwo.setBatch(batch);
+            lineTwo.setBatch(batch);
             preferences.putBatchTwo(batch);
         }
 
@@ -145,51 +145,51 @@ public class ProductionLineManager {
 
     public void updateProductionLineTopTare(String topTare) {
         if (currentProductionLineNumber == 1) {
-            productionLineOne.setTopTare(topTare);
+            lineOne.setTopTare(topTare);
         } else {
-            productionLineTwo.setTopTare(topTare);
+            lineTwo.setTopTare(topTare);
         }
         preferences.putTopTare(topTare);
     }
 
     public void updateProductionLinePartsTare(String partsTare) {
         if (currentProductionLineNumber == 1) {
-            productionLineOne.setPartsTare(partsTare);
+            lineOne.setPartsTare(partsTare);
         } else {
-            productionLineTwo.setPartsTare(partsTare);
+            lineTwo.setPartsTare(partsTare);
         }
         preferences.putPartsTare(partsTare);
     }
 
     public void updateProductionLineIceTare(String iceTare) {
         if (currentProductionLineNumber == 1) {
-            productionLineOne.setIceTare(iceTare);
+            lineOne.setIceTare(iceTare);
         } else {
-            productionLineTwo.setIceTare(iceTare);
+            lineTwo.setIceTare(iceTare);
         }
         preferences.putIceTare(iceTare);
     }
 
     public void updateProductionLineCoverTare(String coverTare) {
         if (currentProductionLineNumber == 1) {
-            productionLineOne.setBoxTare(coverTare);
+            lineOne.setBoxTare(coverTare);
         } else {
-            productionLineTwo.setBoxTare(coverTare);
+            lineTwo.setBoxTare(coverTare);
         }
         preferences.putCoverTare(coverTare);
     }
 
-    public void updateProductionLineState(ProductionLineStates productionLineState) {
+    public void updateProductionLineState(LineStates productionLineState) {
         if (currentProductionLineNumber == 1) {
-            productionLineOne.setProductionLineState(productionLineState);
+            lineOne.setProductionLineState(productionLineState);
         } else {
-            productionLineTwo.setProductionLineState(productionLineState);
+            lineTwo.setProductionLineState(productionLineState);
         }
         preferences.putProductionLineState(productionLineState);
     }
 
     public void finishWeight() {
-        updateProductionLineState(ProductionLineStates.INIT);
+        updateProductionLineState(LineStates.INIT);
         updateProductionLineTopTare("0");
         updateProductionLineIceTare("0");
         updateProductionLinePartsTare("0");

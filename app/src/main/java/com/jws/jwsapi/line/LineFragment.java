@@ -46,7 +46,7 @@ public class LineFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(LineDataViewModel.class);
-
+        
         mainActivity = (MainActivity) getActivity();
         setupButtons();
 

@@ -19,6 +19,7 @@ import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
 import com.jws.jwsapi.caliber.CaliberRepository;
 import com.jws.jwsapi.databinding.FragmentProductionLineBinding;
+import com.jws.jwsapi.utils.date.DatePickerDialogFragment;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
@@ -27,12 +28,13 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class LineFragment extends Fragment {
+public class LineFragment extends Fragment  implements  DatePickerDialogFragment.DatePickerListener {
 
     private MainActivity mainActivity;
     private FragmentProductionLineBinding binding;
     private LineDataViewModel viewModel;
     private ButtonProvider buttonProvider;
+    private Integer expirateDateNumber;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,9 +93,7 @@ public class LineFragment extends Fragment {
         binding.tvDestinatation1.setOnClickListener(v ->
                 keyboard(binding.tvDestinatation1, "Ingrese el Destino 1", requireContext(), value ->
                         viewModel.updateDestinationOne(value)));
-        binding.tvExpirateDate1.setOnClickListener(v ->
-                keyboard(binding.tvExpirateDate1, "Ingrese el Vencimiento 1", requireContext(), value ->
-                        viewModel.updateExpirateOne(value)));
+        binding.tvExpirateDate1.setOnClickListener(v -> showDatePicker(1));
         binding.tvProduct1.setOnClickListener(v ->
                 keyboard(binding.tvProduct1, "Ingrese el Producto 1", requireContext(), value ->
                         viewModel.updateProductOne(value)));
@@ -105,9 +105,7 @@ public class LineFragment extends Fragment {
         binding.tvDestinatation2.setOnClickListener(v ->
                 keyboard(binding.tvDestinatation2, "Ingrese el Destino 2", requireContext(), value ->
                         viewModel.updateDestinationTwo(value)));
-        binding.tvExpirateDate2.setOnClickListener(v ->
-                keyboard(binding.tvExpirateDate2, "Ingrese el Vencimiento 2", requireContext(), value ->
-                        viewModel.updateExpirateTwo(value)));
+        binding.tvExpirateDate2.setOnClickListener(v -> showDatePicker(2));
         binding.tvProduct2.setOnClickListener(v ->
                 keyboard(binding.tvProduct2, "Ingrese el Producto 2", requireContext(), value ->
                         viewModel.updateProductTwo(value)));
@@ -170,10 +168,31 @@ public class LineFragment extends Fragment {
         }
     }
 
+    public void showDatePicker(Integer number){
+        expirateDateNumber = number;
+        DatePickerDialogFragment newFragment = new DatePickerDialogFragment();
+        newFragment.setDatePickerListener(this);
+        newFragment.show(requireActivity().getSupportFragmentManager(), "datePicker");
+    }
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
 
+    @Override
+    public void onDateSelected(String selectedDate) {
+        if (expirateDateNumber!=null) {
+            if (expirateDateNumber == 1) {
+                binding.tvExpirateDate1.setText(selectedDate);
+                viewModel.updateExpirateOne(selectedDate);
+            }
+            if (expirateDateNumber == 2) {
+                binding.tvExpirateDate2.setText(selectedDate);
+                viewModel.updateExpirateTwo(selectedDate);
+            }
+        }
+    }
 }

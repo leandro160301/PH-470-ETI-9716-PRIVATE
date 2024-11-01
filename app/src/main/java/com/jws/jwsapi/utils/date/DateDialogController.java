@@ -10,7 +10,7 @@ import com.jws.jwsapi.R;
 
 public class DateDialogController {
 
-    public static AlertDialog createDatePickerDialog(Context context, View view, DatePickerListener listener) {
+    public static AlertDialog createDatePickerDialog(Context context, View view, DatePickerDialogFragment.DatePickerListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(view);
         final AlertDialog dialog = builder.create();

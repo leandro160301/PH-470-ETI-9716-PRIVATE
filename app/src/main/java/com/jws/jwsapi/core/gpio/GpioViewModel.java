@@ -44,7 +44,6 @@ public class GpioViewModel extends ViewModel {
                 .subscribe(tick -> updateGpioValues());
     }
 
-
     private void updateGpioValues() {
         gpioValue1.setValue(gpioManager.getGpioValue(1));
         gpioValue2.setValue(gpioManager.getGpioValue(2));

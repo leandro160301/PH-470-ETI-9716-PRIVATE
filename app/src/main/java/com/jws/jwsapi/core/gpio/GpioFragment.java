@@ -84,10 +84,8 @@ public class GpioFragment extends Fragment {
             buttonProvider.getButton5().setVisibility(View.INVISIBLE);
             buttonProvider.getButton6().setVisibility(View.INVISIBLE);
             buttonProvider.getButtonHome().setOnClickListener(v -> mainActivity.mainClass.openFragmentPrincipal());
-
         }
     }
-
 
     @Override
     public void onDestroyView() {

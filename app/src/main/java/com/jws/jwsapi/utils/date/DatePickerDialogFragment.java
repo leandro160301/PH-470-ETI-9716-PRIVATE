@@ -16,8 +16,12 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
 
     private DatePickerListener datePickerListener;
 
+    public interface DatePickerListener {
+        void onDateSelected(String selectedDate);
+    }
+
     public void setDatePickerListener(DatePickerListener listener) {
-        this.datePickerListener = listener;
+        datePickerListener = listener;
     }
 
     @NonNull

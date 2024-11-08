@@ -68,6 +68,14 @@ public class LineDataViewModel extends ViewModel {
         lineManager.updateProductionLineCaliberTwo(value);
     }
 
+    public void updatePartsQuantityOne(String value) {
+        lineManager.updateProductionLinePartsQuantityOne(value);
+    }
+
+    public void updatePartsQuantityTwo(String value) {
+        lineManager.updateProductionLinePartsQuantityTwo(value);
+    }
+
     public void finishWeight() {
         lineManager.finishWeight();
     }

@@ -12,10 +12,16 @@ public class Line {
     private String iceTare;
     private String boxTare;
     private LineStates productionLineState;
+    private Integer partsQuantity;
+    private Integer destinationQuantity;
+    private String partsAccumulated;
+    private Integer lineQuantity;
 
-    public Line(String destinatation, String product, String expirateDate, String caliber,
-                String batch, String topTare, String partsTare, String iceTare,
-                String boxTare, LineStates productionLineState) {
+    public Line(String destinatation, String product, String expirateDate,
+                String caliber, String batch, String topTare, String partsTare,
+                String iceTare, String boxTare, LineStates productionLineState,
+                Integer partsQuantity, Integer destinationQuantity, String partsAccumulated,
+                Integer lineQuantity) {
         this.destinatation = destinatation;
         this.product = product;
         this.expirateDate = expirateDate;
@@ -26,7 +32,12 @@ public class Line {
         this.iceTare = iceTare;
         this.boxTare = boxTare;
         this.productionLineState = productionLineState;
+        this.partsQuantity = partsQuantity;
+        this.destinationQuantity = destinationQuantity;
+        this.partsAccumulated = partsAccumulated;
+        this.lineQuantity = lineQuantity;
     }
+
 
     public String getDestinatation() {
         return destinatation;
@@ -107,5 +118,38 @@ public class Line {
     public void setProductionLineState(LineStates productionLineState) {
         this.productionLineState = productionLineState;
     }
+
+    public Integer getPartsQuantity() {
+        return partsQuantity;
+    }
+
+    public void setPartsQuantity(Integer partsQuantity) {
+        this.partsQuantity = partsQuantity;
+    }
+
+    public Integer getDestinationQuantity() {
+        return destinationQuantity;
+    }
+
+    public void setDestinationQuantity(Integer destinationQuantity) {
+        this.destinationQuantity = destinationQuantity;
+    }
+
+    public String getPartsAccumulated() {
+        return partsAccumulated;
+    }
+
+    public void setPartsAccumulated(String partsAccumulated) {
+        this.partsAccumulated = partsAccumulated;
+    }
+
+    public Integer getLineQuantity() {
+        return lineQuantity;
+    }
+
+    public void setLineQuantity(Integer lineQuantity) {
+        this.lineQuantity = lineQuantity;
+    }
+
 
 }

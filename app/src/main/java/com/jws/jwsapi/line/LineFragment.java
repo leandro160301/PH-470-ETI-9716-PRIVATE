@@ -1,6 +1,7 @@
 package com.jws.jwsapi.line;
 
 import static com.jws.jwsapi.dialog.DialogUtil.keyboard;
+import static com.jws.jwsapi.dialog.DialogUtil.keyboardInt;
 import static com.jws.jwsapi.utils.SpinnerHelper.setupSpinner;
 
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,19 +19,25 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.jws.jwsapi.MainActivity;
 import com.jws.jwsapi.R;
+import com.jws.jwsapi.caliber.CaliberConstants;
 import com.jws.jwsapi.caliber.CaliberRepository;
 import com.jws.jwsapi.databinding.FragmentProductionLineBinding;
+import com.jws.jwsapi.dialog.DialogInputInterface;
 import com.jws.jwsapi.utils.date.DatePickerDialogFragment;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class LineFragment extends Fragment  implements  DatePickerDialogFragment.DatePickerListener {
+public class LineFragment extends Fragment implements DatePickerDialogFragment.DatePickerListener {
 
+    List<String> caliberElements = new ArrayList<>();
+    List<String> destinationElements = new ArrayList<>();
     private MainActivity mainActivity;
     private FragmentProductionLineBinding binding;
     private LineDataViewModel viewModel;
@@ -57,10 +65,10 @@ public class LineFragment extends Fragment  implements  DatePickerDialogFragment
         setupResetButtons();
 
         setupProductLine(viewModel.getLineOne(), binding.tvProduct1,
-                binding.tvBatch1, binding.tvDestinatation1, binding.tvExpirateDate1);
+                binding.tvBatch1, binding.tvExpirateDate1, binding.tvPartsQuantity1);
 
         setupProductLine(viewModel.getLineTwo(), binding.tvProduct2,
-                binding.tvBatch2, binding.tvDestinatation2, binding.tvExpirateDate2);
+                binding.tvBatch2, binding.tvExpirateDate2, binding.tvPartsQuantity2);
 
         setOnClickListeners();
 
@@ -76,83 +84,79 @@ public class LineFragment extends Fragment  implements  DatePickerDialogFragment
 
     private void setupSpinners() {
         try {
-            List<String> caliberElements = CaliberRepository.getCalibers(requireContext());
+            caliberElements = CaliberRepository.getCalibers(requireContext(), CaliberConstants.NAME_CALIBER);
+            destinationElements = CaliberRepository.getCalibers(requireContext(), CaliberConstants.NAME_DESTINATION);
             setupSpinner(binding.spCaliber1, requireContext(), caliberElements);
             setupSpinner(binding.spCaliber2, requireContext(), caliberElements);
+            setupSpinner(binding.spDestination1, requireContext(), destinationElements);
+            setupSpinner(binding.spDestination2, requireContext(), destinationElements);
             binding.spCaliber1.setSelection(caliberElements.indexOf(viewModel.getLineOne().getCaliber()));
             binding.spCaliber2.setSelection(caliberElements.indexOf(viewModel.getLineTwo().getCaliber()));
+            binding.spDestination1.setSelection(destinationElements.indexOf(viewModel.getLineOne().getDestinatation()));
+            binding.spDestination2.setSelection(destinationElements.indexOf(viewModel.getLineTwo().getDestinatation()));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void setOnClickListeners() {
-        binding.tvBatch1.setOnClickListener(v ->
-                keyboard(binding.tvBatch1, "Ingrese el Lote 1", requireContext(), value ->
-                        viewModel.updateBatchOne(value)));
-        binding.tvDestinatation1.setOnClickListener(v ->
-                keyboard(binding.tvDestinatation1, "Ingrese el Destino 1", requireContext(), value ->
-                        viewModel.updateDestinationOne(value)));
-        binding.tvExpirateDate1.setOnClickListener(v -> showDatePicker(1));
-        binding.tvProduct1.setOnClickListener(v ->
-                keyboard(binding.tvProduct1, "Ingrese el Producto 1", requireContext(), value ->
-                        viewModel.updateProductOne(value)));
+        setTextViewClickListener(binding.tvBatch1, "Ingrese el Lote 1", viewModel::updateBatchOne);
+        setDateClickListener(binding.tvExpirateDate1, 1);
+        setTextViewClickListener(binding.tvProduct1, "Ingrese el Producto 1", viewModel::updateProductOne);
+        setTextViewClickListenerInt(binding.tvPartsQuantity1, "Ingrese la cantidad de piezas de la linea 1", viewModel::updatePartsQuantityOne);
 
-        binding.tvBatch2.setOnClickListener(v ->
-                keyboard(binding.tvBatch2, "Ingrese el Lote 2", requireContext(), value ->
-                        viewModel.updateBatchTwo(value)));
-
-        binding.tvDestinatation2.setOnClickListener(v ->
-                keyboard(binding.tvDestinatation2, "Ingrese el Destino 2", requireContext(), value ->
-                        viewModel.updateDestinationTwo(value)));
-        binding.tvExpirateDate2.setOnClickListener(v -> showDatePicker(2));
-        binding.tvProduct2.setOnClickListener(v ->
-                keyboard(binding.tvProduct2, "Ingrese el Producto 2", requireContext(), value ->
-                        viewModel.updateProductTwo(value)));
+        setTextViewClickListener(binding.tvBatch2, "Ingrese el Lote 2", viewModel::updateBatchTwo);
+        setDateClickListener(binding.tvExpirateDate2, 2);
+        setTextViewClickListener(binding.tvProduct2, "Ingrese el Producto 2", viewModel::updateProductTwo);
+        setTextViewClickListenerInt(binding.tvPartsQuantity2, "Ingrese la cantidad de piezas de la linea 2", viewModel::updatePartsQuantityTwo);
 
         View.OnClickListener onClickListener = v -> viewModel.finishWeight();
 
         binding.btReset1.setOnClickListener(onClickListener);
         binding.btReset2.setOnClickListener(onClickListener);
 
-        binding.spCaliber1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    viewModel.updateCaliberOne(CaliberRepository.getCalibers(requireContext()).get(position));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        binding.spCaliber2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    viewModel.updateCaliberTwo(CaliberRepository.getCalibers(requireContext()).get(position));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        setSpinnerListener(binding.spCaliber1, caliberElements, viewModel::updateCaliberOne);
+        setSpinnerListener(binding.spCaliber2, caliberElements, viewModel::updateCaliberTwo);
+        setSpinnerListener(binding.spDestination1, destinationElements, viewModel::updateDestinationOne);
+        setSpinnerListener(binding.spDestination2, destinationElements, viewModel::updateDestinationTwo);
 
     }
 
-    private void setupProductLine(Line line, TextView bindingProduct, TextView bindingBatch, TextView bindingDestination, TextView bindingExpirateDate) {
+    private void setTextViewClickListener(TextView textView, String message, DialogInputInterface updateFunction) {
+        textView.setOnClickListener(v -> keyboard(textView, message, requireContext(), updateFunction));
+    }
+
+    private void setTextViewClickListenerInt(TextView textView, String message, DialogInputInterface updateFunction) {
+        textView.setOnClickListener(v -> keyboardInt(textView, message, requireContext(), updateFunction));
+    }
+
+    private void setDateClickListener(TextView textView, int id) {
+        textView.setOnClickListener(v -> showDatePicker(id));
+    }
+
+    private void setSpinnerListener(Spinner spinner, List<String> elements, Consumer<String> updateFunction) {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    updateFunction.accept(elements.get(position));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void setupProductLine(Line line, TextView bindingProduct, TextView bindingBatch,
+                                  TextView bindingExpirateDate, TextView bindingPartsQuantity) {
         bindingProduct.setText(line.getProduct());
         bindingBatch.setText(line.getBatch());
-        bindingDestination.setText(line.getDestinatation());
         bindingExpirateDate.setText(line.getExpirateDate());
+        bindingPartsQuantity.setText(String.valueOf(line.getPartsQuantity()));
     }
 
     private void setupButtons() {
@@ -168,7 +172,7 @@ public class LineFragment extends Fragment  implements  DatePickerDialogFragment
         }
     }
 
-    public void showDatePicker(Integer number){
+    public void showDatePicker(Integer number) {
         expirateDateNumber = number;
         DatePickerDialogFragment newFragment = new DatePickerDialogFragment();
         newFragment.setDatePickerListener(this);
@@ -184,7 +188,7 @@ public class LineFragment extends Fragment  implements  DatePickerDialogFragment
 
     @Override
     public void onDateSelected(String selectedDate) {
-        if (expirateDateNumber!=null) {
+        if (expirateDateNumber != null) {
             if (expirateDateNumber == 1) {
                 binding.tvExpirateDate1.setText(selectedDate);
                 viewModel.updateExpirateOne(selectedDate);

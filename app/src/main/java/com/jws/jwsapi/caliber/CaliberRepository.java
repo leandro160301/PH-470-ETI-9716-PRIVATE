@@ -18,15 +18,15 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 public class CaliberRepository {
 
-    public static List<String> getCalibers(Context context) {
+    public static List<String> getCalibers(Context context, String nameFile) {
         List<String> elements = new ArrayList<>();
         try {
-            String filePath = Environment.getExternalStorageDirectory() + "/Memoria/Calibres.csv";
+            String filePath = Environment.getExternalStorageDirectory() + "/Memoria/" + nameFile + ".csv";
             File file = new File(filePath);
             if (file.exists()) {
                 elements = readCalibersFromFile(filePath, context);
             } else {
-                ToastHelper.message("Error no se encuentran calibres", R.layout.item_customtoasterror, context);
+                ToastHelper.message("Error no se encuentran " + nameFile + "", R.layout.item_customtoasterror, context);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,9 +56,9 @@ public class CaliberRepository {
         return elements;
     }
 
-    public static void setCalibers(List<String> elements) {
+    public static void setCalibers(List<String> elements, String nameFile) {
         Runnable myRunnable = () -> {
-            File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/Calibres.csv");
+            File filePath = new File(Environment.getExternalStorageDirectory() + "/Memoria/" + nameFile + ".csv");
             if (filePath.exists()) {
                 filePath.delete();
             }

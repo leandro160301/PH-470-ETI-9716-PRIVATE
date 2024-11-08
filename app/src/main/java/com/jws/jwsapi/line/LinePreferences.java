@@ -24,7 +24,11 @@ public class LinePreferences {
                 preferencesHelper.getString("partsTare_one", "0"),
                 preferencesHelper.getString("iceTare_one", "0"),
                 preferencesHelper.getString("coverTare_one", "0"),
-                LineStates.valueOf(preferencesHelper.getString("productionLineState_one", LineStates.INIT.name()))
+                LineStates.valueOf(preferencesHelper.getString("productionLineState_one", LineStates.INIT.name())),
+                preferencesHelper.getInt("partsQuantity_one", 0),
+                preferencesHelper.getInt("destinationQuantity_one", 0),
+                preferencesHelper.getString("partsAccumulated_one", ""),
+                preferencesHelper.getInt("lineQuantity_one", 0)
         );
     }
 
@@ -39,7 +43,11 @@ public class LinePreferences {
                 preferencesHelper.getString("partsTare_two", "0"),
                 preferencesHelper.getString("iceTare_two", "0"),
                 preferencesHelper.getString("coverTare_two", "0"),
-                LineStates.valueOf(preferencesHelper.getString("productionLineState_two", LineStates.INIT.name()))
+                LineStates.valueOf(preferencesHelper.getString("productionLineState_two", LineStates.INIT.name())),
+                preferencesHelper.getInt("partsQuantity_two", 0),
+                preferencesHelper.getInt("destinationQuantity_two", 0),
+                preferencesHelper.getString("partsAccumulated_two", ""),
+                preferencesHelper.getInt("lineQuantity_two", 0)
         );
     }
 
@@ -109,6 +117,57 @@ public class LinePreferences {
 
     public void putProductionLineState(LineStates productionLineState) {
         preferencesHelper.putString(getCurrentProductionLineNumber() == 1 ? "productionLineState_one" : "productionLineState_two", productionLineState.name());
+    }
+
+    public void putPartsQuantity(Integer partsQuantity) {
+        preferencesHelper.putInt(getCurrentProductionLineNumber() == 1 ? "partsQuantity_one" : "partsQuantity_two", partsQuantity);
+    }
+
+    public void putDestinationQuantity(Integer destinationQuantity) {
+        preferencesHelper.putInt(getCurrentProductionLineNumber() == 1 ? "destinationQuantity_one" : "destinationQuantity_two", destinationQuantity);
+    }
+
+    public void putLineQuantity(Integer lineQuantity) {
+        preferencesHelper.putInt(getCurrentProductionLineNumber() == 1 ? "lineQuantity_one" : "lineQuantity_two", lineQuantity);
+    }
+
+    public void putPartsAccumulated(String partsAccumulated) {
+        preferencesHelper.putString(getCurrentProductionLineNumber() == 1 ? "partsAccumulated_one" : "partsAccumulated_two", partsAccumulated);
+    }
+
+
+    // Para la línea 1
+    public void putPartsQuantityLineOne(Integer partsQuantity) {
+        preferencesHelper.putInt("partsQuantity_one", partsQuantity);
+    }
+
+    public void putDestinationQuantityLineOne(Integer destinationQuantity) {
+        preferencesHelper.putInt("destinationQuantity_one", destinationQuantity);
+    }
+
+    public void putLineQuantityLineOne(Integer lineQuantity) {
+        preferencesHelper.putInt("lineQuantity_one", lineQuantity);
+    }
+
+    public void putPartsAccumulatedLineOne(String partsAccumulated) {
+        preferencesHelper.putString("partsAccumulated_one", partsAccumulated);
+    }
+
+    // Para la línea 2
+    public void putPartsQuantityLineTwo(Integer partsQuantity) {
+        preferencesHelper.putInt("partsQuantity_two", partsQuantity);
+    }
+
+    public void putDestinationQuantityLineTwo(Integer destinationQuantity) {
+        preferencesHelper.putInt("destinationQuantity_two", destinationQuantity);
+    }
+
+    public void putLineQuantityLineTwo(Integer lineQuantity) {
+        preferencesHelper.putInt("lineQuantity_two", lineQuantity);
+    }
+
+    public void putPartsAccumulatedLineTwo(String partsAccumulated) {
+        preferencesHelper.putString("partsAccumulated_two", partsAccumulated);
     }
 
 

@@ -27,7 +27,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class CaliberFragment extends Fragment implements CaliberInterface {
+public class DestinatationFragment extends Fragment implements CaliberInterface {
 
     MainActivity mainActivity;
     CaliberAdapter adapter;
@@ -49,7 +49,7 @@ public class CaliberFragment extends Fragment implements CaliberInterface {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mainActivity = (MainActivity) getActivity();
-        elements = CaliberRepository.getCalibers(requireContext(), CaliberConstants.NAME_CALIBER);
+        elements = CaliberRepository.getCalibers(requireContext(), CaliberConstants.NAME_DESTINATION);
         setupButtons();
         setupRecyclerView();
 
@@ -63,12 +63,12 @@ public class CaliberFragment extends Fragment implements CaliberInterface {
     }
 
     public void dialogNewElement() {
-        DialogUtil.keyboard(null, "Ingrese el nuevo " + CaliberConstants.NAME_CALIBER + "", mainActivity, this::checkCaliberSave);
+        DialogUtil.keyboard(null, "Ingrese el nuevo " + CaliberConstants.NAME_DESTINATION + "", mainActivity, this::checkCaliberSave);
     }
 
     private void checkCaliberSave(String caliber) {
         if (!caliber.isEmpty()) {
-            List<String> newList = CaliberRepository.getCalibers(requireContext(), CaliberConstants.NAME_CALIBER);
+            List<String> newList = CaliberRepository.getCalibers(requireContext(), CaliberConstants.NAME_DESTINATION);
             boolean exist = false;
             for (int i = 0; i < newList.size(); i++) {
                 if (caliber.equals(newList.get(i))) {
@@ -77,12 +77,12 @@ public class CaliberFragment extends Fragment implements CaliberInterface {
             }
             if (!exist) {
                 newList.add(caliber);
-                CaliberRepository.setCalibers(newList, CaliberConstants.NAME_CALIBER);
+                CaliberRepository.setCalibers(newList, CaliberConstants.NAME_DESTINATION);
                 elements.add(caliber);
                 adapter.refreshList(elements);
                 binding.recyclerview.smoothScrollToPosition(elements.size() - 1);
             } else {
-                ToastHelper.message("Ya existe el " + CaliberConstants.NAME_CALIBER + "", R.layout.item_customtoasterror, requireContext());
+                ToastHelper.message("Ya existe el " + CaliberConstants.NAME_DESTINATION + "", R.layout.item_customtoasterror, requireContext());
             }
         } else {
             ToastHelper.message("Los valores ingresados no son validos", R.layout.item_customtoasterror, requireContext());
@@ -114,9 +114,9 @@ public class CaliberFragment extends Fragment implements CaliberInterface {
     }
 
     private void dialogDeleteElement(int posicion, List<String> mData) {
-        DialogUtil.dialogText(mainActivity, "¿Quiere eliminar el " + CaliberConstants.NAME_CALIBER + " " + mData.get(posicion) + "?", "ELIMINAR", () -> {
+        DialogUtil.dialogText(mainActivity, "¿Quiere eliminar el " + CaliberConstants.NAME_DESTINATION + " " + mData.get(posicion) + "?", "ELIMINAR", () -> {
             mData.remove(posicion);
-            CaliberRepository.setCalibers(mData, CaliberConstants.NAME_CALIBER);
+            CaliberRepository.setCalibers(mData, CaliberConstants.NAME_DESTINATION);
             adapter.refreshList(mData);
         });
     }
@@ -130,7 +130,7 @@ public class CaliberFragment extends Fragment implements CaliberInterface {
                 ToastHelper.message("No esta habilitado para modificar datos", R.layout.item_customtoasterror, mainActivity);
             }
         } else {
-            ToastHelper.message("No puede eliminar mas " + CaliberConstants.NAME_CALIBER + "s", R.layout.item_customtoasterror, mainActivity);
+            ToastHelper.message("No puede eliminar mas " + CaliberConstants.NAME_DESTINATION + "s", R.layout.item_customtoasterror, mainActivity);
         }
     }
 }

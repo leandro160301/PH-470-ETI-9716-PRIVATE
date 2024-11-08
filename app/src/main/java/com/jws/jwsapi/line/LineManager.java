@@ -1,5 +1,7 @@
 package com.jws.jwsapi.line;
 
+import com.jws.jwsapi.utils.Utils;
+
 import javax.inject.Inject;
 
 public class LineManager {
@@ -47,6 +49,14 @@ public class LineManager {
 
     public void updateProductionLineDestinationTwo(String destination) {
         updateProductionLineDestination(destination, 2);
+    }
+
+    public void updateProductionLinePartsQuantityOne(String quantity) {
+        updateProductionLinePartsQuantity(quantity, 1);
+    }
+
+    public void updateProductionLinePartsQuantityTwo(String quantity) {
+        updateProductionLinePartsQuantity(quantity, 2);
     }
 
     public Line getProductionLineOne() {
@@ -110,7 +120,19 @@ public class LineManager {
             lineTwo.setExpirateDate(maturity);
             preferences.putExpirateDateTwo(maturity);
         }
+    }
 
+    private void updateProductionLinePartsQuantity(String quantity, int line) {
+        if (Utils.isNumeric(quantity)) {
+            Integer quantityNumber = Integer.parseInt(quantity);
+            if (line == 1) {
+                lineOne.setPartsQuantity(quantityNumber);
+                preferences.putPartsQuantityLineOne(quantityNumber);
+            } else {
+                lineTwo.setPartsQuantity(quantityNumber);
+                preferences.putPartsQuantityLineTwo(quantityNumber);
+            }
+        }
     }
 
     private void updateProductionLineCaliber(String caliber, int line) {

@@ -48,7 +48,6 @@ public class GpioInputsService {
             int index = i;
             currentInputValues[index] = jwsManager.jwsReadExtrnalGpioValue(index);
             if (currentInputValues[index] != null) {
-                System.out.println("GPIO" + index + ":" + currentInputValues[index]);
                 if (lowListener != null || highListener != null) {
                     Runnable highAction = (highListener != null) ? () -> highListener.onInputHigh(index) : null;
                     Runnable lowAction = (lowListener != null) ? () -> lowListener.onInputLow(index) : null;

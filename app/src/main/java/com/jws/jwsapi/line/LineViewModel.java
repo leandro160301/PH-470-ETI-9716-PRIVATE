@@ -39,7 +39,6 @@ public class LineViewModel extends ViewModel {
     public LineViewModel(LineManager lineManager, WeighRepository weighRepository) {
         this.lineManager = lineManager;
         this.weighRepository = weighRepository;
-        startPolling();
     }
 
     public void startPolling() {
@@ -127,11 +126,6 @@ public class LineViewModel extends ViewModel {
         lineManager.updateProductionLineState(LineStates.PARTS);
     }
 
-    public void putTareIceProcess() {
-        lineManager.updateProductionLineIceTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
-        lineManager.updateProductionLineState(LineStates.ICE);
-    }
-
     public void putTareTopProcess() {
         lineManager.updateProductionLineTopTare(weighRepository.format(String.valueOf(weighRepository.getNet())));
         lineManager.updateProductionLineState(LineStates.TOP);
@@ -144,6 +138,7 @@ public class LineViewModel extends ViewModel {
     }
 
     public void changeCurrentLine() {
+        System.out.println("viewmodel:cambio linea");
         lineManager.changeCurrentProductionLine();
     }
 
@@ -161,11 +156,6 @@ public class LineViewModel extends ViewModel {
                 weighRepository.setTare();
                 break;
             case PARTS:
-                putTareIceProcess();
-                message.setValue("Hielo listo");
-                weighRepository.setTare();
-                break;
-            case ICE:
                 putTareTopProcess();
                 message.setValue("Caja cerrada");
                 weighRepository.setTare();
@@ -174,6 +164,7 @@ public class LineViewModel extends ViewModel {
                 error.setValue("Error caja finalizada, pulse imprimir");
         }
     }
+
 
     @Override
     protected void onCleared() {

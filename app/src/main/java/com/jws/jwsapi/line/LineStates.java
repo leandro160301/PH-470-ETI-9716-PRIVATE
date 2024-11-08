@@ -4,6 +4,5 @@ public enum LineStates {
     INIT,
     BOX,
     PARTS,
-    ICE,
     TOP
 }

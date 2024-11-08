@@ -83,7 +83,8 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
     @SuppressWarnings("unchecked")
     private void initViewModels() {
         weighingViewModel = new ViewModelProvider(this).get(WeighingViewModel.class);
-        lineViewModel = new ViewModelProvider(this).get(LineViewModel.class);
+        lineViewModel = new ViewModelProvider(requireActivity()).get(LineViewModel.class);
+        lineViewModel.startPolling();
         serviceScaleViewModel = new ViewModelProvider(requireActivity(), new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -125,22 +126,18 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
         lineViewModel.getState().observe(getViewLifecycleOwner(), state -> {
             switch (state) {
                 case INIT:
-                    setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, binding.lnState4);
+                    setupLinearState(binding.lnState1, binding.lnState2, binding.lnState4);
                     break;
                 case BOX:
-                    setupLinearState(null, binding.lnState2, binding.lnState3, binding.lnState4);
+                    setupLinearState(null, binding.lnState2, binding.lnState4);
                     binding.lnState1.setBackgroundResource(R.drawable.botoneraprincipalverde);
                     break;
                 case PARTS:
-                    setupLinearState(binding.lnState1, null, binding.lnState3, binding.lnState4);
+                    setupLinearState(binding.lnState1, null, binding.lnState4);
                     binding.lnState2.setBackgroundResource(R.drawable.botoneraprincipalverde);
                     break;
-                case ICE:
-                    setupLinearState(binding.lnState1, binding.lnState2, null, binding.lnState4);
-                    binding.lnState3.setBackgroundResource(R.drawable.botoneraprincipalverde);
-                    break;
                 case TOP:
-                    setupLinearState(binding.lnState1, binding.lnState2, binding.lnState3, null);
+                    setupLinearState(binding.lnState1, binding.lnState2, null);
                     binding.lnState4.setBackgroundResource(R.drawable.botoneraprincipalverde);
                     break;
             }
@@ -164,13 +161,11 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
         });
     }
 
-    private void setupLinearState(LinearLayout ln1, LinearLayout ln2, LinearLayout ln3, LinearLayout ln4) {
+    private void setupLinearState(LinearLayout ln1, LinearLayout ln2, LinearLayout ln4) {
         if (ln1 != null)
             ln1.setBackgroundResource(R.drawable.campollenarclickeableceropadding_selector);
         if (ln2 != null)
             ln2.setBackgroundResource(R.drawable.campollenarclickeableceropadding_selector);
-        if (ln3 != null)
-            ln3.setBackgroundResource(R.drawable.campollenarclickeableceropadding_selector);
         if (ln4 != null)
             ln4.setBackgroundResource(R.drawable.campollenarclickeableceropadding_selector);
     }

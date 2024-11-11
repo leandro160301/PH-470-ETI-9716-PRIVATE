@@ -29,10 +29,12 @@ public class LineViewModel extends ViewModel {
     private final MutableLiveData<String> caliber = new MutableLiveData<>();
     private final MutableLiveData<Integer> lineNumber = new MutableLiveData<>();
     private final MutableLiveData<LineStates> state = new MutableLiveData<>();
-    private final MutableLiveData<String> error = new MutableLiveData<>();
-    private final MutableLiveData<String> message = new MutableLiveData<>();
+    private final MutableLiveData<Integer> quantity = new MutableLiveData<>();
+    private final MutableLiveData<String> accumulated = new MutableLiveData<>();
     private final LineManager lineManager;
     private final WeighRepository weighRepository;
+    private MutableLiveData<String> error = new MutableLiveData<>();
+    private MutableLiveData<String> message = new MutableLiveData<>();
     private Disposable pollingDisposable;
 
     @Inject
@@ -57,6 +59,8 @@ public class LineViewModel extends ViewModel {
         String caliber = line.getCaliber();
         Integer lineNumber = lineManager.getCurrentProductionLineNumber();
         LineStates state = lineManager.getCurrentProductionLine().getProductionLineState();
+        Integer quantity = line.getDestinationQuantity();
+        String accumulated = line.getPartsAccumulated();
         if (!batch.equals(this.batch.getValue())) {
             this.batch.postValue(batch);
         }
@@ -78,6 +82,12 @@ public class LineViewModel extends ViewModel {
         if (!state.equals(this.state.getValue())) {
             this.state.postValue(state);
         }
+        if (!quantity.equals(this.quantity.getValue())) {
+            this.quantity.postValue(quantity);
+        }
+        if (!accumulated.equals(this.accumulated.getValue())) {
+            this.accumulated.postValue(accumulated);
+        }
     }
 
     public LiveData<String> getError() {
@@ -90,6 +100,10 @@ public class LineViewModel extends ViewModel {
 
     public MutableLiveData<Integer> getLineNumber() {
         return lineNumber;
+    }
+
+    public MutableLiveData<Integer> getQuantity() {
+        return quantity;
     }
 
     public MutableLiveData<String> getBatch() {
@@ -110,6 +124,10 @@ public class LineViewModel extends ViewModel {
 
     public MutableLiveData<String> getCaliber() {
         return caliber;
+    }
+
+    public MutableLiveData<String> getAccumulated() {
+        return accumulated;
     }
 
     public MutableLiveData<LineStates> getState() {
@@ -134,11 +152,12 @@ public class LineViewModel extends ViewModel {
     public void stopPolling() {
         if (pollingDisposable != null && !pollingDisposable.isDisposed()) {
             pollingDisposable.dispose();
+            error = new MutableLiveData<>();
+            message = new MutableLiveData<>();
         }
     }
 
     public void changeCurrentLine() {
-        System.out.println("viewmodel:cambio linea");
         lineManager.changeCurrentProductionLine();
     }
 
@@ -158,7 +177,6 @@ public class LineViewModel extends ViewModel {
             case PARTS:
                 putTareTopProcess();
                 message.setValue("Caja cerrada");
-                weighRepository.setTare();
                 break;
             default:
                 error.setValue("Error caja finalizada, pulse imprimir");

@@ -78,6 +78,7 @@ public class WeighingViewModel extends ViewModel {
             weighing.setDate(DateUtils.getDate());
             weighing.setHour(DateUtils.getHour());
             weighing.setUnit(unit);
+            weighing.setPartsQuantity(String.valueOf(line.getPartsQuantity()));
             weighing.setLine(String.format(Locale.US, "%s %s", "Linea", lineManager.getCurrentProductionLineNumber()));
             insertWeighing(weighing, printAction);
         } else {
@@ -98,7 +99,9 @@ public class WeighingViewModel extends ViewModel {
                 message.setValue("Operacion realizada con exito");
                 printAction.print();
                 lineManager.finishWeight();
-                weighRepository.setTare();
+                lineManager.updateProductionLineAccumulated(weighing.getPartsTare());
+                lineManager.updateProductionLineQuantity();
+                weighRepository.removeTare();
             }
 
             @Override

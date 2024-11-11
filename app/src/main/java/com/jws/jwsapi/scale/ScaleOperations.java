@@ -6,4 +6,6 @@ public interface ScaleOperations {
     void setZero();
 
     String format(String weight);
+
+    void removeTare();
 }

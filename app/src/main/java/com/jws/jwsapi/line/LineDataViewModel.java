@@ -76,7 +76,18 @@ public class LineDataViewModel extends ViewModel {
         lineManager.updateProductionLinePartsQuantityTwo(value);
     }
 
+    public void resetLineQuantity(int line) {
+        if (line == 1) {
+            lineManager.resetProductionLineAccumulatedOne();
+            lineManager.resetProductionLineQuantityOne();
+        } else {
+            lineManager.resetProductionLineAccumulatedTwo();
+            lineManager.resetProductionLineQuantityTwo();
+        }
+    }
+
     public void finishWeight() {
         lineManager.finishWeight();
+        lineManager.resetProductionLineQuantity();
     }
 }

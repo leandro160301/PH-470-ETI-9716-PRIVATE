@@ -108,6 +108,7 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
         repository.getUnit().observe(getViewLifecycleOwner(), unit -> {
             binding.tvGrossUnit.setText(unit);
             binding.tvNetUnit.setText(unit);
+            binding.tvAccumulatedUnit.setText(unit);
         });
 
         lineViewModel.getProduct().observe(getViewLifecycleOwner(), product ->
@@ -122,6 +123,11 @@ public class HomeFragment extends Fragment implements GpioHighListener, Weighing
                 animateAndSetText(binding.tvCaliber, binding.shimmerLine, caliber));
         lineViewModel.getLineNumber().observe(getViewLifecycleOwner(), number ->
                 animateAndSetText(binding.tvLine, binding.shimmerLine, String.valueOf(number)));
+        lineViewModel.getQuantity().observe(getViewLifecycleOwner(), quantity ->
+                animateAndSetText(binding.tvQuantity, binding.shimmerViewQuantity, String.valueOf(quantity)));
+        lineViewModel.getAccumulated().observe(getViewLifecycleOwner(), accumulated ->
+                animateAndSetText(binding.tvAccumulated, binding.shimmerViewAccumulated, accumulated));
+
 
         lineViewModel.getState().observe(getViewLifecycleOwner(), state -> {
             switch (state) {

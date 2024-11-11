@@ -49,6 +49,7 @@ public class ScaleViewModel extends androidx.lifecycle.ViewModel implements Scal
         scaleService.setTaraDigital(repository.getScaleNumber(), scaleService.getBruto(repository.getScaleNumber()));
     }
 
+
     @Override
     public void setZero() {
         scaleService.setCero(repository.getScaleNumber());
@@ -57,6 +58,11 @@ public class ScaleViewModel extends androidx.lifecycle.ViewModel implements Scal
     @Override
     public String format(String weight) {
         return scaleService.format(repository.getScaleNumber(), weight);
+    }
+
+    @Override
+    public void removeTare() {
+        scaleService.setTaraDigital(repository.getScaleNumber(), 0);
     }
 
     @AssistedFactory

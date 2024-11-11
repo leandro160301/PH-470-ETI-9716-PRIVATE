@@ -42,10 +42,13 @@ public class PrinterManager {
         switch (modeOutput) {
             case MODE_USB:
                 usbPrint(label);
+                break;
             case MODE_NETWORK:
                 networkPrint(label);
+                break;
             case MODE_RS232:
                 rs232Print(serialPort, label);
+                break;
         }
     }
 

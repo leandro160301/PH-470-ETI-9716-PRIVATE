@@ -99,7 +99,6 @@ public class LineManager {
             lineTwo.setDestinatation(destination);
             preferences.putDestinationTwo(destination);
         }
-
     }
 
     private void updateProductionLineProduct(String product, int line) {
@@ -132,6 +131,75 @@ public class LineManager {
                 lineTwo.setPartsQuantity(quantityNumber);
                 preferences.putPartsQuantityLineTwo(quantityNumber);
             }
+        }
+    }
+
+    public void updateProductionLineQuantity() {
+        try {
+            Integer quantity = getCurrentProductionLine().getDestinationQuantity();
+            getCurrentProductionLine().setDestinationQuantity(quantity + 1);
+            preferences.putDestinationQuantity(quantity + 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateProductionLineAccumulated(String partsWeight) {
+        try {
+            String accumulated = getCurrentProductionLine().getPartsAccumulated();
+            if (Utils.isNumeric(accumulated) && Utils.isNumeric(partsWeight)) {
+                float newAccumulated = Float.parseFloat(accumulated) + Float.parseFloat(partsWeight);
+                String newAccumulatedStr = String.valueOf(Math.round(newAccumulated * 100) / 100f);
+                getCurrentProductionLine().setPartsAccumulated(newAccumulatedStr);
+                preferences.putPartsAccumulated(newAccumulatedStr);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetProductionLineQuantity() {
+        try {
+            preferences.putDestinationQuantity(0);
+            getCurrentProductionLine().setDestinationQuantity(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetProductionLineQuantityOne() {
+        try {
+            lineOne.setDestinationQuantity(0);
+            preferences.putDestinationQuantityLineOne(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetProductionLineQuantityTwo() {
+        try {
+            lineTwo.setDestinationQuantity(0);
+            preferences.putDestinationQuantityLineTwo(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetProductionLineAccumulatedOne() {
+        try {
+            lineOne.setPartsAccumulated("0");
+            preferences.putPartsAccumulatedLineOne("0");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetProductionLineAccumulatedTwo() {
+        try {
+            lineTwo.setPartsAccumulated("0");
+            preferences.putPartsAccumulatedLineTwo("0");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -216,6 +284,7 @@ public class LineManager {
         updateProductionLineIceTare("0");
         updateProductionLinePartsTare("0");
         updateProductionLineCoverTare("0");
+
     }
 
 }

@@ -46,8 +46,7 @@ public class ServerUtil {
                 weighingField.put("Vencimiento", weighing.getExpirateDate());
                 weighingField.put("Tara envase", weighing.getBoxTare());
                 weighingField.put("Tara partes", weighing.getPartsTare());
-                weighingField.put("Tara hielo", weighing.getIceTare());
-                weighingField.put("Tara tapa", weighing.getTopTare());
+                weighingField.put("Cantidad piezas", weighing.getPartsQuantity());
                 weighingField.put("Bruto", weighing.getGross());
                 weighingField.put("Neto", weighing.getNet());
                 weighingField.put("Unidad", weighing.getUnit());

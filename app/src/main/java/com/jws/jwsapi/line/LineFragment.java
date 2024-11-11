@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +28,6 @@ import com.service.Comunicacion.ButtonProviderSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -43,6 +41,9 @@ public class LineFragment extends Fragment implements DatePickerDialogFragment.D
     private LineDataViewModel viewModel;
     private ButtonProvider buttonProvider;
     private Integer expirateDateNumber;
+    private boolean isSpinnerInicializated1 = false;
+    private boolean isSpinnerInicializated2 = false;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -115,10 +116,62 @@ public class LineFragment extends Fragment implements DatePickerDialogFragment.D
         binding.btReset1.setOnClickListener(onClickListener);
         binding.btReset2.setOnClickListener(onClickListener);
 
-        setSpinnerListener(binding.spCaliber1, caliberElements, viewModel::updateCaliberOne);
-        setSpinnerListener(binding.spCaliber2, caliberElements, viewModel::updateCaliberTwo);
-        setSpinnerListener(binding.spDestination1, destinationElements, viewModel::updateDestinationOne);
-        setSpinnerListener(binding.spDestination2, destinationElements, viewModel::updateDestinationTwo);
+        binding.spCaliber1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                viewModel.updateCaliberOne(caliberElements.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        binding.spCaliber2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                viewModel.updateCaliberTwo(caliberElements.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        binding.spDestination1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isSpinnerInicializated1) {
+                    viewModel.updateDestinationOne(destinationElements.get(position));
+                    viewModel.resetLineQuantity(1);
+                } else {
+                    isSpinnerInicializated1 = true;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        binding.spDestination2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isSpinnerInicializated2) {
+                    viewModel.updateDestinationTwo(destinationElements.get(position));
+                    viewModel.resetLineQuantity(2);
+                } else {
+                    isSpinnerInicializated2 = true;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -134,22 +187,6 @@ public class LineFragment extends Fragment implements DatePickerDialogFragment.D
         textView.setOnClickListener(v -> showDatePicker(id));
     }
 
-    private void setSpinnerListener(Spinner spinner, List<String> elements, Consumer<String> updateFunction) {
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    updateFunction.accept(elements.get(position));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
 
     private void setupProductLine(Line line, TextView bindingProduct, TextView bindingBatch,
                                   TextView bindingExpirateDate, TextView bindingPartsQuantity) {

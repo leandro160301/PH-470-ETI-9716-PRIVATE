@@ -58,6 +58,9 @@ public class Weighing {
     @ColumnInfo(name = "unit")
     private String unit;
 
+    @ColumnInfo(name = "parts_quantity")
+    private String partsQuantity;
+
     public String getDate() {
         return date;
     }
@@ -192,6 +195,14 @@ public class Weighing {
 
     public void setBoxTare(String boxTare) {
         this.boxTare = boxTare;
+    }
+
+    public String getPartsQuantity() {
+        return partsQuantity;
+    }
+
+    public void setPartsQuantity(String partsQuantity) {
+        this.partsQuantity = partsQuantity;
     }
 
 }

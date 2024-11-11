@@ -105,6 +105,11 @@ public class WeighRepository {
         if (serviceScaleOperations != null) serviceScaleOperations.setTare();
     }
 
+    public void removeTare() {
+        if (serviceScaleOperations != null) serviceScaleOperations.removeTare();
+    }
+
+
     public String format(String weight) {
         if (serviceScaleOperations != null) {
             return serviceScaleOperations.format(weight);

@@ -2,6 +2,7 @@ package com.jws.jwsapi.line;
 
 public class Line {
 
+    private final Integer lineQuantity;
     private String destinatation;
     private String product;
     private String expirateDate;
@@ -15,7 +16,6 @@ public class Line {
     private Integer partsQuantity;
     private Integer destinationQuantity;
     private String partsAccumulated;
-    private Integer lineQuantity;
 
     public Line(String destinatation, String product, String expirateDate,
                 String caliber, String batch, String topTare, String partsTare,
@@ -141,14 +141,6 @@ public class Line {
 
     public void setPartsAccumulated(String partsAccumulated) {
         this.partsAccumulated = partsAccumulated;
-    }
-
-    public Integer getLineQuantity() {
-        return lineQuantity;
-    }
-
-    public void setLineQuantity(Integer lineQuantity) {
-        this.lineQuantity = lineQuantity;
     }
 
 

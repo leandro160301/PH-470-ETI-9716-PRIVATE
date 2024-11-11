@@ -27,7 +27,7 @@ public class LinePreferences {
                 LineStates.valueOf(preferencesHelper.getString("productionLineState_one", LineStates.INIT.name())),
                 preferencesHelper.getInt("partsQuantity_one", 0),
                 preferencesHelper.getInt("destinationQuantity_one", 0),
-                preferencesHelper.getString("partsAccumulated_one", ""),
+                preferencesHelper.getString("partsAccumulated_one", "0"),
                 preferencesHelper.getInt("lineQuantity_one", 0)
         );
     }
@@ -46,7 +46,7 @@ public class LinePreferences {
                 LineStates.valueOf(preferencesHelper.getString("productionLineState_two", LineStates.INIT.name())),
                 preferencesHelper.getInt("partsQuantity_two", 0),
                 preferencesHelper.getInt("destinationQuantity_two", 0),
-                preferencesHelper.getString("partsAccumulated_two", ""),
+                preferencesHelper.getString("partsAccumulated_two", "0"),
                 preferencesHelper.getInt("lineQuantity_two", 0)
         );
     }

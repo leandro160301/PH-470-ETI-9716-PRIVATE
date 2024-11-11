@@ -10,6 +10,7 @@ public class LineManager {
     private final Line lineTwo;
     private final LinePreferences preferences;
     private int currentProductionLineNumber;
+    private Line lastLine;
 
     @Inject
     public LineManager(LinePreferences preferences) {
@@ -17,6 +18,10 @@ public class LineManager {
         this.lineTwo = preferences.getProductionLineTwo();
         currentProductionLineNumber = preferences.getCurrentProductionLineNumber();
         this.preferences = preferences;
+    }
+
+    public Line getLastLine() {
+        return lastLine;
     }
 
     public void updateProductionLineExpirateDateOne(String maturity) {
@@ -279,6 +284,10 @@ public class LineManager {
     }
 
     public void finishWeight() {
+        Line lineOld = getCurrentProductionLine();
+        lastLine = new Line(lineOld.getDestinatation(), lineOld.getProduct(), lineOld.getExpirateDate(), lineOld.getCaliber(), lineOld.getBatch(),
+                lineOld.getTopTare(), lineOld.getPartsTare(), lineOld.getIceTare(), lineOld.getBoxTare(), lineOld.getProductionLineState(),
+                lineOld.getPartsQuantity(), lineOld.getDestinationQuantity(), lineOld.getPartsAccumulated(), lineOld.getDestinationQuantity());
         updateProductionLineState(LineStates.INIT);
         updateProductionLineTopTare("0");
         updateProductionLineIceTare("0");

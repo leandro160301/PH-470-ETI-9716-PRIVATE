@@ -50,6 +50,7 @@ public class PrinterManager {
                 rs232Print(serialPort, label);
                 break;
         }
+        printerPreferences.setLastLabel(label);
     }
 
     private void rs232Print(PuertosSerie2 serialPort, String label) {

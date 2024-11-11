@@ -57,6 +57,15 @@ public class UsbPrinter {
                     DiscoveredPrinter printer = discoveredPrinterListAdapter.getPrinter(0);
                     SelectedPrinterManager.setSelectedPrinter(printer);
                     Print(label, memory, memoryList);
+                } else {
+                    UsbPrinterManager printerManager = new UsbPrinterManager(context);
+                    boolean success = printerManager.printLabel(label);
+                    if (success) {
+                        System.out.println("Sato imprimio");
+                    } else {
+                        System.out.println("Sato error");
+                        printerManager.printLabel(label);
+                    }
                 }
 
             } catch (InterruptedException e) {

@@ -17,7 +17,7 @@ public class WeighingViewHolder extends RecyclerView.ViewHolder {
         this.binding = binding;
     }
 
-    public void bind(Weighing weighing) {
+    public void bind(Weighing weighing, WeighingDeleteClick weighingDeleteClick) {
         binding.lnExpand.setVisibility(View.GONE);
         binding.btExpand.setBackgroundResource(R.drawable.boton_mas_i);
 
@@ -39,6 +39,7 @@ public class WeighingViewHolder extends RecyclerView.ViewHolder {
             binding.lnExpand.setVisibility(isGone ? View.VISIBLE : View.GONE);
             binding.btExpand.setBackgroundResource(isGone ? R.drawable.boton_menos_i : R.drawable.boton_mas_i);
         });
+        binding.btDelete.setOnClickListener(v -> weighingDeleteClick.deleteItem(weighing.getId()));
     }
 
     public String weighFormat(String weight, String unit) {

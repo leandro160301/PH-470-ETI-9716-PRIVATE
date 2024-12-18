@@ -37,5 +37,12 @@ public class WeighingService {
 
     }
 
+    public Completable deleteWeighing(int id) {
+        return Completable.fromAction(() -> weighingDao.deleteWeighingById(id))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
 
 }

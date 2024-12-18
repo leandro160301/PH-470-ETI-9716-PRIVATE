@@ -468,6 +468,18 @@
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
+                            <Button
+                                android:id="@+id/bt_delete"
+                                android:layout_width="70dp"
+                                android:layout_height="60dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/boton_eliminar_i"
+                                android:orientation="horizontal">
+
+
+                            </Button>
+
                             <TextView
                                 android:layout_width="70dp"
                                 android:layout_height="wrap_content"

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class WeighingFragment extends Fragment {
+public class WeighingFragment extends Fragment implements WeighingDeleteClick {
 
     private MainActivity mainActivity;
     private WeighingAdapter weighingAdapter;
@@ -49,7 +49,7 @@ public class WeighingFragment extends Fragment {
         setupButtons();
 
         binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        weighingAdapter = new WeighingAdapter(new ArrayList<>());
+        weighingAdapter = new WeighingAdapter(new ArrayList<>(), this);
         binding.recycler.setAdapter(weighingAdapter);
 
         weighingViewModel.getWeighings().observe(getViewLifecycleOwner(), pallets -> {
@@ -94,4 +94,9 @@ public class WeighingFragment extends Fragment {
         binding = null;
     }
 
+    @Override
+    public void deleteItem(int id) {
+        dialogText(requireContext(), "¿Quiere eliminar la pesada?", "ELIMINAR",
+                () -> weighingViewModel.deleteWeighings(id));
+    }
 }

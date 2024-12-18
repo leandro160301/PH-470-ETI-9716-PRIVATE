@@ -71,7 +71,7 @@ public class WeighingViewModel extends ViewModel {
             weighing.setExpirateDate(line.getExpirateDate());
             weighing.setIceTare(line.getIceTare());
             weighing.setNet(net);
-            weighing.setTopTare(line.getTopTare());
+            weighing.setTopTare(String.valueOf(line.getDestinationQuantity() + 1));
             weighing.setPartsTare(line.getPartsTare());
             weighing.setProduct(line.getProduct());
             weighing.setOperator(userRepository.getCurrentUser());
@@ -122,6 +122,29 @@ public class WeighingViewModel extends ViewModel {
                 @Override
                 public void onComplete() {
                     message.setValue("Pesadas eliminadas");
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    error.setValue(e.getMessage());
+                }
+            });
+        } else {
+            error.setValue("No esta habilitado para cambiar datos");
+        }
+    }
+
+    public void deleteWeighings(int id) {
+        if (userRepository.isEnabled()) {
+            weighingService.deleteWeighing(id).subscribe(new CompletableObserver() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onComplete() {
+                    message.setValue("Pesadas eliminada");
                 }
 
                 @Override

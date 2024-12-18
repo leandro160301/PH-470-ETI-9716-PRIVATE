@@ -13,10 +13,13 @@ import java.util.List;
 
 public class WeighingAdapter extends RecyclerView.Adapter<WeighingViewHolder> {
 
+    private final WeighingDeleteClick weighingDeleteClick;
     private List<Weighing> weighingList;
 
-    public WeighingAdapter(List<Weighing> weighingList) {
+    public WeighingAdapter(List<Weighing> weighingList,
+                           WeighingDeleteClick weighingDeleteClick) {
         this.weighingList = weighingList;
+        this.weighingDeleteClick = weighingDeleteClick;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -36,7 +39,7 @@ public class WeighingAdapter extends RecyclerView.Adapter<WeighingViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull WeighingViewHolder holder, int position) {
         Weighing weighing = weighingList.get(position);
-        holder.bind(weighing);
+        holder.bind(weighing, weighingDeleteClick);
     }
 
     @Override

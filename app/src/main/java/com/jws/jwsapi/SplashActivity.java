@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
-    public String Version = "ETI 9716 1.00";
+    public String Version = "ETI 9716 1.01";
     Intent hidenav;
     ImageView imageView;
     TextView tvVersion;
